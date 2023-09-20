@@ -3,6 +3,8 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import Hero from "../images/HERO.jpeg";
+import { Image } from "astro:assets";
 ---
 
 <!doctype html>
@@ -13,38 +15,96 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	<body>
 		<Header title={SITE_TITLE} />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to
-				build a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like
-				Tailwind, React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/pages/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<div class="banner">
+				<Image src={Hero} alt="kayak at lums pond" />
+				<div class="band-name hero-cutout">Lums Pond</div>
+				<div class="nav-container">
+					<h1 class="band-name">Friends of Lums Pond State Park</h1>
+				</div>
+			</div>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+
+<style>
+	.band-name {
+		font-family: var(--font-header);
+		text-transform: uppercase;
+	}
+
+	.hero-cutout {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+		z-index: -1;
+		letter-spacing: -1rem;
+		background-color: rgba(255,255,255, 0.8);
+		font-size: max(min(50vw, 54vh), 20rem);
+		line-height: max(min(30vw, 40vh), 18rem);
+		mix-blend-mode: screen;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.hero-cutout {
+			font-size: max(min(50vw, 54vh), 15rem);
+			line-height: max(min(30vw, 40vh), 12rem);
+			justify-content: start;
+		}
+	}
+
+	h1 {
+		font-size: 3rem;
+		letter-spacing: 2px;
+		text-align: center;
+		margin: 1rem;
+	}
+
+	main {
+		width: 100%;
+	}
+
+	.banner {
+		height: calc(100vh - 78px);
+		width: 100%;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.banner > img {
+		position: absolute;
+		object-fit: cover;
+		height: 100%;
+		width: 100%;
+		z-index: -2;
+	}
+
+	.nav-container {
+		background-color: rgba(255,255,255, 0.5);
+		width: 100%;
+		padding: 0rem;
+		display: flex;
+		flex-direction: column;
+		margin-top: auto;
+	}
+
+	nav {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		padding-bottom: 1rem;
+	}
+
+	nav > * {
+		margin-left: 1.5rem;
+		margin-right: 1.5rem;
+	}
+</style>

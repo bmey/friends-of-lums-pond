@@ -4,9 +4,24 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
-:root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
+ /* pallete https://coolors.co/004a87-00213d-ffefd6 */
+ :root {
+	--primary: #004a87;
+	--primaryRGB: 0, 74, 135;
+	--color-primary-light: #157ED4;
+	--color-primary-light-rgb: 21, 126, 212;
+	--color-primary-dark: #00203B;
+	--color-primary-dark-rgb: 0, 32, 59;
+	--color-primary-dark2: #001629;
+	--color-primary-dark2-rgb: 0, 22, 41;
+	--color-lighter: #FFF7EB;
+	--color-lighter-rgb: 255, 247, 235;
+	--color-light: #FFEFD6;
+	--color-light-rgb: 255, 239, 214;
+	--font-header: "Festivo LC", sans-serif;
+
+	--accent: var(--color-primary-light);
+	--accent-dark: var(--primary);
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
@@ -34,19 +49,12 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	background: var(--color-lighter);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	color: var(--color-primary-dark2);
 	font-size: 20px;
 	line-height: 1.7;
-}
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
 }
 h1,
 h2,
@@ -85,36 +93,6 @@ a:hover {
 }
 p {
 	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-}
-pre > code {
-	all: unset;
 }
 blockquote {
 	border-left: 4px solid var(--accent);
