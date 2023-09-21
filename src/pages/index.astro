@@ -1,8 +1,8 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Hero from "../images/HERO.jpeg";
 import { Image } from "astro:assets";
 ---
@@ -17,94 +17,112 @@ import { Image } from "astro:assets";
 		<main>
 			<div class="banner">
 				<Image src={Hero} alt="kayak at lums pond" />
-				<div class="band-name hero-cutout">Lums Pond</div>
+				<div class="band-name hero-cutout">
+					<div class="hero-cutout-1">Friends of</div>
+					<div class="hero-cutout-2">Lums Pond</div>
+				</div>
 				<div class="nav-container">
 					<h1 class="band-name">Friends of Lums Pond State Park</h1>
 				</div>
 			</div>
 		</main>
 		<Footer />
+		<style>
+			.band-name {
+				font-family: var(--font-header);
+				text-transform: uppercase;
+			}
+
+			.hero-cutout {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				overflow: hidden;
+				z-index: -1;
+				background-color: rgba(var(--color-lighter-rgb), 0.8);
+				mix-blend-mode: screen;
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				align-content: center;
+				justify-content: start;
+			}
+			.hero-cutout-1 {
+				letter-spacing: -0.5rem;
+				font-size: max(min(23vw, 24vh), 10rem);
+				line-height: max(min(23vw, 24vh), 10rem);
+			}
+			.hero-cutout-2 {
+				letter-spacing: -1rem;
+				font-size: max(min(50vw, 54vh), 20rem);
+				line-height: max(min(30vw, 40vh), 18rem);
+			}
+
+			@media only screen and (max-width: 700px) {
+				.hero-cutout {
+					justify-content: center;
+				}
+				.hero-cutout-1 {
+					margin-bottom: 0.5rem;
+					font-size: max(min(15vw, 15vh), 6rem);
+					line-height: max(min(15vw, 15vh), 6rem);
+				}
+				.hero-cutout-2 {
+					font-size: max(min(50vw, 54vh), 15rem);
+					line-height: calc(max(min(50vw, 54vh), 15rem) - 5rem);
+				}
+			}
+
+			h1 {
+				font-size: 3rem;
+				letter-spacing: 2px;
+				text-align: center;
+				margin: 1rem;
+			}
+
+			main {
+				width: 100%;
+			}
+
+			.banner {
+				height: calc(100vh - 78px);
+				width: 100%;
+				overflow: hidden;
+				position: relative;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.banner > img {
+				position: absolute;
+				object-fit: cover;
+				height: 100%;
+				width: 100%;
+				z-index: -2;
+			}
+
+			.nav-container {
+				background-color: rgba(var(--color-lighter-rgb), 0.5);
+				width: 100%;
+				padding: 0rem;
+				display: flex;
+				flex-direction: column;
+				margin-top: auto;
+			}
+
+			nav {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0;
+				padding-bottom: 1rem;
+			}
+
+			nav > * {
+				margin-left: 1.5rem;
+				margin-right: 1.5rem;
+			}
+		</style>
 	</body>
 </html>
-
-
-<style>
-	.band-name {
-		font-family: var(--font-header);
-		text-transform: uppercase;
-	}
-
-	.hero-cutout {
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		overflow: hidden;
-		z-index: -1;
-		letter-spacing: -1rem;
-		background-color: rgba(var(--color-lighter-rgb), 0.8);
-		font-size: max(min(50vw, 54vh), 20rem);
-		line-height: max(min(30vw, 40vh), 18rem);
-		mix-blend-mode: screen;
-		text-align: center;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	@media only screen and (max-width: 600px) {
-		.hero-cutout {
-			font-size: max(min(50vw, 54vh), 15rem);
-			line-height: max(min(30vw, 40vh), 12rem);
-			justify-content: start;
-		}
-	}
-
-	h1 {
-		font-size: 3rem;
-		letter-spacing: 2px;
-		text-align: center;
-		margin: 1rem;
-	}
-
-	main {
-		width: 100%;
-	}
-
-	.banner {
-		height: calc(100vh - 78px);
-		width: 100%;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.banner > img {
-		position: absolute;
-		object-fit: cover;
-		height: 100%;
-		width: 100%;
-		z-index: -2;
-	}
-
-	.nav-container {
-		background-color: rgba(var(--color-lighter-rgb), 0.5);
-		width: 100%;
-		padding: 0rem;
-		display: flex;
-		flex-direction: column;
-		margin-top: auto;
-	}
-
-	nav {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 0;
-		padding-bottom: 1rem;
-	}
-
-	nav > * {
-		margin-left: 1.5rem;
-		margin-right: 1.5rem;
-	}
-</style>
