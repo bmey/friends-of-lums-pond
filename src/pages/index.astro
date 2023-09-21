@@ -41,7 +41,7 @@ import { Image } from "astro:assets";
 		overflow: hidden;
 		z-index: -1;
 		letter-spacing: -1rem;
-		background-color: rgba(255,255,255, 0.8);
+		background-color: rgba(var(--color-lighter-rgb), 0.8);
 		font-size: max(min(50vw, 54vh), 20rem);
 		line-height: max(min(30vw, 40vh), 18rem);
 		mix-blend-mode: screen;
@@ -87,7 +87,7 @@ import { Image } from "astro:assets";
 	}
 
 	.nav-container {
-		background-color: rgba(255,255,255, 0.5);
+		background-color: rgba(var(--color-lighter-rgb), 0.5);
 		width: 100%;
 		padding: 0rem;
 		display: flex;
