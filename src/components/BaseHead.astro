@@ -24,9 +24,6 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
 <link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
 <link href="https://fonts.cdnfonts.com/css/festivo-lc" rel="stylesheet" crossorigin>
-<link href="/node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css" rel="stylesheet">
-<link href="/node_modules/@fortawesome/fontawesome-free/css/brands.min.css" rel="stylesheet">
-<link href="/node_modules/@fortawesome/fontawesome-free/css/solid.min.css" rel="stylesheet">
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -49,3 +46,5 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<script src="https://kit.fontawesome.com/891037cb97.js" crossorigin="anonymous"></script>
