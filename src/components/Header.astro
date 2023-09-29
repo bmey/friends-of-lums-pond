@@ -1,10 +1,10 @@
 ---
-import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../consts';
+import HeaderLink from "./HeaderLink.astro";
+import { SITE_TITLE } from "../consts";
 
 const getUrl = (slug: string = "") => {
 	return `${import.meta.env.BASE_URL}/${slug}`;
-}
+};
 ---
 
 <header>
@@ -16,7 +16,10 @@ const getUrl = (slug: string = "") => {
 			<HeaderLink href={getUrl("about")}>About</HeaderLink>
 		</div>
 		<div class="social-links">
-			<a href="https://www.facebook.com/FriendsofLumsPond" target="_blank">
+			<a
+				href="https://www.facebook.com/FriendsofLumsPond"
+				target="_blank"
+			>
 				<span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
 				<i class="fa-brands fa-facebook fa-xl"></i>
 			</a>
@@ -27,12 +30,13 @@ const getUrl = (slug: string = "") => {
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: white;
+		background: var(--color-lighter);
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 	}
 	h2 {
 		margin: 0;
 		font-size: 1em;
+		flex-basis: 1;
 	}
 
 	h2 a,
@@ -42,7 +46,17 @@ const getUrl = (slug: string = "") => {
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+	}
+	nav > * {
+		flex: 1;
+	}
+	nav:first-child {
+		margin-right: auto;
+		text-wrap: nowrap;
+	}
+
+	nav:last-child {
+		margin-left: auto;
 	}
 	nav a {
 		padding: 1em 0.5em;
@@ -57,6 +71,11 @@ const getUrl = (slug: string = "") => {
 	.social-links,
 	.social-links a {
 		display: flex;
+		justify-content: end;
+	}
+	.internal-links {
+		flex: 1;
+		text-align: center;
 	}
 	@media (max-width: 720px) {
 		.social-links {
