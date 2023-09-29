@@ -13,17 +13,15 @@ import { Image } from "astro:assets";
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
-		<Header title={SITE_TITLE} />
+		<Header />
 		<main>
 			<div class="banner">
 				<Image src={Hero} alt="kayak at lums pond" />
-				<div class="band-name hero-cutout">
+				<div class="hero-cutout">
 					<div class="hero-cutout-1">Friends of</div>
 					<div class="hero-cutout-2">Lums Pond</div>
 				</div>
-				<div class="nav-container">
-					<h1 class="band-name">Friends of Lums Pond State Park</h1>
-				</div>
+				<h1 class="sr-only">Friends of Lums Pond State Park</h1>
 			</div>
 			<div class="description">
 				Welcome to the website of the Friends of Lums Pond State Park. Our Friends Group helps the park as it serves the public.
@@ -31,11 +29,6 @@ import { Image } from "astro:assets";
 		</main>
 		<Footer />
 		<style>
-			.band-name {
-				font-family: var(--font-header);
-				text-transform: uppercase;
-			}
-
 			.description {
 				font-size: 1.5rem;
 				padding: 2rem;
@@ -56,6 +49,8 @@ import { Image } from "astro:assets";
 				align-items: center;
 				align-content: center;
 				justify-content: start;
+				font-family: var(--font-header);
+				text-transform: uppercase;
 			}
 			.hero-cutout-1 {
 				letter-spacing: -0.5rem;
@@ -83,13 +78,6 @@ import { Image } from "astro:assets";
 				}
 			}
 
-			h1 {
-				font-size: 3rem;
-				letter-spacing: 2px;
-				text-align: center;
-				margin: 1rem;
-			}
-
 			main {
 				width: 100%;
 			}
@@ -109,28 +97,6 @@ import { Image } from "astro:assets";
 				height: 100%;
 				width: 100%;
 				z-index: -2;
-			}
-
-			.nav-container {
-				background-color: rgba(var(--color-lighter-rgb), 0.5);
-				width: 100%;
-				padding: 0rem;
-				display: flex;
-				flex-direction: column;
-				margin-top: auto;
-			}
-
-			nav {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				padding: 0;
-				padding-bottom: 1rem;
-			}
-
-			nav > * {
-				margin-left: 1.5rem;
-				margin-right: 1.5rem;
 			}
 		</style>
 	</body>
