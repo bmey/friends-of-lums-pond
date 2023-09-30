@@ -3,7 +3,16 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Friends of Lums Pond, Inc. All rights reserved.
+	<p>
+		&copy; {today.getFullYear()} Friends of Lums Pond, Inc. All rights
+		reserved.
+	</p>
+	<p class="email">
+		<a href="mailto:friends-of-lums-pond-list@googlegroups.com">
+			<i class="fa-solid fa-envelope"></i>
+			 friends-of-lums-pond-list@googlegroups.com</a
+		>
+	</p>
 	<div class="social-links">
 		<a href="https://www.facebook.com/FriendsofLumsPond" target="_blank">
 			<span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
@@ -18,17 +27,20 @@ const today = new Date();
 		color: rgb(var(--color-primary-dark2));
 		text-align: center;
 	}
+	.email {
+		font-size: 1rem;
+	}
 	.social-links {
 		display: flex;
 		justify-content: center;
 		gap: 1em;
 		margin-top: 1em;
 	}
-	.social-links a {
+	a {
 		text-decoration: none;
 		color: var(--color-primary);
 	}
-	.social-links a:hover {
-		color: rgb(var(--color-primary-dark));
+	a:hover {
+		color: var(--color-primary-light);
 	}
 </style>
