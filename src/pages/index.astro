@@ -30,7 +30,7 @@ import Hero from "../images/HERO.jpeg";
 				Our Friends Group helps the park as it serves the public.
 			</div>
 			<div class="teasers">
-				<IndexTeaser icon="fa-user-group" title="About">
+				<IndexTeaser icon="fa-magnifying-glass" title="About">
 					<p>
 						We are the Friends of Lums Pond, where passion meets
 						preservation! We're a nonprofit on a mission to protect
@@ -38,9 +38,20 @@ import Hero from "../images/HERO.jpeg";
 						mission to conserve this natural treasure, the benefits
 						of joining us, and the park's rich history.
 					</p>
-					<a href={getUrl("about")}>
-						Learn more
-					</a>
+					<a href={getUrl("about")}>Learn more</a>
+				</IndexTeaser>
+				<IndexTeaser icon="fa-user-plus" title="Join Us">
+					<p>
+						Join us in our vital mission to safeguard the beauty and
+						ecological integrity of Lums Pond State Park. By
+						becoming a part of our community, you'll play a crucial
+						role in preserving this cherished destination for future
+						generations.
+					</p>
+					<a
+						href="https://docs.google.com/forms/d/e/1FAIpQLSdlFNu4wlu5ITkDM8ape6Pi6icwg4CB_ig7spxk4JjcHyHCHw/viewform?usp=sf_link"
+						>Sign up</a
+					>
 				</IndexTeaser>
 			</div>
 		</main>
@@ -53,7 +64,6 @@ import Hero from "../images/HERO.jpeg";
 			}
 			.teasers {
 				display: flex;
-				align-items: center;
 				justify-content: center;
 				margin: 3rem auto;
 			}
