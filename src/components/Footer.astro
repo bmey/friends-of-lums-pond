@@ -1,4 +1,5 @@
 ---
+import { DONATE_URL, EMAIL, FACEBOOK_URL, JOIN_URL } from "../consts";
 import { getUrl } from "./getUrl";
 const today = new Date();
 ---
@@ -9,22 +10,16 @@ const today = new Date();
 		reserved.
 	</p>
 	<div class="other-links">
-		<a href="mailto:friends-of-lums-pond-list@googlegroups.com">
-			Contact Us</a
-		>
-		<a
-			href="https://donorbox.org/friends-of-lums-pond-state-park?default_interval=o"
-			target="_blank"
-		>
-			Donate</a
-		>
+		<a href={`mailto:${EMAIL}`}> Contact Us</a>
+		<a href={JOIN_URL}> Join Us</a>
+		<a href={DONATE_URL} target="_blank"> Donate</a>
 		<a href={getUrl("")}> Home</a>
 		<a href={getUrl("blog")}> Blog</a>
 		<a href={getUrl("about")}> About</a>
 	</div>
 
 	<div class="social-links">
-		<a href="https://www.facebook.com/FriendsofLumsPond" target="_blank">
+		<a href={FACEBOOK_URL} target="_blank">
 			<span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
 			<i class="fa-brands fa-facebook fa-2x"></i>
 		</a>

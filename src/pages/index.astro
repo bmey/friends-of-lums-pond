@@ -5,7 +5,7 @@ import Footer from "../components/Footer.astro";
 import { getUrl } from "../components/getUrl";
 import Header from "../components/Header.astro";
 import IndexTeaser from "../components/IndexTeaser.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { JOIN_URL, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Hero from "../images/HERO.jpeg";
 ---
 
@@ -48,10 +48,7 @@ import Hero from "../images/HERO.jpeg";
 						role in preserving this cherished destination for future
 						generations.
 					</p>
-					<a
-						href="https://docs.google.com/forms/d/e/1FAIpQLSdlFNu4wlu5ITkDM8ape6Pi6icwg4CB_ig7spxk4JjcHyHCHw/viewform?usp=sf_link"
-						>Sign up</a
-					>
+					<a href={JOIN_URL}>Sign up</a>
 				</IndexTeaser>
 			</div>
 		</main>

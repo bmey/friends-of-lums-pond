@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { SITE_TITLE } from "../consts";
+import { FACEBOOK_URL, SITE_TITLE } from "../consts";
 import logo from "../images/logo-with-title.png";
 import { getUrl } from "./getUrl";
 import HeaderLink from "./HeaderLink.astro";
@@ -10,7 +10,8 @@ import HeaderLink from "./HeaderLink.astro";
 	<nav>
 		<h2>
 			<a href={getUrl()}
-				><Image alt={SITE_TITLE} src={logo} height={100} /></a>
+				><Image alt={SITE_TITLE} src={logo} height={100} /></a
+			>
 		</h2>
 		<div class="internal-links">
 			<HeaderLink href={getUrl()}>Home</HeaderLink>
@@ -18,10 +19,7 @@ import HeaderLink from "./HeaderLink.astro";
 			<HeaderLink href={getUrl("about")}>About</HeaderLink>
 		</div>
 		<div class="social-links">
-			<a
-				href="https://www.facebook.com/FriendsofLumsPond"
-				target="_blank"
-			>
+			<a href={FACEBOOK_URL} target="_blank">
 				<span class="sr-only"
 					>Follow Friends of Lums Pond on Facebook</span
 				>
