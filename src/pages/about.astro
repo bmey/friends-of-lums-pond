@@ -116,7 +116,7 @@ import Layout from "../layouts/SecondaryPage.astro";
 		goals. We hold elections for board positions, so please reach out if you
 		have motivation to help steer the future of our group!
 	</p>
-	<p>Want to contact the board? <a href="mailto:friends-of-lums-pond-board@googlegroups.com">Send them an email</a>
+	<p class="callout">Want to contact the board? <a href="mailto:friends-of-lums-pond-board@googlegroups.com">Send them an email</a>
 	<ul>
 		<BoardMember title="President" name="Kate Hartnett" email="kah@udel.edu" />
 		<BoardMember title="Vice President" name="Clara Robbs" email="carpup@verizon.net" />
@@ -209,5 +209,13 @@ import Layout from "../layouts/SecondaryPage.astro";
 	}
 	a {
 		white-space: nowrap;
+	}
+	.callout {
+		padding: 1rem;
+		border: 1px solid var(--color-primary-light3);
+		border-radius: 0.5rem;
+		background: var(--color-primary-light5);
+		box-shadow: 0px 2px 4px rgba(var(--color-primary-rgb), 0.25);
+		font-size: 1rem;
 	}
 </style>

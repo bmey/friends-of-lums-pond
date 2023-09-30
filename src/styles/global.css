@@ -10,6 +10,10 @@
   --color-primary-rgb: 0, 74, 135;
   --color-primary-light: #157ed4;
   --color-primary-light-rgb: 21, 126, 212;
+  --color-primary-light2: #58ABEE;
+  --color-primary-light3: #A2D0F6;
+  --color-primary-light4: #daecfb;
+  --color-primary-light5: #edf6fd;
   --color-primary-dark: #00203b;
   --color-primary-dark-rgb: 0, 32, 59;
   --color-primary-dark2: #001629;
@@ -30,6 +34,7 @@
   --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
     0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
 }
+
 @font-face {
   font-family: "Atkinson";
   src: url("/fonts/atkinson-regular.woff") format("woff");
@@ -37,6 +42,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "Atkinson";
   src: url("/fonts/atkinson-bold.woff") format("woff");
@@ -44,18 +50,20 @@
   font-style: normal;
   font-display: swap;
 }
+
 body {
   font-family: "Atkinson", sans-serif;
   margin: 0;
   padding: 0;
   text-align: left;
-  background: var(--color-lighter);
+  background: rgba(var(--color-lighter-rgb), 0.65);
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: var(--color-primary-dark2);
   font-size: 20px;
   line-height: 1.7;
 }
+
 h1,
 h2,
 h3,
@@ -66,44 +74,56 @@ h6 {
   color: rgb(var(--black));
   line-height: 1.2;
 }
+
 h1 {
   font-size: 3.052em;
 }
+
 h2 {
   font-size: 2.441em;
 }
+
 h3 {
   font-size: 1.953em;
 }
+
 h4 {
   font-size: 1.563em;
 }
+
 h5 {
   font-size: 1.25em;
 }
+
 strong,
 b {
   font-weight: 700;
 }
+
 a {
   color: var(--accent);
 }
+
 a:hover {
   color: var(--accent);
 }
+
 p {
   margin-bottom: 1em;
 }
+
 blockquote {
   border-left: 4px solid var(--accent);
   padding: 0 0 0 20px;
   margin: 0px;
   font-size: 1.333em;
 }
+
 hr {
   border: none;
   border-top: 1px solid rgb(var(--gray-light));
 }
+
 @media (max-width: 720px) {
   body {
     font-size: 18px;
