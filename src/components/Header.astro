@@ -1,17 +1,17 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
 import { Image } from "astro:assets";
 import { SITE_TITLE } from "../consts";
 import logo from "../images/logo-with-title.png";
-
-const getUrl = (slug: string = "") => {
-	return `${import.meta.env.BASE_URL}/${slug}`;
-};
+import { getUrl } from "./getUrl";
+import HeaderLink from "./HeaderLink.astro";
 ---
 
 <header>
 	<nav>
-		<h2><a href={getUrl()}><Image alt={SITE_TITLE} src={logo} height={100} /></a></h2>
+		<h2>
+			<a href={getUrl()}
+				><Image alt={SITE_TITLE} src={logo} height={100} /></a>
+		</h2>
 		<div class="internal-links">
 			<HeaderLink href={getUrl()}>Home</HeaderLink>
 			<HeaderLink href={getUrl("blog")}>Blog</HeaderLink>
@@ -22,7 +22,9 @@ const getUrl = (slug: string = "") => {
 				href="https://www.facebook.com/FriendsofLumsPond"
 				target="_blank"
 			>
-				<span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
+				<span class="sr-only"
+					>Follow Friends of Lums Pond on Facebook</span
+				>
 				<i class="fa-brands fa-facebook fa-xl"></i>
 			</a>
 		</div>

@@ -1,10 +1,12 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import Hero from "../images/HERO.jpeg";
 import { Image } from "astro:assets";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import { getUrl } from "../components/getUrl";
+import Header from "../components/Header.astro";
+import IndexTeaser from "../components/IndexTeaser.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import Hero from "../images/HERO.jpeg";
 ---
 
 <!doctype html>
@@ -24,7 +26,22 @@ import { Image } from "astro:assets";
 				<h1 class="sr-only">Friends of Lums Pond State Park</h1>
 			</div>
 			<div class="description">
-				Welcome to the website of the Friends of Lums Pond State Park. Our Friends Group helps the park as it serves the public.
+				Welcome to the website of the Friends of Lums Pond State Park.
+				Our Friends Group helps the park as it serves the public.
+			</div>
+			<div class="teasers">
+				<IndexTeaser icon="fa-user-group" title="About">
+					<p>
+						We are the Friends of Lums Pond, where passion meets
+						preservation! We're a nonprofit on a mission to protect
+						and enhance Lums Pond State Park. Learn more about our
+						mission to conserve this natural treasure, the benefits
+						of joining us, and the park's rich history.
+					</p>
+					<a href={getUrl("about")}>
+						Learn more
+					</a>
+				</IndexTeaser>
 			</div>
 		</main>
 		<Footer />
@@ -33,6 +50,34 @@ import { Image } from "astro:assets";
 				font-size: 1.5rem;
 				padding: 2rem;
 				text-align: center;
+			}
+			.teasers {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin: 3rem auto;
+			}
+
+			.teasers p {
+				font-size: 1rem;
+			}
+
+			.teasers a {
+				background: var(--color-primary);
+				border-radius: 0.5rem;
+				border: none;
+				color: rgba(var(--color-lighter-rgb));
+				cursor: pointer;
+				font-size: 1rem;
+				outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
+				padding: 0.5rem 1rem;
+				text-decoration: none;
+				transition: all 0.5s ease;
+			}
+			.teasers a:hover,
+			.teasers a:focus {
+				background: var(--color-primary-light);
+				outline-color: rgba(var(--color-primary-light-rgb), 0.5);
 			}
 
 			.hero-cutout {

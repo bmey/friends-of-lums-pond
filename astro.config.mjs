@@ -8,4 +8,9 @@ export default defineConfig({
 	site: 'https://bmey.github.io',
 	base: '/friends-of-lums-pond',
 	integrations: [mdx(), sitemap()],
+	vite: {
+		ssr: {
+			noExternal: ['normalize.css'],
+		}
+	}
 });

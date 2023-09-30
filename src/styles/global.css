@@ -6,8 +6,8 @@
 
  /* pallete https://coolors.co/004a87-00213d-ffefd6 */
  :root {
-	--primary: #004a87;
-	--primaryRGB: 0, 74, 135;
+	--color-primary: #004a87;
+	--color-primary-rgb: 0, 74, 135;
 	--color-primary-light: #157ED4;
 	--color-primary-light-rgb: 21, 126, 212;
 	--color-primary-dark: #00203B;
@@ -21,7 +21,7 @@
 	--font-header: "Festivo LC", sans-serif;
 
 	--accent: var(--color-primary-light);
-	--accent-dark: var(--primary);
+	--accent-dark: var(--color-primary);
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
