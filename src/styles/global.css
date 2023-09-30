@@ -4,57 +4,57 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
- /* pallete https://coolors.co/004a87-00213d-ffefd6 */
- :root {
-	--color-primary: #004a87;
-	--color-primary-rgb: 0, 74, 135;
-	--color-primary-light: #157ED4;
-	--color-primary-light-rgb: 21, 126, 212;
-	--color-primary-dark: #00203B;
-	--color-primary-dark-rgb: 0, 32, 59;
-	--color-primary-dark2: #001629;
-	--color-primary-dark2-rgb: 0, 22, 41;
-	--color-lighter: #FFF7EB;
-	--color-lighter-rgb: 255, 247, 235;
-	--color-light: #FFEFD6;
-	--color-light-rgb: 255, 239, 214;
-	--font-header: "Festivo LC", sans-serif;
+/* pallete https://coolors.co/004a87-00213d-ffefd6 */
+:root {
+  --color-primary: #004a87;
+  --color-primary-rgb: 0, 74, 135;
+  --color-primary-light: #157ed4;
+  --color-primary-light-rgb: 21, 126, 212;
+  --color-primary-dark: #00203b;
+  --color-primary-dark-rgb: 0, 32, 59;
+  --color-primary-dark2: #001629;
+  --color-primary-dark2-rgb: 0, 22, 41;
+  --color-lighter: #fff7eb;
+  --color-lighter-rgb: 255, 247, 235;
+  --color-light: #ffefd6;
+  --color-light-rgb: 255, 239, 214;
+  --font-header: "Festivo LC", sans-serif;
 
-	--accent: var(--color-primary-light);
-	--accent-dark: var(--color-primary);
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+  --accent: var(--color-primary-light);
+  --accent-dark: var(--color-primary);
+  --black: 15, 18, 25;
+  --gray: 96, 115, 159;
+  --gray-light: 229, 233, 240;
+  --gray-dark: 34, 41, 57;
+  --gray-gradient: rgba(var(--gray-light), 50%), #fff;
+  --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
+    0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
 }
 @font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 body {
-	font-family: 'Atkinson', sans-serif;
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: var(--color-lighter);
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: var(--color-primary-dark2);
-	font-size: 20px;
-	line-height: 1.7;
+  font-family: "Atkinson", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  background: var(--color-lighter);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: var(--color-primary-dark2);
+  font-size: 20px;
+  line-height: 1.7;
 }
 h1,
 h2,
@@ -62,68 +62,68 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+  color: rgb(var(--black));
+  line-height: 1.2;
 }
 h1 {
-	font-size: 3.052em;
+  font-size: 3.052em;
 }
 h2 {
-	font-size: 2.441em;
+  font-size: 2.441em;
 }
 h3 {
-	font-size: 1.953em;
+  font-size: 1.953em;
 }
 h4 {
-	font-size: 1.563em;
+  font-size: 1.563em;
 }
 h5 {
-	font-size: 1.25em;
+  font-size: 1.25em;
 }
 strong,
 b {
-	font-weight: 700;
+  font-weight: 700;
 }
 a {
-	color: var(--accent);
+  color: var(--accent);
 }
 a:hover {
-	color: var(--accent);
+  color: var(--accent);
 }
 p {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0px;
-	font-size: 1.333em;
+  border-left: 4px solid var(--accent);
+  padding: 0 0 0 20px;
+  margin: 0px;
+  font-size: 1.333em;
 }
 hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+  border: none;
+  border-top: 1px solid rgb(var(--gray-light));
 }
 @media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
+  body {
+    font-size: 18px;
+  }
 }
 
 .sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+  clip: rect(1px 1px 1px 1px);
+  /* maybe deprecated but we need to support legacy browsers */
+  clip: rect(1px, 1px, 1px, 1px);
+  /* modern browsers, clip-path works inwards from each corner */
+  clip-path: inset(50%);
+  /* added line to stop words getting smushed together (as they go onto seperate lines and some screen readers do not understand line feeds as a space */
+  white-space: nowrap;
 }
