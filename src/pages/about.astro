@@ -1,4 +1,5 @@
 ---
+import BoardMember from "../components/BoardMember.astro";
 import Layout from "../layouts/SecondaryPage.astro";
 ---
 
@@ -42,6 +43,31 @@ import Layout from "../layouts/SecondaryPage.astro";
 		</li>
 	</ul>
 
+	<h3>Our Goals</h3>
+	<p>Our collective efforts are aimed at achieving several key goals:</p>
+	<ul>
+		<li>
+			<b>Public Awareness:</b> Increase public awareness and membership to
+			strengthen our impact.
+		</li>
+		<li>
+			<b>Park Beautification:</b> Maintain the park's natural beauty
+			through landscaping efforts.
+		</li>
+		<li>
+			<b>Trail Care:</b> Assist in the upkeep of multiuse trails for
+			horseback riders and mountain bikers.
+		</li>
+		<li>
+			<b>Cleanliness:</b> Ensure the park remains a clean and pristine
+			destination for all.
+		</li>
+		<li>
+			<b>Fundraising:</b> Raise funds to support the enhancement of park
+			facilities and amenities.
+		</li>
+	</ul>
+
 	<h3>Membership Benefits</h3>
 	<p>
 		When you join Friends of Lums Pond, you become an integral part of our
@@ -82,30 +108,25 @@ import Layout from "../layouts/SecondaryPage.astro";
 			the state parks in Delaware.
 		</li>
 	</ul>
-	<h3>Our Goals</h3>
-	<p>Our collective efforts are aimed at achieving several key goals:</p>
+
+	<h3>Board of Directors</h3>
+	<p>
+		Our leadership team is hard at work behind the scenes. They meet
+		directly with the park staff and keep us aligned to our mission and
+		goals. We hold elections for board positions, so please reach out if you
+		have motivation to help steer the future of our group!
+	</p>
+	<p>Want to contact the board? <a href="mailto:friends-of-lums-pond-board@googlegroups.com">Send them an email</a>
 	<ul>
-		<li>
-			<b>Public Awareness:</b> Increase public awareness and membership to
-			strengthen our impact.
-		</li>
-		<li>
-			<b>Park Beautification:</b> Maintain the park's natural beauty
-			through landscaping efforts.
-		</li>
-		<li>
-			<b>Trail Care:</b> Assist in the upkeep of multiuse trails for
-			horseback riders and mountain bikers.
-		</li>
-		<li>
-			<b>Cleanliness:</b> Ensure the park remains a clean and pristine
-			destination for all.
-		</li>
-		<li>
-			<b>Fundraising:</b> Raise funds to support the enhancement of park
-			facilities and amenities.
-		</li>
+		<BoardMember title="President" name="Kate Hartnett" email="kah@udel.edu" />
+		<BoardMember title="Vice President" name="Clara Robbs" email="carpup@verizon.net" />
+		<BoardMember title="Treasurer" name="Mike Waldon" email="mike@mwaldon.com" />
+		<BoardMember title="Secretary" name="Bryan Mey" email="bryan.j.mey@gmail.com" />
+		<BoardMember title="Director" name="Chriss Funcheon" email="lilfunch@yahoo.com" />
+		<BoardMember title="Director" name="Bob Conley" email="bwcsr@yahoo.com" />
+		<BoardMember title="Director" name="Edward Binasiewicz" email="edthemason@gmail.com" />
 	</ul>
+
 	<h3>Park History</h3>
 	<p>
 		Lums Pond is a Delaware treasure, boasting the distinction of being the
@@ -185,5 +206,8 @@ import Layout from "../layouts/SecondaryPage.astro";
 	}
 	hr {
 		margin: 3rem 0;
+	}
+	a {
+		white-space: nowrap;
 	}
 </style>

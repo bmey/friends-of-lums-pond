@@ -1,0 +1,25 @@
+---
+interface Props {
+    name: string;
+    title: string;
+    email: string;
+}
+
+const { email, name, title } = Astro.props;
+---
+
+<li>
+    <b>{title}:</b>
+    <span>{name}</span>
+    <a href={`mailto:${email}`}
+        ><i class="fa-solid fa-envelope" title={`email ${name}`}></i></a
+    >
+</li>
+
+<style>
+    li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>
