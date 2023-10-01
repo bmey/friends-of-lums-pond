@@ -8,11 +8,8 @@ import HeaderLink from "./HeaderLink.astro";
 
 <header>
 	<nav>
-		<h2>
-			<a href={getUrl()}
-				><Image alt={SITE_TITLE} src={logo} height={100} /></a
-			>
-		</h2>
+		<a href={getUrl()}><Image alt={SITE_TITLE} src={logo} height={100} /></a
+		>
 		<div class="internal-links">
 			<HeaderLink href={getUrl()}>Home</HeaderLink>
 			<HeaderLink href={getUrl("blog")}>Blog</HeaderLink>

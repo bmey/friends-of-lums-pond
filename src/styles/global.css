@@ -10,8 +10,8 @@
   --color-primary-rgb: 0, 74, 135;
   --color-primary-light: #157ed4;
   --color-primary-light-rgb: 21, 126, 212;
-  --color-primary-light2: #58ABEE;
-  --color-primary-light3: #A2D0F6;
+  --color-primary-light2: #58abee;
+  --color-primary-light3: #a2d0f6;
   --color-primary-light4: #daecfb;
   --color-primary-light5: #edf6fd;
   --color-primary-dark: #00203b;
@@ -56,7 +56,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: left;
-  background: rgba(var(--color-lighter-rgb), 0.65);
+  background: rgba(var(--color-lighter-rgb), 0.85);
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: var(--color-primary-dark2);
