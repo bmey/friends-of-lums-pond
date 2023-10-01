@@ -1,5 +1,6 @@
 ---
 import { DONATE_URL, EMAIL, FACEBOOK_URL, JOIN_URL } from "../consts";
+import { ROUTES } from "../routes";
 import { getUrl } from "./getUrl";
 const today = new Date();
 ---
@@ -13,9 +14,7 @@ const today = new Date();
 		<a href={`mailto:${EMAIL}`}>Contact Us</a>
 		<a href={JOIN_URL}>Volunteer</a>
 		<a href={DONATE_URL} target="_blank">Donate</a>
-		<a href={getUrl("")}>Home</a>
-		<a href={getUrl("blog")}>Blog</a>
-		<a href={getUrl("about")}>About</a>
+		{ROUTES.map((route) => <a href={getUrl(route.path)}>{route.name}</a>)}
 	</div>
 
 	<div class="social-links">

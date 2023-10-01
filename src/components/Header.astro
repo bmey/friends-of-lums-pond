@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { FACEBOOK_URL, SITE_TITLE } from "../consts";
 import logo from "../images/logo-with-title.png";
+import { ROUTES } from "../routes";
 import { getUrl } from "./getUrl";
 import HeaderLink from "./HeaderLink.astro";
 ---
@@ -12,9 +13,13 @@ import HeaderLink from "./HeaderLink.astro";
 			><Image alt={SITE_TITLE} src={logo} height={100} /></a
 		>
 		<div class="internal-links">
-			<HeaderLink href={getUrl()}>Home</HeaderLink>
-			<HeaderLink href={getUrl("blog")}>Blog</HeaderLink>
-			<HeaderLink href={getUrl("about")}>About</HeaderLink>
+			{
+				ROUTES.map((route) => (
+					<HeaderLink href={getUrl(route.path)}>
+						{route.name}
+					</HeaderLink>
+				))
+			}
 		</div>
 		<div class="social-links">
 			<a href={FACEBOOK_URL} target="_blank">
@@ -33,18 +38,14 @@ import HeaderLink from "./HeaderLink.astro";
 			<button id="close-mobile-menu" class="menu-button">
 				<i class="fa-solid fa-xmark fa-lg"></i>
 			</button>
-			<HeaderLink class="mobile-link" href={getUrl()}>
-				<i class="fa-solid fa-house"></i>
-				 Home
-			</HeaderLink>
-			<HeaderLink class="mobile-link" href={getUrl("blog")}>
-				<i class="fa-solid fa-newspaper"></i>
-				 News
-			</HeaderLink>
-			<HeaderLink class="mobile-link" href={getUrl("about")}>
-				<i class="fa-solid fa-magnifying-glass"></i>
-				 About
-			</HeaderLink>
+			{
+				ROUTES.map((route) => (
+					<HeaderLink class="mobile-link" href={getUrl(route.path)}>
+						<i class={`fa-solid ${route.icon}`} />
+						{route.name}
+					</HeaderLink>
+				))
+			}
 		</div>
 	</nav>
 </header>
