@@ -2,7 +2,7 @@
 import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import { FACEBOOK_URL, SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
 import { getUrl } from "../../components/getUrl";
@@ -19,7 +19,41 @@ const posts = (await getCollection("blog")).sort(
 		<style>
 			main {
 				max-width: 960px;
-				margin: 4rem auto;
+				margin: 0 auto 4rem;
+			}
+			.pageheader {
+				padding: 1rem 0rem;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
+			}
+			nav {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				padding: 0 1rem;
+			}
+			nav a {
+				background: var(--color-primary);
+				border-radius: 0.5rem;
+				border: none;
+				color: white;
+				cursor: pointer;
+				font-size: 1rem;
+				outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
+				padding: 0.5rem 1rem;
+				text-decoration: none;
+				transition: all 0.5s ease;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				white-space: nowrap;
+			}
+			nav a:hover,
+			nav a:focus {
+				background: var(--color-primary-light);
+				outline-color: rgba(var(--color-primary-light-rgb), 0.5);
 			}
 			ul {
 				display: flex;
@@ -87,12 +121,32 @@ const posts = (await getCollection("blog")).sort(
 				ul li:first-child .title {
 					font-size: 1.563em;
 				}
+				nav {
+					padding: 0;
+				}
+				main {
+					margin: 0 0.5rem 2rem;
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
+			<div class="pageheader">
+				<h2>News</h2>
+				<nav>
+					<a href={FACEBOOK_URL} target="_blank">
+						<i class="fa-brands fa-facebook"></i>
+						<span>Facebook</span>
+					</a>
+					<a href={getUrl("rss.xml")} target="_blank">
+						<i class="fa-solid fa-square-rss"></i>
+						<span>RSS feed</span>
+					</a>
+				</div>
+			</nav>
+			</section>
 			<section>
 				<ul>
 					{
