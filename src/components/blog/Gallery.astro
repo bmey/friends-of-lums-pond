@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import type { HTMLAttributes } from "astro/types";
+import { getUrl } from "../getUrl";
+
+type Props = HTMLAttributes<"img">;
+
+const { alt, src, ...props } = Astro.props;
+---
+
+<div>
+    <slot />
+</div>
+<style>
+	div {
+        display: flex;
+        gap: 1rem;
+    }
+
+    @media (max-width: 720px) {
+        div {
+            flex-direction: column;
+        }
+    }
+</style>
