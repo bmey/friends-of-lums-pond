@@ -9,31 +9,31 @@ const { alt, class: className, src, ...props } = Astro.props;
 ---
 
 <Image
-    alt={alt || ""}
-    class={className}
-    height={300}
-    src={`${getUrl("blog/"+ src)}`}
-    width={900}
-    {...props}
+  alt={alt || ""}
+  class={className}
+  height={300}
+  src={`${getUrl("blog/" + src)}`}
+  width={900}
+  {...props}
 />
 <style>
-	img {
-        max-width: 100%;
-        object-fit: cover;
-        margin: auto;
+  img {
+    max-width: 100%;
+    object-fit: cover;
+    margin: auto;
+  }
+
+  img:global(.one-third) {
+    max-width: calc(33% - 1rem);
+  }
+
+  @media (max-width: 720px) {
+    img {
+      flex-direction: column;
     }
 
     img:global(.one-third) {
-        max-width: calc(33% - 1rem);
+      max-width: 100%;
     }
-
-    @media (max-width: 720px) {
-        img {
-            flex-direction: column;
-        }
-
-        img:global(.one-third) {
-            max-width: 100%;
-        }
-    }
+  }
 </style>

@@ -5,7 +5,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import { getUrl } from "../components/getUrl";
-import { FACEBOOK_URL } from "../consts"
+import { FACEBOOK_URL } from "../consts";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -13,146 +13,145 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: 100%;
-				max-width: 960px;
-				margin: 0 auto 4rem;
-			}
-			.pageheader {
-				padding: 1rem 0rem;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				flex-wrap: wrap;
-			}
-			nav {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
-				padding: 0 1rem;
-			}
-			nav a {
-				background: var(--color-primary);
-				border-radius: 0.5rem;
-				border: none;
-				color: white;
-				cursor: pointer;
-				font-size: 1rem;
-				outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
-				padding: 0.5rem 1rem;
-				text-decoration: none;
-				transition: all 0.5s ease;
-				display: flex;
-				align-items: center;
-				gap: 0.5rem;
-				white-space: nowrap;
-			}
-			nav a:hover,
-			nav a:focus {
-				background: var(--color-primary-light);
-				outline-color: rgba(var(--color-primary-light-rgb), 0.5);
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-				object-fit: cover;
-				max-width: 100%;
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
+  <head>
+    <BaseHead title={title} description={description} />
+    <style>
+      main {
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto 4rem;
+      }
+      .pageheader {
+        padding: 1rem 0rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+      }
+      nav a {
+        background: var(--color-primary);
+        border-radius: 0.5rem;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1rem;
+        outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        transition: all 0.5s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+      }
+      nav a:hover,
+      nav a:focus {
+        background: var(--color-primary-light);
+        outline-color: rgba(var(--color-primary-light-rgb), 0.5);
+      }
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        object-fit: cover;
+        max-width: 100%;
+      }
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+      }
+      .date {
+        margin-bottom: 0.5em;
+        color: rgb(var(--gray));
+      }
+      .last-updated-on {
+        font-style: italic;
+      }
 
-			@media (max-width: 720px) {
-				.hero-image img {
-					max-height: 40vh;
-				}
-				nav {
-					padding: 0;
-				}
-				main {
-					margin: 0 0.5rem 2rem;
-				}
-			}
-		</style>
-	</head>
+      @media (max-width: 720px) {
+        .hero-image img {
+          max-height: 40vh;
+        }
+        nav {
+          padding: 0;
+        }
+        main {
+          margin: 0 0.5rem 2rem;
+        }
+      }
+    </style>
+  </head>
 
-	<body>
-		<Header />
-		<main>
-			<div class="pageheader">
-				<h2>News</h2>
-				<nav>
-					<a href={FACEBOOK_URL} target="_blank">
-						<i class="fa-brands fa-facebook"></i>
-						<span>Facebook</span>
-					</a>
-					<a href={getUrl("rss.xml")} target="_blank">
-						<i class="fa-solid fa-square-rss"></i>
-						<span>RSS feed</span>
-					</a>
-				</nav>
-			</div>
-			<article>
-				<div class="hero-image">
-					{
-						heroImage && (
-							<img
-								width={1020}
-								height={510}
-								src={getUrl("blog/" + heroImage)}
-								alt=""
-							/>
-						)
-					}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on{" "}
-										<FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+  <body>
+    <Header />
+    <main>
+      <div class="pageheader">
+        <h2>News</h2>
+        <nav>
+          <a href={FACEBOOK_URL} target="_blank">
+            <i class="fa-brands fa-facebook"></i>
+            <span>Facebook</span>
+          </a>
+          <a href={getUrl("rss.xml")} target="_blank">
+            <i class="fa-solid fa-square-rss"></i>
+            <span>RSS feed</span>
+          </a>
+        </nav>
+      </div>
+      <article>
+        <div class="hero-image">
+          {
+            heroImage && (
+              <img
+                width={1020}
+                height={510}
+                src={getUrl("blog/" + heroImage)}
+                alt=""
+              />
+            )
+          }
+        </div>
+        <div class="prose">
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={pubDate} />
+              {
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div>
+            <h1>{title}</h1>
+            <hr />
+          </div>
+          <slot />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
 </html>

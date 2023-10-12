@@ -6,55 +6,55 @@ const today = new Date();
 ---
 
 <footer>
-	<p>
-		&copy; {today.getFullYear()} Friends of Lums Pond, Inc. All rights
-		reserved.
-	</p>
-	<div class="other-links">
-		<a href={`mailto:${EMAIL}`}>Contact Us</a>
-		<a href={JOIN_URL}>Volunteer</a>
-		<a href={DONATE_URL} target="_blank">Donate</a>
-		{ROUTES.map((route) => <a href={getUrl(route.path)}>{route.name}</a>)}
-	</div>
+  <p>
+    &copy; {today.getFullYear()} Friends of Lums Pond, Inc. All rights reserved.
+  </p>
+  <div class="other-links">
+    <a href={`mailto:${EMAIL}`}>Contact Us</a>
+    <a href={JOIN_URL}>Volunteer</a>
+    <a href={DONATE_URL} target="_blank">Donate</a>
+    {ROUTES.map((route) => <a href={getUrl(route.path)}>{route.name}</a>)}
+  </div>
 
-	<div class="social-links">
-		<a href={FACEBOOK_URL} target="_blank">
-			<span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
-			<i class="fa-brands fa-facebook fa-2x"></i>
-		</a>
-		<a href={getUrl("rss.xml")} target="_blank">
-			<span class="sr-only">Follow Friends of Lums Pond on your RSS reader</span>
-			<i class="fa-solid fa-square-rss fa-2x"></i>
-		</a>
-	</div>
+  <div class="social-links">
+    <a href={FACEBOOK_URL} target="_blank">
+      <span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
+      <i class="fa-brands fa-facebook fa-2x"></i>
+    </a>
+    <a href={getUrl("rss.xml")} target="_blank">
+      <span class="sr-only">Follow Friends of Lums Pond on your RSS reader</span
+      >
+      <i class="fa-solid fa-square-rss fa-2x"></i>
+    </a>
+  </div>
 </footer>
 <style>
-	footer {
-		padding: 2em 1em 4em 1em;
-		background: var(--color-lighter);
-		color: rgb(var(--color-primary-dark2));
-		text-align: center;
-	}
-	.other-links {
-		font-size: 1rem;
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		flex-wrap: wrap;
-	}
-	.social-links {
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
-	}
-	.social-links a {
-		text-decoration: none;
-	}
-	a {
-		color: var(--color-primary);
-	}
-	a:hover {
-		color: var(--color-primary-light);
-	}
+  footer {
+    padding: 2em 1em 4em 1em;
+    background: var(--color-lighter);
+    color: rgb(var(--color-primary-dark2));
+    text-align: center;
+  }
+  .other-links {
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 1em;
+  }
+  .social-links a {
+    text-decoration: none;
+  }
+  a {
+    color: var(--color-primary);
+  }
+  a:hover {
+    color: var(--color-primary-light);
+  }
 </style>

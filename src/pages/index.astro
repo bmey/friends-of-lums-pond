@@ -11,146 +11,144 @@ import Hero from "../images/HERO.jpeg";
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<div class="banner">
-				<Image src={Hero} alt="kayak at lums pond" />
-				<div class="hero-cutout">
-					<div class="hero-cutout-1">Friends of</div>
-					<div class="hero-cutout-2">Lums Pond</div>
-				</div>
-				<h1 class="sr-only">Friends of Lums Pond State Park</h1>
-			</div>
-			<div class="description">
-				Welcome to the website of the Friends of Lums Pond State Park.
-				Our Friends Group helps the park as it serves the public.
-			</div>
-			<div class="teasers">
-				<IndexTeaser icon="fa-magnifying-glass" title="About">
-					<p>
-						We are the Friends of Lums Pond, where passion meets
-						preservation! We're a nonprofit on a mission to protect
-						and enhance Lums Pond State Park. Learn more about our
-						mission to conserve this natural treasure, the benefits
-						of joining us, and the park's rich history.
-					</p>
-					<a href={getUrl("about")}>Learn more</a>
-				</IndexTeaser>
-				<IndexTeaser icon="fa-user-plus" title="Volunteer">
-					<p>
-						Join us in our vital mission to safeguard the beauty and
-						ecological integrity of Lums Pond State Park. By
-						becoming a part of our community, you'll play a crucial
-						role in preserving this cherished destination for future
-						generations.
-					</p>
-					<a href={JOIN_URL}>Volunteer</a>
-				</IndexTeaser>
-			</div>
-		</main>
-		<Footer />
-		<style>
-			.description {
-				font-size: 1.5rem;
-				padding: 2rem;
-				text-align: center;
-			}
-			.teasers {
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: center;
-				margin: 3rem auto;
-			}
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <div class="banner">
+        <Image src={Hero} alt="kayak at lums pond" />
+        <div class="hero-cutout">
+          <div class="hero-cutout-1">Friends of</div>
+          <div class="hero-cutout-2">Lums Pond</div>
+        </div>
+        <h1 class="sr-only">Friends of Lums Pond State Park</h1>
+      </div>
+      <div class="description">
+        Welcome to the website of the Friends of Lums Pond State Park. Our
+        Friends Group helps the park as it serves the public.
+      </div>
+      <div class="teasers">
+        <IndexTeaser icon="fa-magnifying-glass" title="About">
+          <p>
+            We are the Friends of Lums Pond, where passion meets preservation!
+            We're a nonprofit on a mission to protect and enhance Lums Pond
+            State Park. Learn more about our mission to conserve this natural
+            treasure, the benefits of joining us, and the park's rich history.
+          </p>
+          <a href={getUrl("about")}>Learn more</a>
+        </IndexTeaser>
+        <IndexTeaser icon="fa-user-plus" title="Volunteer">
+          <p>
+            Join us in our vital mission to safeguard the beauty and ecological
+            integrity of Lums Pond State Park. By becoming a part of our
+            community, you'll play a crucial role in preserving this cherished
+            destination for future generations.
+          </p>
+          <a href={JOIN_URL}>Volunteer</a>
+        </IndexTeaser>
+      </div>
+    </main>
+    <Footer />
+    <style>
+      .description {
+        font-size: 1.5rem;
+        padding: 2rem;
+        text-align: center;
+      }
+      .teasers {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 3rem auto;
+      }
 
-			.teasers p {
-				font-size: 1rem;
-			}
+      .teasers p {
+        font-size: 1rem;
+      }
 
-			.teasers a {
-				background: var(--color-primary);
-				border-radius: 0.5rem;
-				border: none;
-				color: white;
-				cursor: pointer;
-				font-size: 1rem;
-				outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
-				padding: 0.5rem 1rem;
-				text-decoration: none;
-				transition: all 0.5s ease;
-			}
-			.teasers a:hover,
-			.teasers a:focus {
-				background: var(--color-primary-light);
-				outline-color: rgba(var(--color-primary-light-rgb), 0.5);
-			}
+      .teasers a {
+        background: var(--color-primary);
+        border-radius: 0.5rem;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1rem;
+        outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        transition: all 0.5s ease;
+      }
+      .teasers a:hover,
+      .teasers a:focus {
+        background: var(--color-primary-light);
+        outline-color: rgba(var(--color-primary-light-rgb), 0.5);
+      }
 
-			.hero-cutout {
-				position: absolute;
-				height: 100%;
-				width: 100%;
-				overflow: hidden;
-				z-index: -1;
-				background-color: rgba(var(--color-lighter-rgb), 0.8);
-				mix-blend-mode: screen;
-				text-align: center;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				align-content: center;
-				justify-content: start;
-				font-family: var(--font-header);
-				text-transform: uppercase;
-			}
-			.hero-cutout-1 {
-				letter-spacing: -0.5rem;
-				font-size: max(min(23vw, 24vh), 10rem);
-				line-height: max(min(23vw, 24vh), 10rem);
-			}
-			.hero-cutout-2 {
-				letter-spacing: -1rem;
-				font-size: max(min(50vw, 54vh), 20rem);
-				line-height: max(min(30vw, 40vh), 18rem);
-			}
+      .hero-cutout {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        z-index: -1;
+        background-color: rgba(var(--color-lighter-rgb), 0.8);
+        mix-blend-mode: screen;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        justify-content: start;
+        font-family: var(--font-header);
+        text-transform: uppercase;
+      }
+      .hero-cutout-1 {
+        letter-spacing: -0.5rem;
+        font-size: max(min(23vw, 24vh), 10rem);
+        line-height: max(min(23vw, 24vh), 10rem);
+      }
+      .hero-cutout-2 {
+        letter-spacing: -1rem;
+        font-size: max(min(50vw, 54vh), 20rem);
+        line-height: max(min(30vw, 40vh), 18rem);
+      }
 
-			@media only screen and (max-width: 700px) {
-				.hero-cutout {
-					justify-content: center;
-				}
-				.hero-cutout-1 {
-					margin-bottom: 0.5rem;
-					font-size: max(min(15vw, 15vh), 6rem);
-					line-height: max(min(15vw, 15vh), 6rem);
-				}
-				.hero-cutout-2 {
-					font-size: max(min(50vw, 54vh), 15rem);
-					line-height: calc(max(min(50vw, 54vh), 15rem) - 5rem);
-				}
-			}
+      @media only screen and (max-width: 700px) {
+        .hero-cutout {
+          justify-content: center;
+        }
+        .hero-cutout-1 {
+          margin-bottom: 0.5rem;
+          font-size: max(min(15vw, 15vh), 6rem);
+          line-height: max(min(15vw, 15vh), 6rem);
+        }
+        .hero-cutout-2 {
+          font-size: max(min(50vw, 54vh), 15rem);
+          line-height: calc(max(min(50vw, 54vh), 15rem) - 5rem);
+        }
+      }
 
-			main {
-				width: 100%;
-			}
+      main {
+        width: 100%;
+      }
 
-			.banner {
-				height: calc(100vh - 78px);
-				width: 100%;
-				overflow: hidden;
-				position: relative;
-				display: flex;
-				flex-direction: column;
-			}
+      .banner {
+        height: calc(100vh - 78px);
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
 
-			.banner > img {
-				position: absolute;
-				object-fit: cover;
-				height: 100%;
-				width: 100%;
-				z-index: -2;
-			}
-		</style>
-	</body>
+      .banner > img {
+        position: absolute;
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        z-index: -2;
+      }
+    </style>
+  </body>
 </html>

@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/SecondaryPage.astro";
+import { FACEBOOK_URL, JOIN_URL, EMAIL, EMAIL_BOARD } from "../consts";
+---
+
+<Layout title="Resources">
+  <h3>Friends of Lums Pond</h3>
+  <ul>
+    <li>
+      See the latest events and news on our <a href={FACEBOOK_URL}
+        >Facebook Page</a
+      >.
+    </li>
+    <li>
+      Interested in joining us? <a href={JOIN_URL}
+        >Fill out the membership application form</a
+      >.
+    </li>
+    <li>
+      Want to contact the group? Send an email to <a href=`mailto:${EMAIL}`
+        >{EMAIL}</a>
+    </li>
+    <li>
+      Want to contact the group's board? Send an email to <a
+        href=`mailto:${EMAIL_BOARD}`>{EMAIL_BOARD}</a>
+    </li>
+  </ul>
+
+  <h3>Other Lums Pond Groups</h3>
+  <p>You may also want to join one of our park's organized activities:</p>
+  <ul>
+    <li>
+      <a
+        href="https://wagwalking.com/lifestyle/parks/lums-pond-off-leash-area"
+        target="_blank"
+        class="external-link"
+      >
+        Dog Park
+      </a>
+    </li>
+    <li>
+      <div>Cricket Clubs</div>
+      <ul>
+        <li>
+          <a
+            href="http://www.ducl.us.com/"
+            target="_blank"
+            class="external-link"
+          >
+            Delaware United Cricket League
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.dplcric.com/"
+            target="_blank"
+            class="external-link"
+          >
+            Delaware Premier Cricket League
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a
+        href="http://www.delawarerc.org/"
+        target="_blank"
+        class="external-link"
+      >
+        Radio Controlled Flying club
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://destateparks.com/Adventures/DiscGolf"
+        target="_blank"
+        class="external-link"
+      >
+        Disc Golf
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://www.facebook.com/events/315448373418795/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNjM4ODA5MDgzLCJjYWxsc2l0ZV9pZCI6MzU5MDM2MDAxOTY4NDMyfQ%3D%3D&acontext=%7B%22ref%22%3A%2251%22%2C%22source%22%3A%2244%22%2C%22action_history%22%3A%22[%7B%5C%22surface%5C%22%3A%5C%22permalink%5C%22%2C%5C%22mechanism%5C%22%3A%5C%22RHC%5C%22%2C%5C%22extra_data%5C%22%3A[]%7D]%22%7D"
+        target="_blank"
+        class="external-link"
+      >
+        Triathlon
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://destateparks.com/wwwroot/downloads/brochures/CrossCountryBrochure.pdf"
+        target="_blank"
+        class="external-link"
+      >
+        Cross Country
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://wilmingtonkennelclub.org/"
+        target="_blank"
+        class="external-link"
+      >
+        Kennel Club
+      </a>
+    </li>
+  </ul>
+
+  <h3>Other</h3>
+  <ul>
+    <li>
+      <a
+        href="https://destateparks.com/pondsrivers/LumsPond"
+        target="_blank"
+        class="external-link"
+      >
+        Lums Ponds State Park home page
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://destateparks.com/GetInvolved/JoinFriendsGroup"
+        target="_blank"
+        class="external-link"
+      >
+        Other Delaware state park friends groups
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://dnrec.alpha.delaware.gov/parks/"
+        target="_blank"
+        class="external-link"
+      >
+        Delaware Division of Parks and Recreation
+      </a>
+    </li>
+  </ul>
+</Layout>
+
+<style>
+  h3 {
+    margin-top: 3rem;
+  }
+  a {
+    white-space: nowrap;
+  }
+</style>

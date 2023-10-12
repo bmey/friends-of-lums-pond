@@ -1,230 +1,254 @@
 ---
 import BoardMember from "../components/BoardMember.astro";
 import Layout from "../layouts/SecondaryPage.astro";
+import { EMAIL_BOARD } from "../consts";
 ---
 
 <Layout title="About">
-	<p>
-		Welcome to Friends of Lums Pond, Inc., a dedicated nonprofit
-		organization committed to the preservation and enhancement of Lums Pond
-		State Park, Delaware's natural gem. Established in 2002, we are a
-		passionate group of volunteers operating independently from Delaware
-		State Parks. Our mission is to safeguard and enrich the park through
-		meticulous needs assessment, transformative enhancement projects,
-		effective public relations, and engaging educational initiatives.
-	</p>
+  <p>
+    Welcome to Friends of Lums Pond, Inc., a dedicated nonprofit organization
+    committed to the preservation and enhancement of Lums Pond State Park,
+    Delaware's natural gem. Established in 2002, we are a passionate group of
+    volunteers operating independently from Delaware State Parks. Our mission is
+    to safeguard and enrich the park through meticulous needs assessment,
+    transformative enhancement projects, effective public relations, and
+    engaging educational initiatives.
+  </p>
 
-	<h3>Our Independence</h3>
+  <h3>Our Independence</h3>
 
-	<p>
-		We proudly stand as an independent entity, separate from State Park
-		Management, which allows us the flexibility and freedom to pursue our
-		mission with unwavering dedication and creativity.
-	</p>
+  <p>
+    We proudly stand as an independent entity, separate from State Park
+    Management, which allows us the flexibility and freedom to pursue our
+    mission with unwavering dedication and creativity.
+  </p>
 
-	<h3>Our Mission</h3>
-	<ul>
-		<li>
-			<b>Preservation:</b> At the heart of our mission is the protection
-			and preservation of Lums Pond State Park. We tirelessly work to
-			ensure the park's ecological integrity and natural beauty are
-			conserved for future generations.
-		</li>
-		<li>
-			<b>Engagement:</b> Through educational programs, community outreach,
-			and public relations efforts, we aim to foster a deep appreciation
-			for the park's unique ecosystem and recreational opportunities.
-		</li>
-		<li>
-			<b>Enhancement:</b> We are committed to enhancing the park's
-			facilities and amenities, creating a welcoming environment for all
-			visitors. This includes maintaining trails, improving recreational
-			areas, and supporting sustainable initiatives.
-		</li>
-	</ul>
+  <h3>Our Mission</h3>
+  <ul>
+    <li>
+      <b>Preservation:</b> At the heart of our mission is the protection and
+      preservation of Lums Pond State Park. We tirelessly work to ensure the
+      park's ecological integrity and natural beauty are conserved for future
+      generations.
+    </li>
+    <li>
+      <b>Engagement:</b> Through educational programs, community outreach, and
+      public relations efforts, we aim to foster a deep appreciation for the
+      park's unique ecosystem and recreational opportunities.
+    </li>
+    <li>
+      <b>Enhancement:</b> We are committed to enhancing the park's facilities
+      and amenities, creating a welcoming environment for all visitors. This
+      includes maintaining trails, improving recreational areas, and supporting
+      sustainable initiatives.
+    </li>
+  </ul>
 
-	<h3>Our Goals</h3>
-	<p>Our collective efforts are aimed at achieving several key goals:</p>
-	<ul>
-		<li>
-			<b>Public Awareness:</b> Increase public awareness and membership to
-			strengthen our impact.
-		</li>
-		<li>
-			<b>Park Beautification:</b> Maintain the park's natural beauty
-			through landscaping efforts.
-		</li>
-		<li>
-			<b>Trail Care:</b> Assist in the upkeep of multiuse trails for
-			horseback riders and mountain bikers.
-		</li>
-		<li>
-			<b>Cleanliness:</b> Ensure the park remains a clean and pristine
-			destination for all.
-		</li>
-		<li>
-			<b>Fundraising:</b> Raise funds to support the enhancement of park
-			facilities and amenities.
-		</li>
-	</ul>
+  <h3>Our Goals</h3>
+  <p>Our collective efforts are aimed at achieving several key goals:</p>
+  <ul>
+    <li>
+      <b>Public Awareness:</b> Increase public awareness and membership to
+      strengthen our impact.
+    </li>
+    <li>
+      <b>Park Beautification:</b> Maintain the park's natural beauty through
+      landscaping efforts.
+    </li>
+    <li>
+      <b>Trail Care:</b> Assist in the upkeep of multiuse trails for horseback
+      riders and mountain bikers.
+    </li>
+    <li>
+      <b>Cleanliness:</b> Ensure the park remains a clean and pristine
+      destination for all.
+    </li>
+    <li>
+      <b>Fundraising:</b> Raise funds to support the enhancement of park
+      facilities and amenities.
+    </li>
+  </ul>
 
-	<h3>Membership Benefits</h3>
-	<p>
-		When you join Friends of Lums Pond, you become an integral part of our
-		mission. As a member, you enjoy a range of benefits:
-	</p>
-	<ul>
-		<li>
-			<b>Voting Power:</b> Have a say in important decisions that shape
-			the park's future.
-		</li>
-		<li>
-			<b>Election of Officers:</b> Participate in the selection of
-			leadership.
-		</li>
-		<li>
-			<b>Project Participation:</b> Get involved in exciting enhancement
-			projects.
-		</li>
-		<li>
-			<b>Funds Allocation:</b> Contribute to the allocation of funds for
-			park improvements.
-		</li>
-		<li>
-			<b>Shared Goals:</b> Work together with like-minded individuals to
-			make positive changes and new developments at Lums Pond State Park.
-		</li>
-		<li>
-			<b>Event Notifications:</b> Stay informed about park events and
-			meetings.
-		</li>
-		<li>
-			<b>Community:</b> Socialize with fellow park enthusiasts who share
-			your passion.
-		</li>
-		<li>
-			<b>Annual Park Pass:</b> Any volunteer with 100 or more volunteer
-			hours will receive an annual park pass that grants access to all of
-			the state parks in Delaware.
-		</li>
-	</ul>
+  <h3>Membership Benefits</h3>
+  <p>
+    When you join Friends of Lums Pond, you become an integral part of our
+    mission. As a member, you enjoy a range of benefits:
+  </p>
+  <ul>
+    <li>
+      <b>Voting Power:</b> Have a say in important decisions that shape the
+      park's future.
+    </li>
+    <li>
+      <b>Election of Officers:</b> Participate in the selection of leadership.
+    </li>
+    <li>
+      <b>Project Participation:</b> Get involved in exciting enhancement
+      projects.
+    </li>
+    <li>
+      <b>Funds Allocation:</b> Contribute to the allocation of funds for park
+      improvements.
+    </li>
+    <li>
+      <b>Shared Goals:</b> Work together with like-minded individuals to make
+      positive changes and new developments at Lums Pond State Park.
+    </li>
+    <li>
+      <b>Event Notifications:</b> Stay informed about park events and meetings.
+    </li>
+    <li>
+      <b>Community:</b> Socialize with fellow park enthusiasts who share your
+      passion.
+    </li>
+    <li>
+      <b>Annual Park Pass:</b> Any volunteer with 100 or more volunteer hours
+      will receive an annual park pass that grants access to all of the state
+      parks in Delaware.
+    </li>
+  </ul>
 
-	<h3>Board of Directors</h3>
-	<p>
-		Our leadership team is hard at work behind the scenes. They meet
-		directly with the park staff and keep us aligned to our mission and
-		goals. We hold elections for board positions, so please reach out if you
-		have motivation to help steer the future of our group!
-	</p>
-	<p class="callout">
-		<i class="fa-solid fa-circle-info"></i>
-		Do you need to contact the board? <a href="mailto:friends-of-lums-pond-board@googlegroups.com">Send an email</a>
-	<ul>
-		<BoardMember title="President" name="Kate Hartnett" email="kah@udel.edu" />
-		<BoardMember title="Vice President" name="Clara Robbs" email="carpup@verizon.net" />
-		<BoardMember title="Treasurer" name="Mike Waldon" email="mike@mwaldon.com" />
-		<BoardMember title="Secretary" name="Bryan Mey" email="bryan.j.mey@gmail.com" />
-		<BoardMember title="Director" name="Chriss Funcheon" email="lilfunch@yahoo.com" />
-		<BoardMember title="Director" name="Bob Conley" email="bwcsr@yahoo.com" />
-		<BoardMember title="Director" name="Edward Binasiewicz" email="edthemason@gmail.com" />
-	</ul>
+  <h3>Board of Directors</h3>
+  <p>
+    Our leadership team is hard at work behind the scenes. They meet directly
+    with the park staff and keep us aligned to our mission and goals. We hold
+    elections for board positions, so please reach out if you have motivation to
+    help steer the future of our group!
+  </p>
+  <p class="callout">
+    <i class="fa-solid fa-circle-info"></i>
+     Do you need to contact the board? <a href=`mailto:${EMAIL_BOARD}`
+      >Send an email</a
+    >
+    <ul>
+      <BoardMember
+        title="President"
+        name="Kate Hartnett"
+        email="kah@udel.edu"
+      />
+      <BoardMember
+        title="Vice President"
+        name="Clara Robbs"
+        email="carpup@verizon.net"
+      />
+      <BoardMember
+        title="Treasurer"
+        name="Mike Waldon"
+        email="mike@mwaldon.com"
+      />
+      <BoardMember
+        title="Secretary"
+        name="Bryan Mey"
+        email="bryan.j.mey@gmail.com"
+      />
+      <BoardMember
+        title="Director"
+        name="Chriss Funcheon"
+        email="lilfunch@yahoo.com"
+      />
+      <BoardMember title="Director" name="Bob Conley" email="bwcsr@yahoo.com" />
+      <BoardMember
+        title="Director"
+        name="Edward Binasiewicz"
+        email="edthemason@gmail.com"
+      />
+    </ul>
 
-	<h3>Park History</h3>
-	<p>
-		Lums Pond is a Delaware treasure, boasting the distinction of being the
-		state's largest freshwater pond, covering 200 acres of the original 1790
-		tract that now constitutes Lums Pond State Park. The park's rich history
-		dates back to 1963 when it first became a state park. However, its
-		origins trace to the early 1800s when the damming of St. Georges Creek
-		and the construction of the C&D Canal created the iconic pond. Before
-		this transformation, the creek flowed through a hardwood forest, serving
-		as a hunting ground for Native American communities. The pond's waters
-		powered the canal locks and a nearby mill.
-	</p>
-	<h3>Park Features</h3>
-	<p>
-		Lums Pond State Park offers a diverse array of features and amenities to
-		delight visitors of all ages:
-	</p>
+    <h3>Park History</h3>
+    <p>
+      Lums Pond is a Delaware treasure, boasting the distinction of being the
+      state's largest freshwater pond, covering 200 acres of the original 1790
+      tract that now constitutes Lums Pond State Park. The park's rich history
+      dates back to 1963 when it first became a state park. However, its origins
+      trace to the early 1800s when the damming of St. Georges Creek and the
+      construction of the C&D Canal created the iconic pond. Before this
+      transformation, the creek flowed through a hardwood forest, serving as a
+      hunting ground for Native American communities. The pond's waters powered
+      the canal locks and a nearby mill.
+    </p>
+    <h3>Park Features</h3>
+    <p>
+      Lums Pond State Park offers a diverse array of features and amenities to
+      delight visitors of all ages:
+    </p>
 
-	<ul>
-		<li>
-			<b>Scenic Trails:</b> Explore over 10 miles of picturesque hiking
-			and biking trails.
-		</li>
-		<li>
-			<b>Picnic Areas:</b> Enjoy shaded spots for picnicking and
-			relaxation.
-		</li>
-		<li>
-			<b> Playground:</b> Children aged 5-12 can have a blast on our
-			playground, divided into age-appropriate sections.
-		</li>
-		<li>
-			<b>Nature Center:</b> Immerse yourself in the wonders of nature
-			through year-round programming, including day camps, field trips,
-			and public programs.
-		</li>
-		<li>
-			<b>Sports Galore:</b> Engage in various sporting activities,
-			including volleyball, softball, horseshoes, cricket, disc golf, and
-			horseback riding.
-		</li>
-		<li>
-			<b> Boating:</b> Launch your boat, rent canoes, kayaks, paddle, or
-			rowboats, and discover the park from its tranquil waters.
-		</li>
-		<li>
-			<b> Fishing:</b> Enjoy year-round fishing in the serene surroundings
-			of the pond.
-		</li>
-		<li>
-			<b> Pavilions:</b> Host gatherings at one of our five pavilions
-			available for rent.
-		</li>
-		<li>
-			<b> Campground:</b> Experience the newly renovated campground
-			offering sites with three-point hookups (water, electric, and
-			sewer).
-		</li>
-		<li>
-			<b>Dog Park:</b> Let your furry friends roam freely in our off-leash
-			dog park.
-		</li>
-	</ul>
+    <ul>
+      <li>
+        <b>Scenic Trails:</b> Explore over 10 miles of picturesque hiking and
+        biking trails.
+      </li>
+      <li>
+        <b>Picnic Areas:</b> Enjoy shaded spots for picnicking and relaxation.
+      </li>
+      <li>
+        <b> Playground:</b> Children aged 5-12 can have a blast on our
+        playground, divided into age-appropriate sections.
+      </li>
+      <li>
+        <b>Nature Center:</b> Immerse yourself in the wonders of nature through
+        year-round programming, including day camps, field trips, and public
+        programs.
+      </li>
+      <li>
+        <b>Sports Galore:</b> Engage in various sporting activities, including
+        volleyball, softball, horseshoes, cricket, disc golf, and horseback
+        riding.
+      </li>
+      <li>
+        <b> Boating:</b> Launch your boat, rent canoes, kayaks, paddle, or
+        rowboats, and discover the park from its tranquil waters.
+      </li>
+      <li>
+        <b> Fishing:</b> Enjoy year-round fishing in the serene surroundings of
+        the pond.
+      </li>
+      <li>
+        <b> Pavilions:</b> Host gatherings at one of our five pavilions
+        available for rent.
+      </li>
+      <li>
+        <b> Campground:</b> Experience the newly renovated campground offering
+        sites with three-point hookups (water, electric, and sewer).
+      </li>
+      <li>
+        <b>Dog Park:</b> Let your furry friends roam freely in our off-leash dog
+        park.
+      </li>
+    </ul>
 
-	<hr />
-	<p>
-		Join us on this remarkable journey as we continue to champion Lums Pond
-		State Park, creating a lasting legacy for generations to come. Together,
-		we can make a difference in preserving the natural wonders of our
-		beloved park.
-	</p>
+    <hr />
+    <p>
+      Join us on this remarkable journey as we continue to champion Lums Pond
+      State Park, creating a lasting legacy for generations to come. Together,
+      we can make a difference in preserving the natural wonders of our beloved
+      park.
+    </p>
+  </p>
+
+  <style>
+    h3 {
+      margin-top: 3rem;
+    }
+    hr {
+      margin: 3rem 0;
+    }
+    a {
+      white-space: nowrap;
+    }
+    .callout {
+      padding: 1rem;
+      border: 1px solid var(--color-primary-light2);
+      border-radius: 0.5rem;
+      background: var(--color-primary-light5);
+      box-shadow: 0px 2px 4px rgba(var(--color-primary-rgb), 0.25);
+      font-size: 1rem;
+    }
+    .callout i {
+      color: var(--color-primary);
+      margin-right: 0.25rem;
+    }
+    .callout a {
+      font-weight: bold;
+    }
+  </style>
 </Layout>
-
-<style>
-	h3 {
-		margin-top: 3rem;
-	}
-	hr {
-		margin: 3rem 0;
-	}
-	a {
-		white-space: nowrap;
-	}
-	.callout {
-		padding: 1rem;
-		border: 1px solid var(--color-primary-light2);
-		border-radius: 0.5rem;
-		background: var(--color-primary-light5);
-		box-shadow: 0px 2px 4px rgba(var(--color-primary-rgb), 0.25);
-		font-size: 1rem;
-	}
-	.callout i {
-		color: var(--color-primary);
-		margin-right: 0.25rem;
-	}
-	.callout a {
-		font-weight: bold;
-	}
-</style>

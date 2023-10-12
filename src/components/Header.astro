@@ -8,188 +8,187 @@ import HeaderLink from "./HeaderLink.astro";
 ---
 
 <header>
-	<nav>
-		<a href={getUrl()} class="logo"
-			><Image alt={SITE_TITLE} src={logo} height={100} /></a
-		>
-		<div class="internal-links">
-			{
-				ROUTES.map((route) => (
-					<HeaderLink href={getUrl(route.path)}>
-						{route.name}
-					</HeaderLink>
-				))
-			}
-		</div>
-		<div class="social-links">
-			<a href={FACEBOOK_URL} target="_blank">
-				<span class="sr-only"
-					>Follow Friends of Lums Pond on Facebook</span
-				>
-				<i class="fa-brands fa-facebook fa-xl"></i>
-			</a>
-		</div>
-		<div class="mobile-only">
-			<button id="open-mobile-menu" class="menu-button">
-				<i class="fa-solid fa-bars fa-lg"></i>
-			</button>
-		</div>
-		<div id="mobile-menu">
-			<button id="close-mobile-menu" class="menu-button">
-				<i class="fa-solid fa-xmark fa-lg"></i>
-			</button>
-			{
-				ROUTES.map((route) => (
-					<HeaderLink class="mobile-link" href={getUrl(route.path)}>
-						<i class={`fa-solid ${route.icon}`} />
-						{route.name}
-					</HeaderLink>
-				))
-			}
-		</div>
-	</nav>
+  <nav>
+    <a href={getUrl()} class="logo"
+      ><Image alt={SITE_TITLE} src={logo} height={100} /></a
+    >
+    <div class="internal-links">
+      {
+        ROUTES.map((route) => (
+          <HeaderLink href={getUrl(route.path)}>{route.name}</HeaderLink>
+        ))
+      }
+    </div>
+    <div class="social-links">
+      <a href={FACEBOOK_URL} target="_blank">
+        <span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
+        <i class="fa-brands fa-facebook fa-xl"></i>
+      </a>
+    </div>
+    <div class="mobile-only">
+      <button id="open-mobile-menu" class="menu-button">
+        <i class="fa-solid fa-bars fa-lg"></i>
+      </button>
+    </div>
+    <div id="mobile-menu">
+      <button id="close-mobile-menu" class="menu-button">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
+      {
+        ROUTES.map((route) => (
+          <HeaderLink class="mobile-link" href={getUrl(route.path)}>
+            <i class={`fa-solid fa-fw ${route.icon}`} />
+            {route.name}
+          </HeaderLink>
+        ))
+      }
+    </div>
+  </nav>
 </header>
 <style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: var(--color-lighter);
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	nav {
-		display: flex;
-		align-items: center;
-	}
-	nav > * {
-		flex: 1;
-	}
-	nav:first-child {
-		margin-right: auto;
-		text-wrap: nowrap;
-	}
+  header {
+    margin: 0;
+    padding: 0 1em;
+    background: var(--color-lighter);
+    box-shadow: 0 2px 8px rgba(var(--black), 5%);
+  }
+  nav {
+    display: flex;
+    align-items: center;
+  }
+  nav > * {
+    flex: 1;
+  }
+  nav:first-child {
+    margin-right: auto;
+    text-wrap: nowrap;
+  }
 
-	nav:last-child {
-		margin-left: auto;
-	}
-	.social-links a,
-	.internal-links a {
-		padding: 1em 0.5em;
-		color: var(--color-primary-darker);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-		transition: all 0.3s ease-in-out;
-	}
-	.social-links a:hover {
-		color: var(--color-primary-light);
-	}
-	.mobile-link.active,
-	.mobile-link:hover,
-	.internal-links a.active,
-	.internal-links a:hover {
-		color: var(--color-primary-dark);
-		text-decoration: none;
-	}
-	.internal-links a.active,
-	.internal-links a:hover {
-		border-bottom-color: var(--color-primary-light);
-	}
-	.mobile-link.active,
-	.mobile-link:hover {
-		border-left-color: var(--color-primary-light);
-	}
-	.mobile-link:hover,
-	.internal-links a:hover {
-		background-color: var(--color-primary-light4);
-	}
-	.social-links,
-	.social-links a {
-		display: flex;
-		justify-content: end;
-	}
-	.logo {
-		margin: 0;
-		font-size: 1em;
-		flex-basis: 1;
-		padding: 0;
-		display: flex;
-		align-items: center;
-	}
-	.logo img {
-		height: 50px;
-		width: auto;
-		object-fit: scale-down;
-	}
-	.internal-links {
-		flex: 1;
-		text-align: center;
-	}
-	:global(.open)#mobile-menu {
-		transform: translateX(-100%);
-	}
-	#mobile-menu {
-		position: fixed;
-		z-index: 5;
-		top: 0;
-		left: 100%;
-		display: flex;
-		flex-direction: column;
-		background-color: var(--color-light);
-		min-width: 10rem;
-		padding-bottom: 1rem;
-		border-radius: 0 0 0 8px;
-		transition: all 0.3s ease-out;
-		box-shadow: 0 2px 4px rgba(var(--color-primary-dark-rgb), 0.5);
-	}
-	.mobile-link {
-		padding: 0.5rem 1rem;
-		color: var(--color-primary-darker);
-		border-left: 4px solid transparent;
-		transition: all 0.3s ease-in-out;
-	}
-	.menu-button {
-		align-self: end;
-		background-color: transparent;
-		border: 1px solid transparent;
-		border-radius: 4px;
-		padding: 0.5rem;
-		cursor: pointer;
-		transition: all 0.3s ease-in-out;
-	}
-	.menu-button:hover,
-	.menu-button:focus {
-		background-color: var(--color-primary-light4);
-		color: var(--color-primary-dark);
-		border-color: var(--color-primary);
-	}
-	.mobile-only {
-		display: none;
-	}
-	@media (max-width: 720px) {
-		header {
-			padding: 0.5em 1em;
-		}
-		.mobile-only {
-			display: block;
-			text-align: right;
-		}
-		.social-links,
-		.internal-links {
-			display: none;
-		}
-		.internal-links {
-			text-align: right;
-		}
-	}
+  nav:last-child {
+    margin-left: auto;
+  }
+  .social-links a,
+  .internal-links a {
+    padding: 1em 0.5em;
+    color: var(--color-primary-darker);
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+  }
+  .social-links a:hover {
+    color: var(--color-primary-light);
+  }
+  .mobile-link.active,
+  .mobile-link:hover,
+  .internal-links a.active,
+  .internal-links a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+  }
+  .internal-links a.active,
+  .internal-links a:hover {
+    border-bottom-color: var(--color-primary-light);
+  }
+  .mobile-link.active,
+  .mobile-link:hover {
+    border-left-color: var(--color-primary-light);
+  }
+  .mobile-link:hover,
+  .internal-links a:hover {
+    background-color: var(--color-primary-light4);
+  }
+  .social-links,
+  .social-links a {
+    display: flex;
+    justify-content: end;
+  }
+  .logo {
+    margin: 0;
+    font-size: 1em;
+    flex-basis: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  .logo img {
+    height: 50px;
+    width: auto;
+    object-fit: scale-down;
+  }
+  .internal-links {
+    flex: 1;
+    text-align: center;
+  }
+  :global(.open)#mobile-menu {
+    transform: translateX(-100%);
+  }
+  #mobile-menu {
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-light);
+    min-width: 10rem;
+    padding-bottom: 1rem;
+    border-radius: 0 0 0 8px;
+    transition: all 0.3s ease-out;
+    box-shadow: 0 2px 4px rgba(var(--color-primary-dark-rgb), 0.5);
+  }
+  .mobile-link {
+    padding: 0.5rem 1rem;
+    color: var(--color-primary-darker);
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+  .mobile-link i {
+    margin-right: 0.25rem;
+  }
+  .menu-button {
+    align-self: end;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  .menu-button:hover,
+  .menu-button:focus {
+    background-color: var(--color-primary-light4);
+    color: var(--color-primary-dark);
+    border-color: var(--color-primary);
+  }
+  .mobile-only {
+    display: none;
+  }
+  @media (max-width: 720px) {
+    header {
+      padding: 0.5em 1em;
+    }
+    .mobile-only {
+      display: block;
+      text-align: right;
+    }
+    .social-links,
+    .internal-links {
+      display: none;
+    }
+    .internal-links {
+      text-align: right;
+    }
+  }
 </style>
 <script>
-	const openButton = document.getElementById("open-mobile-menu");
-	const closeButton = document.getElementById("close-mobile-menu");
-	const mobileMenu = document.getElementById("mobile-menu");
+  const openButton = document.getElementById("open-mobile-menu");
+  const closeButton = document.getElementById("close-mobile-menu");
+  const mobileMenu = document.getElementById("mobile-menu");
 
-	openButton?.addEventListener("click", () => {
-		mobileMenu?.classList.add("open");
-	});
-	closeButton?.addEventListener("click", () => {
-		mobileMenu?.classList.remove("open");
-	});
+  openButton?.addEventListener("click", () => {
+    mobileMenu?.classList.add("open");
+  });
+  closeButton?.addEventListener("click", () => {
+    mobileMenu?.classList.remove("open");
+  });
 </script>

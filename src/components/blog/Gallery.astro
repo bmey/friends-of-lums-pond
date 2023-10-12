@@ -9,17 +9,17 @@ const { alt, src, ...props } = Astro.props;
 ---
 
 <div>
-    <slot />
+  <slot />
 </div>
 <style>
-	div {
-        display: flex;
-        gap: 1rem;
-    }
+  div {
+    display: flex;
+    gap: 1rem;
+  }
 
-    @media (max-width: 720px) {
-        div {
-            flex-direction: column;
-        }
+  @media (max-width: 720px) {
+    div {
+      flex-direction: column;
     }
+  }
 </style>

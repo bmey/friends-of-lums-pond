@@ -1,29 +1,29 @@
 ---
 interface Props {
-    icon: string;
-    title: string;
+  icon: string;
+  title: string;
 }
 
 const { icon, title } = Astro.props;
 ---
 
 <div class="container">
-    <i class=`fa-solid ${icon} fa-2x`></i>
-    <h4>{title}</h4>
-    <slot />
+  <i class=`fa-solid ${icon} fa-2x`></i>
+  <h4>{title}</h4>
+  <slot />
 </div>
 
 <style>
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 360px;
-        padding: 1rem;
-        text-align: center;
-    }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 360px;
+    padding: 1rem;
+    text-align: center;
+  }
 
-    h4 {
-        margin: 1rem 0 0;
-    }
+  h4 {
+    margin: 1rem 0 0;
+  }
 </style>
