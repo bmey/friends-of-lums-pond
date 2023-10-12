@@ -27,6 +27,10 @@ const { alt, class: className, src, ...props } = Astro.props;
     max-width: calc(33% - 1rem);
   }
 
+  img:global(.one-half) {
+    max-width: calc(50% - 1rem);
+  }
+
   @media (max-width: 720px) {
     img {
       flex-direction: column;
