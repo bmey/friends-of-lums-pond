@@ -5,8 +5,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://bmey.github.io",
-  base: "/friends-of-lums-pond",
+  site: "https://friendsoflumspond.org",
   integrations: [mdx(), sitemap()],
   vite: {
     ssr: {
