@@ -35,13 +35,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         padding: 0 1rem;
       }
       nav a {
-        background: var(--color-primary);
+        background: var(--color-primary-800);
         border-radius: 0.5rem;
         border: none;
         color: white;
         cursor: pointer;
         font-size: 1rem;
-        outline: 4px solid rgba(var(--color-primary-light-rgb), 0);
         padding: 0.5rem 1rem;
         text-decoration: none;
         transition: all 0.5s ease;
@@ -52,8 +51,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       }
       nav a:hover,
       nav a:focus {
-        background: var(--color-primary-light);
-        outline-color: rgba(var(--color-primary-light-rgb), 0.5);
+        background: var(--color-primary-600);
       }
       .hero-image {
         width: 100%;

@@ -4,29 +4,63 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
-/* pallete https://coolors.co/004a87-00213d-ffefd6 */
+ /* additional color reference https://coolors.co/004a87-00213d-ffefd6 */
 :root {
-  --color-primary: #004a87;
-  --color-primary-rgb: 0, 74, 135;
-  --color-primary-light: #157ed4;
-  --color-primary-light-rgb: 21, 126, 212;
-  --color-primary-light2: #58abee;
-  --color-primary-light3: #a2d0f6;
-  --color-primary-light4: #daecfb;
-  --color-primary-light5: #edf6fd;
-  --color-primary-dark: #00203b;
-  --color-primary-dark-rgb: 0, 32, 59;
-  --color-primary-dark2: #001629;
-  --color-primary-dark2-rgb: 0, 22, 41;
-  --color-lighter: #fff7eb;
-  --color-lighter-rgb: 255, 247, 235;
-  --color-light: #ffefd6;
-  --color-light-rgb: 255, 239, 214;
+  /* https://uicolors.app/create -- primary:congress blue:#004A87 */
+  --color-primary-rgb-50: 239, 247, 255;
+  --color-primary-rgb-100: 222, 239, 255;
+  --color-primary-rgb-200: 182, 224, 255;
+  --color-primary-rgb-300: 118, 199, 255;
+  --color-primary-rgb-400: 45, 171, 255;
+  --color-primary-rgb-500: 2, 145, 245;
+  --color-primary-rgb-600: 0, 113, 210;
+  --color-primary-rgb-700: 0, 91, 170;
+  --color-primary-rgb-800: 0, 74, 135;
+  --color-primary-rgb-900: 7, 64, 115;
+  --color-primary-rgb-950: 4, 41, 77;
+  --color-primary-rgb-1000: 0, 22, 41;
+  --color-primary-50: rgb(var(--color-primary-rgb-50));
+  --color-primary-100: rgb(var(--color-primary-rgb-100));
+  --color-primary-200: rgb(var(--color-primary-rgb-200));
+  --color-primary-300: rgb(var(--color-primary-rgb-300));
+  --color-primary-400: rgb(var(--color-primary-rgb-400));
+  --color-primary-500: rgb(var(--color-primary-rgb-500));
+  --color-primary-600: rgb(var(--color-primary-rgb-600));
+  --color-primary-700: rgb(var(--color-primary-rgb-700));
+  --color-primary-800: rgb(var(--color-primary-rgb-800));
+  --color-primary-900: rgb(var(--color-primary-rgb-900));
+  --color-primary-950: rgb(var(--color-primary-rgb-950));
+  --color-primary-1000: rgb(var(--color-primary-rgb-1000));
+
+  /* https://uicolors.app/create -- gray:mako:#404756 */
+  --color-gray-rgb-50: 246, 247, 249;
+  --color-gray-rgb-100: 237, 238, 241;
+  --color-gray-rgb-200: 214, 217, 225;
+  --color-gray-rgb-300: 178, 185, 199;
+  --color-gray-rgb-400: 136, 147, 168;
+  --color-gray-rgb-500: 106, 118, 141;
+  --color-gray-rgb-600: 84, 95, 117;
+  --color-gray-rgb-700: 69, 77, 95;
+  --color-gray-rgb-800: 64, 71, 86;
+  --color-gray-rgb-900: 53, 58, 69;
+  --color-gray-rgb-950: 35, 38, 46;
+  --color-gray-50: rgb(var(--color-gray-rgb-50));
+  --color-gray-100: rgb(var(--color-gray-rgb-100));
+  --color-gray-200: rgb(var(--color-gray-rgb-200));
+  --color-gray-300: rgb(var(--color-gray-rgb-300));
+  --color-gray-400: rgb(var(--color-gray-rgb-400));
+  --color-gray-500: rgb(var(--color-gray-rgb-500));
+  --color-gray-600: rgb(var(--color-gray-rgb-600));
+  --color-gray-700: rgb(var(--color-gray-rgb-700));
+  --color-gray-800: rgb(var(--color-gray-rgb-800));
+  --color-gray-900: rgb(var(--color-gray-rgb-900));
+  --color-gray-950: rgb(var(--color-gray-rgb-950));
+
   --font-header: "Festivo LC", sans-serif;
 
-  --accent: var(--color-primary-light);
-  --accent-dark: var(--color-primary);
-  --black: 15, 18, 25;
+  /* TODO: remove these in favor of colors above */
+  --accent: var(--color-primary-500);
+  --accent-dark: var(--color-primary-800);
   --gray: 96, 115, 159;
   --gray-light: 229, 233, 240;
   --gray-dark: 34, 41, 57;
@@ -56,10 +90,10 @@ body {
   margin: 0;
   padding: 0;
   text-align: left;
-  background: rgba(var(--color-lighter-rgb), 0.85);
+  background-color: var(--color-gray-50);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  color: var(--color-primary-dark2);
+  color: var(--color-gray-950);
   font-size: 20px;
   line-height: 1.7;
 }
@@ -71,7 +105,7 @@ h4,
 h5,
 h6 {
   margin: 0 0 0.5rem 0;
-  color: rgb(var(--black));
+  color: var(--color-gray-950);
   line-height: 1.2;
 }
 

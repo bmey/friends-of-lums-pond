@@ -49,8 +49,8 @@ import HeaderLink from "./HeaderLink.astro";
   header {
     margin: 0;
     padding: 0 1em;
-    background: var(--color-lighter);
-    box-shadow: 0 2px 8px rgba(var(--black), 5%);
+    background: var(--color-gray-50);
+    box-shadow: 0 2px 4px rgba(var(--color-gray-rgb-950), 10%);
   }
   nav {
     display: flex;
@@ -70,32 +70,32 @@ import HeaderLink from "./HeaderLink.astro";
   .social-links a,
   .internal-links a {
     padding: 1em 0.5em;
-    color: var(--color-primary-darker);
+    color: var(--color-primary-1000);
     border-bottom: 4px solid transparent;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
   }
   .social-links a:hover {
-    color: var(--color-primary-light);
+    color: var(--color-primary-600);
   }
   .mobile-link.active,
   .mobile-link:hover,
   .internal-links a.active,
   .internal-links a:hover {
-    color: var(--color-primary-dark);
+    color: var(--color-primary-900);
     text-decoration: none;
   }
   .internal-links a.active,
   .internal-links a:hover {
-    border-bottom-color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary-500);
   }
   .mobile-link.active,
   .mobile-link:hover {
-    border-left-color: var(--color-primary-light);
+    border-left-color: var(--color-primary-500);
   }
   .mobile-link:hover,
   .internal-links a:hover {
-    background-color: var(--color-primary-light4);
+    background-color: var(--color-primary-200);
   }
   .social-links,
   .social-links a {
@@ -129,16 +129,16 @@ import HeaderLink from "./HeaderLink.astro";
     left: 100%;
     display: flex;
     flex-direction: column;
-    background-color: var(--color-light);
+    background-color: var(--color-gray-50);
     min-width: 10rem;
     padding-bottom: 1rem;
     border-radius: 0 0 0 8px;
     transition: all 0.3s ease-out;
-    box-shadow: 0 2px 4px rgba(var(--color-primary-dark-rgb), 0.5);
+    box-shadow: 0 2px 8px rgba(var(--color-gray-rgb-950), 0.5);
   }
   .mobile-link {
     padding: 0.5rem 1rem;
-    color: var(--color-primary-darker);
+    color: var(--color-primary-1000);
     border-left: 4px solid transparent;
     transition: all 0.3s ease-in-out;
   }
@@ -156,9 +156,9 @@ import HeaderLink from "./HeaderLink.astro";
   }
   .menu-button:hover,
   .menu-button:focus {
-    background-color: var(--color-primary-light4);
-    color: var(--color-primary-dark);
-    border-color: var(--color-primary);
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-950);
+    border-color: var(--color-primary-800);
   }
   .mobile-only {
     display: none;
