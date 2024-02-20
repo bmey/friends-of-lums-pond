@@ -1,0 +1,100 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Layout from "../layouts/FullWidthPage.astro";
+import Modal from "../components/Modal.astro";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/images/gallery/*.{jpeg,jpg,png,gif}",
+);
+---
+
+<Layout title="Gallery">
+  <p>
+    Check out these pictures of the Friends of Lums Pond State Park! If you have
+    any pictures of the park or of volunteer events you would like to share, we
+    would love to include them. We are proud of our park and your contributions!
+  </p>
+  <div class="container">
+    {
+      Object.keys(images).map((image) => (
+        <button data-src={image} class="thumbnail">
+          <Image
+            alt={"Friends of Lums Pond"}
+            height={250}
+            src={images[image]()}
+            width={300}
+          />
+        </button>
+      ))
+    }
+    <Modal id="galleryDialog" open="Open modal">
+      <main slot="main" class="galleryDialog">
+        <img id="dialog-img" />
+        <button slot="close" class="menu-button">
+          <i class="fa-solid fa-xmark fa-lg"></i>
+        </button>
+      </main>
+    </Modal>
+  </div>
+  <style>
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      padding-bottom: 2rem;
+    }
+    .thumbnail {
+      border: none;
+      padding: 0;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      max-width: 300px;
+      object-fit: cover;
+    }
+    .galleryDialog {
+      position: relative;
+      display: flex;
+    }
+    .galleryDialog .menu-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(var(--color-gray-rgb-100), 0.5);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    #dialog-img {
+      max-width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    @media (max-width: 720px) {
+      #dialog-img {
+        object-fit: scale-down;
+      }
+    }
+  </style>
+</Layout>
+<script>
+  var dialogImage = document.getElementById("dialog-img");
+  var buttons = document.querySelectorAll("button[data-src]");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      dialogImage?.setAttribute("src", button.getAttribute("data-src") || "");
+      // timeout to avoid flash of previous image
+      setTimeout(() => {
+        //@ts-ignore
+        window.galleryDialog.showModal();
+      }, 10);
+    });
+  });
+</script>

@@ -16,6 +16,11 @@ export const ROUTES: Route[] = [
     path: "blog",
   },
   {
+    icon: "fa-images",
+    name: "Gallery",
+    path: "gallery",
+  },
+  {
     icon: "fa-circle-info",
     name: "About",
     path: "about",

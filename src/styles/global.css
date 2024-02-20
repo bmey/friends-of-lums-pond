@@ -5,7 +5,7 @@
  */
 
  /* additional color reference https://coolors.co/004a87-00213d-ffefd6 */
-:root {
+:root, ::backdrop {
   /* https://uicolors.app/create -- primary:congress blue:#004A87 */
   --color-primary-rgb-50: 239, 247, 255;
   --color-primary-rgb-100: 222, 239, 255;
