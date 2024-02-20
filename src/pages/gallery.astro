@@ -4,7 +4,7 @@ import type { ImageMetadata } from "astro";
 import Layout from "../layouts/FullWidthPage.astro";
 import Modal from "../components/Modal.astro";
 const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/images/gallery/**/*.{jpeg,jpg,png,gif}",
+  "/public/gallery/**/*.{jpeg,jpg,png,gif}",
 );
 ---
 
@@ -91,8 +91,10 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
   var dialogImage = document.getElementById("dialog-img");
   var buttons = document.querySelectorAll("button[data-src]");
   buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      dialogImage?.setAttribute("src", button.getAttribute("data-src") || "");
+    button.addEventListener("click", async () => {
+      const srcKey = button.getAttribute("data-src");
+      const src = srcKey?.replace("/public", "");
+      dialogImage?.setAttribute("src", src || "");
       // timeout to avoid flash of previous image
       setTimeout(() => {
         //@ts-ignore
