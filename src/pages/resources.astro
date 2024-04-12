@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/SecondaryPage.astro";
 import { FACEBOOK_URL, JOIN_URL, EMAIL, EMAIL_BOARD } from "../consts";
+import { getUrl } from "../components/getUrl";
 ---
 
 <Layout title="Resources">
@@ -25,6 +26,9 @@ import { FACEBOOK_URL, JOIN_URL, EMAIL, EMAIL_BOARD } from "../consts";
       Want to contact the group's board? Send an email to <a
         href=`mailto:${EMAIL_BOARD}`>{EMAIL_BOARD}</a
       >
+    </li>
+    <li>
+      <a href={getUrl("resources/bylaws")}>View our group's by-laws</a>
     </li>
   </ul>
 
