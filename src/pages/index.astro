@@ -7,6 +7,7 @@ import Header from "../components/Header.astro";
 import IndexTeaser from "../components/IndexTeaser.astro";
 import { JOIN_URL, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Hero from "../images/HERO.jpeg";
+import PondFest from "../images/pondfest.png";
 ---
 
 <!doctype html>
@@ -30,6 +31,16 @@ import Hero from "../images/HERO.jpeg";
         Friends Group helps the park as it serves the public.
       </div>
       <div class="teasers">
+        <div class="pondfest-container">
+          <Image src={PondFest} alt="flyer for pond fest" width="160" />
+          <p>
+            Come on out for live music by Lucky Stone and PJ's Pub Tour, food,
+            beer, crafts and family fun! Fundraising event hosted by the Friends
+            of Lums Pond to raise money for bike fixit station and scholarships!
+          </p>
+          <a href={getUrl("blog/24-09-02-pond-fest-announcement")}>Learn more</a
+          >
+        </div>
         <IndexTeaser icon="fa-magnifying-glass" title="About">
           <p>
             We are the Friends of Lums Pond, where passion meets preservation!
@@ -39,6 +50,7 @@ import Hero from "../images/HERO.jpeg";
           </p>
           <a href={getUrl("about")}>Learn more</a>
         </IndexTeaser>
+
         <IndexTeaser icon="fa-user-plus" title="Volunteer">
           <p>
             Join us in our vital mission to safeguard the beauty and ecological
@@ -146,6 +158,15 @@ import Hero from "../images/HERO.jpeg";
         height: 100%;
         width: 100%;
         z-index: -2;
+      }
+
+      .pondfest-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 360px;
+        padding: 1rem;
+        text-align: center;
       }
     </style>
   </body>

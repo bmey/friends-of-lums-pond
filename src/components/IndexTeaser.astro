@@ -1,7 +1,7 @@
 ---
 interface Props {
   icon: string;
-  title: string;
+  title?: string;
 }
 
 const { icon, title } = Astro.props;
@@ -9,7 +9,7 @@ const { icon, title } = Astro.props;
 
 <div class="container">
   <i class=`fa-solid ${icon} fa-2x`></i>
-  <h4>{title}</h4>
+  {title && <h4>{title}</h4>}
   <slot />
 </div>
 
