@@ -5,6 +5,7 @@ import { getUrl } from "../../components/getUrl";
 import EventMap from "../../images/pondfest-event-map.png";
 import VendorMap from "../../images/pondfest-vendors.png";
 import PondFest from "../../images/pondfest.png";
+import PondFestShirt from "../../images/pondfest-shirt.png";
 ---
 
 <!-- 
@@ -61,10 +62,10 @@ survey links
         style="width: 100%; max-width:500px; min-width:310px; min-height: 345px;"
       ></iframe> -->
     <div>
-      <div>
+      <div id="map-jump">
         Looking for the event and vendors map?
+        <br />
         <a href="#vendors">Click here</a>
-        <!-- todo: link to section -->
       </div>
 
       <h2>What is Pond Fest?</h2>
@@ -104,7 +105,7 @@ survey links
       <p>
         We also have event-exclusive T-shirts for sale at the information
         tables!
-        <!-- todo: shirt image -->
+        <Image src={PondFestShirt} alt="pond fest shirt" id="event-shirt" />
       </p>
       <p>
         Tag us on social media!
@@ -267,7 +268,6 @@ survey links
         </tbody>
       </table>
 
-      <!-- TODO: sort -->
       <table id="by-location" class="hidden">
         <thead>
           <tr>
@@ -328,7 +328,6 @@ survey links
         impact. We could not do it without you!
       </p>
 
-      <!-- todo: sponsor logos -->
       <h3>Platinum</h3>
       <ul>
         <li>Ridgway Law Group, LLC</li>
@@ -405,7 +404,6 @@ survey links
         volunteerism that makes our park and events so special.
       </p>
 
-      <!-- TODO: list of colunteers -->
       <b>Thank you to these amazing humans, our Pond Fest volunteers:</b>
       <ul>
         <li>Adam Molden</li>
@@ -457,6 +455,7 @@ survey links
         <li>Tejaswi Kranthi</li>
         <li>Tom Kretzer</li>
         <li>Wendy Keating</li>
+        <li>Zachary Sullivan</li>
       </ul>
 
       <p>
@@ -500,14 +499,39 @@ survey links
     background-color: #ddd;
   }
 
+  #map-jump {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: lightblue;
+    border: 1px solid lightskyblue;
+    padding: 1rem 2rem;
+    margin: 1rem auto;
+    border-radius: 8px;
+  }
+
   #event-logo {
-    max-width: 90vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    max-width: 60vw;
     width: auto;
     height: auto;
-    max-height: 80vh;
+    max-height: 50vh;
+  }
+  #event-shirt {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    max-width: 60vw;
+    width: auto;
+    height: auto;
+    max-height: 50vh;
   }
   #event-map {
-    max-width: 90vw;
+    max-width: min(90vw, 50rem);
     width: auto;
     height: auto;
     max-height: 80vh;
