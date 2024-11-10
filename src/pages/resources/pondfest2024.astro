@@ -176,14 +176,119 @@ survey links
         </ul>
 
         <h4>Vendors, Crafters, and Nonprofits</h4>
-        <ul></ul>
-        <li>
-          We have over 30 businesses and organizations!
-
-          <!-- 
-            todo: vendor list + map
+        <!-- 
+            todo: vendor map
            -->
-        </li>
+        <button id="sortButton">Sort by location?</button>
+
+        <table id="by-name">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Name of Business/Organization</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <tr><td>C4</td><td>A Flicker of Daisy Candle Co.</td></tr>
+              <tr><td>A4</td><td>Beaded Expressions by Mary</td></tr>
+              <tr><td>F1</td><td>Bear Public Libraries/Dolly Parton</td></tr>
+              <tr><td>A9</td><td>Birth to Three</td></tr>
+              <tr><td>D4</td><td>Blenheim/Bayberry</td></tr>
+              <tr><td>D3</td><td>Blue Hen Insurance</td></tr>
+              <tr><td>G3</td><td>Catalyst Accessories</td></tr>
+              <tr><td>A3</td><td>Crafty Gals</td></tr>
+              <tr><td>G2</td><td>Crafty Sass Gifts</td></tr>
+              <tr><td>C1</td><td>Creations by Court</td></tr>
+              <tr><td>E2</td><td>Crossan Chick Creations</td></tr>
+              <tr><td>F1</td><td>Curious Tiel Designs</td></tr>
+              <tr><td>A10</td><td>Delaware Readiness Teams</td></tr>
+              <tr><td>A6</td><td>First State Urgent Vet</td></tr>
+              <tr
+                ><td>A12</td><td>Granite-Corinthian Lodge No. 34 A.F. & A.M.</td
+                ></tr
+              >
+              <tr><td>A7</td><td>Grass Roots Rescue</td></tr>
+              <tr><td>D1</td><td>Guild Mortgage</td></tr>
+              <tr><td>B4</td><td>House rabbit society of SE PA Delaware</td></tr
+              >
+              <tr><td>D2</td><td>Kails craft co</td></tr>
+              <tr><td>A8</td><td>Little Bear Dog Care and Training</td></tr>
+              <tr><td>F4</td><td>M.N. Bonds( book author)</td></tr>
+              <tr><td>B3</td><td>Mother Flosser Embroidery</td></tr>
+              <tr><td>G1</td><td>Pangaea Fair Trade</td></tr>
+              <tr><td>E3</td><td>Passanante’s Home Food Service</td></tr>
+              <tr><td>A8</td><td>Pawsitively Perfect Dog Grooming</td></tr>
+              <tr><td>C2</td><td>Pawsome Treats & More</td></tr>
+              <tr><td>G4</td><td>Ridgway Law</td></tr>
+              <tr><td>A11</td><td>Sally the Starter</td></tr>
+              <tr><td>E4</td><td>Scentsy by Jen</td></tr>
+              <tr><td>A2</td><td>Sew What ?</td></tr>
+              <tr><td>B1</td><td>Sit Means SIt</td></tr>
+              <tr><td>B2</td><td>Small Wonder Delaware</td></tr>
+              <tr><td>C3</td><td>SoulGarden</td></tr>
+              <tr><td>E1</td><td>The Love Bug Bake Shop</td></tr>
+              <tr><td>A5</td><td>Way Outside Studios</td></tr>
+              <tr><td>F3</td><td>Will’s Wash & Go LLC.</td></tr>
+              <tr><td>A1</td><td>You Shine Boutique</td></tr>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- TODO: sort -->
+        <table id="by-location" class="hidden">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Name of Business/Organization</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <tr><td>A1</td><td>You Shine Boutique</td></tr>
+              <tr><td>A2</td><td>Sew What ?</td></tr>
+              <tr><td>A3</td><td>Crafty Gals</td></tr>
+              <tr><td>A4</td><td>Beaded Expressions by Mary</td></tr>
+              <tr><td>A5</td><td>Way Outside Studios</td></tr>
+              <tr><td>A6</td><td>First State Urgent Vet</td></tr>
+              <tr><td>A7</td><td>Grass Roots Rescue</td></tr>
+              <tr><td>A8</td><td>Little Bear Dog Care and Training</td></tr>
+              <tr><td>A8</td><td>Pawsitively Perfect Dog Grooming</td></tr>
+              <tr><td>A9</td><td>Birth to Three</td></tr>
+              <tr><td>A10</td><td>Delaware Readiness Teams</td></tr>
+              <tr><td>A11</td><td>Sally the Starter</td></tr>
+              <tr
+                ><td>A12</td><td>Granite-Corinthian Lodge No. 34 A.F. & A.M.</td
+                ></tr
+              >
+              <tr><td>B1</td><td>Sit Means SIt</td></tr>
+              <tr><td>B2</td><td>Small Wonder Delaware</td></tr>
+              <tr><td>B3</td><td>Mother Flosser Embroidery</td></tr>
+              <tr><td>B4</td><td>House rabbit society of SE PA Delaware</td></tr
+              >
+              <tr><td>C1</td><td>Creations by Court</td></tr>
+              <tr><td>C2</td><td>Pawsome Treats & More</td></tr>
+              <tr><td>C3</td><td>SoulGarden</td></tr>
+              <tr><td>C4</td><td>A Flicker of Daisy Candle Co.</td></tr>
+              <tr><td>D1</td><td>Guild Mortgage</td></tr>
+              <tr><td>D2</td><td>Kails craft co</td></tr>
+              <tr><td>D3</td><td>Blue Hen Insurance</td></tr>
+              <tr><td>D4</td><td>Blenheim/Bayberry</td></tr>
+              <tr><td>E1</td><td>The Love Bug Bake Shop</td></tr>
+              <tr><td>E2</td><td>Crossan Chick Creations</td></tr>
+              <tr><td>E3</td><td>Passanante’s Home Food Service</td></tr>
+              <tr><td>E4</td><td>Scentsy by Jen</td></tr>
+              <tr><td>F1</td><td>Bear Public Libraries/Dolly Parton</td></tr>
+              <tr><td>F1</td><td>Curious Tiel Designs</td></tr>
+              <tr><td>F3</td><td>Will’s Wash & Go LLC.</td></tr>
+              <tr><td>F4</td><td>M.N. Bonds( book author)</td></tr>
+              <tr><td>G1</td><td>Pangaea Fair Trade</td></tr>
+              <tr><td>G2</td><td>Crafty Sass Gifts</td></tr>
+              <tr><td>G3</td><td>Catalyst Accessories</td></tr>
+              <tr><td>G4</td><td>Ridgway Law</td></tr>
+            </tr>
+          </tbody>
+        </table>
 
         <h2>Sponsors</h2>
         <p>
@@ -357,3 +462,29 @@ survey links
     </div>
   </p>
 </Layout>
+
+<style>
+  .hidden {
+    display: none;
+  }
+
+  tr:nth-child(even) {
+    background-color: #ddd;
+  }
+</style>
+
+<script is:inline>
+  const sortButton = document.getElementById("sortButton");
+  sortButton?.addEventListener("click", function () {
+    sortButton.innerText =
+      sortButton.innerText === "Sort by name?"
+        ? "Sort by location?"
+        : "Sort by name?";
+
+    const nameContainer = document.getElementById("by-name");
+    nameContainer?.classList.toggle("hidden");
+
+    const locContainer = document.getElementById("by-location");
+    locContainer?.classList.toggle("hidden");
+  });
+</script>
