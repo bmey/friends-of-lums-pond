@@ -1,20 +1,9 @@
 ---
 import Layout from "../../layouts/SecondaryPage.astro";
+import { getUrl } from "../../components/getUrl";
 ---
 
 <!-- 
-what is pond fest
-
-who is friends of lums pond
-- interested in becoming a member? visit the table and/or check out /membership page
-
-what are we fundraising for
-
-event amenities & activities
-- map
-- vendor list
-sponsors
-pond fest committee
 
 list of raffle baskets
 
@@ -71,6 +60,11 @@ survey links
         style="width: 100%; max-width:500px; min-width:310px; min-height: 345px;"
       ></iframe> -->
       <div>
+        <div>
+          Looking for the event and vendors map? Click here
+          <!-- todo: link to section -->
+        </div>
+
         <h2>What is Pond Fest?</h2>
         <h3>Friends of Lums Pond</h3>
         <p>
@@ -83,6 +77,10 @@ survey links
         <p>
           Come talk to us at the information tables! You could even become a
           member!
+          <br />
+           You can read more about <a href={getUrl("resources/membership")}
+            >member benefits here</a
+          >.
         </p>
         <h3>Pond Fest</h3>
         <p>
@@ -145,6 +143,7 @@ survey links
         </p>
 
         <h2>Event Amenities & Activities</h2>
+        <!-- todo: map -->
         <ul>
           <li>Live Music</li>
           <li>12-2 pm PJ’s Pub Tour</li>
@@ -179,8 +178,11 @@ survey links
         <h4>Vendors, Crafters, and Nonprofits</h4>
         <ul></ul>
         <li>
-          We have over 30 businesses and organizations! Please scan the QR code
-          below for a comprehensive list.
+          We have over 30 businesses and organizations!
+
+          <!-- 
+            todo: vendor list + map
+           -->
         </li>
 
         <h2>Sponsors</h2>
@@ -190,6 +192,7 @@ survey links
           impact. We could not do it without you!
         </p>
 
+        <!-- todo: sponsor logos -->
         <h3>Platinum</h3>
         <ul>
           <li>Ridgway Law Group, LLC</li>
@@ -268,6 +271,60 @@ survey links
           special.
         </p>
 
+        <!-- TODO: list of colunteers -->
+        <b>Thank you to these amazing humans, our Pond Fest volunteers:</b>
+        <ul>
+          <li>Adam Molden</li>
+          <li>Alyssa Winner</li>
+          <li>Amanda Rose</li>
+          <li>Andrew kulp</li>
+          <li>Bill Delaney</li>
+          <li>Bob Conley Sr.</li>
+          <li>Bryan Mey</li>
+          <li>Candace Rodriguez</li>
+          <li>Cara Mowles</li>
+          <li>Cathy Skelley</li>
+          <li>Chris Grady</li>
+          <li>Chriss Funcheon</li>
+          <li>Clara Robbs</li>
+          <li>Diane Delaney</li>
+          <li>Ed Binasiewizc</li>
+          <li>Eden Mowles</li>
+          <li>Gary Gill</li>
+          <li>Glenn Lewis</li>
+          <li>Hailey Mack</li>
+          <li>Jackie Dessin</li>
+          <li>James Ragghianti</li>
+          <li>Jamie Walko</li>
+          <li>Jeff Mey</li>
+          <li>Jenny Grady</li>
+          <li>Jessie Mey</li>
+          <li>Joel Mey</li>
+          <li>John Jacob</li>
+          <li>John Moore</li>
+          <li>Justin Mowles</li>
+          <li>Kate Rose</li>
+          <li>Kathy Wayne</li>
+          <li>Kendra Modzelweski</li>
+          <li>Kenzie Sammut</li>
+          <li>Keva Dhapare</li>
+          <li>Lauren Mowles</li>
+          <li>Lexie Driscoll</li>
+          <li>Linda Conley</li>
+          <li>Lisa Headman</li>
+          <li>Mel Rose</li>
+          <li>Mike Waldon</li>
+          <li>Parker Floyd</li>
+          <li>Patty Jacob</li>
+          <li>Samantha Baranowski</li>
+          <li>Seth Moore</li>
+          <li>Sue Moore</li>
+          <li>Tedi Dessin</li>
+          <li>Tejaswi Kranthi</li>
+          <li>Tom Kretzer</li>
+          <li>Wendy Keating</li>
+        </ul>
+
         <p>
           With heartfelt appreciation,
           <br />Friends of Lums Pond
@@ -282,9 +339,11 @@ survey links
           holds a special place in all of our hearts and the friends group is
           incredibly grateful that you support it, too. If it isn’t too much
           trouble, we would greatly appreciate your feedback on your experience
-          today by visiting the QR code below. This will help us make sure to
+          today by visiting the survey below. This will help us make sure to
           continue the things that went well and improve on things that didn’t.
         </p>
+
+        <a href="https://forms.gle/ftqxbvVzdKg3GZo77">Feedback Survey</a>
 
         <p>Thank you for being a friend of Lums Pond.</p>
 
