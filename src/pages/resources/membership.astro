@@ -3,6 +3,13 @@ import Layout from "../../layouts/SecondaryPage.astro";
 ---
 
 <Layout title="Membership">
+  <div id="map-jump">
+    Need to pay annual dues?
+    <br />
+    <a href="https://donorbox.org/friends-of-lums-pond" target="_blank"
+      >Click here</a
+    >
+  </div>
   <h4>Benefits</h4>
   <p>
     When you join Friends of Lums Pond, you become an integral part of our
@@ -116,3 +123,16 @@ import Layout from "../../layouts/SecondaryPage.astro";
     <li>We can accept cash and checks for merch if desired.</li>
   </ul>
 </Layout>
+
+<style>
+  #map-jump {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: lightblue;
+    border: 1px solid lightskyblue;
+    padding: 1rem 2rem;
+    margin: 1rem auto;
+    border-radius: 8px;
+  }
+</style>
