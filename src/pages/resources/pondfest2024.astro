@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import Layout from "../../layouts/SecondaryPage.astro";
 import { getUrl } from "../../components/getUrl";
+import EventMap from "../../images/pondfest-event-map.png";
 import VendorMap from "../../images/pondfest-vendors.png";
 import PondFest from "../../images/pondfest.png";
 ---
@@ -10,15 +11,12 @@ import PondFest from "../../images/pondfest.png";
 
 list of raffle baskets
 
-letters to volunteers and guests
-volunteers
-
 survey links
 
  -->
 <Layout title="Pond Fest 2024">
   <div>
-    <Image src={PondFest} alt="pond fest logo" />
+    <Image src={PondFest} alt="pond fest logo" id="event-logo" />
     <!-- <p>
         <strong>Friends of Lums Pond, Inc.</strong>
       </p>
@@ -144,10 +142,42 @@ survey links
         <!-- todo: link to campaign + meter -->
       </p>
 
-      <h2>Event Amenities & Activities</h2>
-      <!-- todo: map -->
+      <h2 id="vendors">Event Amenities & Activities</h2>
+      <Image src={EventMap} alt="event map at pond fest" id="event-map" />
+      <table>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <tr><td>A1</td><td>Vendors</td></tr>
+            <tr><td>A2</td><td>Kid Crafts</td></tr>
+            <tr><td>A3</td><td>Face Painting</td></tr>
+            <tr><td>A4</td><td>Restrooms</td></tr>
+            <tr><td>A5</td><td>General Seating</td></tr>
+            <tr><td>A6</td><td>Walking Art Tour</td></tr>
+            <tr><td>B1</td><td>Music & Main Stage</td></tr>
+            <tr><td>B2</td><td>First Aid</td></tr>
+            <tr><td>B3</td><td>Volunteer Station</td></tr>
+            <tr><td>C1</td><td>RC Club Display</td></tr>
+            <tr><td>C2</td><td>Fire Truck</td></tr>
+            <tr><td>C3</td><td>Beer, Seltzer, Water</td></tr>
+            <tr><td>C4</td><td>Food Trucks</td></tr>
+            <tr><td>C5</td><td>Raffles</td></tr>
+            <tr><td>C6</td><td>Tickets</td></tr>
+            <tr><td>C7</td><td>Lums Pond Park Staff</td></tr>
+            <tr><td>C8</td><td>Friends of Lums Pond Info + Event Shirts</td></tr
+            >
+            <tr><td>C9</td><td>Event Info + Check-In</td></tr>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Live Music</h4>
       <ul>
-        <li>Live Music</li>
         <li>12-2 pm PJ’s Pub Tour</li>
         <li>2-4 pm Lucky Stone</li>
       </ul>
@@ -177,10 +207,7 @@ survey links
         </li>
       </ul>
 
-      <h4 id="vendors">Vendors, Crafters, and Nonprofits</h4>
-      <!-- 
-            todo: vendor map
-           -->
+      <h4>Vendors, Crafters, and Nonprofits</h4>
       <Image src={VendorMap} alt="vendor map at pond fest" id="vendor-map" />
 
       <div>
@@ -471,6 +498,19 @@ survey links
 
   tr:nth-child(even) {
     background-color: #ddd;
+  }
+
+  #event-logo {
+    max-width: 90vw;
+    width: auto;
+    height: auto;
+    max-height: 80vh;
+  }
+  #event-map {
+    max-width: 90vw;
+    width: auto;
+    height: auto;
+    max-height: 80vh;
   }
 
   #vendor-map {
