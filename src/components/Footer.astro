@@ -1,5 +1,11 @@
 ---
-import { DONATE_URL, EMAIL, FACEBOOK_URL, JOIN_URL } from "../consts";
+import {
+  DONATE_URL,
+  EMAIL,
+  FACEBOOK_URL,
+  INSTAGRAM_URL,
+  JOIN_URL,
+} from "../consts";
 import { ROUTES } from "../routes";
 import { getUrl } from "./getUrl";
 const today = new Date();
@@ -20,6 +26,10 @@ const today = new Date();
     <a href={FACEBOOK_URL} target="_blank">
       <span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
       <i class="fa-brands fa-facebook fa-2x"></i>
+    </a>
+    <a href={INSTAGRAM_URL} target="_blank">
+      <span class="sr-only">Follow Friends of Lums Pond on Instagram</span>
+      <i class="fa-brands fa-instagram fa-2x"></i>
     </a>
     <a href={getUrl("rss.xml")} target="_blank">
       <span class="sr-only">Follow Friends of Lums Pond on your RSS reader</span

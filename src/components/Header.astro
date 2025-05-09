@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { FACEBOOK_URL, SITE_TITLE } from "../consts";
+import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../consts";
 import logo from "../images/logo-with-title.png";
 import { ROUTES } from "../routes";
 import { getUrl } from "./getUrl";
@@ -23,6 +23,10 @@ import HeaderLink from "./HeaderLink.astro";
       <a href={FACEBOOK_URL} target="_blank">
         <span class="sr-only">Follow Friends of Lums Pond on Facebook</span>
         <i class="fa-brands fa-facebook fa-xl"></i>
+      </a>
+      <a href={INSTAGRAM_URL} target="_blank">
+        <span class="sr-only">Follow Friends of Lums Pond on Instagram</span>
+        <i class="fa-brands fa-instagram fa-xl"></i>
       </a>
     </div>
     <div class="mobile-only">

@@ -3,6 +3,7 @@ export const DONATE_URL =
 export const EMAIL = "contact@friendsoflumspond.org";
 export const EMAIL_BOARD = "executivecommittee@friendsoflumspond.org";
 export const FACEBOOK_URL = "https://www.facebook.com/FriendsofLumsPond";
+export const INSTAGRAM_URL = "https://www.instagram.com/friendsoflumspond";
 export const JOIN_URL = "https://donorbox.org/friends-of-lums-pond";
 export const SITE_DESCRIPTION = "Welcome to Friends of Lums Pond State Park!";
 export const SITE_TITLE = "Friends of Lums Pond";
