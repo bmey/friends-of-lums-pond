@@ -1,0 +1,164 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div">;
+
+const { ...props } = Astro.props;
+---
+
+<div {...props} class="container">
+  <div class="text-container">
+    <h2><span class="second-text">Pond Fest 2025 starts in</span></h2>
+  </div>
+
+  <div id="countdown" class="countdown">
+    <div class="time">
+      <h2 class="text-gradient" id="days">00</h2>
+      <small>days</small>
+    </div>
+    <div class="time">
+      <h2 class="text-gradient" id="hours">00</h2>
+      <small>hours</small>
+    </div>
+    <div class="time">
+      <h2 class="text-gradient" id="minutes">00</h2>
+      <small>minutes</small>
+    </div>
+    <div class="time">
+      <h2 class="text-gradient" id="seconds">00</h2>
+      <small>seconds</small>
+    </div>
+  </div>
+</div>
+
+<style>
+  .container {
+    position: absolute;
+    top: 15rem;
+    width: 720px;
+    height: 400px;
+    max-width: calc(100% - 2em);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: #fffa;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    .text-container {
+      width: auto;
+      max-width: 700px;
+      & h2 {
+        margin: 0;
+        font-weight: 600;
+        text-wrap: balance;
+        text-align: center;
+        .second-text {
+          padding: 5px;
+          font-size: 3.5rem;
+        }
+      }
+    }
+    .countdown {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      .time {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-basis: 25%;
+        & h2 {
+          margin: 0px 0;
+          font-size: 5rem;
+        }
+        & small {
+          font-size: 1.8rem;
+          font-weight: 500;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 720px) {
+    .container {
+      gap: 10px;
+      top: 12rem;
+      height: 250px;
+      .text-container {
+        & h2 {
+          .second-text {
+            font-size: 2rem;
+          }
+        }
+      }
+      .countdown {
+        gap: 10px;
+        .time {
+          & h2 {
+            margin: 0;
+            font-size: 3rem;
+          }
+          & small {
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const days = document.getElementById("days") || { innerHTML: "" };
+    const hours = document.getElementById("hours") || { innerHTML: "" };
+    const minutes = document.getElementById("minutes") || { innerHTML: "" };
+    const seconds = document.getElementById("seconds") || { innerHTML: "" };
+    const targetTime = new Date(`October 4 2025 11:00:00`).getTime();
+    const currentTime = new Date().getTime();
+    let diff = Math.max(targetTime - currentTime, 0);
+
+    const updateCountdown = () => {
+      const remainingDays = Math.max(Math.floor(diff / 1000 / 60 / 60 / 24), 0);
+      const remainingHours = Math.max(
+        Math.floor(diff / 1000 / 60 / 60) % 24,
+        0,
+      );
+      const remainingMinutes = Math.max(Math.floor(diff / 1000 / 60) % 60, 0);
+      const remainingSeconds = Math.max(Math.floor(diff / 1000) % 60, 0);
+
+      if (
+        remainingDays === 0 &&
+        remainingHours === 0 &&
+        remainingMinutes === 0 &&
+        remainingSeconds === 0
+      ) {
+        clearInterval(countdownInterval);
+      }
+
+      days.innerHTML = `${remainingDays}`;
+      hours.innerHTML = `${
+        remainingHours < 10 ? "0" + remainingHours : remainingHours
+      }`;
+      minutes.innerHTML = `${
+        remainingMinutes < 10 ? "0" + remainingMinutes : remainingMinutes
+      }`;
+      seconds.innerHTML = `${
+        remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds
+      }`;
+    };
+
+    const countdownInterval = setInterval(() => {
+      updateCountdown();
+      diff -= 1000;
+      if (diff < 0) {
+        diff = 0;
+      }
+    }, 1000);
+  });
+</script>
