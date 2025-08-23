@@ -1,14 +1,16 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type Props = HTMLAttributes<"div">;
+interface Props {
+  startDate: string;
+}
 
-const { ...props } = Astro.props;
+const { startDate } = Astro.props;
 ---
 
-<div {...props} class="container">
+<div class="container">
   <div class="text-container">
-    <h2><span class="second-text">Pond Fest 2025 starts in</span></h2>
+    <h2><span class="second-text">Pond Fest starts in</span></h2>
   </div>
 
   <div id="countdown" class="countdown">
@@ -113,13 +115,13 @@ const { ...props } = Astro.props;
   }
 </style>
 
-<script>
+<script define:vars={{ startDate }}>
   document.addEventListener("DOMContentLoaded", () => {
     const days = document.getElementById("days") || { innerHTML: "" };
     const hours = document.getElementById("hours") || { innerHTML: "" };
     const minutes = document.getElementById("minutes") || { innerHTML: "" };
     const seconds = document.getElementById("seconds") || { innerHTML: "" };
-    const targetTime = new Date(`October 4 2025 11:00:00`).getTime();
+    const targetTime = new Date(startDate).getTime();
     const currentTime = new Date().getTime();
     let diff = Math.max(targetTime - currentTime, 0);
 
