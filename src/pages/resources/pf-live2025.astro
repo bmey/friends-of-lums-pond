@@ -1,0 +1,59 @@
+---
+import { Masonry } from 'astro-masonry';
+import { Image } from "astro:assets";
+import PondFestShirt from "../../images/pondfest-shirt.png";
+import Layout from "../../layouts/PFLivePage.astro";
+import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../../consts";
+import logo from "../../images/logo-with-title.png";
+
+---
+<style>
+   html { font-size: 22px; }
+   body { padding: 1rem; }
+   .card {
+   background-color: dodgerblue;
+   color: white;
+   padding: 1rem;
+   height: 4rem;
+   }
+   .cards {
+   max-width: 1200px;
+   margin: 0 auto;
+   display: grid;
+   gap: 1rem;
+   }
+   .sponsor {
+   background-color: red;
+   color: white;
+   padding: 1rem;
+   height: 4rem;
+   }
+   .sponsors {
+   max-width: 1200px;
+   margin: 0 auto;
+   display: grid;
+   gap: 1rem;
+   }
+   @media (min-width: 400px) {
+   .cards { grid-template-columns: repeat(2, 1fr); }
+   .sponsors { grid-template-columns: repeat(4, 1fr); }
+   }
+</style>
+<Layout title="Pond Fest 2025">
+   <div class="cards">
+      <div class="card">Event Map</div>
+      <div class="card">Schedule</div>
+      <div class="card">Raffle</div>
+      <div class="card">Auction</div>
+      <div class="card">Donate to FOLP</div>
+      <div class="card">Join or Volunteer</div>
+   </div>
+   <div class="sponsors">
+      <div class="sponsor">Sponsor</div>
+      <div class="sponsor">Sponsor</div>
+      <div class="sponsor">Sponsor</div>
+      <div class="sponsor">Sponsor</div>
+      <div class="sponsor">Sponsor</div>
+      <div class="sponsor">Sponsor</div>
+   </div>
+</Layout>

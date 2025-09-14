@@ -1,0 +1,40 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/PFLiveHeader.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_DESCRIPTION } from "../consts";
+interface Props {
+title: string;
+description?: string;
+}
+const { title, description } = Astro.props;
+---
+<html lang="en">
+   <head>
+      <style>
+         body {
+         max-width: max-content;
+         margin: auto;
+         }
+         .title h3 {
+         text-align: center;
+         margin-top: .4em;
+         margin-bottom: .3em;
+         }
+      </style>
+      <BaseHead title={title} description={description || SITE_DESCRIPTION} />
+   </head>
+   <body>
+      <Header />
+      <main>
+         <div class="prose">
+            <div class="title">
+               <h3 class="title">
+               {title}</h4>
+            </div>
+            <slot />
+         </div>
+      </main>
+      <Footer />
+   </body>
+</html>
