@@ -5,42 +5,61 @@ import PondFestShirt from "../../images/pondfest-shirt.png";
 import Layout from "../../layouts/PFLivePage.astro";
 import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../../consts";
 import logo from "../../images/logo-with-title.png";
+import PFLiveBG from "../../images/pf-live-bg.jpg";
 
 ---
 <style>
    html { font-size: 22px; }
    body { padding: 1rem; }
    .card {
-   background-color: dodgerblue;
+   text-align: right;
    color: white;
-   padding: 1rem;
-   height: 4rem;
+   background: rgba(255, 255, 255, 0.3);
+   padding: 20px;
+   height: 5rem;
+   font-size: 35px;
+   box-shadow: inset 0 0 0 10px rgb(246, 247, 249)
    }
    .cards {
    max-width: 1200px;
    margin: 0 auto;
    display: grid;
-   gap: 1rem;
+
+   background-image: url("../../images/pf-live-bg.jpg");
+   background-size: 800px;
+   background-clip: content-box, padding-box;
+
    }
    .sponsor {
-   background-color: red;
-   color: white;
-   padding: 1rem;
-   height: 4rem;
+   color: black;
+   padding: .2rem;
+   line-height: 1rem;
    }
    .sponsors {
    max-width: 1200px;
    margin: 0 auto;
    display: grid;
-   gap: 1rem;
+   gap: .1rem;
+   text-align: center;
    }
+   .sponsor-headers {
+   text-align: center;
+   h6 { margin-bottom: 4px;}
+   h5 { margin-bottom: 4px;}
+   h4 { margin-top: 400px;}
+   }
+   h4 { margin-top: 1rem;}
    @media (min-width: 400px) {
    .cards { grid-template-columns: repeat(2, 1fr); }
-   .sponsors { grid-template-columns: repeat(4, 1fr); }
+   .sponsors { grid-template-columns: repeat(3, 1fr); }
    }
 </style>
 <Layout title="Pond Fest 2025">
-   <div class="cards">
+<div class="sponsor-headers">
+<h6 text-align: center;>Sponsored by</h6>
+<h5>Christiana Care</h5>
+</div>
+   <div class="cards" >
       <div class="card">Event Map</div>
       <div class="card">Schedule</div>
       <div class="card">Raffle</div>
@@ -48,12 +67,31 @@ import logo from "../../images/logo-with-title.png";
       <div class="card">Donate to FOLP</div>
       <div class="card">Join or Volunteer</div>
    </div>
+   <h4 class="sponsor-headers">Gold Sponsors</h4>
    <div class="sponsors">
-      <div class="sponsor">Sponsor</div>
-      <div class="sponsor">Sponsor</div>
-      <div class="sponsor">Sponsor</div>
-      <div class="sponsor">Sponsor</div>
-      <div class="sponsor">Sponsor</div>
-      <div class="sponsor">Sponsor</div>
+      <div class="sponsor">Superservice Automotive</div>
+      <div class="sponsor">302 Masons Lodge</div>
+      <div class="sponsor">Guild Mortgage</div>
+      <div class="sponsor">Easterseals</div>
+   </div>
+   <h4 class="sponsor-headers">Silver Sponsors</h4>
+   <div class="sponsors">
+      <div class="sponsor">Deerfield Country Club</div>
+      <div class="sponsor">Little Bear Dog Care</div>
+      <div class="sponsor">Sit Means Sit</div>
+      <div class="sponsor">Academy of Dog Training</div>
+      <div class="sponsor">Eric Morrison</div>
+      <div class="sponsor">Bayada</div>
+   </div>
+   <h4 class="sponsor-headers">Bronze Sponsors</h4>
+   <div class="sponsors">
+      <div class="sponsor">Lucky Stone</div>
+      <div class="sponsor">Cook's Farm</div>
+      <div class="sponsor">CrossFit Bear</div>
+   </div>
+   <h4 class="sponsor-headers">Family Sponsors</h4>
+   <div class="sponsors">
+      <div class="sponsor">Joel Mey</div>
+      <div class="sponsor">Jeremy Lambert</div>
    </div>
 </Layout>
