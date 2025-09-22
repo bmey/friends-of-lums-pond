@@ -5,7 +5,8 @@ import { getUrl } from "../../components/getUrl";
 import EventMap from "../../images/pondfest-event-map.png";
 import VendorMap from "../../images/pondfest-vendors.png";
 import PondFest from "../../images/pondfest.png";
-import PondFestShirt from "../../images/pondfest-shirt.png";
+import PondFestShirt from "../../images/pondfest2025-shirt.png";
+import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
 ---
 
 <!-- 
@@ -17,12 +18,6 @@ list of raffle baskets
   <div>
     <Image src={PondFest} alt="pond fest logo" id="event-logo" />
     <div>
-      <div id="map-jump">
-        Looking for the event and vendors map?
-        <br />
-        <a href="#vendors">Click here</a>
-      </div>
-
       <h2>What is Pond Fest?</h2>
       <h3>Friends of Lums Pond</h3>
       <p>
@@ -44,8 +39,8 @@ list of raffle baskets
       <p>
         Pond Fest is a concert for a cause hosted by the Friends of Lums Pond
         State Park. Our specific goals for this event are to fund youth
-        scholarships as much as possible in 2025 and install the first bike
-        repair station in the park.
+        scholarships as much as possible in 2025 and install an accessible kayak 
+        launch ramp.
       </p>
       <p>
         Our group has reached out to our local community including small
@@ -53,7 +48,7 @@ list of raffle baskets
         has been incredibly rewarding and positive!
       </p>
       <p>
-        The target goal is to raise $4,000. Please help us achieve our goal to
+        Our goal this year is to raise $10,000. Please help us achieve our goal to
         give back to the park and community!
       </p>
 
@@ -87,29 +82,13 @@ list of raffle baskets
         </a>.
       </p>
       <script src="https://donorbox.org/widget.js" paypalExpress="false"
-      ></script><iframe
-        frameborder="0"
-        height="93px"
-        name="donorbox"
-        scrolling="no"
-        seamless="seamless"
-        src="https://donorbox.org/embed/2025-youth-scholarships?only_donation_meter=true&donation_meter_color=%23004a87"
-        style="max-width:332px; min-width:250px; min-height: 90px; max-height:none!important"
-        width="100%"></iframe>
+      ></script>
 
       <h3>Accessible Kayak Launch</h3>
       <p>
-        Details *** UPDATE CONTENT ***
+        We want to make Lums Pond more accessible so that everyone has the chance to enjoy being on the water. This year we are targeting a BoardSafe Accessible Kayak Launch, a nationally recognized system designed with adaptive features that make it safer and easier for people of all abilities to launch and land their kayaks. The launch includes transfer platforms, handrails, and stability features that allow users greater independence. By funding this project, we will open Lums Pond’s waters to more visitors than ever before.
       </p>
-      <iframe
-        frameborder="0"
-        height="93px"
-        name="donorbox"
-        scrolling="no"
-        seamless="seamless"
-        src="https://donorbox.org/embed/bike-repair-station?only_donation_meter=true&donation_meter_color=%23004a87"
-        style="max-width:332px; min-width:250px; min-height: 90px; max-height:none!important"
-        width="100%"></iframe>
+
 
       <h2 id="vendors">Event Amenities & Activities</h2>
       <Image src={EventMap} alt="event map at pond fest" id="event-map" />
@@ -144,38 +123,68 @@ list of raffle baskets
           </tr>
         </tbody>
       </table>
-
-      <h4>Live Music</h4>
+      </br>
+      <h3>Live Music</h3>
+      <p>Check out this year's stacked lineup of live music and entertainment!</p>
+      <div id="lineup-wrapper">
+        <div id="lineup-list-box">
+          <h6>Big Izzy and Bullfrog</h6>
+          <h6>FINN</h6>
+          <h6>Secondhand Stray</h6>
+          <h6>The Mad Dabbers</h6>
+          <h6>Stealing Society</h6>
+          <h6>Adam Molden</h6>
+          <h6>Vic Kozar</h6>
+          <h6>Acoustic Sinz</h6>
+          <h6>Ballet Folklórico</h6>
+          <h6>Alyssa Compton</h6>
+        </div>
+      <div id="lineup-image-box">
+      <Image src={PondFestLineupImg} alt="pond fest lineup" id="event-lineup-img" />
+      </div>
+      </div>
+      <p>We'll also have an Open Mic all day at the Nest Box stage! Sign up begins at 11am.</p>
+      </br>
+      <h3>Local Brews</h3>
       <ul>
-        <li>12-2 pm PJ’s Pub Tour</li>
-        <li>2-4 pm Lucky Stone</li>
+        <li>JAKL Beer Works</li>
+        <li>Volunteer Brewing Company</li>
+        <li>First State Brewing Company</li>
       </ul>
-      <h4>Local Brews</h4>
-      <ul>
-        <li>Beer from JAKL Beer Works</li>
-        <li>Seltzer from Volunteer Brewing Company</li>
-      </ul>
+      <p>Both beer and seltzer will be available.</p>
 
-      <h4>Food Trucks</h4>
+      <h3>Food Trucks</h3>
       <ul>
         <li>Dixie’s Down Home Cooking</li>
         <li>TukTuk Wings & Thai Bowls</li>
         <li>Shake It Fast</li>
       </ul>
-      <h4>Kid Activities</h4>
+      <h3>Kid Activities</h3>
       <ul>
         <li>Crafts</li>
         <li>Face painting</li>
       </ul>
-      <h4>Raffles donated by</h4>
+      <h3>Raffle and Silent Auction</h3>
+      We'll be raffling and auctioning off a variety of exciting items generously donated by
+      Friends of Lums Pond supporters. A few examples include:
+
       <ul>
-        <li>Raffle Donation</li>
+        <li>Pond Fest gift basket, including merch and FOLP membership</li>
+        <li>Kids "Surf Fishing Vehicle" donated by DNREC</li>
+        <li>A week of camping at Lums Pond donated by DNREC</li>
+        <li>A pair of passes to Fort Delaware State Park donated by DNREC</li>
+        <li>Foursome golf passes donated by Deerfield Golf Club</li>
+        <li>Foursome golf passes donated by Garrisons Lake Golf Club</li>
+        <li>Various items donated by REI</li>
+        <li>A full-size cornhole set, hand-made and donated by Bob Conley</li>
+        <li>Hand-made birdhouses donated by Bob Conley</li>
+        <li>Band merchandise donated by Lucky Stone</i>
+        <li>Ceramic painting mini-kit and Gift Card donated by Your Creation Station</li>
+        <li>Mum and Gift Card donated by Willey Farms</li>
+        <li>Artwork donated by local artist and illustrator, Mark Collins</li>
+        <li>Restaurant Gift Card donated by Stewart's Brewing Company</li>
       </ul>
-      <h4>Auction items donated by *** UPDATE CONTENT ***</h4>
-      <ul>
-        <li>Raffle Donation</li>
-      </ul>
-      <h4>Displays</h4>
+      <h3>Displays</h3>
       <ul>
         <li>Delaware R/C Club</li>
         <li>Fire truck from Volunteer Hose Co. of Middletown</li>
@@ -184,7 +193,7 @@ list of raffle baskets
         </li>
       </ul>
 
-      <h4>Vendors, Crafters, and Nonprofits</h4>
+      <h3>Vendors, Crafters, and Nonprofits</h3>
       <Image src={VendorMap} alt="vendor map at pond fest" id="vendor-map" />
 
       <div>
@@ -226,23 +235,36 @@ list of raffle baskets
         impact. We could not do it without you!
       </p>
 
-      <h3>Platinum</h3>
+      <h3>Platinum Sponsor</h3>
       <ul>
-        <li>Platinum Sponsor</li>
+        <li>Christiana Care</li>
+        <li>302 Masons Lodge</li>
       </ul>
-
-      <h3>Gold</h3>
+      <h3>Silver Sponsors</h3>
       <ul>
-        <li>Gold Sponsor</li>
+         <li>Superservice Automotive</li>
+         <li>Guild Mortgage</li>
+         <li>Easterseals</li>
       </ul>
-
-      <h3>Silver</h3>
-
-      <ul><li>Silver Sponsor</li></ul>
-
-      <h3>Bronze</h3>
+      <h3>Gold Sponsor</h3>
       <ul>
-        <li>Bronze Sponsor</li>
+         <li>Deerfield Country Club</li>
+         <li>Little Bear Dog Care & Training, LLC</li>
+         <li>Sit Means Sit</li>
+         <li>Academy of Dog Training</li>
+         <li>Bayada</li>
+      </ul>
+      <h3>Bronze Sponsors</h3>
+      <ul>
+         <li>Lucky Stone</li>
+         <li>Cook's Farm</li>
+         <li>CrossFit Bear</li>
+      </ul>
+      <h3>Family Sponsors</h3>
+      <ul>
+         <li>Joel Mey</li>
+         <li>Jeremy Lambert</li>
+         <li>The Rose Family</li>
       </ul>
 
       <h2>Pond Fest Committee</h2>
@@ -378,18 +400,43 @@ list of raffle baskets
     height: auto;
     max-height: 50vh;
   }
+  #event-lineup-img {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: auto;
+  }
   #event-map {
     max-width: min(90vw, 50rem);
     width: auto;
     height: auto;
     max-height: 80vh;
   }
-
   #vendor-map {
     max-width: 80vw;
     width: auto;
     height: auto;
     max-height: 90vh;
+  }
+  #lineup-wrapper {
+    overflow: hidden;
+  }
+  #lineup-list-box {
+      max-width: 30%;
+      float:left;
+
+      h6 {
+        font-size: 1.2em;
+        color: var(--color-primary-900);
+        line-height: 1.1em;
+        padding: .4em; 
+      }
+  }
+  #lineup-image-box {
+    margin: auto;
+    width: 69%;
+    float: left;
   }
 </style>
 
