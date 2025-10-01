@@ -1,0 +1,469 @@
+
+---
+import { Masonry } from 'astro-masonry';
+import { Image } from "astro:assets";
+import PondFestShirt from "../../images/pf2025-images/pondfest-shirt.png";
+import Layout from "../../layouts/PFLivePage.astro";
+import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../../consts";
+import Modal from "../../components/Modal.astro";
+import logo from "../../images/logo-with-title.png";
+import PFLiveBG from "../../images/pf2025-images/pf-live-bg.jpg";
+import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
+import beerFirstStateImg from "../../images/pf2025-images/beer-1st-state.png";
+import beerJaklImg from "../../images/pf2025-images/beer-jakl.png";
+import beerVolunteerImg from "../../images/pf2025-images/beer-volunteer.png";
+import { RAFFLES} from "../data/pf2025/raffles";
+import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
+---
+<style>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  html {
+      font-size: 22px;
+  }
+  body {
+      padding: 1rem;
+  }
+  .map-modal-link {
+    padding: .1em;
+
+    color: red;
+    background: black;
+
+    height: 3rem;
+    font-size: 1em;
+    margin: 3%;
+
+
+    border-style: solid;
+    border-color: blue;
+  }
+  .map-container {
+    display: grid;
+    grid-template-columns: 48% 48%;
+    padding: 3%;
+  }
+
+#event-lineup-img {
+  width: auto;
+  height : auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+.beer-vendor-img {
+  width: auto;
+  height : auto;
+  max-height: 500%;
+  max-width: 50%;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+    padding-top: .5em;
+}
+
+#accordion__button {
+    width: 100%;
+}
+.sponsor {
+    color: black;
+    padding: 0.2rem;
+    line-height: 1rem;
+}
+.sponsors {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 0.1rem;
+    text-align: center;
+}
+.sponsor-headers {
+    text-align: center;
+    h6 {
+        margin-bottom: 4px;
+    }
+    h5 {
+        margin-bottom: 4px;
+    }
+    h4 {
+        margin-top: 400px;
+    }
+}
+h4 {
+    margin-top: 1rem;
+}
+@media (min-width: 400px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .sponsors {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+</style>
+
+<Layout title="Welcome to Pond Fest 2025!" alert_text={ PF_LIVE_ALERT }>
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-maps accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-maps accordion menu content`}
+    >
+      Maps
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+    <div
+      id={`pflive-maps accordion menu content`}
+      aria-labelledby={`pflive-maps accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4" tile-grid
+    >
+      
+      <div class="map-container">
+          <div class="map-modal-link">
+            Event Map
+          </div>
+          <div class="map-modal-link">
+            Parking
+          </div>
+          <div class="map-modal-link">
+            Vendors & Sponsors
+          </div>
+          <div class="map-modal-link">
+            First Responders
+          </div>
+        </div>
+
+    </div>
+  </div>
+
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-schedule accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-schedule accordion menu content`}
+    >
+      Schedule
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-schedule accordion menu content`}
+      aria-labelledby={`pflive-schedule accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+          <Image src={PondFestLineupImg} alt="pond fest lineup" id="event-lineup-img" />
+      </p>
+    </div>
+  </div>
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-food accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-food accordion menu content`}
+    >
+      Food & Beer
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-food accordion menu content`}
+      aria-labelledby={`pflive-food accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <h5>Local Brews</h5>
+      <p>Thanks to the generous donations of local breweries, beer and seltzer can be purchased for 3 tickets each. Tickets costs $2 and are available at Pond Fest HQ along with 21+ wristbands (required to purchase alcohol). Note that beer tickets can be exchanged for an equal value in raffle tickets.</p>
+      <p><Image src={beerJaklImg} alt="jakl beer works" class="beer-vendor-img" /></p>
+      <p>JAKL Beer Works: Near the Wingspan pavilion.</p>
+      <p><Image src={beerVolunteerImg} alt="volunteer brewing co" class="beer-vendor-img" /></p>
+      <p>Volunteer Brewing Company: Near the Monarch pavilion.</p>
+      <p><Image src={beerFirstStateImg} alt="first state brewery" class="beer-vendor-img" /></p>
+      <p>First State Brewing Company: Near the Monarch pavilion.</p>
+      
+
+      <h5>Food Trucks</h5>
+      Grab a bite at one of the food trucks to support FOLP. All food trucks are generously donating 10% of their profits today back to FOLP!
+      <ul>
+        <li>Dixie’s Down Home Cooking - near the Monarch pavilion.</li>
+        <li>DE Mex Street Foods - near the Nest Box pavilion.</li>
+        <li>We Aim To Cheese - near the Wingspan pavilion.</li>
+        <li>Kona Ice - Near the lawn seating area next to Wingspan.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-raffles accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-raffles accordion menu content`}
+    >
+      Raffles & Silent Auction
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-raffles accordion menu content`}
+      aria-labelledby={`pflive-raffles accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+        Raffles and Silent Auction info
+      </p>
+    </div>
+  </div>
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-faqs accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-faqs accordion menu content`}
+    >
+      FAQ's and Safety
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-faqs accordion menu content`}
+      aria-labelledby={`pflive-faqs accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+        FAQ's
+      </p>
+    </div>
+  </div>
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-getinvolved accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-getinvolved accordion menu content`}
+    >
+      Get Involved
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-getinvolved accordion menu content`}
+      aria-labelledby={`pflive-getinvolved accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+        Details/links for donation and membership
+      </p>
+    </div>
+  </div>
+
+  <div class="accordion group relative rounded-md border border-purple-900">
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-sponsors accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-sponsors accordion menu content`}
+    >
+      Sponsors
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-sponsors accordion menu content`}
+      aria-labelledby={`pflive-sponsors accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+        Sponsor Listings
+      </p>
+    </div>
+  </div>
+
+
+
+<script>
+  function accordionSetup() {
+    const accordionMenus = document.querySelectorAll(
+      ".accordion",
+    ) as NodeListOf<HTMLElement>;
+    accordionMenus.forEach((accordionMenu) => {
+      const accordionButton = accordionMenu.querySelector(
+        ".accordion__button",
+      ) as HTMLElement;
+      const accordionChevron = accordionMenu.querySelector(
+        ".accordion__chevron",
+      ) as HTMLElement;
+      const accordionContent = accordionMenu.querySelector(
+        ".accordion__content",
+      ) as HTMLElement;
+
+      if (accordionButton && accordionContent && accordionChevron) {
+        accordionButton.addEventListener("click", (event) => {
+          if (!accordionMenu.classList.contains("active")) {
+            // if accordion is currently closed, so open it
+            accordionMenu.classList.add("active");
+            accordionButton.setAttribute("aria-expanded", "true");
+
+            // set max-height to the height of the accordion content
+            // this makes it animate properly
+            accordionContent.classList.remove("hidden");
+            accordionContent.style.maxHeight =
+              accordionContent.scrollHeight + "px";
+            accordionChevron.classList.add("rotate-180");
+          } else {
+            // accordion is currently open, so close it
+            accordionMenu.classList.remove("active");
+            accordionButton.setAttribute("aria-expanded", "false");
+
+            // set max-height to the height of the accordion content
+            // this makes it animate properly
+            accordionContent.style.maxHeight = "0px";
+            accordionChevron.classList.remove("rotate-180");
+            // delay to allow close animation
+            setTimeout(() => {
+              accordionContent.classList.add("hidden");
+            }, 300);
+          }
+          event.preventDefault();
+          return false;
+        });
+      }
+    });
+  }
+
+  // runs on initial page load
+  accordionSetup();
+
+  // runs on view transitions navigation
+  document.addEventListener("astro:after-swap", accordionSetup);
+</script>
+
