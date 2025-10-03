@@ -2,13 +2,16 @@
 import { Image } from "astro:assets";
 import Layout from "../../layouts/SecondaryPage.astro";
 import { getUrl } from "../../components/getUrl";
-import EventMapImg from "../../images/pondfest2025-event-map.png";
-import ParkingMapImg from "../../images/pondfest2025-parking-map.png";
-import FirstRespondersMapImg from "../../images/pondfest2025-firstresponders.png";
-import VendorMap from "../../images/pondfest-vendors.png";
-import PondFest from "../../images/pondfest-2025-hero.png";
-import PondFestShirt from "../../images/pondfest2025-shirt.png";
-import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
+import EventMapImg from "../../images/pf2025-images/pondfest2025-event-map.png";
+import ParkingMapImg from "../../images/pf2025-images/pondfest2025-parking-map.png";
+import FirstRespondersMapImg from "../../images/pf2025-images/pondfest2025-firstresponders.png";
+import PondFest from "../../images/pf2025-images/pondfest-2025-hero.png";
+import PondFestShirt from "../../images/pf2025-images/pondfest2025-shirt.png";
+import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
+import VendorMap from "../../images/pf2025-images/pondfest-vendor-map.png";
+import { RAFFLES } from "../data/pf2025/raffles";
+import { VENDORS } from "../data/pf2025/vendors";
+import { volunteers } from "../data/pf2025/volunteers";
 ---
 
 <Layout title="Pond Fest 2025">
@@ -144,12 +147,7 @@ import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
   <h3>Local Brews</h3>
   <p>
     Beer and seltzer will be available for purchase thanks to the generous
-    donations of local breweries. Beer tickets can be purchased at the info tent
-    or you can pre-purchase a <a
-      href="https://www.eventbrite.com/e/pond-fest-2025-tickets-1313274091159"
-      >bundle</a
-    > online and save - check out the Beer Lover's Bundle! Bundles are available
-    online through September 30.
+    donations of local breweries. Beer tickets can be purchased at Pond Fest HQ.
   </p>
   <ul>
     <li>JAKL Beer Works</li>
@@ -191,10 +189,7 @@ import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
   <h4>Kid Zone!</h4>
   <p>
     We have a ton of fun activities planned for the kids! Kid Zone wristbands
-    can be purchased at the info tent or you can pre-purchase the <a
-      href="https://www.eventbrite.com/e/pond-fest-2025-tickets-1313274091159"
-      >Family Fun Pack bundle</a
-    > online by September 30 and save!
+    can be purchased at Pond Fest HQ.
   </p>
   <ul>
     <li>Book Readings</li>
@@ -258,6 +253,34 @@ import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
     We've got over 40 vendors, crafters, and nonprofits lined up for you to
     explore. Check back soon for more details.
   </p>
+  <Image
+    src={VendorMap}
+    alt="vendor map at pond fest"
+    id="vendor-map"
+    class="pf-maps"
+  />
+  <table id="by-name">
+    <thead>
+      <tr>
+        <th>Name of Business/Organization</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {
+          VENDORS.map((vendor) => (
+            <tr>
+              <>
+                <td>{vendor.name}</td>
+                <td>{vendor.location}</td>
+              </>
+            </tr>
+          ))
+        }
+      </tr>
+    </tbody>
+  </table>
 
   <h2>Sponsors</h2>
   <p>
@@ -348,7 +371,7 @@ import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
 
   <b>Thank you to these amazing humans, our Pond Fest volunteers:</b>
   <ul>
-    <li>Volunteer Name</li>
+    {volunteers.map((volunteer) => <li>{volunteer}</li>)}
     <li>
       ...and everyone whose contributions made this event possible, including
       those we may not have mentioned.
@@ -445,12 +468,13 @@ import PondFestLineupImg from "../../images/pondfest2025-lineup.png";
     height: auto;
     max-height: 80vh;
   }
-  #vendor-map {
-    max-width: 80vw;
+  .pf-maps {
+    max-width: min(90vw, 50rem);
     width: auto;
     height: auto;
-    max-height: 90vh;
+    max-height: 80vh;
   }
+
   #lineup-wrapper {
     overflow: hidden;
   }
