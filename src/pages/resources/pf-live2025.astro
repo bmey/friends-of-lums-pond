@@ -8,17 +8,18 @@ import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../../consts";
 import Modal from "../../components/Modal.astro";
 import logo from "../../images/logo-with-title.png";
 import PFLiveBG from "../../images/pf2025-images/pf-live-bg.jpg";
+import { RAFFLES } from "../data/pf2025/raffles";
+import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
 import beerFirstStateImg from "../../images/pf2025-images/beer-1st-state.png";
 import beerJaklImg from "../../images/pf2025-images/beer-jakl.png";
 import beerVolunteerImg from "../../images/pf2025-images/beer-volunteer.png";
-import { RAFFLES } from "../data/pf2025/raffles";
-import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
 import EventMapImg from "../../images/pf2025-images/pondfest2025-event-map.png";
 import ParkingMapImg from "../../images/pf2025-images/pondfest2025-parking-map.png";
 import FirstRespondersMapImg from "../../images/pf2025-images/pondfest2025-firstresponders.png";
 import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
 import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
 import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime.png";
+import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors";
 ---
 
 <style>
@@ -111,8 +112,8 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
   }
   .sponsor {
     color: black;
-    padding: 0.2rem;
-    line-height: 1rem;
+    line-height: .8rem;
+    padding: .5em;
   }
   .sponsors {
     max-width: 1200px;
@@ -120,6 +121,8 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     display: grid;
     gap: 0.1rem;
     text-align: center;
+    line-height: .8rem;
+    padding-bottom: 1em;
   }
   .sponsor-headers {
     text-align: center;
@@ -155,7 +158,7 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
       </button>
     </main>
   </Modal>
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="maps-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -242,7 +245,7 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </div>
   </div>
 
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="schedules-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -307,7 +310,7 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </div>
   </div>
 
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="foodbeer-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -385,7 +388,7 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </div>
   </div>
 
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="raffles-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -433,7 +436,7 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </div>
   </div>
 
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="faq-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -474,15 +477,15 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </div>
   </div>
 
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="donate-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
-      id={`pflive-getinvolved accordion menu button`}
+      id={`pflive-donate accordion menu button`}
       aria-expanded="false"
-      aria-controls={`pflive-getinvolved accordion menu content`}
+      aria-controls={`pflive-donate accordion menu content`}
     >
-      Get Involved
+      Donate
 
       <!-- use this is not using astro-icon (or another SVG you like) -->
       <svg
@@ -503,25 +506,26 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </button>
 
     <div
-      id={`pflive-getinvolved accordion menu content`}
-      aria-labelledby={`pflive-getinvolved accordion menu button`}
+      id={`pflive-donate accordion menu content`}
+      aria-labelledby={`pflive-donate accordion menu button`}
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-        Details/links for donation and membership
+
+        <script src="https://donorbox.org/widget.js" paypalExpress="false"></script> <iframe src="https://donorbox.org/embed/pond-fest-2025-donations?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
       </p>
     </div>
   </div>
 
-  <div class="accordion group relative rounded-md border border-purple-900">
+  <div id="join-accordion" class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
-      id={`pflive-sponsors accordion menu button`}
+      id={`pflive-join accordion menu button`}
       aria-expanded="false"
-      aria-controls={`pflive-sponsors accordion menu content`}
+      aria-controls={`pflive-join accordion menu content`}
     >
-      Sponsors
+      Join FOLP
 
       <!-- use this is not using astro-icon (or another SVG you like) -->
       <svg
@@ -542,16 +546,60 @@ import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime
     </button>
 
     <div
-      id={`pflive-sponsors accordion menu content`}
-      aria-labelledby={`pflive-sponsors accordion menu button`}
+      id={`pflive-join accordion menu content`}
+      aria-labelledby={`pflive-join accordion menu button`}
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-        Sponsor Listings
+      
+        <script src="https://donorbox.org/widget.js" paypalExpress="false"></script> <iframe src="https://donorbox.org/embed/friends-of-lums-pond?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
       </p>
     </div>
   </div>
 
+
+
+<h4>Special thanks to all of our Pond Fest 2025 sponsors:</h3>
+<h5 class="sponsor-headers">Platinum Sponsors</h4>
+  <div class="sponsors">
+    {
+      PLATINUM.map((sponsor) => (
+          <div class="sponsor">{sponsor}</div>
+      ))
+    }
+  </div>
+<h5 class="sponsor-headers">Gold Sponsors</h4>
+  <div class="sponsors">
+    {
+      GOLD.map((sponsor) => (
+          <div class="sponsor">{sponsor}</div>
+      ))
+    }
+  </div>
+<h5 class="sponsor-headers">Silver Sponsors</h4>
+  <div class="sponsors">
+    {
+      SILVER.map((sponsor) => (
+          <div class="sponsor">{sponsor}</div>
+      ))
+    }
+  </div>
+<h5 class="sponsor-headers">Bronze Sponsors</h4>
+  <div class="sponsors">
+    {
+      BRONZE.map((sponsor) => (
+          <div class="sponsor">{sponsor}</div>
+      ))
+    }
+  </div>
+<h5 class="sponsor-headers">Family Sponsors</h4>
+  <div class="sponsors">
+    {
+      FAMILY.map((sponsor) => (
+          <div class="sponsor">{sponsor}</div>
+      ))
+    }
+</div>
   <script>
     function accordionSetup() {
       const accordionMenus = document.querySelectorAll(

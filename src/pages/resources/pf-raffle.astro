@@ -14,7 +14,10 @@ import beerJaklImg from "../../images/pf2025-images/beer-jakl.png";
 import beerVolunteerImg from "../../images/pf2025-images/beer-volunteer.png";
 import { RAFFLES} from "../data/pf2025/raffles";
 import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
+import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors";
 ---
+
+
 <style>
   @tailwind base;
   @tailwind components;
@@ -115,7 +118,14 @@ tr:nth-child(even) {
 h4 {
     margin-top: 1rem;
 }
-
+  @media (min-width: 400px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sponsors {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 
 </style>
 
@@ -135,3 +145,45 @@ h4 {
 </div>
 
 <button type="button" onclick="javascript:history.back()">Back</button>
+
+  <h4>Special thanks to all of our Pond Fest 2025 sponsors:</h3>
+  <h5 class="sponsor-headers">Platinum Sponsors</h4>
+    <div class="sponsors">
+      {
+        PLATINUM.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Gold Sponsors</h4>
+    <div class="sponsors">
+      {
+        GOLD.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Silver Sponsors</h4>
+    <div class="sponsors">
+      {
+        SILVER.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Bronze Sponsors</h4>
+    <div class="sponsors">
+      {
+        BRONZE.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Family Sponsors</h4>
+    <div class="sponsors">
+      {
+        FAMILY.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
