@@ -1,6 +1,5 @@
-
 ---
-import { Masonry } from 'astro-masonry';
+import { Masonry } from "astro-masonry";
 import { Image } from "astro:assets";
 import PondFestShirt from "../../images/pf2025-images/pondfest-shirt.png";
 import Layout from "../../layouts/PFLivePage.astro";
@@ -13,22 +12,23 @@ import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.pn
 import beerFirstStateImg from "../../images/pf2025-images/beer-1st-state.png";
 import beerJaklImg from "../../images/pf2025-images/beer-jakl.png";
 import beerVolunteerImg from "../../images/pf2025-images/beer-volunteer.png";
-import { RAFFLES} from "../data/pf2025/raffles";
+import { RAFFLES } from "../data/pf2025/raffles";
 import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
 import EventMapImg from "../../images/pf2025-images/pondfest2025-event-map.png";
 import ParkingMapImg from "../../images/pf2025-images/pondfest2025-parking-map.png";
 import FirstRespondersMapImg from "../../images/pf2025-images/pondfest2025-firstresponders.png";
 import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
 ---
+
 <style>
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
   html {
-      font-size: 22px;
+    font-size: 22px;
   }
   body {
-      padding: 1rem;
+    padding: 1rem;
   }
   .map-modal-link {
     margin: 3%;
@@ -41,80 +41,78 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
     padding: 3%;
   }
 
-#event-lineup-img {
-  width: auto;
-  height : auto;
-  max-height: 100%;
-  max-width: 100%;
-}
-    .thumbnail {
-      border: none;
-      padding: 0;
-    }
-    .thumbnail img {
-      max-height: 100%;
-  max-width: 100%;
-      height: 90px;
-      object-fit: contain;
-    }
-.beer-vendor-img {
-  width: auto;
-  height : auto;
-  max-height: 500%;
-  max-width: 50%;
-}
+  #event-lineup-img {
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+  }
+  .thumbnail {
+    border: none;
+    padding: 0;
+  }
+  .thumbnail img {
+    max-height: 100%;
+    max-width: 100%;
+    height: 90px;
+    object-fit: contain;
+  }
+  .beer-vendor-img {
+    width: auto;
+    height: auto;
+    max-height: 500%;
+    max-width: 50%;
+  }
 
-tr:nth-child(even) {
+  tr:nth-child(even) {
     background-color: #ddd;
-}
+  }
 
-:is(h1, h2, h3, h4, h5, h6) {
-    padding-top: .5em;
-}
+  :is(h1, h2, h3, h4, h5, h6) {
+    padding-top: 0.5em;
+  }
 
-#accordion__button {
+  #accordion__button {
     width: 100%;
-}
-.sponsor {
+  }
+  .sponsor {
     color: black;
     padding: 0.2rem;
     line-height: 1rem;
-}
-.sponsors {
+  }
+  .sponsors {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
     gap: 0.1rem;
     text-align: center;
-}
-.sponsor-headers {
+  }
+  .sponsor-headers {
     text-align: center;
     h6 {
-        margin-bottom: 4px;
+      margin-bottom: 4px;
     }
     h5 {
-        margin-bottom: 4px;
+      margin-bottom: 4px;
     }
     h4 {
-        margin-top: 400px;
+      margin-top: 400px;
     }
-}
-h4 {
+  }
+  h4 {
     margin-top: 1rem;
-}
-@media (min-width: 400px) {
+  }
+  @media (min-width: 400px) {
     .cards {
-        grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
     .sponsors {
-        grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
-}
-
+  }
 </style>
 
-<Layout title="Welcome to Pond Fest 2025!" alert_text={ PF_LIVE_ALERT }>
-
+<Layout title="Welcome to Pond Fest 2025!" alert_text={PF_LIVE_ALERT}>
   <div class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
@@ -143,120 +141,113 @@ h4 {
     <div
       id={`pflive-maps accordion menu content`}
       aria-labelledby={`pflive-maps accordion menu button`}
-      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4" tile-grid
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+      tile-grid
     >
-
-
-
       <div class="map-container">
         <div class="map-modal-link">
-            <h6>Event Map</h6>
-        <div class="container">
-              <button data-src={EventMapImg.src} class="thumbnail">
-                <Image src={EventMapImg} alt="pond fest event map" class="map-thumb-img" />
-              </button>
-          <Modal id="galleryDialog" open="Open modal">
-            <main slot="main" class="galleryDialog">
-              <img id="dialog-img" />
-              <button slot="close" class="menu-button">
-                <i class="fa-solid fa-xmark fa-lg"></i>
-              </button>
-            </main>
-          </Modal>
-        </div>
-        </div>
-
-<script>
-  var dialogImage = document.getElementById("dialog-img");
-  var buttons = document.querySelectorAll("button[data-src]");
-  buttons.forEach((button) => {
-    button.addEventListener("click", async () => {
-      const srcKey = button.getAttribute("data-src");
-      const src = srcKey?.replace("/public", "");
-      dialogImage?.setAttribute("src", srcKey || "");
-      // timeout to avoid flash of previous image
-      setTimeout(() => {
-        //@ts-ignore
-        window.galleryDialog.showModal();
-      }, 10);
-    });
-  });
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <div class="map-modal-link">
-            <h6>Parking</h6>
-            <div class="container">
-              <button data-src={ParkingMapImg.src} class="thumbnail">
-                <Image src={ParkingMapImg} alt="pond fest parking map" class="map-thumb-img" />
-              </button>
-              <Modal id="galleryDialog" open="Open modal">
-                <main slot="main" class="galleryDialog">
-                  <img id="dialog-img" />
-                  <button slot="close" class="menu-button">
-                    <i class="fa-solid fa-xmark fa-lg"></i>
-                  </button>
-                </main>
-              </Modal>
-            </div>
+          <h6>Event Map</h6>
+          <div class="container">
+            <button data-src={EventMapImg.src} class="thumbnail">
+              <Image
+                src={EventMapImg}
+                alt="pond fest event map"
+                class="map-thumb-img"
+              />
+            </button>
+            <Modal id="galleryDialog" open="Open modal">
+              <main slot="main" class="galleryDialog">
+                <img id="dialog-img" />
+                <button slot="close" class="menu-button">
+                  <i class="fa-solid fa-xmark fa-lg"></i>
+                </button>
+              </main>
+            </Modal>
           </div>
-
-
-          <div class="map-modal-link">
-            <h6>Vendors</h6>
-            <div class="container">
-              <button data-src={VendorMapImg.src} class="thumbnail">
-                <Image src={VendorMapImg} alt="pond fest vendor map" class="map-thumb-img" />
-              </button>
-              <Modal id="galleryDialog" open="Open modal">
-                <main slot="main" class="galleryDialog">
-                  <img id="dialog-img" />
-                  <button slot="close" class="menu-button">
-                    <i class="fa-solid fa-xmark fa-lg"></i>
-                  </button>
-                </main>
-              </Modal>
-            </div>
-          </div>
-
-
-          <div class="map-modal-link">
-            <h6>First Responders</h6>
-            <div class="container">
-              <button data-src={FirstRespondersMapImg.src} class="thumbnail">
-                <Image src={FirstRespondersMapImg} alt="pond fest first responders map" class="map-thumb-img" />
-              </button>
-              <Modal id="galleryDialog" open="Open modal">
-                <main slot="main" class="galleryDialog">
-                  <img id="dialog-img" />
-                  <button slot="close" class="menu-button">
-                    <i class="fa-solid fa-xmark fa-lg"></i>
-                  </button>
-                </main>
-              </Modal>
-            </div>
-          </div>
-
-
         </div>
 
+        <script>
+          var dialogImage = document.getElementById("dialog-img");
+          var buttons = document.querySelectorAll("button[data-src]");
+          buttons.forEach((button) => {
+            button.addEventListener("click", async () => {
+              const srcKey = button.getAttribute("data-src");
+              const src = srcKey?.replace("/public", "");
+              dialogImage?.setAttribute("src", srcKey || "");
+              // timeout to avoid flash of previous image
+              setTimeout(() => {
+                //@ts-ignore
+                window.galleryDialog.showModal();
+              }, 10);
+            });
+          });
+        </script>
+
+        <div class="map-modal-link">
+          <h6>Parking</h6>
+          <div class="container">
+            <button data-src={ParkingMapImg.src} class="thumbnail">
+              <Image
+                src={ParkingMapImg}
+                alt="pond fest parking map"
+                class="map-thumb-img"
+              />
+            </button>
+            <Modal id="galleryDialog" open="Open modal">
+              <main slot="main" class="galleryDialog">
+                <img id="dialog-img" />
+                <button slot="close" class="menu-button">
+                  <i class="fa-solid fa-xmark fa-lg"></i>
+                </button>
+              </main>
+            </Modal>
+          </div>
+        </div>
+
+        <div class="map-modal-link">
+          <h6>Vendors</h6>
+          <div class="container">
+            <button data-src={VendorMapImg.src} class="thumbnail">
+              <Image
+                src={VendorMapImg}
+                alt="pond fest vendor map"
+                class="map-thumb-img"
+              />
+            </button>
+            <Modal id="galleryDialog" open="Open modal">
+              <main slot="main" class="galleryDialog">
+                <img id="dialog-img" />
+                <button slot="close" class="menu-button">
+                  <i class="fa-solid fa-xmark fa-lg"></i>
+                </button>
+              </main>
+            </Modal>
+          </div>
+        </div>
+
+        <div class="map-modal-link">
+          <h6>First Responders</h6>
+          <div class="container">
+            <button data-src={FirstRespondersMapImg.src} class="thumbnail">
+              <Image
+                src={FirstRespondersMapImg}
+                alt="pond fest first responders map"
+                class="map-thumb-img"
+              />
+            </button>
+            <Modal id="galleryDialog" open="Open modal">
+              <main slot="main" class="galleryDialog">
+                <img id="dialog-img" />
+                <button slot="close" class="menu-button">
+                  <i class="fa-solid fa-xmark fa-lg"></i>
+                </button>
+              </main>
+            </Modal>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
 
   <div class="accordion group relative rounded-md border border-purple-900">
     <button
@@ -292,7 +283,11 @@ h4 {
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-          <Image src={PondFestLineupImg} alt="pond fest lineup" id="event-lineup-img" />
+        <Image
+          src={PondFestLineupImg}
+          alt="pond fest lineup"
+          id="event-lineup-img"
+        />
       </p>
     </div>
   </div>
@@ -331,17 +326,41 @@ h4 {
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <h5>Local Brews</h5>
-      <p>Thanks to the generous donations of local breweries, beer and seltzer can be purchased for 3 tickets each. Tickets costs $2 and are available at Pond Fest HQ along with 21+ wristbands (required to purchase alcohol). Note that beer tickets can be exchanged for an equal value in raffle tickets.</p>
-      <p><Image src={beerJaklImg} alt="jakl beer works" class="beer-vendor-img" /></p>
+      <p>
+        Thanks to the generous donations of local breweries, beer and seltzer
+        can be purchased for 3 tickets each. Tickets costs $2 and are available
+        at Pond Fest HQ along with 21+ wristbands (required to purchase
+        alcohol). Note that beer tickets can be exchanged for an equal value in
+        raffle tickets.
+      </p>
+      <p>
+        <Image
+          src={beerJaklImg}
+          alt="jakl beer works"
+          class="beer-vendor-img"
+        />
+      </p>
       <p>JAKL Beer Works: Near the Wingspan pavilion.</p>
-      <p><Image src={beerVolunteerImg} alt="volunteer brewing co" class="beer-vendor-img" /></p>
+      <p>
+        <Image
+          src={beerVolunteerImg}
+          alt="volunteer brewing co"
+          class="beer-vendor-img"
+        />
+      </p>
       <p>Volunteer Brewing Company: Near the Monarch pavilion.</p>
-      <p><Image src={beerFirstStateImg} alt="first state brewery" class="beer-vendor-img" /></p>
+      <p>
+        <Image
+          src={beerFirstStateImg}
+          alt="first state brewery"
+          class="beer-vendor-img"
+        />
+      </p>
       <p>First State Brewing Company: Near the Monarch pavilion.</p>
-      
 
       <h5>Food Trucks</h5>
-      Grab a bite at one of the food trucks to support FOLP. All food trucks are generously donating 10% of their profits today back to FOLP!
+       Grab a bite at one of the food trucks to support FOLP. All food trucks
+      are generously donating 10% of their profits today back to FOLP!
       <ul>
         <li>Dixie’s Down Home Cooking - near the Monarch pavilion.</li>
         <li>DE Mex Street Foods - near the Nest Box pavilion.</li>
@@ -386,10 +405,14 @@ h4 {
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
         <p>
-          <a href={getUrl("resources/pf-raffle")}>Click here for info on raffles and winners.</a>
+          <a href={getUrl("resources/pf-raffle")}
+            >Click here for info on raffles and winners.</a
+          >
         </p>
         <p>
-          <a href={getUrl("resources/pf-auction")}>Click here for info on the silent auction and winners.</a>
+          <a href={getUrl("resources/pf-auction")}
+            >Click here for info on the silent auction and winners.</a
+          >
         </p>
       </p>
     </div>
@@ -429,7 +452,9 @@ h4 {
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-        <a href={getUrl("resources/pf-faq")}>Click here for FAQ's and details about today's event.</a>
+        <a href={getUrl("resources/pf-faq")}
+          >Click here for FAQ's and details about today's event.</a
+        >
       </p>
     </div>
   </div>
@@ -512,62 +537,60 @@ h4 {
     </div>
   </div>
 
+  <script>
+    function accordionSetup() {
+      const accordionMenus = document.querySelectorAll(
+        ".accordion",
+      ) as NodeListOf<HTMLElement>;
+      accordionMenus.forEach((accordionMenu) => {
+        const accordionButton = accordionMenu.querySelector(
+          ".accordion__button",
+        ) as HTMLElement;
+        const accordionChevron = accordionMenu.querySelector(
+          ".accordion__chevron",
+        ) as HTMLElement;
+        const accordionContent = accordionMenu.querySelector(
+          ".accordion__content",
+        ) as HTMLElement;
 
+        if (accordionButton && accordionContent && accordionChevron) {
+          accordionButton.addEventListener("click", (event) => {
+            if (!accordionMenu.classList.contains("active")) {
+              // if accordion is currently closed, so open it
+              accordionMenu.classList.add("active");
+              accordionButton.setAttribute("aria-expanded", "true");
 
-<script>
-  function accordionSetup() {
-    const accordionMenus = document.querySelectorAll(
-      ".accordion",
-    ) as NodeListOf<HTMLElement>;
-    accordionMenus.forEach((accordionMenu) => {
-      const accordionButton = accordionMenu.querySelector(
-        ".accordion__button",
-      ) as HTMLElement;
-      const accordionChevron = accordionMenu.querySelector(
-        ".accordion__chevron",
-      ) as HTMLElement;
-      const accordionContent = accordionMenu.querySelector(
-        ".accordion__content",
-      ) as HTMLElement;
+              // set max-height to the height of the accordion content
+              // this makes it animate properly
+              accordionContent.classList.remove("hidden");
+              accordionContent.style.maxHeight =
+                accordionContent.scrollHeight + "px";
+              accordionChevron.classList.add("rotate-180");
+            } else {
+              // accordion is currently open, so close it
+              accordionMenu.classList.remove("active");
+              accordionButton.setAttribute("aria-expanded", "false");
 
-      if (accordionButton && accordionContent && accordionChevron) {
-        accordionButton.addEventListener("click", (event) => {
-          if (!accordionMenu.classList.contains("active")) {
-            // if accordion is currently closed, so open it
-            accordionMenu.classList.add("active");
-            accordionButton.setAttribute("aria-expanded", "true");
+              // set max-height to the height of the accordion content
+              // this makes it animate properly
+              accordionContent.style.maxHeight = "0px";
+              accordionChevron.classList.remove("rotate-180");
+              // delay to allow close animation
+              setTimeout(() => {
+                accordionContent.classList.add("hidden");
+              }, 300);
+            }
+            event.preventDefault();
+            return false;
+          });
+        }
+      });
+    }
 
-            // set max-height to the height of the accordion content
-            // this makes it animate properly
-            accordionContent.classList.remove("hidden");
-            accordionContent.style.maxHeight =
-              accordionContent.scrollHeight + "px";
-            accordionChevron.classList.add("rotate-180");
-          } else {
-            // accordion is currently open, so close it
-            accordionMenu.classList.remove("active");
-            accordionButton.setAttribute("aria-expanded", "false");
+    // runs on initial page load
+    accordionSetup();
 
-            // set max-height to the height of the accordion content
-            // this makes it animate properly
-            accordionContent.style.maxHeight = "0px";
-            accordionChevron.classList.remove("rotate-180");
-            // delay to allow close animation
-            setTimeout(() => {
-              accordionContent.classList.add("hidden");
-            }, 300);
-          }
-          event.preventDefault();
-          return false;
-        });
-      }
-    });
-  }
-
-  // runs on initial page load
-  accordionSetup();
-
-  // runs on view transitions navigation
-  document.addEventListener("astro:after-swap", accordionSetup);
-</script>
-
+    // runs on view transitions navigation
+    document.addEventListener("astro:after-swap", accordionSetup);
+  </script>
+</Layout>
