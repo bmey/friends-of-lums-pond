@@ -11,6 +11,7 @@ import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.pn
 import VendorMap from "../../images/pf2025-images/pondfest-vendor-map.png";
 import { RAFFLES } from "../data/pf2025/raffles";
 import { VENDORS } from "../data/pf2025/vendors";
+import { volunteers } from "../data/pf2025/volunteers";
 ---
 
 <Layout title="Pond Fest 2025">
@@ -252,7 +253,12 @@ import { VENDORS } from "../data/pf2025/vendors";
     We've got over 40 vendors, crafters, and nonprofits lined up for you to
     explore. Check back soon for more details.
   </p>
-  <Image src={VendorMap} alt="vendor map at pond fest" id="vendor-map" class="pf-maps" />
+  <Image
+    src={VendorMap}
+    alt="vendor map at pond fest"
+    id="vendor-map"
+    class="pf-maps"
+  />
   <table id="by-name">
     <thead>
       <tr>
@@ -264,7 +270,12 @@ import { VENDORS } from "../data/pf2025/vendors";
       <tr>
         {
           VENDORS.map((vendor) => (
-            <tr><td>{vendor.name}</td><td>{vendor.location}</td></tr>
+            <tr>
+              <>
+                <td>{vendor.name}</td>
+                <td>{vendor.location}</td>
+              </>
+            </tr>
           ))
         }
       </tr>
@@ -360,7 +371,7 @@ import { VENDORS } from "../data/pf2025/vendors";
 
   <b>Thank you to these amazing humans, our Pond Fest volunteers:</b>
   <ul>
-    <li>Volunteer Name</li>
+    {volunteers.map((volunteer) => <li>{volunteer}</li>)}
     <li>
       ...and everyone whose contributions made this event possible, including
       those we may not have mentioned.

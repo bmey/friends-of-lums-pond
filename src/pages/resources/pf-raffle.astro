@@ -1,0 +1,189 @@
+
+---
+import { Masonry } from 'astro-masonry';
+import { Image } from "astro:assets";
+import PondFestShirt from "../../images/pf2025-images/pondfest-shirt.png";
+import Layout from "../../layouts/PFLivePage.astro";
+import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../../consts";
+import Modal from "../../components/Modal.astro";
+import logo from "../../images/logo-with-title.png";
+import PFLiveBG from "../../images/pf2025-images/pf-live-bg.jpg";
+import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
+import beerFirstStateImg from "../../images/pf2025-images/beer-1st-state.png";
+import beerJaklImg from "../../images/pf2025-images/beer-jakl.png";
+import beerVolunteerImg from "../../images/pf2025-images/beer-volunteer.png";
+import { RAFFLES} from "../data/pf2025/raffles";
+import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
+import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors";
+---
+
+
+<style>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  html {
+      font-size: 22px;
+  }
+  body {
+      padding: 1rem;
+  }
+  .map-modal-link {
+    padding: .1em;
+
+    color: red;
+    background: black;
+
+    height: 3rem;
+    font-size: 1em;
+    margin: 3%;
+
+
+    border-style: solid;
+    border-color: blue;
+  }
+  .map-container {
+    display: grid;
+    grid-template-columns: 48% 48%;
+    padding: 3%;
+  }
+
+#event-lineup-img {
+  width: auto;
+  height : auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+.beer-vendor-img {
+  width: auto;
+  height : auto;
+  max-height: 500%;
+  max-width: 50%;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+    padding-top: .5em;
+}
+
+#accordion__button {
+    width: 100%;
+}
+.raffle-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: .1rem;
+    text-align: center;
+}
+.raffle-tile {
+}
+.raffle-name {
+    font-weight: bold;
+}
+.raffle-desc {
+    max-height:100%;
+}
+.raffle-status {
+    background: lightgray;
+}
+.sponsor {
+    color: black;
+    padding: 0.2rem;
+    line-height: 1rem;
+}
+.sponsors {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 0.1rem;
+    text-align: center;
+}
+.sponsor-headers {
+    text-align: center;
+    h6 {
+        margin-bottom: 4px;
+    }
+    h5 {
+        margin-bottom: 4px;
+    }
+    h4 {
+        margin-top: 400px;
+    }
+}
+h4 {
+    margin-top: 1rem;
+}
+  @media (min-width: 400px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .sponsors {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+</style>
+
+<Layout title="Raffles for Pond Fest 2025" alert_text={ PF_LIVE_ALERT }>
+<button type="button" onclick="javascript:history.back()">Back</button>
+<div class="raffle-container">
+    {
+      RAFFLES.map((raffle) => (
+        <div class="raffle-tile rounded-md border border-purple-900">
+          <div class="raffle-name">{raffle.name}</div>
+          <div class="raffle-desc">{raffle.description}</div>
+          <div class="raffle-status">{raffle.status}</div>
+        </div>
+      ))
+    }
+  
+</div>
+
+<button type="button" onclick="javascript:history.back()">Back</button>
+
+  <h4>Special thanks to all of our Pond Fest 2025 sponsors:</h3>
+  <h5 class="sponsor-headers">Platinum Sponsors</h4>
+    <div class="sponsors">
+      {
+        PLATINUM.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Gold Sponsors</h4>
+    <div class="sponsors">
+      {
+        GOLD.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Silver Sponsors</h4>
+    <div class="sponsors">
+      {
+        SILVER.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Bronze Sponsors</h4>
+    <div class="sponsors">
+      {
+        BRONZE.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
+  <h5 class="sponsor-headers">Family Sponsors</h4>
+    <div class="sponsors">
+      {
+        FAMILY.map((sponsor) => (
+            <div class="sponsor">{sponsor}</div>
+        ))
+      }
+    </div>
