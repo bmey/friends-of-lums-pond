@@ -41,6 +41,39 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
     padding: 3%;
   }
 
+  .mapDialog {
+    position: relative;
+    display: flex;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+  .mapDialog .menu-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--color-gray-rgb-100), 0.5);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+  #dialog-img {
+    width: 100%;
+    height: 100%;
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+  @media (max-width: 720px) {
+    #dialog-img {
+      object-fit: scale-down;
+    }
+  }
+
   #event-lineup-img {
     width: auto;
     height: auto;
@@ -145,6 +178,14 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
       tile-grid
     >
       <div class="map-container">
+        <Modal id="mapDialog" open="Open modal">
+          <main slot="main" class="mapDialog">
+            <img id="dialog-img" />
+            <button slot="close" class="menu-button">
+              <i class="fa-solid fa-xmark fa-lg"></i>
+            </button>
+          </main>
+        </Modal>
         <div class="map-modal-link">
           <h6>Event Map</h6>
           <div class="container">
@@ -155,33 +196,8 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
                 class="map-thumb-img"
               />
             </button>
-            <Modal id="galleryDialog" open="Open modal">
-              <main slot="main" class="galleryDialog">
-                <img id="dialog-img" />
-                <button slot="close" class="menu-button">
-                  <i class="fa-solid fa-xmark fa-lg"></i>
-                </button>
-              </main>
-            </Modal>
           </div>
         </div>
-
-        <script>
-          var dialogImage = document.getElementById("dialog-img");
-          var buttons = document.querySelectorAll("button[data-src]");
-          buttons.forEach((button) => {
-            button.addEventListener("click", async () => {
-              const srcKey = button.getAttribute("data-src");
-              const src = srcKey?.replace("/public", "");
-              dialogImage?.setAttribute("src", srcKey || "");
-              // timeout to avoid flash of previous image
-              setTimeout(() => {
-                //@ts-ignore
-                window.galleryDialog.showModal();
-              }, 10);
-            });
-          });
-        </script>
 
         <div class="map-modal-link">
           <h6>Parking</h6>
@@ -193,14 +209,6 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
                 class="map-thumb-img"
               />
             </button>
-            <Modal id="galleryDialog" open="Open modal">
-              <main slot="main" class="galleryDialog">
-                <img id="dialog-img" />
-                <button slot="close" class="menu-button">
-                  <i class="fa-solid fa-xmark fa-lg"></i>
-                </button>
-              </main>
-            </Modal>
           </div>
         </div>
 
@@ -214,14 +222,6 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
                 class="map-thumb-img"
               />
             </button>
-            <Modal id="galleryDialog" open="Open modal">
-              <main slot="main" class="galleryDialog">
-                <img id="dialog-img" />
-                <button slot="close" class="menu-button">
-                  <i class="fa-solid fa-xmark fa-lg"></i>
-                </button>
-              </main>
-            </Modal>
           </div>
         </div>
 
@@ -235,14 +235,6 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
                 class="map-thumb-img"
               />
             </button>
-            <Modal id="galleryDialog" open="Open modal">
-              <main slot="main" class="galleryDialog">
-                <img id="dialog-img" />
-                <button slot="close" class="menu-button">
-                  <i class="fa-solid fa-xmark fa-lg"></i>
-                </button>
-              </main>
-            </Modal>
           </div>
         </div>
       </div>
@@ -592,5 +584,22 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
 
     // runs on view transitions navigation
     document.addEventListener("astro:after-swap", accordionSetup);
+  </script>
+
+  <script>
+    var dialogImage = document.getElementById("dialog-img");
+    var buttons = document.querySelectorAll("button[data-src]");
+    buttons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const srcKey = button.getAttribute("data-src");
+        const src = srcKey?.replace("/public", "");
+        dialogImage?.setAttribute("src", src || "");
+        // timeout to avoid flash of previous image
+        setTimeout(() => {
+          //@ts-ignore
+          window.mapDialog.showModal();
+        }, 10);
+      });
+    });
   </script>
 </Layout>
