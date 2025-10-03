@@ -19,7 +19,14 @@ import FirstRespondersMapImg from "../../images/pf2025-images/pondfest2025-first
 import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
 import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
 import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime.png";
-import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors";
+import {
+  PLATINUM,
+  GOLD,
+  SILVER,
+  BRONZE,
+  FAMILY,
+} from "../data/pf2025/sponsors";
+import { volunteers } from "../data/pf2025/volunteers";
 ---
 
 <style>
@@ -31,6 +38,9 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
   }
   body {
     padding: 1rem;
+  }
+  .px-2 {
+    padding: 0.75rem;
   }
   .modal-link {
     margin: 3%;
@@ -112,8 +122,8 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
   }
   .sponsor {
     color: black;
-    line-height: .8rem;
-    padding: .5em;
+    line-height: 0.8rem;
+    padding: 0.5em;
   }
   .sponsors {
     max-width: 1200px;
@@ -121,7 +131,7 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     display: grid;
     gap: 0.1rem;
     text-align: center;
-    line-height: .8rem;
+    line-height: 0.8rem;
     padding-bottom: 1em;
   }
   .sponsor-headers {
@@ -158,7 +168,10 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
       </button>
     </main>
   </Modal>
-  <div id="maps-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="maps-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -245,7 +258,10 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     </div>
   </div>
 
-  <div id="schedules-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="schedules-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -310,7 +326,10 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     </div>
   </div>
 
-  <div id="foodbeer-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="foodbeer-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -388,7 +407,10 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     </div>
   </div>
 
-  <div id="raffles-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="raffles-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -436,7 +458,10 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     </div>
   </div>
 
-  <div id="faq-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="faq-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -477,7 +502,10 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     </div>
   </div>
 
-  <div id="donate-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="donate-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -511,13 +539,27 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-
-        <script src="https://donorbox.org/widget.js" paypalExpress="false"></script> <iframe src="https://donorbox.org/embed/pond-fest-2025-donations?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
+        <script src="https://donorbox.org/widget.js" paypalExpress="false"
+        ></script>
+        <iframe
+          src="https://donorbox.org/embed/pond-fest-2025-donations?"
+          name="donorbox"
+          allowpaymentrequest="allowpaymentrequest"
+          seamless="seamless"
+          frameborder="0"
+          scrolling="no"
+          height="900px"
+          width="100%"
+          style="max-width: 500px; min-width: 250px; max-height:none!important"
+          allow="payment"></iframe>
       </p>
     </div>
   </div>
 
-  <div id="join-accordion" class="accordion group relative rounded-md border border-purple-900">
+  <div
+    id="join-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
@@ -551,55 +593,97 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-      
-        <script src="https://donorbox.org/widget.js" paypalExpress="false"></script> <iframe src="https://donorbox.org/embed/friends-of-lums-pond?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
+        <script src="https://donorbox.org/widget.js" paypalExpress="false"
+        ></script>
+        <iframe
+          src="https://donorbox.org/embed/friends-of-lums-pond?"
+          name="donorbox"
+          allowpaymentrequest="allowpaymentrequest"
+          seamless="seamless"
+          frameborder="0"
+          scrolling="no"
+          height="900px"
+          width="100%"
+          style="max-width: 500px; min-width: 250px; max-height:none!important"
+          allow="payment"></iframe>
       </p>
     </div>
   </div>
 
+  <div
+    id="volunteer-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-faqs accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-faqs accordion menu content`}
+    >
+      Event Volunteers
 
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
 
-<h4>Special thanks to all of our Pond Fest 2025 sponsors:</h3>
-<h5 class="sponsor-headers">Platinum Sponsors</h4>
-  <div class="sponsors">
-    {
-      PLATINUM.map((sponsor) => (
-          <div class="sponsor">{sponsor}</div>
-      ))
-    }
+    <div
+      id={`pflive-faqs accordion menu content`}
+      aria-labelledby={`pflive-faqs accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+        <p class="px-2">
+          Thank you for your incredible dedication and hard work in making Pond
+          Fest a reality! Your time, energy, and enthusiasm have brought this
+          event to life, and we couldn't have done it without you.
+        </p>
+        <ul>
+          {volunteers.map((volunteer) => <li>{volunteer}</li>)}
+          <li>
+            ...and everyone whose contributions made this event possible,
+            including those we may not have mentioned.
+          </li>
+        </ul>
+      </p>
+    </div>
   </div>
-<h5 class="sponsor-headers">Gold Sponsors</h4>
+
+  <h4>Special thanks to all of our Pond Fest 2025 sponsors:</h4>
+  <h5 class="sponsor-headers">Platinum Sponsors</h5>
   <div class="sponsors">
-    {
-      GOLD.map((sponsor) => (
-          <div class="sponsor">{sponsor}</div>
-      ))
-    }
+    {PLATINUM.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
   </div>
-<h5 class="sponsor-headers">Silver Sponsors</h4>
+  <h5 class="sponsor-headers">Gold Sponsors</h5>
   <div class="sponsors">
-    {
-      SILVER.map((sponsor) => (
-          <div class="sponsor">{sponsor}</div>
-      ))
-    }
+    {GOLD.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
   </div>
-<h5 class="sponsor-headers">Bronze Sponsors</h4>
+  <h5 class="sponsor-headers">Silver Sponsors</h5>
   <div class="sponsors">
-    {
-      BRONZE.map((sponsor) => (
-          <div class="sponsor">{sponsor}</div>
-      ))
-    }
+    {SILVER.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
   </div>
-<h5 class="sponsor-headers">Family Sponsors</h4>
+  <h5 class="sponsor-headers">Bronze Sponsors</h5>
   <div class="sponsors">
-    {
-      FAMILY.map((sponsor) => (
-          <div class="sponsor">{sponsor}</div>
-      ))
-    }
-</div>
+    {BRONZE.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
+  </div>
+  <h5 class="sponsor-headers">Family Sponsors</h5>
+  <div class="sponsors">
+    {FAMILY.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
+  </div>
   <script>
     function accordionSetup() {
       const accordionMenus = document.querySelectorAll(
