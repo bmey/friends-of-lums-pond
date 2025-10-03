@@ -8,7 +8,6 @@ import { FACEBOOK_URL, INSTAGRAM_URL, SITE_TITLE } from "../../consts";
 import Modal from "../../components/Modal.astro";
 import logo from "../../images/logo-with-title.png";
 import PFLiveBG from "../../images/pf2025-images/pf-live-bg.jpg";
-import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
 import beerFirstStateImg from "../../images/pf2025-images/beer-1st-state.png";
 import beerJaklImg from "../../images/pf2025-images/beer-jakl.png";
 import beerVolunteerImg from "../../images/pf2025-images/beer-volunteer.png";
@@ -18,6 +17,8 @@ import EventMapImg from "../../images/pf2025-images/pondfest2025-event-map.png";
 import ParkingMapImg from "../../images/pf2025-images/pondfest2025-parking-map.png";
 import FirstRespondersMapImg from "../../images/pf2025-images/pondfest2025-firstresponders.png";
 import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
+import PondFestLineupImg from "../../images/pf2025-images/pondfest2025-lineup.png";
+import StorytimeSchedImg from "../../images/pf2025-images/pondfest2025-storytime.png";
 ---
 
 <style>
@@ -30,7 +31,7 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
   body {
     padding: 1rem;
   }
-  .map-modal-link {
+  .modal-link {
     margin: 3%;
     text-align: center;
     border: solid gray 2px;
@@ -41,13 +42,13 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
     padding: 3%;
   }
 
-  .mapDialog {
+  .modalDialog {
     position: relative;
     display: flex;
     max-width: 90vw;
     max-height: 90vh;
   }
-  .mapDialog .menu-button {
+  .modalDialog .menu-button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -146,6 +147,14 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
 </style>
 
 <Layout title="Welcome to Pond Fest 2025!" alert_text={PF_LIVE_ALERT}>
+  <Modal id="modalDialog" open="Open modal">
+    <main slot="main" class="modalDialog">
+      <img id="dialog-img" />
+      <button slot="close" class="menu-button">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
+    </main>
+  </Modal>
   <div class="accordion group relative rounded-md border border-purple-900">
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
@@ -178,15 +187,7 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
       tile-grid
     >
       <div class="map-container">
-        <Modal id="mapDialog" open="Open modal">
-          <main slot="main" class="mapDialog">
-            <img id="dialog-img" />
-            <button slot="close" class="menu-button">
-              <i class="fa-solid fa-xmark fa-lg"></i>
-            </button>
-          </main>
-        </Modal>
-        <div class="map-modal-link">
+        <div class="modal-link">
           <h6>Event Map</h6>
           <div class="container">
             <button data-src={EventMapImg.src} class="thumbnail">
@@ -199,7 +200,7 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
           </div>
         </div>
 
-        <div class="map-modal-link">
+        <div class="modal-link">
           <h6>Parking</h6>
           <div class="container">
             <button data-src={ParkingMapImg.src} class="thumbnail">
@@ -212,7 +213,7 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
           </div>
         </div>
 
-        <div class="map-modal-link">
+        <div class="modal-link">
           <h6>Vendors</h6>
           <div class="container">
             <button data-src={VendorMapImg.src} class="thumbnail">
@@ -225,7 +226,7 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
           </div>
         </div>
 
-        <div class="map-modal-link">
+        <div class="modal-link">
           <h6>First Responders</h6>
           <div class="container">
             <button data-src={FirstRespondersMapImg.src} class="thumbnail">
@@ -275,11 +276,33 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
-        <Image
-          src={PondFestLineupImg}
-          alt="pond fest lineup"
-          id="event-lineup-img"
-        />
+        <div class="map-container">
+          <div class="modal-link">
+            <h6>Live Music Lineup</h6>
+            <div class="container">
+              <button data-src={PondFestLineupImg.src} class="thumbnail">
+                <Image
+                  src={PondFestLineupImg}
+                  alt="pond fest event lineup"
+                  class="map-thumb-img"
+                />
+              </button>
+            </div>
+          </div>
+
+          <div class="modal-link">
+            <h6>Storytime</h6>
+            <div class="container">
+              <button data-src={StorytimeSchedImg.src} class="thumbnail">
+                <Image
+                  src={StorytimeSchedImg}
+                  alt="pond fest storytime schedule"
+                  class="map-thumb-img"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
       </p>
     </div>
   </div>
@@ -597,7 +620,7 @@ import VendorMapImg from "../../images/pf2025-images/pondfest-vendor-map.png";
         // timeout to avoid flash of previous image
         setTimeout(() => {
           //@ts-ignore
-          window.mapDialog.showModal();
+          window.modalDialog.showModal();
         }, 10);
       });
     });
