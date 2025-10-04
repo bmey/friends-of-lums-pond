@@ -1,7 +1,14 @@
 ---
 import Layout from "../../layouts/PFLivePage.astro";
-import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
-import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors";
+import { getUrl } from "../../components/getUrl";
+import { PF_LIVE_ALERT, PF_2026_INTEREST_FORM } from "../data/pf2025/pf-consts";
+import {
+  PLATINUM,
+  GOLD,
+  SILVER,
+  BRONZE,
+  FAMILY,
+} from "../data/pf2025/sponsors";
 ---
 
 <style>
@@ -9,13 +16,13 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
   @tailwind components;
   @tailwind utilities;
   html {
-      font-size: 22px;
+    font-size: 22px;
   }
   body {
-      padding: 1rem;
+    padding: 1rem;
   }
   .map-modal-link {
-    padding: .1em;
+    padding: 0.1em;
 
     color: red;
     background: black;
@@ -23,7 +30,6 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     height: 3rem;
     font-size: 1em;
     margin: 3%;
-
 
     border-style: solid;
     border-color: blue;
@@ -34,76 +40,76 @@ import { PLATINUM, GOLD, SILVER, BRONZE, FAMILY } from "../data/pf2025/sponsors"
     padding: 3%;
   }
 
-#event-lineup-img {
-  width: auto;
-  height : auto;
-  max-height: 100%;
-  max-width: 100%;
-}
-.beer-vendor-img {
-  width: auto;
-  height : auto;
-  max-height: 500%;
-  max-width: 50%;
-}
+  #event-lineup-img {
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+  }
+  .beer-vendor-img {
+    width: auto;
+    height: auto;
+    max-height: 500%;
+    max-width: 50%;
+  }
 
-tr:nth-child(even) {
+  tr:nth-child(even) {
     background-color: #ddd;
-}
+  }
 
-:is(h1, h2, h3, h4, h5, h6) {
-    padding-top: .5em;
-}
+  :is(h1, h2, h3, h4, h5, h6) {
+    padding-top: 0.5em;
+  }
 
-#accordion__button {
+  #accordion__button {
     width: 100%;
-}
-.raffle-container {
+  }
+  .raffle-container {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    gap: .1rem;
-    text-align: center;
-}
-.raffle-tile {
-}
-.raffle-name {
-    font-weight: bold;
-}
-.raffle-desc {
-    max-height:100%;
-}
-.raffle-status {
-    background: lightgray;
-}
-.sponsor {
-    color: black;
-    padding: 0.2rem;
-    line-height: 1rem;
-}
-.sponsors {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
     gap: 0.1rem;
     text-align: center;
-}
-.sponsor-headers {
+  }
+  .raffle-tile {
+  }
+  .raffle-name {
+    font-weight: bold;
+  }
+  .raffle-desc {
+    max-height: 100%;
+  }
+  .raffle-status {
+    background: lightgray;
+  }
+  .sponsor {
+    color: black;
+    padding: 0.2rem;
+    line-height: 1rem;
+  }
+  .sponsors {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 0.1rem;
+    text-align: center;
+  }
+  .sponsor-headers {
     text-align: center;
     h6 {
-        margin-bottom: 4px;
+      margin-bottom: 4px;
     }
     h5 {
-        margin-bottom: 4px;
+      margin-bottom: 4px;
     }
     h4 {
-        margin-top: 400px;
+      margin-top: 400px;
     }
-}
-h4 {
+  }
+  h4 {
     margin-top: 1rem;
-}
+  }
   @media (min-width: 400px) {
     .cards {
       grid-template-columns: repeat(2, 1fr);
@@ -112,158 +118,214 @@ h4 {
       grid-template-columns: repeat(3, 1fr);
     }
   }
-
 </style>
 
-<Layout title="FAQ's for Pond Fest 2025" alert_text={ PF_LIVE_ALERT }>
-<button type="button" onclick="javascript:history.back()">Back</button>
-<h4>General</h4>
+<Layout title="FAQ's for Pond Fest 2025" alert_text={PF_LIVE_ALERT}>
+  <button type="button" onclick="javascript:history.back()">Back</button>
+  <h4>General</h4>
 
+  <h5>What is Pond Fest 2025?</h5>
+  <p>
+    A concert for a cause. A day of live music, food, crafts, games, raffles,
+    and family-friendly fun by the pond.
+  </p>
 
-<h5>What is Pond Fest 2025?</h5>
-<p>A concert for a cause. A day of live music, food, crafts, games, raffles, and family-friendly fun by the pond.</p>
+  <h5>When is Pond Fest?</h5>
+  <p>October 4, 2025, 11:00 AM to 6:00 PM.</p>
 
-<h5>When is Pond Fest? </h5>
-<p>October 4, 2025, 11:00 AM to 6:00 PM.</p>
+  <h5>Where is it located?</h5>
+  <p>
+    Lums Pond State Park, Bear, Delaware in Area 1. Address: 1068 Howell School
+    Road Bear, DE 19701.
+  </p>
 
-<h5>Where is it located?</h5>
-<p>Lums Pond State Park, Bear, Delaware in Area 1.
-Address: 1068 Howell School Road Bear, DE 19701.  </p>
+  <h5>What time does it start and end?</h5>
+  <p>11:00 AM to 6:00 PM.</p>
 
-<h5>What time does it start and end?</h5>
-<p>11:00 AM to 6:00 PM.  </p>
+  <h5>Is it open to all ages / family-friendly?</h5>
+  <p>Yes, it's an all-ages event.</p>
 
-<h5>Is it open to all ages / family-friendly?</h5>
-<p>Yes, it's an all-ages event.  </p>
+  <h5>Is admission free or ticketed?</h5>
+  <p>
+    The event is free, park entry fees still apply for each car ($4 in state, $8
+    out of state). Main parking for the event is in Area 1, with overflow in
+    Area 2.
+  </p>
 
-<h5>Is admission free or ticketed?</h5>
-<p>The event is free, park entry fees still apply for each car ($4 in state, $8 out of state). Main parking for the event is in Area 1, with overflow in Area 2.</p>
+  <h5>Is there a refund policy?</h5>
+  <p>No refunds. This is a free admission event for a fundraiser.</p>
 
-<h5>Is there a refund policy?</h5>
-<p>No refunds. This is a free admission event for a fundraiser. </p>
+  <h5>What is the festival raising funds for?</h5>
+  <p>
+    Proceeds to support installing an accessible kayak launch at the park's
+    boathouse and youth scholarships for local schools.
+  </p>
 
-<h5>What is the festival raising funds for?</h5>
-<p>Proceeds to support installing an accessible kayak launch at the park's boathouse and youth scholarships for local schools.</p>
+  <h5>How can I stay updated (lineup, changes, etc.)?</h5>
+  <p>
+    Via the event's website <a href={getUrl("resources/pf-live2025")}>(link)</a
+    >.
+  </p>
 
-<h5>How can I stay updated (lineup, changes, etc.)?</h5>
-<p>Via the event's website (link).</p>
+  <h5>When is Pond Fest 2026?</h5>
+  <p>
+    October 10, 2026. More details to come! Fill out our <a
+      href={PF_2026_INTEREST_FORM}>2026 early interest form</a
+    > to subscribe for Pond Fest 2026 announcements.
+  </p>
 
+  <h4>Tickets & Entry</h4>
 
-<h4>Tickets & Entry</h4>
+  <h5>How do I get tickets / reserve a spot?</h5>
+  <p>
+    No tickets or reserved spots required. Free entry event open to the public.
+  </p>
 
+  <h4>Venue & Accessibility</h4>
 
+  <h5>How do I get to the venue / what is parking like?</h5>
+  <p>
+    The event is in Area 1 of Lums Pond State Park. While park entry fees still
+    apply for each car ($4 in state, $8 out of state), parking is free. Main
+    event parking is in Area 1 with handicap parking spots, and overflow parking
+    in Area 2.
+  </p>
 
-<h5>How do I get tickets / reserve a spot?</h5>
-<p>No tickets or reserved spots required. Free entry event open to the public.</p>
+  <h5>Is the site wheelchair accessible?</h5>
+  <p>
+    Yes, handicap parking in Area 1, and a concrete path between the parking lot
+    and the accessible restrooms, near Monarch stage.
+  </p>
 
+  <h5>Are restrooms / water / first aid available?</h5>
+  <p>
+    Restrooms near Monarch stage and temporary restrooms near Wingspan. Water
+    for sale at drink tents and food vendors. Please see the information tent
+    (or inform an adult volunteer so they can contact info tent) for first aid.
+  </p>
 
-<h4>Venue & Accessibility</h4>
+  <h5>What items are allowed / prohibited?</h5>
+  <p>
+    Lums Pond park rules apply - pets allowed, outside food and drinks allowed
+    (although if you're able, we highly encourage purchasing food from food
+    trucks supporting the cause), chairs or blankets highly recommended for the
+    lawn seating.
+  </p>
 
-	<h5>How do I get to the venue / what is parking like?</h5>
-	<p>The event is in Area 1 of Lums Pond State Park. While park entry fees still apply for each car ($4 in state, $8 out of state), parking is free. Main event parking is in Area 1 with handicap parking spots, and overflow parking in Area 2.</p>
+  <h5>Is the festival rain or shine?</h5>
+  <p>
+    That will be determined at least 48 hours in advance. **The weather looks
+    good this year and Pond Fest is a go for Oct 4!
+  </p>
 
-	<h5>Is the site wheelchair accessible?</h5>
-	<p>Yes, handicap parking in Area 1, and a concrete path between the parking lot and the accessible restrooms, near Monarch stage.</p>
+  <h5>Can I exit and re-enter the event?</h5>
+  <p>Yes!</p>
 
-	<h5>Are restrooms / water / first aid available?</h5>
-	<p>Restrooms near Monarch stage and temporary restrooms near Wingspan. Water for sale at drink tents and food vendors. Please see the information tent (or inform an adult volunteer so they can contact info tent) for first aid. </p>
+  <h5>Will there be cell service / WiFi?</h5>
+  <p>No WiFi. There is ok cellular service in the park.</p>
 
-	<h5>What items are allowed / prohibited?</h5>
-	<p> Lums Pond park rules apply - pets allowed, outside food and drinks allowed (although if you're able, we highly encourage purchasing food from food trucks supporting the cause), chairs or blankets highly recommended for the lawn seating.</p>
+  <h5>Is there a lost & found?</h5>
+  <p>
+    The information tent near Monarch stage is where all lost items or children
+    or pets should be brought for protection.
+  </p>
 
-	<h5>Is the festival rain or shine?</h5>
-	<p> That will be determined at least 48 hours in advance. **The weather looks good this year and Pond Fest is a go for Oct 4! </p>
+  <h4>Food, Drinks & Vendors</h4>
 
-	<h5>Can I exit and re-enter the event?</h5>
-	<p> Yes!</p>
+  <h5>Will food / drink be available for purchase?</h5>
+  <p>Yes, food trucks and vendors are part of the event.</p>
 
-	<h5>Will there be cell service / WiFi?</h5>
-	<p> No WiFi. There is ok cellular service in the park. </p>
+  <h5>Can I bring my own food / drinks / alcohol?</h5>
+  <p>
+    Yes, park rules apply, although we recommend buying from the food trucks
+    supporting the fundraiser.
+  </p>
 
-	<h5>Is there a lost & found?</h5>
-	<p> The information tent near Monarch stage is where all lost items or children or pets should be brought for protection. </p>
+  <h5>Are there vegetarian / dietary options?</h5>
+  <p>
+    Yes. The food trucks are Dixie's down home cooking, DE Mex and We Aim to
+    Cheese. There will be vegetarian options, but we recommend you check out
+    their menus, or contact us if you have very specific dietary needs at
+    PondFest@FriendsofLumsPond.org prior to Oct 4 so we can put you in touch
+    with them.
+  </p>
 
+  <h5>How do vendors / artisans apply to participate?</h5>
+  <p>
+    This year we are full, but in the late spring please keep an eye out on our
+    Friends of Lums Pond socials for applications for Pond Fest 2026. You can
+    fill out our <a href={PF_2026_INTEREST_FORM}>2026 early interest form</a> to
+    subscribe for Pond Fest 2026 announcements.
+  </p>
 
-<h4>Food, Drinks & Vendors</h4>
+  <h4>Performance & Schedule</h4>
 
-	<h5>Will food / drink be available for purchase?</h5>
-	<p>Yes, food trucks and vendors are part of the event.</p>
+  <h5>When will the lineup / schedule be posted?</h5>
+  <p>
+    Line up is posted on the event website <a
+      href={getUrl("resources/pf-live2025")}>(link)</a
+    > and will be posted physically at the event.
+  </p>
 
-	<h5>Can I bring my own food / drinks / alcohol?</h5>
-	<p>Yes, park rules apply, although we recommend buying from the food trucks supporting the fundraiser.</p>
+  <h5>How long are sets / how many stages?</h5>
+  <p>
+    Performances are 15 to 60 minutes long. There are three stages - WingSpan
+    Stage (near lawn seating area), Monarch Stage(near picnic seating area), and
+    Nest Box (open mic, near vendors).
+  </p>
 
-	<h5>Are there vegetarian / dietary options?</h5>
-	<p>Yes. The food trucks are Dixie's down home cooking, DE Mex and We Aim to Cheese. There will be vegetarian options, but we recommend you check out their menus, or contact us if you have very specific dietary needs at PondFest@FriendsofLumsPond.org prior to Oct 4 so we can put you in touch with them.</p>
+  <h5>Are there breaks between performances / gaps?</h5>
+  <p>
+    We are excited to announce that will have DJs performing between live music
+    sets to keep the vibes flowing!
+  </p>
 
-	<h5>How do vendors / artisans apply to participate?</h5>
-	<p>This year we are full, but in the late spring please keep an eye out on our Friends of Lums Pond socials for applications or email us as early as April about your interest in Pond Fest 2026.</p>
+  <h4>Volunteer & Participation</h4>
 
+  <h5>Can I volunteer at the event?</h5>
+  <p>
+    We are all set for 2025, but please keep an eye out for application posts on
+    social media in the spring, or email PondFest@FriendsofLumsPond.org as early
+    as April to express interest.
 
-<h4>Performance & Schedule</h4>
+    <h5>How do I become a sponsor or donor?</h5>
+    <p>
+      Please email PondFest@FriendsofLumsPond.org, we would love to work with
+      you!
+    </p>
 
-	<h5>When will the lineup / schedule be posted?</h5>
-	<p>Line up is posted on the event website (link) and will be posted physically at the event.</p> 
+    <h5>How can I help / get involved?</h5>
+    <p>
+      2025 is all set, but 2026 is right HR around the corner! Please consider
+      volunteering, donating raffle items, helping promote the event online,
+      sponsoring, joining the planning committee and so much more. Fill out our <a
+        href={PF_2026_INTEREST_FORM}>2026 early interest form</a
+      > to subscribe for Pond Fest 2026 announcements or email
+      PondFest@FriendsofLumsPond.org with more questions - we are happy to chat!
+    </p>
 
-	<h5>How long are sets / how many stages?</h5>
-	<p> Performances are 15 to 60 minutes long. There are three stages - WingSpan Stage (near lawn seating area), Monarch Stage(near picnic seating area), and Nest Box (open mic, near vendors).</p>
+    <button type="button" onclick="javascript:history.back()">Back</button>
 
-	<h5>Are there breaks between performances / gaps?</h5>
-	<p>We are excited to announce that will have DJs performing between live music sets to keep the vibes flowing!</p>
-
-<h4>Volunteer & Participation</h4>
-
-	<h5>Can I volunteer at the event?</h5>
-	<p>We are all set for 2025, but please keep an eye out for application posts on social media in the spring, or email PondFest@FriendsofLumsPond.org as early as April to express interest. 
-
-	<h5>How do I become a sponsor or donor?</h5>
-	<p>Please email PondFest@FriendsofLumsPond.org, we would love to work with you!</p>
-
-	<h5>How can I help / get involved?</h5>
-	<p> 2025 is all set, but 2026 is right HR around the corner! Please consider volunteering, donating raffle items, helping promote the event online, sponsoring, joining the planning committee and so much more. Emails PondFest@FriendsofLumsPond.org with more questions - we are happy to chat!</p>
-
-
-<button type="button" onclick="javascript:history.back()">Back</button>
-
-
-
-  <h4>Special thanks to all of our Pond Fest 2025 sponsors:</h3>
-  <h5 class="sponsor-headers">Platinum Sponsors</h4>
+    <h4>Special thanks to all of our Pond Fest 2025 sponsors:</h4>
+    <h5 class="sponsor-headers">Platinum Sponsors</h5>
     <div class="sponsors">
-      {
-        PLATINUM.map((sponsor) => (
-            <div class="sponsor">{sponsor}</div>
-        ))
-      }
+      {PLATINUM.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
     </div>
-  <h5 class="sponsor-headers">Gold Sponsors</h4>
+    <h5 class="sponsor-headers">Gold Sponsors</h5>
     <div class="sponsors">
-      {
-        GOLD.map((sponsor) => (
-            <div class="sponsor">{sponsor}</div>
-        ))
-      }
+      {GOLD.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
     </div>
-  <h5 class="sponsor-headers">Silver Sponsors</h4>
+    <h5 class="sponsor-headers">Silver Sponsors</h5>
     <div class="sponsors">
-      {
-        SILVER.map((sponsor) => (
-            <div class="sponsor">{sponsor}</div>
-        ))
-      }
+      {SILVER.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
     </div>
-  <h5 class="sponsor-headers">Bronze Sponsors</h4>
+    <h5 class="sponsor-headers">Bronze Sponsors</h5>
     <div class="sponsors">
-      {
-        BRONZE.map((sponsor) => (
-            <div class="sponsor">{sponsor}</div>
-        ))
-      }
+      {BRONZE.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
     </div>
-  <h5 class="sponsor-headers">Family Sponsors</h4>
+    <h5 class="sponsor-headers">Family Sponsors</h5>
     <div class="sponsors">
-      {
-        FAMILY.map((sponsor) => (
-            <div class="sponsor">{sponsor}</div>
-        ))
-      }
+      {FAMILY.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
     </div>
+  </p>
+</Layout>
