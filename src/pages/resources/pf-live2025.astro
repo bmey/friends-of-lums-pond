@@ -150,7 +150,7 @@ import { volunteers } from "../data/pf2025/volunteers";
     margin-top: 1rem;
   }
   .accordion__content {
-    padding: .3em;
+    padding: 0.3em;
   }
 
   @media (min-width: 400px) {
@@ -365,7 +365,7 @@ import { volunteers } from "../data/pf2025/volunteers";
       id={`pflive-food accordion menu content`}
       aria-labelledby={`pflive-food accordion menu button`}
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
-    > 
+    >
       <h4>Local Brews</h4>
       <p>
         Thanks to the generous donations of local breweries, beer and seltzer
@@ -375,46 +375,49 @@ import { volunteers } from "../data/pf2025/volunteers";
         raffle tickets.
       </p>
       <h5>JAKL Beer Works</h5>
-        <Image
-          src={beerJaklImg}
-          alt="jakl beer works"
-          class="beer-vendor-img"
-        />
+      <Image src={beerJaklImg} alt="jakl beer works" class="beer-vendor-img" />
       <p>JAKL Beer Works is serving tap beer near the Wingspan pavilion:</p>
       <ul>
         <li>English golden ale</li>
         <li>JAKLantern: Pumpkin Sour</li>
       </ul>
       <h5>Volunteer Brewing Co</h5>
-        <Image
-          src={beerVolunteerImg}
-          alt="volunteer brewing co"
-          class="beer-vendor-img"
-        />
-      <p>Volunteer Brewing Company is serving tap beer near the Monarch pavilion:</p>
+      <Image
+        src={beerVolunteerImg}
+        alt="volunteer brewing co"
+        class="beer-vendor-img"
+      />
+      <p>
+        Volunteer Brewing Company is serving tap beer near the Monarch pavilion:
+      </p>
       <ul>
         <li>Old Bohemia Creek: Light Lager w/ Lime (5.2%)</li>
         <li>Havana Daydream: Margarita Sour (6.0%)</li>
       </ul>
-        <Image
-          src={beerFirstStateImg}
-          alt="first state brewery"
-          class="beer-vendor-img"
-        />
-      <p>First State Brewing Company is serving cans near the Monarch pavilion:</p>
+      <Image
+        src={beerFirstStateImg}
+        alt="first state brewery"
+        class="beer-vendor-img"
+      />
+      <p>
+        First State Brewing Company is serving cans near the Monarch pavilion:
+      </p>
       <ul>
         <li>Circle Theory: Hazy IPA (6.0%)</li>
         <li>Black Lotus: Coffee Stout (7.0%)</li>
         <li>Brewery Gnome: Oktoberfest (6.0%)</li>
       </ul>
       <h5>Seltzers</h5>
-      <p>In addition, we have cans of High Noon seltzers available near the Monarch pavilion:</p>
+      <p>
+        In addition, we have cans of High Noon seltzers available near the
+        Monarch pavilion:
+      </p>
       <ul>
         <li>Tangerine</li>
         <li>Lime</li>
         <li>Black Cherry</li>
       </ul>
-      <h4>Food Trucks</h5>
+      <h4>Food Trucks</h4>
        Grab a bite at one of the food trucks to support FOLP. All food trucks
       are generously donating 10% of their profits today back to FOLP!
       <ul>
@@ -682,6 +685,63 @@ import { volunteers } from "../data/pf2025/volunteers";
     </div>
   </div>
 
+  <div
+    id="feedback-accordion"
+    class="accordion group relative rounded-md border border-purple-900"
+  >
+    <button
+      class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
+      type="button"
+      id={`pflive-feedback accordion menu button`}
+      aria-expanded="false"
+      aria-controls={`pflive-feedback accordion menu content`}
+    >
+      Feedback
+
+      <!-- use this is not using astro-icon (or another SVG you like) -->
+      <svg
+        class="accordion__chevron h-7 w-7 shrink-0 transition-transform"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        ><path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m6 9l6 6l6-6"></path></svg
+      >
+    </button>
+
+    <div
+      id={`pflive-feedback accordion menu content`}
+      aria-labelledby={`pflive-feedback accordion menu button`}
+      class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
+    >
+      <p class="prose mb-4 mt-1 max-w-full transition-[height]">
+        <strong>Dear guests,</strong>
+        <p>
+          Thank you so much for attending our fundraiser. We hope you enjoy your
+          time in the park. The amount of interest and feedback for this event
+          from the community has been almost overwhelming as if we are all
+          craving something positive and pure to pour our hearts into. Lums Pond
+          holds a special place in all of our hearts and the friends group is
+          incredibly grateful that you support it, too. If it isn't too much
+          trouble, we would greatly appreciate your feedback on your experience
+          today by visiting the survey below. This will help us make sure to
+          continue the things that went well and improve on things that didn't.
+        </p>
+
+        <a href="https://forms.gle/fjrmmXqYqzzwueWc6">Go to Survey Form</a>
+
+        <p>Thank you for being a friend of Lums Pond.</p>
+      </p>
+    </div>
+  </div>
+
   <h4>Special thanks to all of our Pond Fest 2025 sponsors:</h4>
   <h5 class="sponsor-headers">Platinum Sponsors</h5>
   <div class="sponsors">
@@ -703,9 +763,6 @@ import { volunteers } from "../data/pf2025/volunteers";
   <div class="sponsors">
     {FAMILY.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
   </div>
-
-
-
 
   <script>
     function accordionSetup() {
