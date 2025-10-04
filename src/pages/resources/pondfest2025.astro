@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import Layout from "../../layouts/SecondaryPage.astro";
 import { getUrl } from "../../components/getUrl";
+import AttentionLinkButton from "../../components/blog/AttentionLinkButton.astro";
 import EventMapImg from "../../images/pf2025-images/pondfest2025-event-map.png";
 import ParkingMapImg from "../../images/pf2025-images/pondfest2025-parking-map.png";
 import FirstRespondersMapImg from "../../images/pf2025-images/pondfest2025-firstresponders.png";
@@ -15,6 +16,11 @@ import { volunteers } from "../data/pf2025/volunteers";
 ---
 
 <Layout title="Pond Fest 2025">
+  <div class="live-link-container">
+    <AttentionLinkButton href="/resources/pf-live2025">
+      Go to Live Event Site!
+    </AttentionLinkButton>
+  </div>
   <Image src={PondFest} alt="pond fest logo" id="event-logo" />
   <h2>What is Pond Fest?</h2>
   <h3>Friends of Lums Pond</h3>
@@ -422,6 +428,13 @@ import { volunteers } from "../data/pf2025/volunteers";
   }
   ul {
     margin: 0.5em auto 0.5em auto;
+  }
+
+  .live-link-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
 
   #map-jump {
