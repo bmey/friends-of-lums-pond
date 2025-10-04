@@ -6,7 +6,7 @@ type Props = HTMLAttributes<"a">;
 const { ...props } = Astro.props;
 ---
 
-<a target="_blank" {...props}><slot /></a>
+<a {...props}><slot /></a>
 <style>
   a {
     background: var(--color-primary-800);
