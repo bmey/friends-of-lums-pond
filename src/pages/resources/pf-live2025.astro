@@ -149,6 +149,10 @@ import { volunteers } from "../data/pf2025/volunteers";
   h4 {
     margin-top: 1rem;
   }
+  .accordion__content {
+    padding: .3em;
+  }
+
   @media (min-width: 400px) {
     .cards {
       grid-template-columns: repeat(2, 1fr);
@@ -361,8 +365,8 @@ import { volunteers } from "../data/pf2025/volunteers";
       id={`pflive-food accordion menu content`}
       aria-labelledby={`pflive-food accordion menu button`}
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
-    >
-      <h5>Local Brews</h5>
+    > 
+      <h4>Local Brews</h4>
       <p>
         Thanks to the generous donations of local breweries, beer and seltzer
         can be purchased for 3 tickets each. Tickets costs $2 and are available
@@ -370,32 +374,47 @@ import { volunteers } from "../data/pf2025/volunteers";
         alcohol). Note that beer tickets can be exchanged for an equal value in
         raffle tickets.
       </p>
-      <p>
+      <h5>JAKL Beer Works</h5>
         <Image
           src={beerJaklImg}
           alt="jakl beer works"
           class="beer-vendor-img"
         />
-      </p>
-      <p>JAKL Beer Works: Near the Wingspan pavilion.</p>
-      <p>
+      <p>JAKL Beer Works is serving tap beer near the Wingspan pavilion:</p>
+      <ul>
+        <li>English golden ale</li>
+        <li>JAKLantern: Pumpkin Sour</li>
+      </ul>
+      <h5>Volunteer Brewing Co</h5>
         <Image
           src={beerVolunteerImg}
           alt="volunteer brewing co"
           class="beer-vendor-img"
         />
-      </p>
-      <p>Volunteer Brewing Company: Near the Monarch pavilion.</p>
-      <p>
+      <p>Volunteer Brewing Company is serving tap beer near the Monarch pavilion:</p>
+      <ul>
+        <li>Old Bohemia Creek: Light Lager w/ Lime (5.2%)</li>
+        <li>Havana Daydream: Margarita Sour (6.0%)</li>
+      </ul>
         <Image
           src={beerFirstStateImg}
           alt="first state brewery"
           class="beer-vendor-img"
         />
-      </p>
-      <p>First State Brewing Company: Near the Monarch pavilion.</p>
-
-      <h5>Food Trucks</h5>
+      <p>First State Brewing Company is serving cans near the Monarch pavilion:</p>
+      <ul>
+        <li>Circle Theory: Hazy IPA (6.0%)</li>
+        <li>Black Lotus: Coffee Stout (7.0%)</li>
+        <li>Brewery Gnome: Oktoberfest (6.0%)</li>
+      </ul>
+      <h5>Seltzers</h5>
+      <p>In addition, we have cans of High Noon seltzers available near the Monarch pavilion:</p>
+      <ul>
+        <li>Tangerine</li>
+        <li>Lime</li>
+        <li>Black Cherry</li>
+      </ul>
+      <h4>Food Trucks</h5>
        Grab a bite at one of the food trucks to support FOLP. All food trucks
       are generously donating 10% of their profits today back to FOLP!
       <ul>
@@ -617,9 +636,9 @@ import { volunteers } from "../data/pf2025/volunteers";
     <button
       class="accordion__button flex w-full flex-1 items-center justify-between gap-2 p-3 text-left font-medium transition hover:text-purple-500 sm:px-4"
       type="button"
-      id={`pflive-faqs accordion menu button`}
+      id={`pflive-volunteers accordion menu button`}
       aria-expanded="false"
-      aria-controls={`pflive-faqs accordion menu content`}
+      aria-controls={`pflive-volunteers accordion menu content`}
     >
       Event Volunteers
 
@@ -642,8 +661,8 @@ import { volunteers } from "../data/pf2025/volunteers";
     </button>
 
     <div
-      id={`pflive-faqs accordion menu content`}
-      aria-labelledby={`pflive-faqs accordion menu button`}
+      id={`pflive-volunteers accordion menu content`}
+      aria-labelledby={`pflive-volunteers accordion menu button`}
       class="accordion__content hidden max-h-0 overflow-hidden px-3 transition-all duration-300 ease-in-out sm:px-4"
     >
       <p class="prose mb-4 mt-1 max-w-full transition-[height]">
@@ -684,6 +703,10 @@ import { volunteers } from "../data/pf2025/volunteers";
   <div class="sponsors">
     {FAMILY.map((sponsor) => <div class="sponsor">{sponsor}</div>)}
   </div>
+
+
+
+
   <script>
     function accordionSetup() {
       const accordionMenus = document.querySelectorAll(
