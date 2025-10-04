@@ -4,6 +4,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import { getUrl } from "../components/getUrl";
 import Header from "../components/Header.astro";
+import AttentionLinkButton from "../components/blog/AttentionLinkButton.astro";
 import IndexTeaser from "../components/IndexTeaser.astro";
 import { JOIN_URL, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Hero from "../images/HERO.jpeg";
@@ -38,7 +39,9 @@ import PondFest from "../images/pondfest-2025.png";
             Fundraising event hosted by the Friends of Lums Pond to raise money
             for accessible kayak launch and scholarships!
           </p>
-          <a href={getUrl("resources/pf-live2025")}>Learn more</a>
+          <AttentionLinkButton href={getUrl("resources/pf-live2025")}>
+            Go to Live Event Site!
+          </AttentionLinkButton>
         </div>
         <IndexTeaser icon="fa-magnifying-glass" title="About">
           <p>
