@@ -13,7 +13,7 @@ import { getUrl } from "../components/getUrl";
       >.
     </li>
     <li>
-      Interested in joining us? <a href="resources/membership"
+      Interested in joining us? <a href={getUrl("resources/membership")}
         >View more details here</a
       >.
     </li>
@@ -28,7 +28,14 @@ import { getUrl } from "../components/getUrl";
       >
     </li>
     <li>
-      <a href={getUrl("resources/bylaws")}>View our group's by-laws</a>
+      <a href={getUrl("resources/bylaws")}>Bylaws</a>
+    </li>
+    <li>
+      <a
+        target="blank"
+        href="https://docs.google.com/document/d/e/2PACX-1vQYBRSyCWfecnc7Y-ghshMzOiD2u23pVip7wqw38_3hB0Q_-KVHX23dslCzIo6jmWjCRDtfmR9hr59L/pub"
+        >Non-discrimination policy</a
+      >
     </li>
   </ul>
 
