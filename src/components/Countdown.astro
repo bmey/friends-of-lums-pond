@@ -2,15 +2,16 @@
 import type { HTMLAttributes } from "astro/types";
 
 interface Props {
+  name?: string;
   startDate: string;
 }
 
-const { startDate } = Astro.props;
+const { name = "Pond Fest", startDate } = Astro.props;
 ---
 
 <div class="container">
   <div class="text-container">
-    <h2><span class="second-text">Pond Fest starts in</span></h2>
+    <h2><span class="second-text">{name} starts in</span></h2>
   </div>
 
   <div id="countdown" class="countdown">
