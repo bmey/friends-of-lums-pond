@@ -8,7 +8,7 @@ import AttentionLinkButton from "../components/blog/AttentionLinkButton.astro";
 import IndexTeaser from "../components/IndexTeaser.astro";
 import { JOIN_URL, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Hero from "../images/HERO.jpeg";
-import PondFest from "../images/pondfest-2025.png";
+import EventIcon from "../images/5k-text.png";
 ---
 
 <!doctype html>
@@ -33,14 +33,13 @@ import PondFest from "../images/pondfest-2025.png";
       </div>
       <div class="teasers">
         <div class="pondfest-container">
-          <Image src={PondFest} alt="flyer for pond fest" width="160" />
+          <Image src={EventIcon} alt="icon for fundraiser" width="160" />
           <p>
-            Come on out for live music, food, beer, crafts and family fun!
-            Fundraising event hosted by the Friends of Lums Pond to raise money
-            for accessible kayak launch and scholarships!
+            Come on out for a 5K through Middletown! This fundraising event will
+            raise money for an accessible kayak launch.
           </p>
-          <AttentionLinkButton href={getUrl("resources/pf-live2025")}>
-            Go to Live Event Site!
+          <AttentionLinkButton href={getUrl("blog/26-01-28-halfway-5k")}>
+            Learn more
           </AttentionLinkButton>
         </div>
         <IndexTeaser icon="fa-magnifying-glass" title="About">
