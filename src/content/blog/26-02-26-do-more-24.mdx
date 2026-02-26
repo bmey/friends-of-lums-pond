@@ -1,0 +1,49 @@
+---
+title: "Do More 24 Delaware is Coming!"
+description: "Let’s Make the Water Accessible to All: Do More 24 Delaware is Coming!"
+pubDate: "Feb 26 2026"
+heroImage: "Do-More-24-DE-logo.webp"
+registrationText: "Go to Fundraiser Page"
+---
+
+Imagine the sun on your face and the calm of the water as you glide across Lums Pond. Now, imagine helping us make that experience possible for everyone.
+
+This year, for **Do More 24 Delaware**, the Friends of Lums Pond are on a mission to raise $1,000 to fund two vital projects:
+
+1. **An Adaptive Kayak Launch**: This will allow individuals with disabilities to launch safely and independently, ensuring the pond is a place for every member of our community.
+
+1. **School Field Trip Assistance**: We want to ensure every student in New Castle County has the chance to connect with nature, regardless of their school's budget.
+
+<br />
+#### What is Do More 24 Delaware?
+
+Do More 24 Delaware is designed to be a fun and easy way for the entire community to impact philanthropy and be inspired to donate to nonprofits serving Delaware. It is a unique 24-hour giving event that showcases the amazing and vital work of nonprofit organizations serving our state. The goal is to inspire Delawareans to come together for 24 hours and contribute as much as they can financially to the causes and organizations that they support. Friends of Lums Pond is excited to participate for the first time in Do More 24 alongside other Delaware nonprofits.
+
+[Learn more about Do More 24](https://www.domore24delaware.org/)
+
+<br />
+#### How you can help:
+
+Mark your calendars! Giving begins on **March 5, 2026, at 6:00 pm**. Your donation doesn't just fund equipment—it builds inclusion and creates memories for the next generation.
+
+[Visit our Fundraiser Page to learn more!](https://www.domore24delaware.org/fundraisers/friends-of-lums-pond)
+
+import Countdown from "../../components/Countdown.astro";
+import AttentionLinkButton from "../../components/blog/AttentionLinkButton.astro";
+
+<Countdown name="Do More 24" startDate="March 5 2026 18:00:00"></Countdown>
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <iframe
+    id="degives"
+    src="https://www.domore24delaware.org/fundraisers/friends-of-lums-pond/embed"
+    frameborder="0"
+    style="width: 350px; height: 500px;"
+  ></iframe>
+  <AttentionLinkButton
+    target="blank"
+    href="https://www.domore24delaware.org/fundraisers/friends-of-lums-pond"
+  >
+    {frontmatter.registrationText}
+  </AttentionLinkButton>
+</div>
+<br />
