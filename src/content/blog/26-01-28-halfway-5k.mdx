@@ -53,11 +53,79 @@ Runners will receive:
 
 import Image from "../../components/blog/Image.astro";
 import LinkButton from "../../components/blog/LinkButton.astro";
+import { Image as AstroImage } from "astro:assets";
+import pivotPT from "../../images/5k2026/pivot-pt.png";
+import getDecked from "../../images/5k2026/get-decked.jpeg";
+import crossfitBear from "../../images/5k2026/crossfit-bear.png";
+import kellerWilliams from "../../images/5k2026/keller-williams-next-move.png";
+import djDlyte from "../../images/5k2026/dj-dlyte.jpeg";
+import flipside from "../../images/5k2026/flipside.jpeg";
+import volunteerBrewing from "../../images/5k2026/volunteer-brewing.png";
 
 ### [Facebook Event](https://www.facebook.com/events/1389273896075094)
 
 <br />
 
+### Thank You to Our Sponsors
+
+Friends of Lums Pond extends our deepest gratitude to our sponsors for the Halfway to Pond Fest 5k! Together, we are making an impact. We could not do it without you!
+
+##### Host Sponsor
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;margin:1rem 0;">
+  <AstroImage
+    src={volunteerBrewing}
+    alt="Volunteer Brewing"
+    style="max-height:120px;width:auto;object-fit:contain;"
+  />
+</div>
+
+##### Gold Sponsors
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;margin:1rem 0;">
+  <AstroImage
+    src={pivotPT}
+    alt="Pivot PT"
+    style="max-height:100px;width:auto;object-fit:contain;"
+  />
+</div>
+
+##### Silver Sponsors
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;margin:1rem 0;">
+  <AstroImage
+    src={getDecked}
+    alt="Get Decked"
+    style="max-height:100px;width:auto;object-fit:contain;"
+  />
+  <AstroImage
+    src={crossfitBear}
+    alt="CrossFit Bear"
+    style="max-height:100px;width:auto;object-fit:contain;"
+  />
+  <AstroImage
+    src={kellerWilliams}
+    alt="Keller Williams Next Move"
+    style="max-height:100px;width:auto;object-fit:contain;"
+  />
+</div>
+
+##### Volunteer Vendors
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;margin:1rem 0;">
+  <AstroImage
+    src={djDlyte}
+    alt="DJ DLyte"
+    style="max-height:100px;width:auto;object-fit:contain;"
+  />
+  <AstroImage
+    src={flipside}
+    alt="Flipside"
+    style="max-height:100px;width:auto;object-fit:contain;"
+  />
+</div>
+
+<br />
 ### Become a Sponsor
 
 <LinkButton href={frontmatter.sponsorLink}>🤍 View sponsor package</LinkButton>
