@@ -1,5 +1,5 @@
 ---
-title: "Halfway to Pond Fest 5k"
+title: "Halfway to Pond Fest 5K Presented by Union Park BMW"
 description: "Announcing our inaugural 5k fundraiser in Middletown 4/19 from 9 AM to 11 AM."
 pubDate: "Jan 28 2026"
 heroImage: "2026-5k-logo.jpeg"
@@ -54,6 +54,7 @@ Runners will receive:
 import Image from "../../components/blog/Image.astro";
 import LinkButton from "../../components/blog/LinkButton.astro";
 import { Image as AstroImage } from "astro:assets";
+import unionPark from "../../images/5k2026/union-park.png";
 import pivotPT from "../../images/5k2026/pivot-pt.png";
 import getDecked from "../../images/5k2026/get-decked.jpeg";
 import crossfitBear from "../../images/5k2026/crossfit-bear.png";
@@ -69,6 +70,16 @@ import volunteerBrewing from "../../images/5k2026/volunteer-brewing.png";
 ### Thank You to Our Sponsors
 
 Friends of Lums Pond extends our deepest gratitude to our sponsors for the Halfway to Pond Fest 5k! Together, we are making an impact. We could not do it without you!
+
+##### Title Sponsor
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;margin:1rem 0;">
+  <AstroImage
+    src={unionPark}
+    alt="Union Park BMW"
+    style="max-height:120px;width:auto;object-fit:contain;"
+  />
+</div>
 
 ##### Host Sponsor
 
@@ -126,6 +137,7 @@ Friends of Lums Pond extends our deepest gratitude to our sponsors for the Halfw
 </div>
 
 <br />
+
 ### Become a Sponsor
 
 <LinkButton href={frontmatter.sponsorLink}>🤍 View sponsor package</LinkButton>
