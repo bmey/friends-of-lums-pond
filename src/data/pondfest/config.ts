@@ -48,7 +48,7 @@ export const HISTORY_BG_PHOTO = "";
 
 // External URLs — update as they become available
 export const TICKETS_URL = ""; // Eventbrite link
-export const VOLUNTEER_URL = ""; // SignUpGenius or Google Form
+export const VOLUNTEER_URL = "https://forms.gle/dMEmKxYs7ovnyG658"; // SignUpGenius or Google Form
 export const SPONSOR_URL = ""; // Google Form or sponsor package PDF
 export const VENDOR_URL = ""; // Vendor interest form
 export const PERFORMER_URL = ""; // 2026 interest form
