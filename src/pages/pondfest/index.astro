@@ -35,7 +35,8 @@ import {
   HISTORY_BG_PHOTO,
 } from "../../data/pondfest/config";
 
-const hasMaps = EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
+const hasMaps =
+  EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
 
 const sponsorsByTier = {
   platinum: SPONSORS.filter((s) => s.tier === "platinum"),
@@ -49,11 +50,36 @@ const hasSponsors = SPONSORS.length > 0;
 const hasLineup = LINEUP.length > 0;
 
 const ctaLinks = [
-  { label: "Get Tickets",  url: TICKETS_URL,   style: "pf-btn--primary",       icon: "fa-ticket" },
-  { label: "Volunteer",    url: VOLUNTEER_URL,  style: "pf-btn--outline-light",  icon: "fa-hand-holding-heart" },
-  { label: "Sponsor",      url: SPONSOR_URL,    style: "pf-btn--outline-light",  icon: "fa-star" },
-  { label: "Vend",         url: VENDOR_URL,     style: "pf-btn--outline-light",  icon: "fa-store" },
-  { label: "Perform",      url: PERFORMER_URL,  style: "pf-btn--outline-light",  icon: "fa-music" },
+  {
+    label: "Get Tickets",
+    url: TICKETS_URL,
+    style: "pf-btn--primary",
+    icon: "fa-ticket",
+  },
+  {
+    label: "Volunteer",
+    url: VOLUNTEER_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-hand-holding-heart",
+  },
+  {
+    label: "Sponsor",
+    url: SPONSOR_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-star",
+  },
+  {
+    label: "Vend",
+    url: VENDOR_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-store",
+  },
+  {
+    label: "Perform",
+    url: PERFORMER_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-music",
+  },
 ];
 
 // Real photos for each feature — add URLs from your Lightroom album
@@ -141,12 +167,14 @@ const tierLabels: Record<string, string> = {
   description={`Pond Fest ${CURRENT_YEAR} — ${EVENT_DATE_DISPLAY}. ${EVENT_TAGLINE}`}
 >
   <!-- ══ ALERT BANNER ════════════════════════════════════════════════ -->
-  {DAY_OF_ALERT && (
-    <div class="pf-alert-banner" role="alert">
-      <i class="fa-solid fa-circle-info" />
-      {DAY_OF_ALERT}
-    </div>
-  )}
+  {
+    DAY_OF_ALERT && (
+      <div class="pf-alert-banner" role="alert">
+        <i class="fa-solid fa-circle-info" />
+        {DAY_OF_ALERT}
+      </div>
+    )
+  }
 
   <!-- ══ HERO ═══════════════════════════════════════════════════════ -->
   <section class="pf-hero" style={`background-image: url('${HERO_IMAGE_URL}')`}>
@@ -159,7 +187,7 @@ const tierLabels: Record<string, string> = {
         <p class="pf-hero-meta">
           <i class="fa-solid fa-calendar-days"></i>
           {EVENT_DATE_DISPLAY}
-          &nbsp;&middot;&nbsp;
+           &nbsp;&middot;&nbsp;
           <i class="fa-solid fa-clock"></i>
           {EVENT_TIME}
           <br />
@@ -169,19 +197,26 @@ const tierLabels: Record<string, string> = {
         <p class="pf-hero-tagline">{EVENT_TAGLINE}</p>
         <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
         <div class="pf-hero-ctas">
-          {ctaLinks.map((cta) =>
-            cta.url ? (
-              <a href={cta.url} class={`pf-btn ${cta.style}`} target="_blank" rel="noopener">
-                <i class={`fa-solid ${cta.icon}`} />
-                {cta.label}
-              </a>
-            ) : (
-              <span class="pf-btn pf-btn--disabled" title="Link coming soon">
-                <i class={`fa-solid ${cta.icon}`} />
-                {cta.label}
-              </span>
+          {
+            ctaLinks.map((cta) =>
+              cta.url ? (
+                <a
+                  href={cta.url}
+                  class={`pf-btn ${cta.style}`}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class={`fa-solid ${cta.icon}`} />
+                  {cta.label}
+                </a>
+              ) : (
+                <span class="pf-btn pf-btn--disabled" title="Link coming soon">
+                  <i class={`fa-solid ${cta.icon}`} />
+                  {cta.label}
+                </span>
+              ),
             )
-          )}
+          }
         </div>
       </div>
     </div>
@@ -199,162 +234,287 @@ const tierLabels: Record<string, string> = {
       <div class="pf-section-inner pf-section-inner--mid">
         <h2>Day-of Quick Links</h2>
         <div class="pf-dayof-quicknav">
-          {hasMaps && <a href="#pf-maps" class="pf-quicknav-btn"><i class="fa-solid fa-map"></i> Maps</a>}
-          {RAFFLE_LINK && <a href={RAFFLE_LINK} target="_blank" rel="noopener" class="pf-quicknav-btn"><i class="fa-solid fa-ticket"></i> Raffles</a>}
-          {AUCTION_LINK && <a href={AUCTION_LINK} target="_blank" rel="noopener" class="pf-quicknav-btn"><i class="fa-solid fa-gavel"></i> Auction</a>}
-          {DONATION_EMBED_URL && <a href="#pf-donate" class="pf-quicknav-btn"><i class="fa-solid fa-circle-dollar-to-slot"></i> Donate</a>}
-          {FEEDBACK_LINK && <a href={FEEDBACK_LINK} target="_blank" rel="noopener" class="pf-quicknav-btn"><i class="fa-solid fa-comment-dots"></i> Feedback</a>}
+          {
+            hasMaps && (
+              <a href="#pf-maps" class="pf-quicknav-btn">
+                <i class="fa-solid fa-map" /> Maps
+              </a>
+            )
+          }
+          {
+            RAFFLE_LINK && (
+              <a
+                href={RAFFLE_LINK}
+                target="_blank"
+                rel="noopener"
+                class="pf-quicknav-btn"
+              >
+                <i class="fa-solid fa-ticket" /> Raffles
+              </a>
+            )
+          }
+          {
+            AUCTION_LINK && (
+              <a
+                href={AUCTION_LINK}
+                target="_blank"
+                rel="noopener"
+                class="pf-quicknav-btn"
+              >
+                <i class="fa-solid fa-gavel" /> Auction
+              </a>
+            )
+          }
+          {
+            DONATION_EMBED_URL && (
+              <a href="#pf-donate" class="pf-quicknav-btn">
+                <i class="fa-solid fa-circle-dollar-to-slot" /> Donate
+              </a>
+            )
+          }
+          {
+            FEEDBACK_LINK && (
+              <a
+                href={FEEDBACK_LINK}
+                target="_blank"
+                rel="noopener"
+                class="pf-quicknav-btn"
+              >
+                <i class="fa-solid fa-comment-dots" /> Feedback
+              </a>
+            )
+          }
         </div>
       </div>
     </section>
 
-    {hasMaps && (
-      <section class="pf-section pf-section--dark-alt" id="pf-maps">
-        <div class="pf-section-inner pf-section-inner--mid">
-          <h2>Event Maps</h2>
-          <div class="pf-maps-grid">
-            {EVENT_MAP_IMAGE_URL && (
-              <div class="pf-map-item">
-                <h3>Event Map</h3>
-                <a href={EVENT_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                  <img src={EVENT_MAP_IMAGE_URL} alt="Pond Fest event map" class="pf-map-img" loading="lazy" />
-                  <span class="pf-map-tap-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
-                </a>
+    {
+      hasMaps && (
+        <section class="pf-section pf-section--dark-alt" id="pf-maps">
+          <div class="pf-section-inner pf-section-inner--mid">
+            <h2>Event Maps</h2>
+            <div class="pf-maps-grid">
+              {EVENT_MAP_IMAGE_URL && (
+                <div class="pf-map-item">
+                  <h3>Event Map</h3>
+                  <a href={EVENT_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                    <img
+                      src={EVENT_MAP_IMAGE_URL}
+                      alt="Pond Fest event map"
+                      class="pf-map-img"
+                      loading="lazy"
+                    />
+                    <span class="pf-map-tap-hint">
+                      <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                      enlarge
+                    </span>
+                  </a>
+                </div>
+              )}
+              {PARKING_MAP_IMAGE_URL && (
+                <div class="pf-map-item">
+                  <h3>Parking Map</h3>
+                  <a
+                    href={PARKING_MAP_IMAGE_URL}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <img
+                      src={PARKING_MAP_IMAGE_URL}
+                      alt="Pond Fest parking map"
+                      class="pf-map-img"
+                      loading="lazy"
+                    />
+                    <span class="pf-map-tap-hint">
+                      <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                      enlarge
+                    </span>
+                  </a>
+                </div>
+              )}
+              {VENDOR_MAP_IMAGE_URL && (
+                <div class="pf-map-item">
+                  <h3>Vendor Map</h3>
+                  <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                    <img
+                      src={VENDOR_MAP_IMAGE_URL}
+                      alt="Pond Fest vendor map"
+                      class="pf-map-img"
+                      loading="lazy"
+                    />
+                    <span class="pf-map-tap-hint">
+                      <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                      enlarge
+                    </span>
+                  </a>
+                </div>
+              )}
+            </div>
+            {PARKING_NOTES && (
+              <div class="pf-info-note">
+                <i class="fa-solid fa-circle-parking" />
+                <p>{PARKING_NOTES}</p>
               </div>
             )}
-            {PARKING_MAP_IMAGE_URL && (
-              <div class="pf-map-item">
-                <h3>Parking Map</h3>
-                <a href={PARKING_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                  <img src={PARKING_MAP_IMAGE_URL} alt="Pond Fest parking map" class="pf-map-img" loading="lazy" />
-                  <span class="pf-map-tap-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
-                </a>
-              </div>
-            )}
-            {VENDOR_MAP_IMAGE_URL && (
-              <div class="pf-map-item">
-                <h3>Vendor Map</h3>
-                <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                  <img src={VENDOR_MAP_IMAGE_URL} alt="Pond Fest vendor map" class="pf-map-img" loading="lazy" />
-                  <span class="pf-map-tap-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
-                </a>
+            {SHUTTLE_INFO && (
+              <div class="pf-info-note">
+                <i class="fa-solid fa-bus" />
+                <p>{SHUTTLE_INFO}</p>
               </div>
             )}
           </div>
-          {PARKING_NOTES && (
-            <div class="pf-info-note">
-              <i class="fa-solid fa-circle-parking"></i>
-              <p>{PARKING_NOTES}</p>
-            </div>
-          )}
-          {SHUTTLE_INFO && (
-            <div class="pf-info-note">
-              <i class="fa-solid fa-bus"></i>
-              <p>{SHUTTLE_INFO}</p>
-            </div>
-          )}
-        </div>
-      </section>
-    )}
+        </section>
+      )
+    }
 
-    {(RAFFLE_LINK || AUCTION_LINK) && (
-      <section class="pf-section pf-section--dark">
-        <div class="pf-section-inner pf-section-inner--mid">
-          <h2>Raffles &amp; Auction</h2>
-          <div class="pf-dayof-link-cards">
-            {RAFFLE_LINK && (
-              <a href={RAFFLE_LINK} target="_blank" rel="noopener" class="pf-dayof-link-card">
-                <i class="fa-solid fa-ticket pf-dayof-link-icon"></i>
-                <div>
-                  <strong>Raffle Info &amp; Results</strong>
-                  <p>View raffle items and winner announcements</p>
-                </div>
-                <i class="fa-solid fa-arrow-right pf-dayof-link-arrow"></i>
-              </a>
-            )}
-            {AUCTION_LINK && (
-              <a href={AUCTION_LINK} target="_blank" rel="noopener" class="pf-dayof-link-card">
-                <i class="fa-solid fa-gavel pf-dayof-link-icon"></i>
-                <div>
-                  <strong>Silent Auction</strong>
-                  <p>View auction items and place or check bids</p>
-                </div>
-                <i class="fa-solid fa-arrow-right pf-dayof-link-arrow"></i>
-              </a>
-            )}
+    {
+      (RAFFLE_LINK || AUCTION_LINK) && (
+        <section class="pf-section pf-section--dark">
+          <div class="pf-section-inner pf-section-inner--mid">
+            <h2>Raffles &amp; Auction</h2>
+            <div class="pf-dayof-link-cards">
+              {RAFFLE_LINK && (
+                <a
+                  href={RAFFLE_LINK}
+                  target="_blank"
+                  rel="noopener"
+                  class="pf-dayof-link-card"
+                >
+                  <i class="fa-solid fa-ticket pf-dayof-link-icon" />
+                  <div>
+                    <strong>Raffle Info &amp; Results</strong>
+                    <p>View raffle items and winner announcements</p>
+                  </div>
+                  <i class="fa-solid fa-arrow-right pf-dayof-link-arrow" />
+                </a>
+              )}
+              {AUCTION_LINK && (
+                <a
+                  href={AUCTION_LINK}
+                  target="_blank"
+                  rel="noopener"
+                  class="pf-dayof-link-card"
+                >
+                  <i class="fa-solid fa-gavel pf-dayof-link-icon" />
+                  <div>
+                    <strong>Silent Auction</strong>
+                    <p>View auction items and place or check bids</p>
+                  </div>
+                  <i class="fa-solid fa-arrow-right pf-dayof-link-arrow" />
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
-    )}
+        </section>
+      )
+    }
 
-    {DONATION_EMBED_URL && (
-      <section class="pf-section pf-section--dark-alt" id="pf-donate">
-        <div class="pf-section-inner--narrow pf-donate-section">
-          <h2>Donate Today</h2>
-          <p>Every dollar raised goes directly to Lums Pond State Park programs and facilities.</p>
-          <script src="https://donorbox.org/widget.js" paypalExpress="false" is:inline></script>
-          <iframe
-            src={DONATION_EMBED_URL}
-            name="donorbox"
-            allowpaymentrequest="allowpaymentrequest"
-            seamless="seamless"
-            frameborder="0"
-            scrolling="no"
-            height="900px"
-            width="100%"
-            style="max-width: 500px; min-width: 250px; max-height: none !important; display: block; margin: 0 auto;"
-            allow="payment"
-          />
-        </div>
-      </section>
-    )}
+    {
+      DONATION_EMBED_URL && (
+        <section class="pf-section pf-section--dark-alt" id="pf-donate">
+          <div class="pf-section-inner--narrow pf-donate-section">
+            <h2>Donate Today</h2>
+            <p>
+              Money raised goes directly to funding or enhancing Lums Pond State
+              Park programs and facilities.
+            </p>
+            <script
+              src="https://donorbox.org/widget.js"
+              paypalExpress="false"
+              is:inline
+            />
+            <iframe
+              src={DONATION_EMBED_URL}
+              name="donorbox"
+              allowpaymentrequest="allowpaymentrequest"
+              seamless="seamless"
+              frameborder="0"
+              scrolling="no"
+              height="900px"
+              width="100%"
+              style="max-width: 500px; min-width: 250px; max-height: none !important; display: block; margin: 0 auto;"
+              allow="payment"
+            />
+          </div>
+        </section>
+      )
+    }
 
-    {FEEDBACK_LINK && (
-      <section class="pf-section pf-section--purple">
-        <div class="pf-section-inner--narrow pf-feedback-section">
-          <h2>Share Your Feedback</h2>
-          <p>
-            Thank you for spending the day with us at Pond Fest! Your feedback helps
-            us make next year even better. It only takes two minutes.
-          </p>
-          <a href={FEEDBACK_LINK} target="_blank" rel="noopener" class="pf-btn pf-btn--outline-light">
-            <i class="fa-solid fa-comment-dots"></i> Go to Survey
-          </a>
-        </div>
-      </section>
-    )}
+    {
+      FEEDBACK_LINK && (
+        <section class="pf-section pf-section--purple">
+          <div class="pf-section-inner--narrow pf-feedback-section">
+            <h2>Share Your Feedback</h2>
+            <p>
+              Thank you for spending the day with us at Pond Fest! Your feedback
+              helps us make next year even better. It only takes two minutes.
+            </p>
+            <a
+              href={FEEDBACK_LINK}
+              target="_blank"
+              rel="noopener"
+              class="pf-btn pf-btn--outline-light"
+            >
+              <i class="fa-solid fa-comment-dots" /> Go to Survey
+            </a>
+          </div>
+        </section>
+      )
+    }
   </div>
   <!-- ══ END DAY-OF PANEL ═══════════════════════════════════════════ -->
 
   <!-- ══ FUNDRAISING GOALS — split image+text on purple ════════════ -->
-  {FUNDING_GOALS.length > 0 && (
-    <section class="pf-section pf-section--purple pf-goals-section">
-      <div class="pf-section-inner pf-section-inner--narrow pf-goals-intro">
-        <span class="pf-eyebrow">Fundraising for {CURRENT_YEAR}</span>
-        <h2>Raising {FUNDRAISING_GOAL} for the Park</h2>
-        <p>Every dollar raised at Pond Fest goes directly to Lums Pond State Park programs and facilities.</p>
-      </div>
-
-      {FUNDING_GOALS.map((goal, i) => (
-        <div class={`pf-split ${i % 2 !== 0 ? "pf-split--reverse" : ""} pf-goals-split`}>
-          <div class="pf-split-media">
-            {goal.imageUrl
-              ? <img src={goal.imageUrl} alt={goal.name} loading="lazy" />
-              : <div class="pf-img-placeholder"><i class="fa-solid fa-camera" /></div>
-            }
-          </div>
-          <div class="pf-split-text">
-            <h3>{goal.name}</h3>
-            <p>{goal.description}</p>
-            {goal.donorboxUrl
-              ? <a href={goal.donorboxUrl} class="pf-btn pf-btn--primary" target="_blank" rel="noopener">Donate to this goal</a>
-              : <span class="pf-goals-donate-soon">Donation link coming soon</span>
-            }
-          </div>
+  {
+    FUNDING_GOALS.length > 0 && (
+      <section class="pf-section pf-section--purple pf-goals-section">
+        <div class="pf-section-inner pf-section-inner--narrow pf-goals-intro">
+          <span class="pf-eyebrow">Fundraising for {CURRENT_YEAR}</span>
+          <h2>Raising {FUNDRAISING_GOAL} for the Park</h2>
+          <p>
+            Money raised goes directly to funding or enhancing Lums Pond State
+            Park programs and facilities.
+          </p>
         </div>
-      ))}
-    </section>
-  )}
+
+        {FUNDING_GOALS.map((goal, i) => (
+          <div
+            class={`pf-split ${
+              i % 2 !== 0 ? "pf-split--reverse" : ""
+            } pf-goals-split`}
+          >
+            <div class="pf-split-media">
+              {goal.imageUrl ? (
+                <img src={goal.imageUrl} alt={goal.name} loading="lazy" />
+              ) : (
+                <div class="pf-img-placeholder">
+                  <i class="fa-solid fa-camera" />
+                </div>
+              )}
+            </div>
+            <div class="pf-split-text">
+              <h3>{goal.name}</h3>
+              <p>{goal.description}</p>
+              {goal.donorboxUrl ? (
+                <a
+                  href={goal.donorboxUrl}
+                  class="pf-btn pf-btn--primary"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Donate to this goal
+                </a>
+              ) : (
+                <span class="pf-goals-donate-soon">
+                  Donation link coming soon
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+      </section>
+    )
+  }
 
   <!-- ══ WHAT TO EXPECT — photo tiles on light bg ══════════════════ -->
   <section class="pf-section pf-section--light">
@@ -364,24 +524,25 @@ const tierLabels: Record<string, string> = {
         <h2>What to Expect</h2>
       </div>
       <div class="pf-features-grid">
-        {features.map((f) => (
-          <div class="pf-feature-tile">
-            <div class="pf-feature-media">
-              {f.imageUrl
-                ? <img src={f.imageUrl} alt={f.title} loading="lazy" />
-                : (
+        {
+          features.map((f) => (
+            <div class="pf-feature-tile">
+              <div class="pf-feature-media">
+                {f.imageUrl ? (
+                  <img src={f.imageUrl} alt={f.title} loading="lazy" />
+                ) : (
                   <div class="pf-feature-icon-bg">
                     <i class={`fa-solid ${f.icon}`} />
                   </div>
-                )
-              }
+                )}
+              </div>
+              <div class="pf-feature-body">
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
             </div>
-            <div class="pf-feature-body">
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
-            </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   </section>
@@ -389,51 +550,66 @@ const tierLabels: Record<string, string> = {
   <!-- ══ MUSIC LINEUP ═══════════════════════════════════════════════ -->
   <section class="pf-section pf-section--dark">
     <div class="pf-section-inner pf-section-inner--mid">
-      {hasLineup ? (
-        <>
-          <div class="pf-lineup-header">
+      {
+        hasLineup ? (
+          <>
+            <div class="pf-lineup-header">
+              <span class="pf-eyebrow">Live Music</span>
+              <h2>Music Lineup</h2>
+            </div>
+            <div class="pf-lineup-grid">
+              {LINEUP.map((performer) => (
+                <div class="pf-performer-row">
+                  <div class="pf-performer-name">{performer.name}</div>
+                  {performer.stage && (
+                    <span class="pf-performer-stage">{performer.stage}</span>
+                  )}
+                  {performer.time && (
+                    <span class="pf-performer-time">{performer.time}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div class="pf-coming-soon">
             <span class="pf-eyebrow">Live Music</span>
-            <h2>Music Lineup</h2>
+            <h2 class="pf-coming-soon-headline">Lineup Coming Soon</h2>
+            <div class="pf-coming-soon-line" />
+            <p>
+              Artist announcements drop as we get closer to October — follow us
+              on{" "}
+              <a
+                href="https://www.facebook.com/FriendsofLumsPond"
+                target="_blank"
+                rel="noopener"
+              >
+                Facebook
+              </a>{" "}
+              so you don't miss it.
+            </p>
           </div>
-          <div class="pf-lineup-grid">
-            {LINEUP.map((performer) => (
-              <div class="pf-performer-row">
-                <div class="pf-performer-name">{performer.name}</div>
-                {performer.stage && <span class="pf-performer-stage">{performer.stage}</span>}
-                {performer.time && <span class="pf-performer-time">{performer.time}</span>}
-              </div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div class="pf-coming-soon">
-          <span class="pf-eyebrow">Live Music</span>
-          <h2 class="pf-coming-soon-headline">Lineup Coming Soon</h2>
-          <div class="pf-coming-soon-line" />
-          <p>
-            Artist announcements drop as we get closer to October — follow us on{" "}
-            <a href="https://www.facebook.com/FriendsofLumsPond" target="_blank" rel="noopener">
-              Facebook
-            </a>{" "}
-            so you don't miss it.
-          </p>
-        </div>
-      )}
+        )
+      }
     </div>
   </section>
 
   <!-- ══ PHOTO BAND ═════════════════════════════════════════════════ -->
   <div
     class="pf-photo-band"
-    style={PHOTO_BAND_1_URL ? `background-image: url('${PHOTO_BAND_1_URL}')` : undefined}
+    style={PHOTO_BAND_1_URL
+      ? `background-image: url('${PHOTO_BAND_1_URL}')`
+      : undefined}
     role="img"
     aria-label="Pond Fest event photo"
   >
-    {!PHOTO_BAND_1_URL && (
-      <div class="pf-photo-band-placeholder">
-        <i class="fa-solid fa-camera" />
-      </div>
-    )}
+    {
+      !PHOTO_BAND_1_URL && (
+        <div class="pf-photo-band-placeholder">
+          <i class="fa-solid fa-camera" />
+        </div>
+      )
+    }
   </div>
 
   <!-- ══ GET INVOLVED ═══════════════════════════════════════════════ -->
@@ -444,20 +620,29 @@ const tierLabels: Record<string, string> = {
         <h2>Get Involved</h2>
       </div>
       <div class="pf-involved-grid">
-        {involvedPaths.map((path) => (
-          <div class="pf-involved-card">
-            <i class={`fa-solid ${path.icon} pf-involved-icon`} />
-            <h3>{path.title}</h3>
-            <p>{path.desc}</p>
-            {path.url ? (
-              <a href={path.url} class="pf-btn pf-btn--outline-light" target="_blank" rel="noopener">
-                {path.cta}
-              </a>
-            ) : (
-              <span class="pf-btn pf-btn--disabled">{path.cta} — Coming Soon</span>
-            )}
-          </div>
-        ))}
+        {
+          involvedPaths.map((path) => (
+            <div class="pf-involved-card">
+              <i class={`fa-solid ${path.icon} pf-involved-icon`} />
+              <h3>{path.title}</h3>
+              <p>{path.desc}</p>
+              {path.url ? (
+                <a
+                  href={path.url}
+                  class="pf-btn pf-btn--outline-light"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {path.cta}
+                </a>
+              ) : (
+                <span class="pf-btn pf-btn--disabled">
+                  {path.cta} — Coming Soon
+                </span>
+              )}
+            </div>
+          ))
+        }
       </div>
       <div class="pf-involved-more">
         <a href="/pondfest/involved" class="pf-btn pf-btn--primary">
@@ -472,40 +657,52 @@ const tierLabels: Record<string, string> = {
     <div class="pf-section-inner pf-section-inner--mid pf-sponsors-inner">
       <span class="pf-eyebrow">Thank You</span>
       <h2>Sponsors</h2>
-      {hasSponsors ? (
-        <div class="pf-sponsor-tiers">
-          {(["platinum", "gold", "silver", "bronze", "family"] as const).map(
-            (tier) =>
-              sponsorsByTier[tier].length > 0 && (
-                <div class="pf-sponsor-tier">
-                  <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
-                  <div class="pf-sponsor-list">
-                    {sponsorsByTier[tier].map((s) =>
-                      s.url ? (
-                        <a href={s.url} target="_blank" rel="noopener" class="pf-sponsor-name">
-                          {s.name}
-                        </a>
-                      ) : (
-                        <span class="pf-sponsor-name">{s.name}</span>
-                      )
-                    )}
+      {
+        hasSponsors ? (
+          <div class="pf-sponsor-tiers">
+            {(["platinum", "gold", "silver", "bronze", "family"] as const).map(
+              (tier) =>
+                sponsorsByTier[tier].length > 0 && (
+                  <div class="pf-sponsor-tier">
+                    <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
+                    <div class="pf-sponsor-list">
+                      {sponsorsByTier[tier].map((s) =>
+                        s.url ? (
+                          <a
+                            href={s.url}
+                            target="_blank"
+                            rel="noopener"
+                            class="pf-sponsor-name"
+                          >
+                            {s.name}
+                          </a>
+                        ) : (
+                          <span class="pf-sponsor-name">{s.name}</span>
+                        ),
+                      )}
+                    </div>
                   </div>
-                </div>
-              )
-          )}
-        </div>
-      ) : (
-        <div class="pf-sponsor-empty">
-          <p>
-            Interested in sponsoring Pond Fest {CURRENT_YEAR}?{" "}
-            {SPONSOR_URL ? (
-              <a href={SPONSOR_URL} target="_blank" rel="noopener">Fill out our sponsor interest form</a>
-            ) : (
-              <>Reach out to <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a></>
+                ),
             )}
-          </p>
-        </div>
-      )}
+          </div>
+        ) : (
+          <div class="pf-sponsor-empty">
+            <p>
+              Interested in sponsoring Pond Fest {CURRENT_YEAR}?{" "}
+              {SPONSOR_URL ? (
+                <a href={SPONSOR_URL} target="_blank" rel="noopener">
+                  Fill out our sponsor interest form
+                </a>
+              ) : (
+                <>
+                  Reach out to{" "}
+                  <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+                </>
+              )}
+            </p>
+          </div>
+        )
+      }
     </div>
   </section>
 
@@ -515,72 +712,80 @@ const tierLabels: Record<string, string> = {
       <div class="pf-faq-intro">
         <span class="pf-eyebrow">Questions</span>
         <h2>Frequently Asked Questions</h2>
-        <p>Everything you need to know about Pond Fest. Can't find your answer? Email <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a></p>
+        <p>
+          Everything you need to know about Pond Fest. Can't find your answer?
+          Email <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+        </p>
       </div>
       <div class="pf-faq">
-        {FAQ.map((item, i) => (
-          <div class="pf-faq-item" id={`faq-${i}`}>
-            <button
-              class="pf-faq-button"
-              type="button"
-              aria-expanded="false"
-              aria-controls={`faq-content-${i}`}
-              id={`faq-btn-${i}`}
-            >
-              <span>{item.question}</span>
-              <svg
-                class="pf-faq-chevron"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
+        {
+          FAQ.map((item, i) => (
+            <div class="pf-faq-item" id={`faq-${i}`}>
+              <button
+                class="pf-faq-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls={`faq-content-${i}`}
+                id={`faq-btn-${i}`}
               >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m6 9l6 6l6-6"
-                />
-              </svg>
-            </button>
-            <div
-              id={`faq-content-${i}`}
-              aria-labelledby={`faq-btn-${i}`}
-              class="pf-faq-content"
-            >
-              <p>{item.answer}</p>
+                <span>{item.question}</span>
+                <svg
+                  class="pf-faq-chevron"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m6 9l6 6l6-6"
+                  />
+                </svg>
+              </button>
+              <div
+                id={`faq-content-${i}`}
+                aria-labelledby={`faq-btn-${i}`}
+                class="pf-faq-content"
+              >
+                <p>{item.answer}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   </section>
 
   <!-- ══ GALLERY ════════════════════════════════════════════════════ -->
   <div class="pf-gallery-grid" aria-label="Pond Fest photo gallery">
-    {GALLERY_PHOTOS.length > 0
-      ? GALLERY_PHOTOS.slice(0, 4).map((url) => (
-          <div class="pf-gallery-item">
-            <img src={url} alt="Pond Fest event" loading="lazy" />
-          </div>
-        ))
-      : [0, 1, 2, 3].map((i) => (
-          <div class="pf-gallery-item">
-            <div class="pf-img-placeholder">
-              <i class="fa-solid fa-camera" />
+    {
+      GALLERY_PHOTOS.length > 0
+        ? GALLERY_PHOTOS.slice(0, 4).map((url) => (
+            <div class="pf-gallery-item">
+              <img src={url} alt="Pond Fest event" loading="lazy" />
             </div>
-          </div>
-        ))
+          ))
+        : [0, 1, 2, 3].map((i) => (
+            <div class="pf-gallery-item">
+              <div class="pf-img-placeholder">
+                <i class="fa-solid fa-camera" />
+              </div>
+            </div>
+          ))
     }
   </div>
 
   <!-- ══ HISTORY TEASER ═════════════════════════════════════════════ -->
   <section
     class="pf-section pf-section--dark pf-history-section"
-    style={HISTORY_BG_PHOTO ? `background-image: url('${HISTORY_BG_PHOTO}')` : undefined}
+    style={HISTORY_BG_PHOTO
+      ? `background-image: url('${HISTORY_BG_PHOTO}')`
+      : undefined}
   >
     <div class="pf-section-inner pf-section-inner--narrow pf-history-inner">
       <span class="pf-eyebrow">Since 2024</span>
@@ -602,8 +807,8 @@ const tierLabels: Record<string, string> = {
         </div>
       </div>
       <p>
-        Pond Fest launched in 2024 and has grown into one of Delaware's
-        favorite community outdoor festivals.
+        Pond Fest launched in 2024 and has grown into one of Delaware's favorite
+        community outdoor festivals.
       </p>
       <a href="/pondfest/archive" class="pf-btn pf-btn--outline-light">
         View All Past Events
@@ -626,7 +831,11 @@ const tierLabels: Record<string, string> = {
   .pf-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(11,9,23,0.7) 0%, rgba(11,9,23,0.85) 100%);
+    background: linear-gradient(
+      to bottom,
+      rgba(11, 9, 23, 0.7) 0%,
+      rgba(11, 9, 23, 0.85) 100%
+    );
     display: flex;
     align-items: center;
     justify-content: center;
@@ -656,14 +865,19 @@ const tierLabels: Record<string, string> = {
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
     letter-spacing: 0.02em;
   }
-  .pf-hero-year { color: var(--pf-teal-light); }
+  .pf-hero-year {
+    color: var(--pf-teal-light);
+  }
   .pf-hero-meta {
     font-size: clamp(0.88rem, 2vw, 1.05rem);
     opacity: 0.85;
     margin-bottom: 0.4rem;
     line-height: 1.7;
   }
-  .pf-hero-meta i { opacity: 0.6; margin-right: 0.25em; }
+  .pf-hero-meta i {
+    opacity: 0.6;
+    margin-right: 0.25em;
+  }
   .pf-hero-tagline {
     font-size: clamp(0.95rem, 2vw, 1.1rem);
     opacity: 0.8;
@@ -678,8 +892,14 @@ const tierLabels: Record<string, string> = {
     margin-top: 1.5rem;
   }
   @media (max-width: 480px) {
-    .pf-hero-ctas { flex-direction: column; align-items: center; }
-    .pf-hero-ctas .pf-btn { width: 100%; max-width: 300px; }
+    .pf-hero-ctas {
+      flex-direction: column;
+      align-items: center;
+    }
+    .pf-hero-ctas .pf-btn {
+      width: 100%;
+      max-width: 300px;
+    }
   }
 
   /* ── Alert banner ── */
@@ -692,7 +912,9 @@ const tierLabels: Record<string, string> = {
     font-weight: 600;
     line-height: 1.4;
   }
-  .pf-alert-banner i { margin-right: 0.4em; }
+  .pf-alert-banner i {
+    margin-right: 0.4em;
+  }
 
   /* ── Day-of panel ── */
   .pf-dayof-quicknav {
@@ -715,56 +937,120 @@ const tierLabels: Record<string, string> = {
     text-decoration: none;
     transition: background 0.15s;
   }
-  .pf-quicknav-btn:hover { background: rgba(255, 255, 255, 0.22); color: #fff; }
+  .pf-quicknav-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+  }
   .pf-maps-grid {
     display: grid;
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     margin-bottom: 1.25rem;
   }
-  .pf-map-item { text-align: center; }
-  .pf-map-item h3 { font-size: 0.9rem; margin-bottom: 0.5rem; }
-  .pf-map-item a { display: block; text-decoration: none; }
+  .pf-map-item {
+    text-align: center;
+  }
+  .pf-map-item h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .pf-map-item a {
+    display: block;
+    text-decoration: none;
+  }
   .pf-map-img {
-    width: 100%; height: auto; border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.1);
-    object-fit: cover; max-height: 300px;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    object-fit: cover;
+    max-height: 300px;
   }
   .pf-map-tap-hint {
-    display: block; font-size: 0.78rem;
-    color: rgba(255,255,255,0.5); margin-top: 0.3rem;
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.3rem;
   }
   .pf-info-note {
-    display: flex; align-items: flex-start; gap: 0.75rem;
-    background: rgba(255,255,255,0.06);
-    border-radius: 6px; padding: 0.9rem 1.1rem; margin-top: 0.75rem;
-    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 0.9rem;
   }
-  .pf-info-note i { color: var(--pf-teal); font-size: 1.1rem; flex-shrink: 0; margin-top: 0.15rem; }
-  .pf-info-note p { margin: 0; line-height: 1.5; color: rgba(255,255,255,0.82); }
-  .pf-dayof-link-cards { display: flex; flex-direction: column; gap: 0.75rem; }
+  .pf-info-note i {
+    color: var(--pf-teal);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .pf-info-note p {
+    margin: 0;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .pf-dayof-link-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
   .pf-dayof-link-card {
-    display: flex; align-items: center; gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     padding: 1rem 1.25rem;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px; text-decoration: none; color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
     transition: background 0.15s;
   }
-  .pf-dayof-link-card:hover { background: rgba(255,255,255,0.1); color: #fff; }
-  .pf-dayof-link-card > div { flex: 1; }
-  .pf-dayof-link-card strong { display: block; font-size: 1rem; margin-bottom: 0.1rem; }
-  .pf-dayof-link-card p { margin: 0; font-size: 0.85rem; opacity: 0.7; }
-  .pf-dayof-link-icon { font-size: 1.3rem; color: var(--pf-teal); flex-shrink: 0; }
-  .pf-dayof-link-arrow { color: rgba(255,255,255,0.3); flex-shrink: 0; }
-  .pf-donate-section, .pf-feedback-section { text-align: center; }
-  .pf-donate-section p, .pf-feedback-section p {
-    max-width: 540px; margin: 0 auto 1.25rem auto;
+  .pf-dayof-link-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  .pf-dayof-link-card > div {
+    flex: 1;
+  }
+  .pf-dayof-link-card strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+  }
+  .pf-dayof-link-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  .pf-dayof-link-icon {
+    font-size: 1.3rem;
+    color: var(--pf-teal);
+    flex-shrink: 0;
+  }
+  .pf-dayof-link-arrow {
+    color: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+  }
+  .pf-donate-section,
+  .pf-feedback-section {
+    text-align: center;
+  }
+  .pf-donate-section p,
+  .pf-feedback-section p {
+    max-width: 540px;
+    margin: 0 auto 1.25rem auto;
   }
 
   /* ── Fundraising Goals ── */
-  .pf-goals-section { padding-bottom: 0; }
+  .pf-goals-section {
+    padding-bottom: 0;
+  }
   .pf-goals-intro {
     text-align: center;
     margin-bottom: clamp(2rem, 4vw, 4rem);
@@ -786,7 +1072,7 @@ const tierLabels: Record<string, string> = {
   }
   .pf-goals-donate-soon {
     font-size: 0.88rem;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255, 255, 255, 0.45);
     font-style: italic;
   }
 
@@ -801,9 +1087,12 @@ const tierLabels: Record<string, string> = {
     grid-template-columns: repeat(2, 1fr);
   }
   @media (min-width: 768px) {
-    .pf-features-grid { grid-template-columns: repeat(3, 1fr); }
+    .pf-features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
-  .pf-feature-tile {}
+  .pf-feature-tile {
+  }
   .pf-feature-media {
     aspect-ratio: 4 / 3;
     overflow: hidden;
@@ -812,14 +1101,22 @@ const tierLabels: Record<string, string> = {
     background: var(--pf-light-alt);
   }
   .pf-feature-media img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
     transition: transform 0.4s ease;
   }
-  .pf-feature-tile:hover .pf-feature-media img { transform: scale(1.04); }
+  .pf-feature-tile:hover .pf-feature-media img {
+    transform: scale(1.04);
+  }
   .pf-feature-icon-bg {
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(135deg, var(--pf-light-alt), #e8e3f8);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 2.5rem;
     color: var(--pf-purple);
   }
@@ -837,8 +1134,13 @@ const tierLabels: Record<string, string> = {
   }
 
   /* ── Music Lineup ── */
-  .pf-lineup-header, .pf-coming-soon { text-align: center; }
-  .pf-coming-soon { padding: clamp(1rem, 3vw, 3rem) 0; }
+  .pf-lineup-header,
+  .pf-coming-soon {
+    text-align: center;
+  }
+  .pf-coming-soon {
+    padding: clamp(1rem, 3vw, 3rem) 0;
+  }
   .pf-coming-soon-headline {
     font-family: var(--font-header);
     font-size: clamp(2rem, 5vw, 3.8rem);
@@ -847,7 +1149,8 @@ const tierLabels: Record<string, string> = {
     letter-spacing: 0.02em;
   }
   .pf-coming-soon-line {
-    width: 60px; height: 3px;
+    width: 60px;
+    height: 3px;
     background: var(--pf-teal);
     margin: 0 auto 1.25rem;
     border-radius: 2px;
@@ -858,48 +1161,87 @@ const tierLabels: Record<string, string> = {
     max-width: 480px;
     margin: 0 auto;
   }
-  .pf-coming-soon p a { color: var(--pf-teal); text-decoration: none; }
-  .pf-coming-soon p a:hover { text-decoration: underline; }
-  .pf-lineup-grid { display: grid; gap: 0; margin-top: 1.5rem; }
+  .pf-coming-soon p a {
+    color: var(--pf-teal);
+    text-decoration: none;
+  }
+  .pf-coming-soon p a:hover {
+    text-decoration: underline;
+  }
+  .pf-lineup-grid {
+    display: grid;
+    gap: 0;
+    margin-top: 1.5rem;
+  }
   .pf-performer-row {
-    display: flex; align-items: center; gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     padding: 1rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .pf-performer-name { flex: 1; font-size: 1.05rem; font-weight: 600; color: #fff; }
+  .pf-performer-name {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+  }
   .pf-performer-stage {
-    font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.06em; color: #fff;
-    background: var(--pf-teal); padding: 0.1em 0.55em; border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: var(--pf-teal);
+    padding: 0.1em 0.55em;
+    border-radius: 4px;
   }
-  .pf-performer-time { font-size: 0.88rem; color: rgba(255,255,255,0.55); }
+  .pf-performer-time {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
 
   /* ── Get Involved ── */
-  .pf-involved-header { text-align: center; margin-bottom: clamp(1.5rem, 3vw, 3rem); }
+  .pf-involved-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 3rem);
+  }
   .pf-involved-grid {
     display: grid;
     gap: clamp(1rem, 2vw, 1.5rem);
     grid-template-columns: repeat(2, 1fr);
   }
   @media (min-width: 640px) {
-    .pf-involved-grid { grid-template-columns: repeat(4, 1fr); }
+    .pf-involved-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
   .pf-involved-card {
     text-align: center;
     padding: clamp(1.25rem, 2.5vw, 2rem) 1rem;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 10px;
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
   .pf-involved-icon {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     color: var(--pf-teal-light);
     margin-bottom: 0.25rem;
   }
-  .pf-involved-card h3 { color: #fff; font-size: 1rem; margin: 0; }
+  .pf-involved-card h3 {
+    color: #fff;
+    font-size: 1rem;
+    margin: 0;
+  }
   .pf-involved-card p {
-    font-size: 0.85rem; opacity: 0.72; margin: 0; line-height: 1.4;
+    font-size: 0.85rem;
+    opacity: 0.72;
+    margin: 0;
+    line-height: 1.4;
     flex: 1;
   }
   .pf-involved-more {
@@ -908,28 +1250,58 @@ const tierLabels: Record<string, string> = {
   }
 
   /* ── Sponsors ── */
-  .pf-sponsors-inner { text-align: center; }
-  .pf-sponsor-tiers { margin-top: 2rem; }
-  .pf-sponsor-tier { margin-bottom: 1.5rem; }
+  .pf-sponsors-inner {
+    text-align: center;
+  }
+  .pf-sponsor-tiers {
+    margin-top: 2rem;
+  }
+  .pf-sponsor-tier {
+    margin-bottom: 1.5rem;
+  }
   .pf-sponsor-tier-label {
-    font-size: 0.75rem; text-transform: uppercase;
-    letter-spacing: 0.14em; color: var(--pf-teal);
-    font-weight: 700; margin-bottom: 0.6rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--pf-teal);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
   }
   .pf-sponsor-list {
-    display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: center;
   }
-  .pf-sponsor-tier:nth-child(1) .pf-sponsor-name { font-size: 1.4rem; font-weight: 700; color: var(--pf-purple-dark); }
-  .pf-sponsor-tier:nth-child(2) .pf-sponsor-name { font-size: 1.15rem; font-weight: 600; color: var(--pf-purple); }
-  .pf-sponsor-tier:nth-child(n+3) .pf-sponsor-name { font-size: 0.95rem; color: #3a2e5a; }
-  .pf-sponsor-name { text-decoration: none; }
-  a.pf-sponsor-name:hover { color: var(--pf-teal); text-decoration: underline; }
+  .pf-sponsor-tier:nth-child(1) .pf-sponsor-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--pf-purple-dark);
+  }
+  .pf-sponsor-tier:nth-child(2) .pf-sponsor-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--pf-purple);
+  }
+  .pf-sponsor-tier:nth-child(n + 3) .pf-sponsor-name {
+    font-size: 0.95rem;
+    color: #3a2e5a;
+  }
+  .pf-sponsor-name {
+    text-decoration: none;
+  }
+  a.pf-sponsor-name:hover {
+    color: var(--pf-teal);
+    text-decoration: underline;
+  }
   .pf-sponsor-empty {
     margin-top: 1.5rem;
     font-size: 1rem;
     color: #3a2e5a;
   }
-  .pf-sponsor-empty a { color: var(--pf-purple); }
+  .pf-sponsor-empty a {
+    color: var(--pf-purple);
+  }
 
   /* ── FAQ ── */
   .pf-faq-layout {
@@ -939,19 +1311,32 @@ const tierLabels: Record<string, string> = {
     align-items: start;
   }
   @media (min-width: 768px) {
-    .pf-faq-layout { grid-template-columns: 35% 1fr; }
+    .pf-faq-layout {
+      grid-template-columns: 35% 1fr;
+    }
   }
-  .pf-faq-intro h2 { margin-bottom: 0.75rem; }
+  .pf-faq-intro h2 {
+    margin-bottom: 0.75rem;
+  }
   .pf-faq-intro p {
     font-size: clamp(0.9rem, 1.8vw, 1rem);
     line-height: 1.65;
     margin: 0;
   }
-  .pf-faq-intro p a { color: var(--pf-teal); text-decoration: none; }
-  .pf-faq-intro p a:hover { text-decoration: underline; }
-  .pf-faq { display: flex; flex-direction: column; gap: 0; }
+  .pf-faq-intro p a {
+    color: var(--pf-teal);
+    text-decoration: none;
+  }
+  .pf-faq-intro p a:hover {
+    text-decoration: underline;
+  }
+  .pf-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
   .pf-faq-item {
-    border-bottom: 1px solid rgba(255,255,255,0.09);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
     transition: border-color 0.2s;
   }
   .pf-faq-item.is-open {
@@ -959,33 +1344,49 @@ const tierLabels: Record<string, string> = {
     margin-left: -3px;
   }
   .pf-faq-button {
-    width: 100%; display: flex; justify-content: space-between;
-    align-items: center; gap: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
     padding: clamp(0.9rem, 1.5vw, 1.1rem) 0;
     text-align: left;
-    background: transparent; border: none; cursor: pointer;
+    background: transparent;
+    border: none;
+    cursor: pointer;
     font-size: clamp(0.9rem, 1.6vw, 1rem);
-    font-weight: 600; color: #fff;
+    font-weight: 600;
+    color: #fff;
     transition: color 0.15s;
   }
-  .pf-faq-button:hover { color: var(--pf-teal-light); }
+  .pf-faq-button:hover {
+    color: var(--pf-teal-light);
+  }
   .pf-faq-chevron {
-    flex-shrink: 0; transition: transform 0.25s, color 0.2s;
-    color: rgba(255,255,255,0.35);
+    flex-shrink: 0;
+    transition:
+      transform 0.25s,
+      color 0.2s;
+    color: rgba(255, 255, 255, 0.35);
   }
   .pf-faq-item.is-open .pf-faq-chevron {
-    transform: rotate(180deg); color: var(--pf-teal);
+    transform: rotate(180deg);
+    color: var(--pf-teal);
   }
-  .pf-faq-item.is-open .pf-faq-button { color: var(--pf-teal-light); }
+  .pf-faq-item.is-open .pf-faq-button {
+    color: var(--pf-teal-light);
+  }
   .pf-faq-content {
-    overflow: hidden; max-height: 0;
+    overflow: hidden;
+    max-height: 0;
     transition: max-height 0.3s ease-in-out;
   }
   .pf-faq-content p {
     padding-bottom: 1.1rem;
     font-size: clamp(0.88rem, 1.5vw, 0.95rem);
-    color: rgba(255,255,255,0.7);
-    line-height: 1.7; margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin: 0;
   }
 
   /* ── History Teaser ── */
@@ -996,20 +1397,27 @@ const tierLabels: Record<string, string> = {
   }
   .pf-history-section::before {
     content: "";
-    position: absolute; inset: 0;
-    background: rgba(11,9,23,0.88);
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 9, 23, 0.88);
   }
   .pf-history-inner {
     position: relative;
     text-align: center;
   }
   .pf-history-stats {
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: clamp(0.75rem, 2vw, 1.5rem);
     flex-wrap: wrap;
     margin: 1rem 0 1.5rem;
   }
-  .pf-history-stat { display: flex; flex-direction: column; align-items: center; }
+  .pf-history-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .pf-history-stat-num {
     font-family: var(--font-header);
     font-size: clamp(2rem, 6vw, 3.5rem);
@@ -1017,41 +1425,76 @@ const tierLabels: Record<string, string> = {
     line-height: 1;
   }
   .pf-history-stat-label {
-    font-size: 0.72rem; text-transform: uppercase;
-    letter-spacing: 0.12em; color: rgba(255,255,255,0.5);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.5);
     margin-top: 0.2rem;
   }
   .pf-history-stat-dot {
-    font-size: 1.5rem; color: rgba(255,255,255,0.2);
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.2);
     align-self: center;
   }
   .pf-history-inner p {
-    max-width: 520px; margin: 0 auto 1.5rem;
+    max-width: 520px;
+    margin: 0 auto 1.5rem;
     font-size: clamp(0.95rem, 2vw, 1.05rem);
   }
 
   /* ── Print ── */
   @media print {
-    .pf-hero { min-height: auto; background-image: none !important; }
-    .pf-hero-overlay { position: static; background: none; padding: 0; }
-    .pf-hero-content { color: #000; }
-    .pf-hero-title, .pf-hero-year { color: #000; }
-    .pf-section--dark, .pf-section--dark-alt,
-    .pf-section--purple { background: #fff; color: #000; }
-    .pf-section--dark h2, .pf-section--dark-alt h2,
-    .pf-section--purple h2, .pf-section--dark h3,
-    .pf-section--dark p, .pf-section--purple p { color: #000; }
-    .pf-photo-band, .pf-gallery-grid { display: none; }
-    .pf-hero-ctas, .pf-btn--disabled { display: none; }
+    .pf-hero {
+      min-height: auto;
+      background-image: none !important;
+    }
+    .pf-hero-overlay {
+      position: static;
+      background: none;
+      padding: 0;
+    }
+    .pf-hero-content {
+      color: #000;
+    }
+    .pf-hero-title,
+    .pf-hero-year {
+      color: #000;
+    }
+    .pf-section--dark,
+    .pf-section--dark-alt,
+    .pf-section--purple {
+      background: #fff;
+      color: #000;
+    }
+    .pf-section--dark h2,
+    .pf-section--dark-alt h2,
+    .pf-section--purple h2,
+    .pf-section--dark h3,
+    .pf-section--dark p,
+    .pf-section--purple p {
+      color: #000;
+    }
+    .pf-photo-band,
+    .pf-gallery-grid {
+      display: none;
+    }
+    .pf-hero-ctas,
+    .pf-btn--disabled {
+      display: none;
+    }
   }
 </style>
 
 <script>
   function setupFAQ() {
-    const items = document.querySelectorAll(".pf-faq-item") as NodeListOf<HTMLElement>;
+    const items = document.querySelectorAll(
+      ".pf-faq-item",
+    ) as NodeListOf<HTMLElement>;
     items.forEach((item) => {
       const btn = item.querySelector(".pf-faq-button") as HTMLButtonElement;
-      const content = item.querySelector(".pf-faq-content") as HTMLElement | null;
+      const content = item.querySelector(
+        ".pf-faq-content",
+      ) as HTMLElement | null;
       if (!btn || !content) return;
       btn.addEventListener("click", () => {
         const isOpen = item.classList.contains("is-open");
