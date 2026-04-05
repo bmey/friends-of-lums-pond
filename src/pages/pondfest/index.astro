@@ -30,6 +30,9 @@ import {
   EVENT_MAP_IMAGE_URL,
   PARKING_MAP_IMAGE_URL,
   VENDOR_MAP_IMAGE_URL,
+  PHOTO_BAND_1_URL,
+  GALLERY_PHOTOS,
+  HISTORY_BG_PHOTO,
 } from "../../data/pondfest/config";
 
 const hasMaps = EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
@@ -46,68 +49,50 @@ const hasSponsors = SPONSORS.length > 0;
 const hasLineup = LINEUP.length > 0;
 
 const ctaLinks = [
-  {
-    label: "Get Tickets",
-    url: TICKETS_URL,
-    style: "pf-btn--primary",
-    icon: "fa-ticket",
-  },
-  {
-    label: "Volunteer",
-    url: VOLUNTEER_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-hand-holding-heart",
-  },
-  {
-    label: "Sponsor",
-    url: SPONSOR_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-star",
-  },
-  {
-    label: "Vend",
-    url: VENDOR_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-store",
-  },
-  {
-    label: "Perform",
-    url: PERFORMER_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-music",
-  },
+  { label: "Get Tickets",  url: TICKETS_URL,   style: "pf-btn--primary",       icon: "fa-ticket" },
+  { label: "Volunteer",    url: VOLUNTEER_URL,  style: "pf-btn--outline-light",  icon: "fa-hand-holding-heart" },
+  { label: "Sponsor",      url: SPONSOR_URL,    style: "pf-btn--outline-light",  icon: "fa-star" },
+  { label: "Vend",         url: VENDOR_URL,     style: "pf-btn--outline-light",  icon: "fa-store" },
+  { label: "Perform",      url: PERFORMER_URL,  style: "pf-btn--outline-light",  icon: "fa-music" },
 ];
 
+// Real photos for each feature — add URLs from your Lightroom album
 const features = [
   {
     icon: "fa-music",
     title: "Live Music",
-    desc: "Multiple stages featuring local and regional artists throughout the day",
+    desc: "Multiple stages featuring local and regional artists throughout the day.",
+    imageUrl: "", // e.g. "/pondfest/photos/live-music.jpg"
   },
   {
     icon: "fa-beer-mug-empty",
     title: "Beer Garden",
-    desc: "Craft brews from Delaware's best local breweries (21+)",
+    desc: "Craft brews from Delaware's best local breweries (21+).",
+    imageUrl: "", // e.g. "/pondfest/photos/beer-garden.jpg"
   },
   {
     icon: "fa-utensils",
     title: "Food Trucks",
-    desc: "A variety of local food trucks for every appetite",
+    desc: "A variety of local food trucks for every appetite.",
+    imageUrl: "", // e.g. "/pondfest/photos/food-trucks.jpg"
   },
   {
     icon: "fa-child",
     title: "Kids Zone",
-    desc: "Games, crafts, face painting, and activities for all ages",
+    desc: "Games, crafts, face painting, and activities for all ages.",
+    imageUrl: "", // e.g. "/pondfest/photos/kids-zone.jpg"
   },
   {
     icon: "fa-store",
     title: "Craft Vendors",
-    desc: "40+ local artisans, crafters, and community nonprofits",
+    desc: "40+ local artisans, crafters, and community nonprofits.",
+    imageUrl: "", // e.g. "/pondfest/photos/vendors.jpg"
   },
   {
     icon: "fa-ticket",
     title: "Raffles & Auction",
-    desc: "Win exciting prizes donated by local businesses and supporters",
+    desc: "Win exciting prizes donated by local businesses and supporters.",
+    imageUrl: "", // e.g. "/pondfest/photos/raffle.jpg"
   },
 ];
 
@@ -155,17 +140,15 @@ const tierLabels: Record<string, string> = {
   title={`Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
   description={`Pond Fest ${CURRENT_YEAR} — ${EVENT_DATE_DISPLAY}. ${EVENT_TAGLINE}`}
 >
-  <!-- ══ ALERT BANNER (shown when DAY_OF_ALERT is set in config) ═════ -->
-  {
-    DAY_OF_ALERT && (
-      <div class="pf-alert-banner" role="alert">
-        <i class="fa-solid fa-circle-info" />
-        {DAY_OF_ALERT}
-      </div>
-    )
-  }
+  <!-- ══ ALERT BANNER ════════════════════════════════════════════════ -->
+  {DAY_OF_ALERT && (
+    <div class="pf-alert-banner" role="alert">
+      <i class="fa-solid fa-circle-info" />
+      {DAY_OF_ALERT}
+    </div>
+  )}
 
-  <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+  <!-- ══ HERO ═══════════════════════════════════════════════════════ -->
   <section class="pf-hero" style={`background-image: url('${HERO_IMAGE_URL}')`}>
     <div class="pf-hero-overlay">
       <div class="pf-hero-content">
@@ -184,31 +167,27 @@ const tierLabels: Record<string, string> = {
           {EVENT_LOCATION}
         </p>
         <p class="pf-hero-tagline">{EVENT_TAGLINE}</p>
-
         <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
-
         <div class="pf-hero-ctas">
-          {
-            ctaLinks.map((cta) =>
-              cta.url ? (
-                <a href={cta.url} class={`pf-btn ${cta.style}`} target="_blank" rel="noopener">
-                  <i class={`fa-solid ${cta.icon}`} />
-                  {cta.label}
-                </a>
-              ) : (
-                <span class="pf-btn pf-btn--disabled" title="Link coming soon">
-                  <i class={`fa-solid ${cta.icon}`} />
-                  {cta.label}
-                </span>
-              )
+          {ctaLinks.map((cta) =>
+            cta.url ? (
+              <a href={cta.url} class={`pf-btn ${cta.style}`} target="_blank" rel="noopener">
+                <i class={`fa-solid ${cta.icon}`} />
+                {cta.label}
+              </a>
+            ) : (
+              <span class="pf-btn pf-btn--disabled" title="Link coming soon">
+                <i class={`fa-solid ${cta.icon}`} />
+                {cta.label}
+              </span>
             )
-          }
+          )}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══ DAY-OF PANEL (shown by JS when within 7 days of event) ══════ -->
+  <!-- ══ DAY-OF PANEL ═══════════════════════════════════════════════ -->
   <div
     id="pf-day-of-panel"
     data-event-date={EVENT_DATE}
@@ -217,7 +196,7 @@ const tierLabels: Record<string, string> = {
   >
     <!-- Quick navigation -->
     <section class="pf-section pf-section--purple">
-      <div class="pf-section-inner">
+      <div class="pf-section-inner pf-section-inner--mid">
         <h2>Day-of Quick Links</h2>
         <div class="pf-dayof-quicknav">
           {hasMaps && <a href="#pf-maps" class="pf-quicknav-btn"><i class="fa-solid fa-map"></i> Maps</a>}
@@ -229,10 +208,9 @@ const tierLabels: Record<string, string> = {
       </div>
     </section>
 
-    <!-- Maps -->
     {hasMaps && (
-      <section class="pf-section pf-section--warm" id="pf-maps">
-        <div class="pf-section-inner">
+      <section class="pf-section pf-section--dark-alt" id="pf-maps">
+        <div class="pf-section-inner pf-section-inner--mid">
           <h2>Event Maps</h2>
           <div class="pf-maps-grid">
             {EVENT_MAP_IMAGE_URL && (
@@ -264,13 +242,13 @@ const tierLabels: Record<string, string> = {
             )}
           </div>
           {PARKING_NOTES && (
-            <div class="pf-parking-notes">
+            <div class="pf-info-note">
               <i class="fa-solid fa-circle-parking"></i>
               <p>{PARKING_NOTES}</p>
             </div>
           )}
           {SHUTTLE_INFO && (
-            <div class="pf-shuttle-info">
+            <div class="pf-info-note">
               <i class="fa-solid fa-bus"></i>
               <p>{SHUTTLE_INFO}</p>
             </div>
@@ -279,10 +257,9 @@ const tierLabels: Record<string, string> = {
       </section>
     )}
 
-    <!-- Raffle / Auction links -->
     {(RAFFLE_LINK || AUCTION_LINK) && (
-      <section class="pf-section">
-        <div class="pf-section-inner">
+      <section class="pf-section pf-section--dark">
+        <div class="pf-section-inner pf-section-inner--mid">
           <h2>Raffles &amp; Auction</h2>
           <div class="pf-dayof-link-cards">
             {RAFFLE_LINK && (
@@ -310,10 +287,9 @@ const tierLabels: Record<string, string> = {
       </section>
     )}
 
-    <!-- Donation embed -->
     {DONATION_EMBED_URL && (
-      <section class="pf-section pf-section--warm" id="pf-donate">
-        <div class="pf-section-inner pf-donate-section">
+      <section class="pf-section pf-section--dark-alt" id="pf-donate">
+        <div class="pf-section-inner--narrow pf-donate-section">
           <h2>Donate Today</h2>
           <p>Every dollar raised goes directly to Lums Pond State Park programs and facilities.</p>
           <script src="https://donorbox.org/widget.js" paypalExpress="false" is:inline></script>
@@ -333,10 +309,9 @@ const tierLabels: Record<string, string> = {
       </section>
     )}
 
-    <!-- Feedback link -->
     {FEEDBACK_LINK && (
       <section class="pf-section pf-section--purple">
-        <div class="pf-section-inner pf-feedback-section">
+        <div class="pf-section-inner--narrow pf-feedback-section">
           <h2>Share Your Feedback</h2>
           <p>
             Thank you for spending the day with us at Pond Fest! Your feedback helps
@@ -349,260 +324,278 @@ const tierLabels: Record<string, string> = {
       </section>
     )}
   </div>
-  <!-- ══ END DAY-OF PANEL ════════════════════════════════��═════════════ -->
+  <!-- ══ END DAY-OF PANEL ═══════════════════════════════════════════ -->
 
-  <!-- ══ FUNDRAISING GOALS ════════════════════════════════════════════ -->
-  {
-    FUNDING_GOALS.length > 0 && (
-      <section class="pf-section pf-section--warm">
-        <div class="pf-section-inner">
-          <h2>Fundraising for {CURRENT_YEAR}</h2>
-          <p class="pf-goals-goal">Goal: {FUNDRAISING_GOAL}</p>
-          <div class="pf-goals-grid">
-            {FUNDING_GOALS.map((goal) => (
-              <div class="pf-goal-card pf-card">
-                <div class="pf-goal-card-inner">
-                  <div class="pf-goal-icon-wrap">
-                    <i class="fa-solid fa-seedling" />
-                  </div>
-                  <h3>{goal.name}</h3>
-                  <p>{goal.description}</p>
-                  {goal.donorboxUrl && (
-                    <a
-                      href={goal.donorboxUrl}
-                      class="pf-btn pf-btn--primary"
-                      target="_blank"
-                      rel="noopener"
-                    >
-                      Donate to this goal
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
+  <!-- ══ FUNDRAISING GOALS — split image+text on purple ════════════ -->
+  {FUNDING_GOALS.length > 0 && (
+    <section class="pf-section pf-section--purple pf-goals-section">
+      <div class="pf-section-inner pf-section-inner--narrow pf-goals-intro">
+        <span class="pf-eyebrow">Fundraising for {CURRENT_YEAR}</span>
+        <h2>Raising {FUNDRAISING_GOAL} for the Park</h2>
+        <p>Every dollar raised at Pond Fest goes directly to Lums Pond State Park programs and facilities.</p>
+      </div>
+
+      {FUNDING_GOALS.map((goal, i) => (
+        <div class={`pf-split ${i % 2 !== 0 ? "pf-split--reverse" : ""} pf-goals-split`}>
+          <div class="pf-split-media">
+            {goal.imageUrl
+              ? <img src={goal.imageUrl} alt={goal.name} loading="lazy" />
+              : <div class="pf-img-placeholder"><i class="fa-solid fa-camera" /></div>
+            }
+          </div>
+          <div class="pf-split-text">
+            <h3>{goal.name}</h3>
+            <p>{goal.description}</p>
+            {goal.donorboxUrl
+              ? <a href={goal.donorboxUrl} class="pf-btn pf-btn--primary" target="_blank" rel="noopener">Donate to this goal</a>
+              : <span class="pf-goals-donate-soon">Donation link coming soon</span>
+            }
           </div>
         </div>
-      </section>
-    )
-  }
+      ))}
+    </section>
+  )}
 
-  <!-- ══ WHAT TO EXPECT ═══════════════════════════════════════════════ -->
-  <section class="pf-section">
+  <!-- ══ WHAT TO EXPECT — photo tiles on light bg ══════════════════ -->
+  <section class="pf-section pf-section--light">
     <div class="pf-section-inner">
-      <h2>What to Expect</h2>
+      <div class="pf-expect-header">
+        <span class="pf-eyebrow">The Experience</span>
+        <h2>What to Expect</h2>
+      </div>
       <div class="pf-features-grid">
-        {
-          features.map((f) => (
-            <div class="pf-feature-card pf-card">
-              <div class="pf-feature-icon-wrap">
-                <i class={`fa-solid ${f.icon}`} />
-              </div>
-              <h3 class="pf-feature-title">{f.title}</h3>
-              <p class="pf-feature-desc">{f.desc}</p>
+        {features.map((f) => (
+          <div class="pf-feature-tile">
+            <div class="pf-feature-media">
+              {f.imageUrl
+                ? <img src={f.imageUrl} alt={f.title} loading="lazy" />
+                : (
+                  <div class="pf-feature-icon-bg">
+                    <i class={`fa-solid ${f.icon}`} />
+                  </div>
+                )
+              }
             </div>
-          ))
-        }
+            <div class="pf-feature-body">
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- ══ MUSIC LINEUP ═════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--warm">
-    <div class="pf-section-inner">
-      <h2>Music Lineup</h2>
-      {
-        hasLineup ? (
+  <!-- ══ MUSIC LINEUP ═══════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-section-inner--mid">
+      {hasLineup ? (
+        <>
+          <div class="pf-lineup-header">
+            <span class="pf-eyebrow">Live Music</span>
+            <h2>Music Lineup</h2>
+          </div>
           <div class="pf-lineup-grid">
             {LINEUP.map((performer) => (
-              <div class="pf-performer-card">
-                <i class="fa-solid fa-music pf-performer-icon" />
-                <div class="pf-performer-info">
-                  <strong>{performer.name}</strong>
-                  {performer.stage && (
-                    <span class="pf-performer-stage">{performer.stage}</span>
-                  )}
-                  {performer.time && (
-                    <span class="pf-performer-time">{performer.time}</span>
-                  )}
-                </div>
+              <div class="pf-performer-row">
+                <div class="pf-performer-name">{performer.name}</div>
+                {performer.stage && <span class="pf-performer-stage">{performer.stage}</span>}
+                {performer.time && <span class="pf-performer-time">{performer.time}</span>}
               </div>
             ))}
           </div>
-        ) : (
-          <div class="pf-coming-soon">
-            <i class="fa-solid fa-music pf-coming-soon-icon" />
-            <h3 class="pf-coming-soon-headline">Lineup Coming Soon</h3>
-            <p>
-              Artist announcements drop as we get closer to October — follow us on{" "}
-              <a
-                href="https://www.facebook.com/FriendsofLumsPond"
-                target="_blank"
-                rel="noopener"
-              >
-                Facebook
-              </a>{" "}
-              so you don't miss it.
-            </p>
-          </div>
-        )
-      }
+        </>
+      ) : (
+        <div class="pf-coming-soon">
+          <span class="pf-eyebrow">Live Music</span>
+          <h2 class="pf-coming-soon-headline">Lineup Coming Soon</h2>
+          <div class="pf-coming-soon-line" />
+          <p>
+            Artist announcements drop as we get closer to October — follow us on{" "}
+            <a href="https://www.facebook.com/FriendsofLumsPond" target="_blank" rel="noopener">
+              Facebook
+            </a>{" "}
+            so you don't miss it.
+          </p>
+        </div>
+      )}
     </div>
   </section>
 
-  <!-- ══ GET INVOLVED ═════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--purple">
-    <div class="pf-section-inner">
-      <h2>Get Involved</h2>
-      <div class="pf-involved-grid">
-        {
-          involvedPaths.map((path) => (
-            <div class="pf-involved-card">
-              <i class={`fa-solid ${path.icon} pf-involved-icon`} />
-              <h3>{path.title}</h3>
-              <p>{path.desc}</p>
-              {path.url ? (
-                <a
-                  href={path.url}
-                  class="pf-btn pf-btn--outline-light"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {path.cta}
-                </a>
-              ) : (
-                <span class="pf-btn pf-btn--disabled">{path.cta} — Coming Soon</span>
-              )}
-            </div>
-          ))
-        }
+  <!-- ══ PHOTO BAND ═════════════════════════════════════════════════ -->
+  <div
+    class="pf-photo-band"
+    style={PHOTO_BAND_1_URL ? `background-image: url('${PHOTO_BAND_1_URL}')` : undefined}
+    role="img"
+    aria-label="Pond Fest event photo"
+  >
+    {!PHOTO_BAND_1_URL && (
+      <div class="pf-photo-band-placeholder">
+        <i class="fa-solid fa-camera" />
       </div>
-    </div>
-  </section>
+    )}
+  </div>
 
-  <!-- ══ SPONSORS ═════════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--warm">
-    <div class="pf-section-inner pf-sponsors-inner">
-      <h2>Sponsors</h2>
-      {
-        hasSponsors ? (
-          <div>
-            {(
-              ["platinum", "gold", "silver", "bronze", "family"] as const
-            ).map(
-              (tier) =>
-                sponsorsByTier[tier].length > 0 && (
-                  <div class="pf-sponsor-tier">
-                    <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
-                    <div class="pf-sponsor-list">
-                      {sponsorsByTier[tier].map((s) =>
-                        s.url ? (
-                          <a
-                            href={s.url}
-                            target="_blank"
-                            rel="noopener"
-                            class="pf-sponsor-name"
-                          >
-                            {s.name}
-                          </a>
-                        ) : (
-                          <span class="pf-sponsor-name">{s.name}</span>
-                        )
-                      )}
-                    </div>
-                  </div>
-                )
+  <!-- ══ GET INVOLVED ═══════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <div class="pf-involved-header">
+        <span class="pf-eyebrow">Be Part of It</span>
+        <h2>Get Involved</h2>
+      </div>
+      <div class="pf-involved-grid">
+        {involvedPaths.map((path) => (
+          <div class="pf-involved-card">
+            <i class={`fa-solid ${path.icon} pf-involved-icon`} />
+            <h3>{path.title}</h3>
+            <p>{path.desc}</p>
+            {path.url ? (
+              <a href={path.url} class="pf-btn pf-btn--outline-light" target="_blank" rel="noopener">
+                {path.cta}
+              </a>
+            ) : (
+              <span class="pf-btn pf-btn--disabled">{path.cta} — Coming Soon</span>
             )}
           </div>
-        ) : (
-          <div class="pf-sponsor-empty">
-            <p>
-              Interested in sponsoring Pond Fest {CURRENT_YEAR}?
-              <br />
-              Reach out to us at{" "}
-              <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>{" "}
-              {SPONSOR_URL && (
-                <>
-                  {" "}
-                  or{" "}
-                  <a href={SPONSOR_URL} target="_blank" rel="noopener">
-                    fill out our sponsor interest form
-                  </a>
-                  .
-                </>
-              )}
-            </p>
-          </div>
-        )
-      }
-    </div>
-  </section>
-
-  <!-- ══ FAQ ══════════════════════════════════════════════════════════ -->
-  <section class="pf-section">
-    <div class="pf-section-inner">
-      <h2>Frequently Asked Questions</h2>
-      <div class="pf-faq">
-        {
-          FAQ.map((item, i) => (
-            <div
-              class="accordion group pf-faq-item"
-              id={`faq-${i}`}
-            >
-              <button
-                class="accordion__button pf-faq-button"
-                type="button"
-                aria-expanded="false"
-                aria-controls={`faq-content-${i}`}
-                id={`faq-btn-${i}`}
-              >
-                <span>{item.question}</span>
-                <svg
-                  class="accordion__chevron pf-faq-chevron"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m6 9l6 6l6-6"
-                  />
-                </svg>
-              </button>
-              <div
-                id={`faq-content-${i}`}
-                aria-labelledby={`faq-btn-${i}`}
-                class="accordion__content pf-faq-content hidden"
-              >
-                <p>{item.answer}</p>
-              </div>
-            </div>
-          ))
-        }
+        ))}
+      </div>
+      <div class="pf-involved-more">
+        <a href="/pondfest/involved" class="pf-btn pf-btn--primary">
+          Learn More About Getting Involved
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ══ HISTORY TEASER ═══════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--dark">
-    <div class="pf-section-inner pf-history-teaser">
+  <!-- ══ SPONSORS ═══════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--light-alt">
+    <div class="pf-section-inner pf-section-inner--mid pf-sponsors-inner">
+      <span class="pf-eyebrow">Thank You</span>
+      <h2>Sponsors</h2>
+      {hasSponsors ? (
+        <div class="pf-sponsor-tiers">
+          {(["platinum", "gold", "silver", "bronze", "family"] as const).map(
+            (tier) =>
+              sponsorsByTier[tier].length > 0 && (
+                <div class="pf-sponsor-tier">
+                  <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
+                  <div class="pf-sponsor-list">
+                    {sponsorsByTier[tier].map((s) =>
+                      s.url ? (
+                        <a href={s.url} target="_blank" rel="noopener" class="pf-sponsor-name">
+                          {s.name}
+                        </a>
+                      ) : (
+                        <span class="pf-sponsor-name">{s.name}</span>
+                      )
+                    )}
+                  </div>
+                </div>
+              )
+          )}
+        </div>
+      ) : (
+        <div class="pf-sponsor-empty">
+          <p>
+            Interested in sponsoring Pond Fest {CURRENT_YEAR}?{" "}
+            {SPONSOR_URL ? (
+              <a href={SPONSOR_URL} target="_blank" rel="noopener">Fill out our sponsor interest form</a>
+            ) : (
+              <>Reach out to <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a></>
+            )}
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ══ FAQ — 2-column on desktop ═════════════════════════════════ -->
+  <section class="pf-section pf-section--dark-alt">
+    <div class="pf-section-inner pf-faq-layout">
+      <div class="pf-faq-intro">
+        <span class="pf-eyebrow">Questions</span>
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything you need to know about Pond Fest. Can't find your answer? Email <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a></p>
+      </div>
+      <div class="pf-faq">
+        {FAQ.map((item, i) => (
+          <div class="pf-faq-item" id={`faq-${i}`}>
+            <button
+              class="pf-faq-button"
+              type="button"
+              aria-expanded="false"
+              aria-controls={`faq-content-${i}`}
+              id={`faq-btn-${i}`}
+            >
+              <span>{item.question}</span>
+              <svg
+                class="pf-faq-chevron"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m6 9l6 6l6-6"
+                />
+              </svg>
+            </button>
+            <div
+              id={`faq-content-${i}`}
+              aria-labelledby={`faq-btn-${i}`}
+              class="pf-faq-content"
+            >
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GALLERY ════════════════════════════════════════════════════ -->
+  <div class="pf-gallery-grid" aria-label="Pond Fest photo gallery">
+    {GALLERY_PHOTOS.length > 0
+      ? GALLERY_PHOTOS.slice(0, 4).map((url) => (
+          <div class="pf-gallery-item">
+            <img src={url} alt="Pond Fest event" loading="lazy" />
+          </div>
+        ))
+      : [0, 1, 2, 3].map((i) => (
+          <div class="pf-gallery-item">
+            <div class="pf-img-placeholder">
+              <i class="fa-solid fa-camera" />
+            </div>
+          </div>
+        ))
+    }
+  </div>
+
+  <!-- ══ HISTORY TEASER ═════════════════════════════════════════════ -->
+  <section
+    class="pf-section pf-section--dark pf-history-section"
+    style={HISTORY_BG_PHOTO ? `background-image: url('${HISTORY_BG_PHOTO}')` : undefined}
+  >
+    <div class="pf-section-inner pf-section-inner--narrow pf-history-inner">
+      <span class="pf-eyebrow">Since 2024</span>
       <h2>Our History</h2>
       <div class="pf-history-stats">
         <div class="pf-history-stat">
           <span class="pf-history-stat-num">2</span>
           <span class="pf-history-stat-label">Years</span>
         </div>
-        <div class="pf-history-stat-divider">&middot;</div>
+        <span class="pf-history-stat-dot">&middot;</span>
         <div class="pf-history-stat">
           <span class="pf-history-stat-num">$30K</span>
           <span class="pf-history-stat-label">Raised</span>
         </div>
-        <div class="pf-history-stat-divider">&middot;</div>
+        <span class="pf-history-stat-dot">&middot;</span>
         <div class="pf-history-stat">
           <span class="pf-history-stat-num">2,100+</span>
           <span class="pf-history-stat-label">Attendees</span>
@@ -633,55 +626,47 @@ const tierLabels: Record<string, string> = {
   .pf-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 22, 41, 0.72) 0%,
-      rgba(0, 22, 41, 0.82) 100%
-    );
+    background: linear-gradient(to bottom, rgba(11,9,23,0.7) 0%, rgba(11,9,23,0.85) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1.5rem;
+    padding: 2rem clamp(1.5rem, 5vw, 5rem);
     box-sizing: border-box;
   }
   .pf-hero-content {
     text-align: center;
     color: #fff;
-    max-width: 780px;
+    max-width: 860px;
     width: 100%;
   }
   .pf-hero-eyebrow {
-    font-size: 0.85rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.85rem);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    opacity: 0.8;
+    letter-spacing: 0.18em;
+    opacity: 0.75;
     margin-bottom: 0.5rem;
+    display: block;
   }
   .pf-hero-title {
     font-family: var(--font-header);
-    font-size: clamp(3rem, 12vw, 7rem);
-    line-height: 0.95;
+    font-size: clamp(3.5rem, 14vw, 9rem);
+    line-height: 0.92;
     color: #fff;
-    margin: 0 0 0.3em 0;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    margin: 0 0 0.25em 0;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
     letter-spacing: 0.02em;
   }
-  .pf-hero-year {
-    color: var(--pf-teal-light);
-  }
+  .pf-hero-year { color: var(--pf-teal-light); }
   .pf-hero-meta {
-    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
-    opacity: 0.9;
-    margin-bottom: 0.4rem;
-    line-height: 1.6;
-  }
-  .pf-hero-meta i {
-    opacity: 0.7;
-    margin-right: 0.2em;
-  }
-  .pf-hero-tagline {
-    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    font-size: clamp(0.88rem, 2vw, 1.05rem);
     opacity: 0.85;
+    margin-bottom: 0.4rem;
+    line-height: 1.7;
+  }
+  .pf-hero-meta i { opacity: 0.6; margin-right: 0.25em; }
+  .pf-hero-tagline {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    opacity: 0.8;
     font-style: italic;
     margin-bottom: 1.5rem;
   }
@@ -692,378 +677,9 @@ const tierLabels: Record<string, string> = {
     justify-content: center;
     margin-top: 1.5rem;
   }
-  .pf-hero-ctas .pf-btn {
-    min-width: 130px;
-  }
-
-  /* ── Funding goals ── */
-  .pf-goals-goal {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--pf-purple);
-    margin-bottom: 1.5rem;
-  }
-  .pf-goals-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
-  }
-  .pf-goal-card {
-    text-align: center;
-  }
-  .pf-goal-card-inner {
-    padding: 2rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .pf-goal-icon-wrap {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background: var(--pf-teal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-    color: #fff;
-  }
-  .pf-goal-card h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--pf-purple-dark);
-    margin-bottom: 0.5rem;
-  }
-  .pf-goal-card p {
-    margin-bottom: 1.25rem;
-    font-size: 0.95rem;
-    color: var(--color-gray-700);
-  }
-
-  /* ── Features grid ── */
-  .pf-features-grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .pf-feature-card {
-    text-align: center;
-    padding: 1.75rem 1rem;
-  }
-  .pf-feature-icon-wrap {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background: rgba(42, 196, 179, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 0.9rem auto;
-    font-size: 1.5rem;
-    color: var(--pf-teal);
-  }
-  .pf-feature-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-    color: var(--color-primary-950);
-  }
-  .pf-feature-desc {
-    font-size: 0.88rem;
-    color: var(--color-gray-600);
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  /* ── Lineup ── */
-  .pf-lineup-grid {
-    display: grid;
-    gap: 0.75rem;
-  }
-  .pf-performer-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-  .pf-performer-icon {
-    color: var(--pf-teal);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-  .pf-performer-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-  .pf-performer-stage {
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    background: var(--pf-teal);
-    color: #fff;
-    padding: 0.1em 0.5em;
-    border-radius: 4px;
-    display: inline-block;
-    margin-top: 0.15rem;
-  }
-  .pf-performer-time {
-    font-size: 0.85rem;
-    color: var(--color-gray-600);
-  }
-  .pf-coming-soon {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-  .pf-coming-soon-icon {
-    font-size: 2.5rem;
-    color: var(--pf-teal);
-    display: block;
-    margin-bottom: 0.75rem;
-    opacity: 0.6;
-  }
-  .pf-coming-soon-headline {
-    font-family: var(--font-header);
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
-    color: var(--pf-purple);
-    margin-bottom: 0.75rem;
-    letter-spacing: 0.03em;
-  }
-  .pf-coming-soon p {
-    color: var(--color-gray-600);
-    margin: 0;
-    font-size: 0.95rem;
-  }
-
-  /* ── Get Involved ── */
-  .pf-involved-grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .pf-involved-card {
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
-    padding: 1.75rem 1.25rem;
-    text-align: center;
-  }
-  .pf-involved-icon {
-    font-size: 2.5rem;
-    color: var(--pf-teal-light);
-    display: block;
-    margin-bottom: 0.75rem;
-  }
-  .pf-involved-card h3 {
-    color: #fff;
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
-  }
-  .pf-involved-card p {
-    font-size: 0.88rem;
-    opacity: 0.85;
-    margin-bottom: 1rem;
-    line-height: 1.4;
-  }
-
-  /* ── Sponsors ── */
-  .pf-sponsors-inner {
-    text-align: center;
-  }
-  .pf-sponsor-tier {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(42, 196, 179, 0.2);
-  }
-  .pf-sponsor-tier:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
-  .pf-sponsor-tier-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--pf-teal);
-    font-weight: 700;
-    margin-bottom: 0.7rem;
-  }
-  .pf-sponsor-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    justify-content: center;
-  }
-  .pf-sponsor-name {
-    font-weight: 600;
-    color: var(--color-primary-900);
-    text-decoration: none;
-  }
-  .pf-sponsor-tier:nth-child(1) .pf-sponsor-name { font-size: 1.3rem; }
-  .pf-sponsor-tier:nth-child(2) .pf-sponsor-name { font-size: 1.1rem; }
-  .pf-sponsor-tier:nth-child(n+3) .pf-sponsor-name { font-size: 0.95rem; color: var(--color-gray-600); }
-  a.pf-sponsor-name:hover {
-    color: var(--pf-teal);
-    text-decoration: underline;
-  }
-  .pf-sponsor-empty {
-    padding: 2rem 1.5rem;
-    border: 2px solid var(--pf-teal);
-    border-radius: 10px;
-    color: var(--color-gray-700);
-    font-size: 1rem;
-  }
-  .pf-sponsor-empty::before {
-    content: "\f005";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    display: block;
-    font-size: 1.5rem;
-    color: var(--pf-teal);
-    margin-bottom: 0.75rem;
-    opacity: 0.6;
-  }
-
-  /* ── FAQ ── */
-  .pf-faq {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-  .pf-faq-item {
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid transparent;
-    transition: border-color 0.2s;
-  }
-  .pf-faq-item.is-open {
-    border-color: var(--pf-teal);
-    border-left-width: 3px;
-    background-color: rgba(42, 196, 179, 0.04);
-  }
-  .pf-faq-button {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.1rem;
-    text-align: left;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--color-gray-950);
-    transition: background-color 0.15s;
-  }
-  .pf-faq-button:hover {
-    background-color: var(--pf-warm-section);
-  }
-  .pf-faq-chevron {
-    flex-shrink: 0;
-    transition: transform 0.25s, color 0.2s;
-    color: var(--color-gray-400);
-  }
-  .pf-faq-item.is-open .pf-faq-chevron {
-    transform: rotate(180deg);
-    color: var(--pf-teal);
-  }
-  .pf-faq-content {
-    padding: 0 1.1rem;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease-in-out;
-  }
-  .pf-faq-content p {
-    padding-bottom: 1rem;
-    font-size: 0.92rem;
-    color: var(--color-gray-800);
-    line-height: 1.6;
-    margin: 0;
-  }
-  .pf-faq-content.hidden {
-    display: block !important; /* override Tailwind hidden — we use max-height */
-  }
-
-  /* ── History teaser ── */
-  .pf-history-teaser {
-    text-align: center;
-  }
-  .pf-history-stats {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-  }
-  .pf-history-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .pf-history-stat-num {
-    font-family: var(--font-header);
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    color: var(--pf-teal);
-    line-height: 1;
-  }
-  .pf-history-stat-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.6;
-    color: #fff;
-  }
-  .pf-history-stat-divider {
-    font-size: 1.5rem;
-    opacity: 0.3;
-    color: #fff;
-    align-self: center;
-  }
-  .pf-history-teaser p {
-    font-size: 1rem;
-    opacity: 0.85;
-    max-width: 600px;
-    margin: 0 auto 1.5rem auto;
-  }
-
-  /* ── Responsive ── */
-  @media (min-width: 600px) {
-    .pf-goals-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .pf-features-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .pf-lineup-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .pf-involved-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
   @media (max-width: 480px) {
-    .pf-hero-ctas {
-      flex-direction: column;
-      align-items: center;
-    }
-    .pf-hero-ctas .pf-btn {
-      width: 100%;
-      max-width: 300px;
-    }
-    .pf-involved-grid {
-      grid-template-columns: 1fr;
-    }
+    .pf-hero-ctas { flex-direction: column; align-items: center; }
+    .pf-hero-ctas .pf-btn { width: 100%; max-width: 300px; }
   }
 
   /* ── Alert banner ── */
@@ -1076,9 +692,7 @@ const tierLabels: Record<string, string> = {
     font-weight: 600;
     line-height: 1.4;
   }
-  .pf-alert-banner i {
-    margin-right: 0.4em;
-  }
+  .pf-alert-banner i { margin-right: 0.4em; }
 
   /* ── Day-of panel ── */
   .pf-dayof-quicknav {
@@ -1093,193 +707,352 @@ const tierLabels: Record<string, string> = {
     gap: 0.4em;
     padding: 0.6rem 1.1rem;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: #fff;
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
     transition: background 0.15s;
   }
-  .pf-quicknav-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-  }
-
-  /* ── Maps ── */
+  .pf-quicknav-btn:hover { background: rgba(255, 255, 255, 0.22); color: #fff; }
   .pf-maps-grid {
     display: grid;
     gap: 1.25rem;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     margin-bottom: 1.25rem;
   }
-  .pf-map-item {
-    text-align: center;
-  }
-  .pf-map-item h3 {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-gray-700);
-  }
-  .pf-map-item a {
-    display: block;
-    text-decoration: none;
-  }
+  .pf-map-item { text-align: center; }
+  .pf-map-item h3 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .pf-map-item a { display: block; text-decoration: none; }
   .pf-map-img {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    border: 1px solid var(--color-gray-200);
-    object-fit: cover;
-    max-height: 300px;
+    width: 100%; height: auto; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    object-fit: cover; max-height: 300px;
   }
   .pf-map-tap-hint {
-    display: block;
-    font-size: 0.78rem;
-    color: var(--color-gray-500);
-    margin-top: 0.3rem;
+    display: block; font-size: 0.78rem;
+    color: rgba(255,255,255,0.5); margin-top: 0.3rem;
   }
-  .pf-parking-notes,
-  .pf-shuttle-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    background: #fff;
-    border-radius: 6px;
-    padding: 0.9rem 1.1rem;
-    margin-top: 0.75rem;
-    border: 1px solid var(--color-gray-200);
+  .pf-info-note {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px; padding: 0.9rem 1.1rem; margin-top: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
     font-size: 0.9rem;
-    color: var(--color-gray-800);
   }
-  .pf-parking-notes i,
-  .pf-shuttle-info i {
-    color: var(--pf-teal);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    margin-top: 0.15rem;
+  .pf-info-note i { color: var(--pf-teal); font-size: 1.1rem; flex-shrink: 0; margin-top: 0.15rem; }
+  .pf-info-note p { margin: 0; line-height: 1.5; color: rgba(255,255,255,0.82); }
+  .pf-dayof-link-cards { display: flex; flex-direction: column; gap: 0.75rem; }
+  .pf-dayof-link-card {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; text-decoration: none; color: #fff;
+    transition: background 0.15s;
   }
-  .pf-parking-notes p,
-  .pf-shuttle-info p {
-    margin: 0;
-    line-height: 1.5;
+  .pf-dayof-link-card:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .pf-dayof-link-card > div { flex: 1; }
+  .pf-dayof-link-card strong { display: block; font-size: 1rem; margin-bottom: 0.1rem; }
+  .pf-dayof-link-card p { margin: 0; font-size: 0.85rem; opacity: 0.7; }
+  .pf-dayof-link-icon { font-size: 1.3rem; color: var(--pf-teal); flex-shrink: 0; }
+  .pf-dayof-link-arrow { color: rgba(255,255,255,0.3); flex-shrink: 0; }
+  .pf-donate-section, .pf-feedback-section { text-align: center; }
+  .pf-donate-section p, .pf-feedback-section p {
+    max-width: 540px; margin: 0 auto 1.25rem auto;
   }
 
-  /* ── Raffle / Auction link cards ── */
-  .pf-dayof-link-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  /* ── Fundraising Goals ── */
+  .pf-goals-section { padding-bottom: 0; }
+  .pf-goals-intro {
+    text-align: center;
+    margin-bottom: clamp(2rem, 4vw, 4rem);
   }
-  .pf-dayof-link-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: #fff;
-    border: 1px solid var(--color-gray-200);
+  .pf-goals-split {
+    margin-top: clamp(2rem, 3vw, 3rem);
+  }
+  .pf-split-text h3 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--pf-teal-light);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .pf-split-text p {
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    line-height: 1.7;
+    opacity: 0.88;
+    margin-bottom: 1.5rem;
+  }
+  .pf-goals-donate-soon {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+  }
+
+  /* ── What to Expect ── */
+  .pf-expect-header {
+    text-align: center;
+    margin-bottom: clamp(2rem, 4vw, 4rem);
+  }
+  .pf-features-grid {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 768px) {
+    .pf-features-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .pf-feature-tile {}
+  .pf-feature-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
     border-radius: 8px;
-    text-decoration: none;
-    color: var(--color-gray-950);
-    transition: border-color 0.15s, box-shadow 0.15s;
+    margin-bottom: 1rem;
+    background: var(--pf-light-alt);
   }
-  .pf-dayof-link-card:hover {
-    border-color: var(--pf-teal);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    color: var(--color-gray-950);
+  .pf-feature-media img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.4s ease;
   }
-  .pf-dayof-link-card > div {
+  .pf-feature-tile:hover .pf-feature-media img { transform: scale(1.04); }
+  .pf-feature-icon-bg {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--pf-light-alt), #e8e3f8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    color: var(--pf-purple);
+  }
+  .pf-feature-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--pf-purple-dark);
+    margin-bottom: 0.3rem;
+  }
+  .pf-feature-body p {
+    font-size: 0.9rem;
+    color: #3a2e5a;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Music Lineup ── */
+  .pf-lineup-header, .pf-coming-soon { text-align: center; }
+  .pf-coming-soon { padding: clamp(1rem, 3vw, 3rem) 0; }
+  .pf-coming-soon-headline {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: var(--pf-teal-light);
+    margin: 0.25rem 0 1rem;
+    letter-spacing: 0.02em;
+  }
+  .pf-coming-soon-line {
+    width: 60px; height: 3px;
+    background: var(--pf-teal);
+    margin: 0 auto 1.25rem;
+    border-radius: 2px;
+  }
+  .pf-coming-soon p {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    opacity: 0.78;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .pf-coming-soon p a { color: var(--pf-teal); text-decoration: none; }
+  .pf-coming-soon p a:hover { text-decoration: underline; }
+  .pf-lineup-grid { display: grid; gap: 0; margin-top: 1.5rem; }
+  .pf-performer-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .pf-performer-name { flex: 1; font-size: 1.05rem; font-weight: 600; color: #fff; }
+  .pf-performer-stage {
+    font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #fff;
+    background: var(--pf-teal); padding: 0.1em 0.55em; border-radius: 4px;
+  }
+  .pf-performer-time { font-size: 0.88rem; color: rgba(255,255,255,0.55); }
+
+  /* ── Get Involved ── */
+  .pf-involved-header { text-align: center; margin-bottom: clamp(1.5rem, 3vw, 3rem); }
+  .pf-involved-grid {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 640px) {
+    .pf-involved-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .pf-involved-card {
+    text-align: center;
+    padding: clamp(1.25rem, 2.5vw, 2rem) 1rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  }
+  .pf-involved-icon {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--pf-teal-light);
+    margin-bottom: 0.25rem;
+  }
+  .pf-involved-card h3 { color: #fff; font-size: 1rem; margin: 0; }
+  .pf-involved-card p {
+    font-size: 0.85rem; opacity: 0.72; margin: 0; line-height: 1.4;
     flex: 1;
   }
-  .pf-dayof-link-card strong {
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 0.1rem;
-  }
-  .pf-dayof-link-card p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--color-gray-600);
-  }
-  .pf-dayof-link-icon {
-    font-size: 1.3rem;
-    color: var(--pf-teal);
-    flex-shrink: 0;
-  }
-  .pf-dayof-link-arrow {
-    color: var(--color-gray-400);
-    flex-shrink: 0;
+  .pf-involved-more {
+    text-align: center;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  /* ── Donate / Feedback sections ── */
-  .pf-donate-section,
-  .pf-feedback-section {
+  /* ── Sponsors ── */
+  .pf-sponsors-inner { text-align: center; }
+  .pf-sponsor-tiers { margin-top: 2rem; }
+  .pf-sponsor-tier { margin-bottom: 1.5rem; }
+  .pf-sponsor-tier-label {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--pf-teal);
+    font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .pf-sponsor-list {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: center;
+  }
+  .pf-sponsor-tier:nth-child(1) .pf-sponsor-name { font-size: 1.4rem; font-weight: 700; color: var(--pf-purple-dark); }
+  .pf-sponsor-tier:nth-child(2) .pf-sponsor-name { font-size: 1.15rem; font-weight: 600; color: var(--pf-purple); }
+  .pf-sponsor-tier:nth-child(n+3) .pf-sponsor-name { font-size: 0.95rem; color: #3a2e5a; }
+  .pf-sponsor-name { text-decoration: none; }
+  a.pf-sponsor-name:hover { color: var(--pf-teal); text-decoration: underline; }
+  .pf-sponsor-empty {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #3a2e5a;
+  }
+  .pf-sponsor-empty a { color: var(--pf-purple); }
+
+  /* ── FAQ ── */
+  .pf-faq-layout {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .pf-faq-layout { grid-template-columns: 35% 1fr; }
+  }
+  .pf-faq-intro h2 { margin-bottom: 0.75rem; }
+  .pf-faq-intro p {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .pf-faq-intro p a { color: var(--pf-teal); text-decoration: none; }
+  .pf-faq-intro p a:hover { text-decoration: underline; }
+  .pf-faq { display: flex; flex-direction: column; gap: 0; }
+  .pf-faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+    transition: border-color 0.2s;
+  }
+  .pf-faq-item.is-open {
+    border-left: 3px solid var(--pf-teal);
+    margin-left: -3px;
+  }
+  .pf-faq-button {
+    width: 100%; display: flex; justify-content: space-between;
+    align-items: center; gap: 1rem;
+    padding: clamp(0.9rem, 1.5vw, 1.1rem) 0;
+    text-align: left;
+    background: transparent; border: none; cursor: pointer;
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    font-weight: 600; color: #fff;
+    transition: color 0.15s;
+  }
+  .pf-faq-button:hover { color: var(--pf-teal-light); }
+  .pf-faq-chevron {
+    flex-shrink: 0; transition: transform 0.25s, color 0.2s;
+    color: rgba(255,255,255,0.35);
+  }
+  .pf-faq-item.is-open .pf-faq-chevron {
+    transform: rotate(180deg); color: var(--pf-teal);
+  }
+  .pf-faq-item.is-open .pf-faq-button { color: var(--pf-teal-light); }
+  .pf-faq-content {
+    overflow: hidden; max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+  }
+  .pf-faq-content p {
+    padding-bottom: 1.1rem;
+    font-size: clamp(0.88rem, 1.5vw, 0.95rem);
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7; margin: 0;
+  }
+
+  /* ── History Teaser ── */
+  .pf-history-section {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .pf-history-section::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: rgba(11,9,23,0.88);
+  }
+  .pf-history-inner {
+    position: relative;
     text-align: center;
   }
-  .pf-donate-section p,
-  .pf-feedback-section p {
-    max-width: 540px;
-    margin: 0 auto 1.25rem auto;
-    opacity: 0.85;
+  .pf-history-stats {
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    flex-wrap: wrap;
+    margin: 1rem 0 1.5rem;
+  }
+  .pf-history-stat { display: flex; flex-direction: column; align-items: center; }
+  .pf-history-stat-num {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--pf-teal);
+    line-height: 1;
+  }
+  .pf-history-stat-label {
+    font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: rgba(255,255,255,0.5);
+    margin-top: 0.2rem;
+  }
+  .pf-history-stat-dot {
+    font-size: 1.5rem; color: rgba(255,255,255,0.2);
+    align-self: center;
+  }
+  .pf-history-inner p {
+    max-width: 520px; margin: 0 auto 1.5rem;
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
   }
 
   /* ── Print ── */
   @media print {
-    .pf-hero {
-      min-height: auto;
-      background-image: none !important;
-    }
-    .pf-hero-overlay {
-      position: static;
-      background: none;
-      padding: 0;
-    }
-    .pf-hero-content {
-      color: #000;
-    }
-    .pf-hero-title,
-    .pf-hero-year {
-      color: #000;
-    }
-    .pf-section--purple,
-    .pf-section--dark {
-      background: #fff;
-      color: #000;
-    }
-    .pf-section--purple h2,
-    .pf-section--dark h2,
-    .pf-section--purple h3,
-    .pf-section--dark h3,
-    .pf-section--purple p,
-    .pf-section--dark p {
-      color: #000;
-    }
-    .pf-involved-card {
-      border: 1px solid #ccc;
-    }
-    .pf-btn--disabled,
-    .pf-hero-ctas {
-      display: none;
-    }
+    .pf-hero { min-height: auto; background-image: none !important; }
+    .pf-hero-overlay { position: static; background: none; padding: 0; }
+    .pf-hero-content { color: #000; }
+    .pf-hero-title, .pf-hero-year { color: #000; }
+    .pf-section--dark, .pf-section--dark-alt,
+    .pf-section--purple { background: #fff; color: #000; }
+    .pf-section--dark h2, .pf-section--dark-alt h2,
+    .pf-section--purple h2, .pf-section--dark h3,
+    .pf-section--dark p, .pf-section--purple p { color: #000; }
+    .pf-photo-band, .pf-gallery-grid { display: none; }
+    .pf-hero-ctas, .pf-btn--disabled { display: none; }
   }
 </style>
 
 <script>
   function setupFAQ() {
-    const items = document.querySelectorAll(
-      ".pf-faq-item",
-    ) as NodeListOf<HTMLElement>;
+    const items = document.querySelectorAll(".pf-faq-item") as NodeListOf<HTMLElement>;
     items.forEach((item) => {
       const btn = item.querySelector(".pf-faq-button") as HTMLButtonElement;
-      const chevron = item.querySelector(
-        ".pf-faq-chevron",
-      ) as SVGElement | null;
-      const content = item.querySelector(
-        ".pf-faq-content",
-      ) as HTMLElement | null;
-
+      const content = item.querySelector(".pf-faq-content") as HTMLElement | null;
       if (!btn || !content) return;
-
       btn.addEventListener("click", () => {
         const isOpen = item.classList.contains("is-open");
         if (isOpen) {
@@ -1302,19 +1075,14 @@ const tierLabels: Record<string, string> = {
   function applyEventMode() {
     const panel = document.getElementById("pf-day-of-panel");
     if (!panel) return;
-
     const eventDateStr = panel.dataset.eventDate;
     if (!eventDateStr) return;
-
     const eventMs = new Date(eventDateStr).getTime();
     const now = Date.now();
     const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
     const oneDayMs = 24 * 60 * 60 * 1000;
     const diff = eventMs - now;
-
-    const isDayOf = diff <= sevenDaysMs && diff > -oneDayMs;
-
-    if (isDayOf) {
+    if (diff <= sevenDaysMs && diff > -oneDayMs) {
       panel.style.display = "";
     }
   }
