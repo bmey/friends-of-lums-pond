@@ -12,11 +12,11 @@ export const EVENT_DATE = "2026-10-10T10:00:00";
 
 // Human-readable strings shown on the page
 export const EVENT_DATE_DISPLAY = "Saturday, October 10, 2026";
-export const EVENT_TIME = "10:00 AM – 6:00 PM";
+export const EVENT_TIME = "11:00 AM – 6:00 PM";
 export const EVENT_LOCATION = "Lums Pond State Park, Bear, DE";
 export const EVENT_TAGLINE =
   "A concert for a cause — live music, food, community, and nature.";
-export const FUNDRAISING_GOAL = "$12,000";
+export const FUNDRAISING_GOAL = "$30,000";
 
 // Hero and map images — place files in public/pondfest/
 // For 2026, update these filenames when assets are ready
@@ -51,7 +51,7 @@ export const TICKETS_URL = ""; // Eventbrite link
 export const VOLUNTEER_URL = ""; // SignUpGenius or Google Form
 export const SPONSOR_URL = ""; // Google Form or sponsor package PDF
 export const VENDOR_URL = ""; // Vendor interest form
-export const PERFORMER_URL = "https://forms.gle/dMEmKxYs7ovnyG658"; // 2026 interest form
+export const PERFORMER_URL = ""; // 2026 interest form
 
 // Contact
 export const PONDFEST_EMAIL = "pondfest@friendsoflumspond.org";
