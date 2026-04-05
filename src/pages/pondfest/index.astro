@@ -1,0 +1,857 @@
+---
+import Layout from "../../layouts/PondFestLayout.astro";
+import PondFestCountdown from "../../components/pondfest/PondFestCountdown.astro";
+import {
+  CURRENT_YEAR,
+  EVENT_DATE,
+  EVENT_DATE_DISPLAY,
+  EVENT_TIME,
+  EVENT_LOCATION,
+  EVENT_TAGLINE,
+  FUNDRAISING_GOAL,
+  HERO_IMAGE_URL,
+  TICKETS_URL,
+  VOLUNTEER_URL,
+  SPONSOR_URL,
+  VENDOR_URL,
+  PERFORMER_URL,
+  PONDFEST_EMAIL,
+  LINEUP,
+  SPONSORS,
+  FUNDING_GOALS,
+  FAQ,
+} from "../../data/pondfest/config";
+
+const sponsorsByTier = {
+  platinum: SPONSORS.filter((s) => s.tier === "platinum"),
+  gold: SPONSORS.filter((s) => s.tier === "gold"),
+  silver: SPONSORS.filter((s) => s.tier === "silver"),
+  bronze: SPONSORS.filter((s) => s.tier === "bronze"),
+  family: SPONSORS.filter((s) => s.tier === "family"),
+};
+
+const hasSponsors = SPONSORS.length > 0;
+const hasLineup = LINEUP.length > 0;
+
+const ctaLinks = [
+  {
+    label: "Get Tickets",
+    url: TICKETS_URL,
+    style: "pf-btn--primary",
+    icon: "fa-ticket",
+  },
+  {
+    label: "Volunteer",
+    url: VOLUNTEER_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-hand-holding-heart",
+  },
+  {
+    label: "Sponsor",
+    url: SPONSOR_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-star",
+  },
+  {
+    label: "Vend",
+    url: VENDOR_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-store",
+  },
+  {
+    label: "Perform",
+    url: PERFORMER_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-music",
+  },
+];
+
+const features = [
+  {
+    icon: "fa-music",
+    title: "Live Music",
+    desc: "Multiple stages featuring local and regional artists throughout the day",
+  },
+  {
+    icon: "fa-beer-mug-empty",
+    title: "Beer Garden",
+    desc: "Craft brews from Delaware's best local breweries (21+)",
+  },
+  {
+    icon: "fa-utensils",
+    title: "Food Trucks",
+    desc: "A variety of local food trucks for every appetite",
+  },
+  {
+    icon: "fa-child",
+    title: "Kids Zone",
+    desc: "Games, crafts, face painting, and activities for all ages",
+  },
+  {
+    icon: "fa-store",
+    title: "Craft Vendors",
+    desc: "40+ local artisans, crafters, and community nonprofits",
+  },
+  {
+    icon: "fa-ticket",
+    title: "Raffles & Auction",
+    desc: "Win exciting prizes donated by local businesses and supporters",
+  },
+];
+
+const involvedPaths = [
+  {
+    icon: "fa-hand-holding-heart",
+    title: "Volunteer",
+    desc: "Help make Pond Fest happen. We need hands for setup, kids zone, info tables, and more.",
+    url: VOLUNTEER_URL,
+    cta: "Sign Up to Volunteer",
+  },
+  {
+    icon: "fa-guitar",
+    title: "Perform",
+    desc: "Are you a local musician or performer? We want to hear from you.",
+    url: PERFORMER_URL,
+    cta: "Apply to Perform",
+  },
+  {
+    icon: "fa-store",
+    title: "Vend",
+    desc: "Bring your business or craft to Pond Fest and connect with the community.",
+    url: VENDOR_URL,
+    cta: "Apply to Vend",
+  },
+  {
+    icon: "fa-star",
+    title: "Sponsor",
+    desc: "Support the park and get visibility with hundreds of community members.",
+    url: SPONSOR_URL,
+    cta: "Become a Sponsor",
+  },
+];
+
+const tierLabels: Record<string, string> = {
+  platinum: "Platinum Sponsors",
+  gold: "Gold Sponsors",
+  silver: "Silver Sponsors",
+  bronze: "Bronze Sponsors",
+  family: "Family Sponsors",
+};
+---
+
+<Layout
+  title={`Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
+  description={`Pond Fest ${CURRENT_YEAR} — ${EVENT_DATE_DISPLAY}. ${EVENT_TAGLINE}`}
+>
+  <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+  <section class="pf-hero" style={`background-image: url('${HERO_IMAGE_URL}')`}>
+    <div class="pf-hero-overlay">
+      <div class="pf-hero-content">
+        <div class="pf-hero-eyebrow">Friends of Lums Pond presents</div>
+        <h1 class="pf-hero-title">
+          Pond Fest <span class="pf-hero-year">{CURRENT_YEAR}</span>
+        </h1>
+        <p class="pf-hero-meta">
+          <i class="fa-solid fa-calendar-days"></i>
+          {EVENT_DATE_DISPLAY}
+          &nbsp;&middot;&nbsp;
+          <i class="fa-solid fa-clock"></i>
+          {EVENT_TIME}
+          <br />
+          <i class="fa-solid fa-location-dot"></i>
+          {EVENT_LOCATION}
+        </p>
+        <p class="pf-hero-tagline">{EVENT_TAGLINE}</p>
+
+        <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
+
+        <div class="pf-hero-ctas">
+          {
+            ctaLinks.map((cta) =>
+              cta.url ? (
+                <a href={cta.url} class={`pf-btn ${cta.style}`} target="_blank" rel="noopener">
+                  <i class={`fa-solid ${cta.icon}`} />
+                  {cta.label}
+                </a>
+              ) : (
+                <span class="pf-btn pf-btn--disabled" title="Link coming soon">
+                  <i class={`fa-solid ${cta.icon}`} />
+                  {cta.label}
+                </span>
+              )
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FUNDRAISING GOALS ════════════════════════════════════════════ -->
+  {
+    FUNDING_GOALS.length > 0 && (
+      <section class="pf-section pf-section--warm">
+        <div class="pf-section-inner">
+          <h2>Fundraising for {CURRENT_YEAR}</h2>
+          <p class="pf-goals-goal">Goal: {FUNDRAISING_GOAL}</p>
+          <div class="pf-goals-grid">
+            {FUNDING_GOALS.map((goal) => (
+              <div class="pf-goal-card">
+                <h3>{goal.name}</h3>
+                <p>{goal.description}</p>
+                {goal.donorboxUrl && (
+                  <a
+                    href={goal.donorboxUrl}
+                    class="pf-btn pf-btn--outline"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Donate to this goal
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ══ WHAT TO EXPECT ═══════════════════════════════════════════════ -->
+  <section class="pf-section">
+    <div class="pf-section-inner">
+      <h2>What to Expect</h2>
+      <div class="pf-features-grid">
+        {
+          features.map((f) => (
+            <div class="pf-feature-card">
+              <i class={`fa-solid ${f.icon} pf-feature-icon`} />
+              <h3 class="pf-feature-title">{f.title}</h3>
+              <p class="pf-feature-desc">{f.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MUSIC LINEUP ═════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--warm">
+    <div class="pf-section-inner">
+      <h2>Music Lineup</h2>
+      {
+        hasLineup ? (
+          <div class="pf-lineup-grid">
+            {LINEUP.map((performer) => (
+              <div class="pf-performer-card">
+                <i class="fa-solid fa-music pf-performer-icon" />
+                <div class="pf-performer-info">
+                  <strong>{performer.name}</strong>
+                  {performer.stage && (
+                    <span class="pf-performer-stage">{performer.stage}</span>
+                  )}
+                  {performer.time && (
+                    <span class="pf-performer-time">{performer.time}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="pf-coming-soon">
+            <i class="fa-solid fa-guitar pf-coming-soon-icon" />
+            <p>
+              Lineup announced closer to the event — check back soon, or follow
+              us on{" "}
+              <a
+                href="https://www.facebook.com/FriendsofLumsPond"
+                target="_blank"
+                rel="noopener"
+              >
+                Facebook
+              </a>{" "}
+              for updates.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ══ GET INVOLVED ═════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--forest">
+    <div class="pf-section-inner">
+      <h2>Get Involved</h2>
+      <div class="pf-involved-grid">
+        {
+          involvedPaths.map((path) => (
+            <div class="pf-involved-card">
+              <i class={`fa-solid ${path.icon} pf-involved-icon`} />
+              <h3>{path.title}</h3>
+              <p>{path.desc}</p>
+              {path.url ? (
+                <a
+                  href={path.url}
+                  class="pf-btn pf-btn--outline-light"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {path.cta}
+                </a>
+              ) : (
+                <span class="pf-btn pf-btn--disabled">{path.cta} — Coming Soon</span>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SPONSORS ═════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--warm">
+    <div class="pf-section-inner pf-sponsors-inner">
+      <h2>Sponsors</h2>
+      {
+        hasSponsors ? (
+          <div>
+            {(
+              ["platinum", "gold", "silver", "bronze", "family"] as const
+            ).map(
+              (tier) =>
+                sponsorsByTier[tier].length > 0 && (
+                  <div class="pf-sponsor-tier">
+                    <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
+                    <div class="pf-sponsor-list">
+                      {sponsorsByTier[tier].map((s) =>
+                        s.url ? (
+                          <a
+                            href={s.url}
+                            target="_blank"
+                            rel="noopener"
+                            class="pf-sponsor-name"
+                          >
+                            {s.name}
+                          </a>
+                        ) : (
+                          <span class="pf-sponsor-name">{s.name}</span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                )
+            )}
+          </div>
+        ) : (
+          <div class="pf-sponsor-empty">
+            <p>
+              Interested in sponsoring Pond Fest {CURRENT_YEAR}?
+              <br />
+              Reach out to us at{" "}
+              <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>{" "}
+              {SPONSOR_URL && (
+                <>
+                  {" "}
+                  or{" "}
+                  <a href={SPONSOR_URL} target="_blank" rel="noopener">
+                    fill out our sponsor interest form
+                  </a>
+                  .
+                </>
+              )}
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ══ FAQ ══════════════════════════════════════════════════════════ -->
+  <section class="pf-section">
+    <div class="pf-section-inner">
+      <h2>Frequently Asked Questions</h2>
+      <div class="pf-faq">
+        {
+          FAQ.map((item, i) => (
+            <div
+              class="accordion group pf-faq-item"
+              id={`faq-${i}`}
+            >
+              <button
+                class="accordion__button pf-faq-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls={`faq-content-${i}`}
+                id={`faq-btn-${i}`}
+              >
+                <span>{item.question}</span>
+                <svg
+                  class="accordion__chevron pf-faq-chevron"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m6 9l6 6l6-6"
+                  />
+                </svg>
+              </button>
+              <div
+                id={`faq-content-${i}`}
+                aria-labelledby={`faq-btn-${i}`}
+                class="accordion__content pf-faq-content hidden"
+              >
+                <p>{item.answer}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HISTORY TEASER ═══════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-history-teaser">
+      <h2>Our History</h2>
+      <p>
+        Pond Fest launched in 2024 and has grown into one of Delaware's
+        favorite community outdoor festivals. Together we have raised over
+        $30,000 for Lums Pond State Park programs and facilities.
+      </p>
+      <a href="/pondfest/archive" class="pf-btn pf-btn--outline-light">
+        View All Past Events
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ── Hero ── */
+  .pf-hero {
+    min-height: 85vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .pf-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 22, 41, 0.72) 0%,
+      rgba(0, 22, 41, 0.82) 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+  }
+  .pf-hero-content {
+    text-align: center;
+    color: #fff;
+    max-width: 780px;
+    width: 100%;
+  }
+  .pf-hero-eyebrow {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+  .pf-hero-title {
+    font-family: var(--font-header);
+    font-size: clamp(3rem, 12vw, 7rem);
+    line-height: 0.95;
+    color: #fff;
+    margin: 0 0 0.3em 0;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.02em;
+  }
+  .pf-hero-year {
+    color: var(--pf-amber-light);
+  }
+  .pf-hero-meta {
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+    opacity: 0.9;
+    margin-bottom: 0.4rem;
+    line-height: 1.6;
+  }
+  .pf-hero-meta i {
+    opacity: 0.7;
+    margin-right: 0.2em;
+  }
+  .pf-hero-tagline {
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    opacity: 0.85;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+  .pf-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+  .pf-hero-ctas .pf-btn {
+    min-width: 130px;
+  }
+
+  /* ── Funding goals ── */
+  .pf-goals-goal {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--pf-forest);
+    margin-bottom: 1.5rem;
+  }
+  .pf-goals-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .pf-goal-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid var(--pf-forest-light);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  }
+  .pf-goal-card h3 {
+    font-size: 1.1rem;
+    color: var(--pf-forest-dark);
+    margin-bottom: 0.4rem;
+  }
+  .pf-goal-card p {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  /* ── Features grid ── */
+  .pf-features-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pf-feature-card {
+    text-align: center;
+    padding: 1.25rem 1rem;
+    background: var(--pf-warm-section);
+    border-radius: 8px;
+  }
+  .pf-feature-icon {
+    font-size: 2rem;
+    color: var(--pf-forest);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .pf-feature-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--color-primary-950);
+  }
+  .pf-feature-desc {
+    font-size: 0.88rem;
+    color: var(--color-gray-600);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* ── Lineup ── */
+  .pf-lineup-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .pf-performer-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid var(--color-gray-200);
+  }
+  .pf-performer-icon {
+    color: var(--pf-forest);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .pf-performer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .pf-performer-stage,
+  .pf-performer-time {
+    font-size: 0.85rem;
+    color: var(--color-gray-600);
+  }
+  .pf-coming-soon {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background: #fff;
+    border-radius: 8px;
+    border: 2px dashed var(--color-gray-300);
+  }
+  .pf-coming-soon-icon {
+    font-size: 2.5rem;
+    color: var(--color-gray-300);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .pf-coming-soon p {
+    color: var(--color-gray-600);
+    margin: 0;
+  }
+
+  /* ── Get Involved ── */
+  .pf-involved-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pf-involved-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+  }
+  .pf-involved-icon {
+    font-size: 2rem;
+    color: var(--pf-amber-light);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .pf-involved-card h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+  .pf-involved-card p {
+    font-size: 0.88rem;
+    opacity: 0.85;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  /* ── Sponsors ── */
+  .pf-sponsors-inner {
+    text-align: center;
+  }
+  .pf-sponsor-tier {
+    margin-bottom: 1.5rem;
+  }
+  .pf-sponsor-tier-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-gray-500);
+    margin-bottom: 0.6rem;
+  }
+  .pf-sponsor-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: center;
+  }
+  .pf-sponsor-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary-900);
+    text-decoration: none;
+  }
+  a.pf-sponsor-name:hover {
+    color: var(--pf-forest);
+    text-decoration: underline;
+  }
+  .pf-sponsor-empty {
+    padding: 1.5rem 0;
+    color: var(--color-gray-600);
+    font-size: 1rem;
+  }
+
+  /* ── FAQ ── */
+  .pf-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .pf-faq-item {
+    border: 1px solid var(--color-gray-200);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .pf-faq-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-gray-950);
+    transition: background-color 0.15s;
+  }
+  .pf-faq-button:hover {
+    background-color: var(--pf-warm-section);
+    color: var(--pf-forest-dark);
+  }
+  .pf-faq-chevron {
+    flex-shrink: 0;
+    transition: transform 0.25s;
+    color: var(--color-gray-500);
+  }
+  .pf-faq-content {
+    padding: 0 1.1rem;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+  }
+  .pf-faq-content p {
+    padding-bottom: 0.9rem;
+    font-size: 0.92rem;
+    color: var(--color-gray-800);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .pf-faq-content.hidden {
+    display: block !important; /* override Tailwind hidden — we use max-height */
+  }
+
+  /* ── History teaser ── */
+  .pf-history-teaser {
+    text-align: center;
+  }
+  .pf-history-teaser p {
+    font-size: 1rem;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto 1.5rem auto;
+  }
+
+  /* ── Responsive ── */
+  @media (min-width: 600px) {
+    .pf-goals-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .pf-features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .pf-lineup-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .pf-involved-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pf-hero-ctas {
+      flex-direction: column;
+      align-items: center;
+    }
+    .pf-hero-ctas .pf-btn {
+      width: 100%;
+      max-width: 300px;
+    }
+    .pf-involved-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Print ── */
+  @media print {
+    .pf-hero {
+      min-height: auto;
+      background-image: none !important;
+    }
+    .pf-hero-overlay {
+      position: static;
+      background: none;
+      padding: 0;
+    }
+    .pf-hero-content {
+      color: #000;
+    }
+    .pf-hero-title,
+    .pf-hero-year {
+      color: #000;
+    }
+    .pf-section--forest,
+    .pf-section--dark {
+      background: #fff;
+      color: #000;
+    }
+    .pf-section--forest h2,
+    .pf-section--dark h2,
+    .pf-section--forest h3,
+    .pf-section--dark h3,
+    .pf-section--forest p,
+    .pf-section--dark p {
+      color: #000;
+    }
+    .pf-involved-card {
+      border: 1px solid #ccc;
+    }
+    .pf-btn--disabled,
+    .pf-hero-ctas {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function setupFAQ() {
+    const items = document.querySelectorAll(
+      ".pf-faq-item",
+    ) as NodeListOf<HTMLElement>;
+    items.forEach((item) => {
+      const btn = item.querySelector(".pf-faq-button") as HTMLButtonElement;
+      const chevron = item.querySelector(
+        ".pf-faq-chevron",
+      ) as SVGElement | null;
+      const content = item.querySelector(
+        ".pf-faq-content",
+      ) as HTMLElement | null;
+
+      if (!btn || !content) return;
+
+      btn.addEventListener("click", () => {
+        const isOpen = item.classList.contains("active");
+        if (isOpen) {
+          item.classList.remove("active");
+          btn.setAttribute("aria-expanded", "false");
+          content.style.maxHeight = "0px";
+          chevron?.classList.remove("rotate-180");
+        } else {
+          item.classList.add("active");
+          btn.setAttribute("aria-expanded", "true");
+          content.style.maxHeight = content.scrollHeight + "px";
+          chevron?.classList.add("rotate-180");
+        }
+      });
+    });
+  }
+
+  setupFAQ();
+  document.addEventListener("astro:after-swap", setupFAQ);
+</script>
