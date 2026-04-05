@@ -176,7 +176,7 @@ const keyContacts = [
     </section>
 
     <!-- Key Google Docs -->
-    <section class="pf-section pf-section--warm">
+    <section class="pf-section pf-section--dark-alt">
       <div class="pf-section-inner">
         <h2>Key Documents</h2>
         <div class="pf-vol-link-list">
@@ -207,7 +207,7 @@ const keyContacts = [
     </section>
 
     <!-- Forms -->
-    <section class="pf-section">
+    <section class="pf-section pf-section--dark">
       <div class="pf-section-inner">
         <h2>Forms</h2>
         <div class="pf-vol-link-list">
@@ -238,7 +238,7 @@ const keyContacts = [
     </section>
 
     <!-- Meeting Notes -->
-    <section class="pf-section pf-section--warm">
+    <section class="pf-section pf-section--dark-alt">
       <div class="pf-section-inner">
         <h2>Meeting Notes</h2>
         <div class="pf-vol-link-list">
@@ -269,7 +269,7 @@ const keyContacts = [
     </section>
 
     <!-- Concept Maps -->
-    <section class="pf-section">
+    <section class="pf-section pf-section--dark">
       <div class="pf-section-inner">
         <h2>Concept Maps &amp; Planning Diagrams</h2>
         <div class="pf-vol-link-list">
@@ -300,7 +300,7 @@ const keyContacts = [
     </section>
 
     <!-- Roles -->
-    <section class="pf-section pf-section--warm">
+    <section class="pf-section pf-section--dark-alt">
       <div class="pf-section-inner">
         <h2>Roles &amp; Jobs to Be Done</h2>
         <div class="pf-roles-grid">
@@ -329,7 +329,7 @@ const keyContacts = [
     </section>
 
     <!-- Key Contacts -->
-    <section class="pf-section">
+    <section class="pf-section pf-section--dark">
       <div class="pf-section-inner">
         <h2>Key Contacts</h2>
         <div class="pf-contacts-grid">
@@ -465,24 +465,23 @@ const keyContacts = [
     align-items: center;
     gap: 0.75rem;
     padding: 0.8rem 1rem;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 6px;
     border-left: 3px solid transparent;
     text-decoration: none;
-    color: var(--color-gray-950);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.92rem;
     font-weight: 500;
     transition: border-color 0.15s, background 0.15s;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   a.pf-vol-link-item:hover {
     border-left-color: var(--pf-teal);
-    background: rgba(42, 196, 179, 0.04);
-    color: var(--color-gray-950);
+    background: rgba(42, 196, 179, 0.08);
+    color: #fff;
   }
   .pf-vol-link-item--placeholder {
-    border-left-color: rgba(61, 47, 122, 0.3);
-    opacity: 0.65;
+    border-left-color: rgba(255, 255, 255, 0.1);
+    opacity: 0.55;
   }
   .pf-vol-link-icon {
     color: var(--pf-teal);
@@ -496,15 +495,15 @@ const keyContacts = [
   }
   .pf-vol-link-ext {
     font-size: 0.75rem;
-    color: var(--color-gray-400);
+    color: rgba(255, 255, 255, 0.3);
     flex-shrink: 0;
   }
   .pf-vol-todo {
     font-size: 0.78rem;
-    color: var(--pf-purple);
+    color: var(--pf-teal);
     font-weight: 600;
     flex-shrink: 0;
-    background: rgba(61, 47, 122, 0.08);
+    background: rgba(42, 196, 179, 0.12);
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
   }
@@ -516,34 +515,27 @@ const keyContacts = [
     grid-template-columns: 1fr;
   }
   .pf-role-card {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     padding: 1.25rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   }
   .pf-role-title {
     display: block;
     font-size: 1rem;
-    color: var(--pf-teal);
+    color: var(--pf-teal-light);
     margin-bottom: 0.25rem;
     font-weight: 700;
   }
   .pf-role-desc {
     font-size: 0.88rem;
-    color: var(--color-gray-700);
+    color: rgba(255, 255, 255, 0.65);
     margin-bottom: 0.75rem;
     line-height: 1.4;
   }
   .pf-role-btn {
     font-size: 0.85rem;
     padding: 0.4rem 0.9rem;
-    background-color: var(--pf-purple);
-    border-color: var(--pf-purple);
-    color: #fff;
-  }
-  .pf-role-btn:hover {
-    background-color: var(--pf-purple-light);
-    border-color: var(--pf-purple-light);
   }
   .pf-role-todo {
     display: inline-block;
@@ -560,10 +552,10 @@ const keyContacts = [
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
   }
   .pf-contact-avatar {
     font-size: 2.2rem;
@@ -584,7 +576,7 @@ const keyContacts = [
   }
   .pf-contact-info strong {
     font-size: 1rem;
-    color: var(--pf-purple-dark);
+    color: #fff;
   }
   .pf-contact-role {
     font-size: 0.75rem;
@@ -600,7 +592,7 @@ const keyContacts = [
   }
   .pf-contact-email {
     font-size: 0.88rem;
-    color: var(--pf-teal);
+    color: var(--pf-teal-light);
     text-decoration: none;
     margin-top: 0.1rem;
   }
@@ -609,7 +601,7 @@ const keyContacts = [
   }
   .pf-contact-notes {
     font-size: 0.85rem;
-    color: var(--color-gray-600);
+    color: rgba(255, 255, 255, 0.5);
     margin: 0.1rem 0 0 0;
     line-height: 1.3;
   }

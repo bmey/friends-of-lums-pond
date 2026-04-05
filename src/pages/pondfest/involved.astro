@@ -24,7 +24,11 @@ const paths = [
     ],
     url: VOLUNTEER_URL,
     cta: "Sign Up to Volunteer",
-    color: "green",
+    imageUrl: "", // e.g. "/pondfest/photos/volunteers.jpg"
+    gradientFrom: "#1a1040",
+    gradientTo: "#2ac4b3",
+    section: "pf-section--dark",
+    reverse: false,
   },
   {
     icon: "fa-guitar",
@@ -40,7 +44,11 @@ const paths = [
     ],
     url: PERFORMER_URL,
     cta: "Apply to Perform",
-    color: "blue",
+    imageUrl: "", // e.g. "/pondfest/photos/performers.jpg"
+    gradientFrom: "#271e52",
+    gradientTo: "#6b5db5",
+    section: "pf-section--dark-alt",
+    reverse: true,
   },
   {
     icon: "fa-store",
@@ -56,7 +64,11 @@ const paths = [
     ],
     url: VENDOR_URL,
     cta: "Apply to Vend",
-    color: "amber",
+    imageUrl: "", // e.g. "/pondfest/photos/vendors.jpg"
+    gradientFrom: "#0b2a28",
+    gradientTo: "#2ac4b3",
+    section: "pf-section--dark",
+    reverse: false,
   },
   {
     icon: "fa-star",
@@ -72,7 +84,11 @@ const paths = [
     ],
     url: SPONSOR_URL,
     cta: "Become a Sponsor",
-    color: "forest",
+    imageUrl: "", // e.g. "/pondfest/photos/sponsors.jpg"
+    gradientFrom: "#271e52",
+    gradientTo: "#3d2f7a",
+    section: "pf-section--dark-alt",
+    reverse: true,
   },
 ];
 ---
@@ -82,9 +98,10 @@ const paths = [
   description={`Volunteer, perform, vend, or sponsor Pond Fest ${CURRENT_YEAR} at Lums Pond State Park.`}
 >
   <!-- ══ HEADER ═════════════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--dark">
-    <div class="pf-section-inner pf-involved-header">
-      <h1 class="pf-involved-title">Get Involved</h1>
+  <section class="pf-section pf-section--dark involved-header">
+    <div class="pf-section-inner pf-section-inner--narrow" style="text-align:center">
+      <span class="pf-eyebrow">Four Ways to Participate</span>
+      <h1 class="involved-title">Get Involved</h1>
       <p>
         Pond Fest is a community effort. There are four ways to be part of it
         — as a volunteer, performer, vendor, or sponsor. Choose your path
@@ -96,201 +113,167 @@ const paths = [
     </div>
   </section>
 
-  <!-- ══ PATHWAY CARDS ════════════════════════════════════════════════ -->
-  <section class="pf-section">
-    <div class="pf-section-inner pf-involved-grid-section">
-      {
-        paths.map((path) => (
-          <article class={`pf-path-card pf-path-card--${path.color}`}>
-            <div class="pf-path-icon-wrap">
-              <i class={`fa-solid ${path.icon} pf-path-icon`} />
-            </div>
-            <div class="pf-path-body">
-              <div class="pf-path-tag">{path.title}</div>
-              <h2>{path.heading}</h2>
-              <p>{path.description}</p>
-              <ul class="pf-path-details">
-                {path.details.map((d) => (
-                  <li>
-                    <i class="fa-solid fa-check pf-check-icon" /> {d}
-                  </li>
-                ))}
-              </ul>
-              <div class="pf-path-cta">
-                {path.url ? (
-                  <a
-                    href={path.url}
-                    class="pf-btn pf-btn--primary"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {path.cta}
-                  </a>
-                ) : (
-                  <div class="pf-coming-soon-cta">
-                    <span class="pf-btn pf-btn--disabled">
-                      {path.cta} — Registration Opening Soon
-                    </span>
-                    <p class="pf-cta-fallback">
-                      In the meantime, email{" "}
-                      <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
-                    </p>
-                  </div>
-                )}
+  <!-- ══ PATHWAY SECTIONS ══════════════════════════════════════════════ -->
+  {
+    paths.map((path) => (
+      <section class={`pf-section pf-section--flush ${path.section}`}>
+        <div class={`pf-split${path.reverse ? " pf-split--reverse" : ""}`}>
+          {/* Media side */}
+          <div class="pf-split-media">
+            {path.imageUrl ? (
+              <img src={path.imageUrl} alt={path.title} />
+            ) : (
+              <div
+                class="pathway-placeholder"
+                style={`background: linear-gradient(135deg, ${path.gradientFrom} 0%, ${path.gradientTo} 100%)`}
+              >
+                <i class={`fa-solid ${path.icon}`} />
               </div>
+            )}
+          </div>
+
+          {/* Text side */}
+          <div class="pf-split-text">
+            <span class="pf-eyebrow">{path.title}</span>
+            <h2>{path.heading}</h2>
+            <p class="pathway-desc">{path.description}</p>
+            <ul class="pathway-details">
+              {path.details.map((d) => (
+                <li>
+                  <i class="fa-solid fa-check" /> {d}
+                </li>
+              ))}
+            </ul>
+            <div class="pathway-cta">
+              {path.url ? (
+                <a
+                  href={path.url}
+                  class="pf-btn pf-btn--primary"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {path.cta}
+                </a>
+              ) : (
+                <div class="coming-soon-wrap">
+                  <span class="pf-btn pf-btn--disabled">
+                    {path.cta} — Opening Soon
+                  </span>
+                  <p class="cta-fallback">
+                    In the meantime, email{" "}
+                    <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+                  </p>
+                </div>
+              )}
             </div>
-          </article>
-        ))
-      }
-    </div>
-  </section>
+          </div>
+        </div>
+      </section>
+    ))
+  }
 
   <!-- ══ CONTACT ═══════════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--warm">
-    <div class="pf-section-inner pf-involved-contact">
+  <section class="pf-section pf-section--purple">
+    <div class="pf-section-inner pf-section-inner--narrow" style="text-align:center">
       <h2>Questions?</h2>
       <p>
         Reach out to the Pond Fest committee at
-        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a> — we are
-        happy to help with anything not covered by the forms above.
+        <a href={`mailto:${PONDFEST_EMAIL}`} class="contact-link"
+          >{PONDFEST_EMAIL}</a
+        > — we are happy to help with anything not covered by the forms above.
       </p>
     </div>
   </section>
 </Layout>
 
 <style>
-  .pf-involved-header {
-    text-align: center;
-  }
-  .pf-involved-header p {
-    max-width: 580px;
-    margin: 0 auto 1.5rem auto;
-    opacity: 0.85;
-  }
-  .pf-involved-title {
+  /* ── Page header ── */
+  .involved-title {
     font-family: var(--font-header);
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    color: var(--pf-teal);
-    margin-bottom: 0.5rem;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    color: var(--pf-teal-light);
+    margin-bottom: 0.75rem;
     letter-spacing: 0.03em;
+    line-height: 1.05;
+  }
+  .involved-header p {
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 1.5rem;
   }
 
-  .pf-involved-grid-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  /* ── Pathway cards ── */
-  .pf-path-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    background: #fff;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
-    border-top: 3px solid var(--pf-teal);
-    overflow: hidden;
-  }
-  .pf-path-icon-wrap {
-    flex-shrink: 0;
-    width: 4.5rem;
-    height: 4.5rem;
-    border-radius: 50%;
-    background: var(--pf-teal);
+  /* ── Pathway placeholder (icon on gradient) ── */
+  .pathway-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: clamp(300px, 40vw, 600px);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
-    color: #fff;
+    font-size: clamp(4rem, 10vw, 8rem);
+    color: rgba(255, 255, 255, 0.18);
   }
 
-  .pf-path-body {
-    flex: 1;
+  /* ── Split text content ── */
+  .pathway-desc {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
   }
-  .pf-path-tag {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-    color: var(--pf-teal);
-    margin-bottom: 0.25rem;
-  }
-  .pf-path-body h2 {
-    font-size: 1.3rem;
-    color: var(--pf-purple-dark);
-    margin-bottom: 0.5rem;
-  }
-  .pf-path-body > p {
-    font-size: 0.95rem;
-    color: var(--color-gray-700);
-    margin-bottom: 0.75rem;
-    line-height: 1.5;
-  }
-  .pf-path-details {
+
+  .pathway-details {
     list-style: none;
     padding: 0;
-    margin: 0 0 1.25rem 0;
+    margin: 0 0 2rem 0;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.6rem;
   }
-  .pf-path-details li {
-    font-size: 0.9rem;
-    color: var(--color-gray-700);
+  .pathway-details li {
+    font-size: 0.95rem;
     display: flex;
     align-items: baseline;
-    gap: 0.4em;
+    gap: 0.6em;
   }
-  .pf-check-icon {
+  .pathway-details li i {
     color: var(--pf-teal);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     flex-shrink: 0;
+    margin-top: 0.1em;
   }
-  .pf-path-cta .pf-btn {
-    /* use purple for contrast on white card */
-    background-color: var(--pf-purple);
-    border-color: var(--pf-purple);
-    color: #fff;
+
+  /* Dark section detail text */
+  .pf-section--dark .pathway-details li,
+  .pf-section--dark-alt .pathway-details li {
+    color: rgba(255, 255, 255, 0.8);
   }
-  .pf-path-cta .pf-btn:hover {
-    background-color: var(--pf-purple-light);
-    border-color: var(--pf-purple-light);
+
+  .pathway-cta {
+    margin-top: auto;
   }
-  .pf-coming-soon-cta {
+  .coming-soon-wrap {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.5rem;
   }
-  .pf-cta-fallback {
+  .cta-fallback {
     font-size: 0.85rem;
-    color: var(--color-gray-600);
     margin: 0;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .cta-fallback a {
+    color: var(--pf-teal-light);
+    text-decoration: none;
+  }
+  .cta-fallback a:hover {
+    text-decoration: underline;
   }
 
-  /* ── Contact ── */
-  .pf-involved-contact {
-    text-align: center;
+  /* ── Contact section ── */
+  .contact-link {
+    color: var(--pf-teal-light);
+    text-decoration: none;
   }
-  .pf-involved-contact p {
-    font-size: 1rem;
-    color: var(--color-gray-700);
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  @media (min-width: 640px) {
-    .pf-path-card {
-      flex-direction: row;
-      align-items: flex-start;
-    }
-  }
-
-  @media (max-width: 639px) {
-    .pf-path-card {
-      flex-direction: column;
-      gap: 1rem;
-    }
+  .contact-link:hover {
+    text-decoration: underline;
   }
 </style>
