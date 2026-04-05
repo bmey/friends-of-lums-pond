@@ -32,5 +32,6 @@ export const PONDFEST_2024: ArchiveYear = {
       donorboxUrl: "https://donorbox.org/bike-repair-station",
     },
   ],
+  featuredPhotoUrl: "", // e.g. "/pondfest/photos/2024-featured.jpg"
   detailPageUrl: "/resources/pondfest2024",
 };

@@ -36,5 +36,6 @@ export const PONDFEST_2025: ArchiveYear = {
       donorboxUrl: "https://donorbox.org/pond-fest-2025-donations",
     },
   ],
+  featuredPhotoUrl: "", // e.g. "/pondfest/photos/2025-featured.jpg"
   detailPageUrl: "/resources/pondfest2025",
 };
