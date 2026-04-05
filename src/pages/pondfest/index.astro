@@ -216,7 +216,7 @@ const tierLabels: Record<string, string> = {
     class="pf-day-of-panel"
   >
     <!-- Quick navigation -->
-    <section class="pf-section pf-section--forest">
+    <section class="pf-section pf-section--purple">
       <div class="pf-section-inner">
         <h2>Day-of Quick Links</h2>
         <div class="pf-dayof-quicknav">
@@ -335,7 +335,7 @@ const tierLabels: Record<string, string> = {
 
     <!-- Feedback link -->
     {FEEDBACK_LINK && (
-      <section class="pf-section pf-section--forest">
+      <section class="pf-section pf-section--purple">
         <div class="pf-section-inner pf-feedback-section">
           <h2>Share Your Feedback</h2>
           <p>
@@ -360,19 +360,24 @@ const tierLabels: Record<string, string> = {
           <p class="pf-goals-goal">Goal: {FUNDRAISING_GOAL}</p>
           <div class="pf-goals-grid">
             {FUNDING_GOALS.map((goal) => (
-              <div class="pf-goal-card">
-                <h3>{goal.name}</h3>
-                <p>{goal.description}</p>
-                {goal.donorboxUrl && (
-                  <a
-                    href={goal.donorboxUrl}
-                    class="pf-btn pf-btn--outline"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Donate to this goal
-                  </a>
-                )}
+              <div class="pf-goal-card pf-card">
+                <div class="pf-goal-card-inner">
+                  <div class="pf-goal-icon-wrap">
+                    <i class="fa-solid fa-seedling" />
+                  </div>
+                  <h3>{goal.name}</h3>
+                  <p>{goal.description}</p>
+                  {goal.donorboxUrl && (
+                    <a
+                      href={goal.donorboxUrl}
+                      class="pf-btn pf-btn--primary"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Donate to this goal
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -388,8 +393,10 @@ const tierLabels: Record<string, string> = {
       <div class="pf-features-grid">
         {
           features.map((f) => (
-            <div class="pf-feature-card">
-              <i class={`fa-solid ${f.icon} pf-feature-icon`} />
+            <div class="pf-feature-card pf-card">
+              <div class="pf-feature-icon-wrap">
+                <i class={`fa-solid ${f.icon}`} />
+              </div>
               <h3 class="pf-feature-title">{f.title}</h3>
               <p class="pf-feature-desc">{f.desc}</p>
             </div>
@@ -423,10 +430,10 @@ const tierLabels: Record<string, string> = {
           </div>
         ) : (
           <div class="pf-coming-soon">
-            <i class="fa-solid fa-guitar pf-coming-soon-icon" />
+            <i class="fa-solid fa-music pf-coming-soon-icon" />
+            <h3 class="pf-coming-soon-headline">Lineup Coming Soon</h3>
             <p>
-              Lineup announced closer to the event — check back soon, or follow
-              us on{" "}
+              Artist announcements drop as we get closer to October — follow us on{" "}
               <a
                 href="https://www.facebook.com/FriendsofLumsPond"
                 target="_blank"
@@ -434,7 +441,7 @@ const tierLabels: Record<string, string> = {
               >
                 Facebook
               </a>{" "}
-              for updates.
+              so you don't miss it.
             </p>
           </div>
         )
@@ -443,7 +450,7 @@ const tierLabels: Record<string, string> = {
   </section>
 
   <!-- ══ GET INVOLVED ═════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--forest">
+  <section class="pf-section pf-section--purple">
     <div class="pf-section-inner">
       <h2>Get Involved</h2>
       <div class="pf-involved-grid">
@@ -585,10 +592,25 @@ const tierLabels: Record<string, string> = {
   <section class="pf-section pf-section--dark">
     <div class="pf-section-inner pf-history-teaser">
       <h2>Our History</h2>
+      <div class="pf-history-stats">
+        <div class="pf-history-stat">
+          <span class="pf-history-stat-num">2</span>
+          <span class="pf-history-stat-label">Years</span>
+        </div>
+        <div class="pf-history-stat-divider">&middot;</div>
+        <div class="pf-history-stat">
+          <span class="pf-history-stat-num">$30K</span>
+          <span class="pf-history-stat-label">Raised</span>
+        </div>
+        <div class="pf-history-stat-divider">&middot;</div>
+        <div class="pf-history-stat">
+          <span class="pf-history-stat-num">2,100+</span>
+          <span class="pf-history-stat-label">Attendees</span>
+        </div>
+      </div>
       <p>
         Pond Fest launched in 2024 and has grown into one of Delaware's
-        favorite community outdoor festivals. Together we have raised over
-        $30,000 for Lums Pond State Park programs and facilities.
+        favorite community outdoor festivals.
       </p>
       <a href="/pondfest/archive" class="pf-btn pf-btn--outline-light">
         View All Past Events
@@ -645,7 +667,7 @@ const tierLabels: Record<string, string> = {
     letter-spacing: 0.02em;
   }
   .pf-hero-year {
-    color: var(--pf-amber-light);
+    color: var(--pf-teal-light);
   }
   .pf-hero-meta {
     font-size: clamp(0.9rem, 2.5vw, 1.05rem);
@@ -679,29 +701,45 @@ const tierLabels: Record<string, string> = {
     text-align: center;
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--pf-forest);
+    color: var(--pf-purple);
     margin-bottom: 1.5rem;
   }
   .pf-goals-grid {
     display: grid;
-    gap: 1.25rem;
+    gap: 1.5rem;
     grid-template-columns: 1fr;
   }
   .pf-goal-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 1.25rem 1.5rem;
-    border-left: 4px solid var(--pf-forest-light);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    text-align: center;
+  }
+  .pf-goal-card-inner {
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pf-goal-icon-wrap {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--pf-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    color: #fff;
   }
   .pf-goal-card h3 {
     font-size: 1.1rem;
-    color: var(--pf-forest-dark);
-    margin-bottom: 0.4rem;
+    font-weight: 700;
+    color: var(--pf-purple-dark);
+    margin-bottom: 0.5rem;
   }
   .pf-goal-card p {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
     font-size: 0.95rem;
+    color: var(--color-gray-700);
   }
 
   /* ── Features grid ── */
@@ -712,18 +750,22 @@ const tierLabels: Record<string, string> = {
   }
   .pf-feature-card {
     text-align: center;
-    padding: 1.25rem 1rem;
-    background: var(--pf-warm-section);
-    border-radius: 8px;
+    padding: 1.75rem 1rem;
   }
-  .pf-feature-icon {
-    font-size: 2rem;
-    color: var(--pf-forest);
-    margin-bottom: 0.6rem;
-    display: block;
+  .pf-feature-icon-wrap {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: rgba(42, 196, 179, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.9rem auto;
+    font-size: 1.5rem;
+    color: var(--pf-teal);
   }
   .pf-feature-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
     color: var(--color-primary-950);
@@ -746,11 +788,11 @@ const tierLabels: Record<string, string> = {
     gap: 1rem;
     padding: 0.75rem 1rem;
     background: #fff;
-    border-radius: 6px;
-    border: 1px solid var(--color-gray-200);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
   .pf-performer-icon {
-    color: var(--pf-forest);
+    color: var(--pf-teal);
     font-size: 1.1rem;
     flex-shrink: 0;
   }
@@ -759,27 +801,47 @@ const tierLabels: Record<string, string> = {
     flex-direction: column;
     gap: 0.1rem;
   }
-  .pf-performer-stage,
+  .pf-performer-stage {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--pf-teal);
+    color: #fff;
+    padding: 0.1em 0.5em;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 0.15rem;
+  }
   .pf-performer-time {
     font-size: 0.85rem;
     color: var(--color-gray-600);
   }
   .pf-coming-soon {
     text-align: center;
-    padding: 2.5rem 1rem;
+    padding: 3rem 1.5rem;
     background: #fff;
-    border-radius: 8px;
-    border: 2px dashed var(--color-gray-300);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
   .pf-coming-soon-icon {
     font-size: 2.5rem;
-    color: var(--color-gray-300);
+    color: var(--pf-teal);
     display: block;
     margin-bottom: 0.75rem;
+    opacity: 0.6;
+  }
+  .pf-coming-soon-headline {
+    font-family: var(--font-header);
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: var(--pf-purple);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.03em;
   }
   .pf-coming-soon p {
     color: var(--color-gray-600);
     margin: 0;
+    font-size: 0.95rem;
   }
 
   /* ── Get Involved ── */
@@ -789,17 +851,16 @@ const tierLabels: Record<string, string> = {
     grid-template-columns: repeat(2, 1fr);
   }
   .pf-involved-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    padding: 1.5rem 1.25rem;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 1.75rem 1.25rem;
     text-align: center;
   }
   .pf-involved-icon {
-    font-size: 2rem;
-    color: var(--pf-amber-light);
+    font-size: 2.5rem;
+    color: var(--pf-teal-light);
     display: block;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.75rem;
   }
   .pf-involved-card h3 {
     color: #fff;
@@ -818,14 +879,21 @@ const tierLabels: Record<string, string> = {
     text-align: center;
   }
   .pf-sponsor-tier {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(42, 196, 179, 0.2);
+  }
+  .pf-sponsor-tier:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
   }
   .pf-sponsor-tier-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-gray-500);
-    margin-bottom: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--pf-teal);
+    font-weight: 700;
+    margin-bottom: 0.7rem;
   }
   .pf-sponsor-list {
     display: flex;
@@ -834,31 +902,51 @@ const tierLabels: Record<string, string> = {
     justify-content: center;
   }
   .pf-sponsor-name {
-    font-size: 1rem;
     font-weight: 600;
     color: var(--color-primary-900);
     text-decoration: none;
   }
+  .pf-sponsor-tier:nth-child(1) .pf-sponsor-name { font-size: 1.3rem; }
+  .pf-sponsor-tier:nth-child(2) .pf-sponsor-name { font-size: 1.1rem; }
+  .pf-sponsor-tier:nth-child(n+3) .pf-sponsor-name { font-size: 0.95rem; color: var(--color-gray-600); }
   a.pf-sponsor-name:hover {
-    color: var(--pf-forest);
+    color: var(--pf-teal);
     text-decoration: underline;
   }
   .pf-sponsor-empty {
-    padding: 1.5rem 0;
-    color: var(--color-gray-600);
+    padding: 2rem 1.5rem;
+    border: 2px solid var(--pf-teal);
+    border-radius: 10px;
+    color: var(--color-gray-700);
     font-size: 1rem;
+  }
+  .pf-sponsor-empty::before {
+    content: "\f005";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    display: block;
+    font-size: 1.5rem;
+    color: var(--pf-teal);
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
   }
 
   /* ── FAQ ── */
   .pf-faq {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
   .pf-faq-item {
-    border: 1px solid var(--color-gray-200);
-    border-radius: 6px;
+    border-radius: 8px;
     overflow: hidden;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .pf-faq-item.is-open {
+    border-color: var(--pf-teal);
+    border-left-width: 3px;
+    background-color: rgba(42, 196, 179, 0.04);
   }
   .pf-faq-button {
     width: 100%;
@@ -866,7 +954,7 @@ const tierLabels: Record<string, string> = {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding: 0.9rem 1.1rem;
+    padding: 1rem 1.1rem;
     text-align: left;
     background: transparent;
     border: none;
@@ -878,12 +966,15 @@ const tierLabels: Record<string, string> = {
   }
   .pf-faq-button:hover {
     background-color: var(--pf-warm-section);
-    color: var(--pf-forest-dark);
   }
   .pf-faq-chevron {
     flex-shrink: 0;
-    transition: transform 0.25s;
-    color: var(--color-gray-500);
+    transition: transform 0.25s, color 0.2s;
+    color: var(--color-gray-400);
+  }
+  .pf-faq-item.is-open .pf-faq-chevron {
+    transform: rotate(180deg);
+    color: var(--pf-teal);
   }
   .pf-faq-content {
     padding: 0 1.1rem;
@@ -892,7 +983,7 @@ const tierLabels: Record<string, string> = {
     transition: max-height 0.3s ease-in-out;
   }
   .pf-faq-content p {
-    padding-bottom: 0.9rem;
+    padding-bottom: 1rem;
     font-size: 0.92rem;
     color: var(--color-gray-800);
     line-height: 1.6;
@@ -905,6 +996,38 @@ const tierLabels: Record<string, string> = {
   /* ── History teaser ── */
   .pf-history-teaser {
     text-align: center;
+  }
+  .pf-history-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .pf-history-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pf-history-stat-num {
+    font-family: var(--font-header);
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--pf-teal);
+    line-height: 1;
+  }
+  .pf-history-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    color: #fff;
+  }
+  .pf-history-stat-divider {
+    font-size: 1.5rem;
+    opacity: 0.3;
+    color: #fff;
+    align-self: center;
   }
   .pf-history-teaser p {
     font-size: 1rem;
@@ -1031,7 +1154,7 @@ const tierLabels: Record<string, string> = {
   }
   .pf-parking-notes i,
   .pf-shuttle-info i {
-    color: var(--pf-forest);
+    color: var(--pf-teal);
     font-size: 1.1rem;
     flex-shrink: 0;
     margin-top: 0.15rem;
@@ -1061,7 +1184,7 @@ const tierLabels: Record<string, string> = {
     transition: border-color 0.15s, box-shadow 0.15s;
   }
   .pf-dayof-link-card:hover {
-    border-color: var(--pf-forest-light);
+    border-color: var(--pf-teal);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     color: var(--color-gray-950);
   }
@@ -1080,7 +1203,7 @@ const tierLabels: Record<string, string> = {
   }
   .pf-dayof-link-icon {
     font-size: 1.3rem;
-    color: var(--pf-forest);
+    color: var(--pf-teal);
     flex-shrink: 0;
   }
   .pf-dayof-link-arrow {
@@ -1118,16 +1241,16 @@ const tierLabels: Record<string, string> = {
     .pf-hero-year {
       color: #000;
     }
-    .pf-section--forest,
+    .pf-section--purple,
     .pf-section--dark {
       background: #fff;
       color: #000;
     }
-    .pf-section--forest h2,
+    .pf-section--purple h2,
     .pf-section--dark h2,
-    .pf-section--forest h3,
+    .pf-section--purple h3,
     .pf-section--dark h3,
-    .pf-section--forest p,
+    .pf-section--purple p,
     .pf-section--dark p {
       color: #000;
     }
@@ -1158,17 +1281,15 @@ const tierLabels: Record<string, string> = {
       if (!btn || !content) return;
 
       btn.addEventListener("click", () => {
-        const isOpen = item.classList.contains("active");
+        const isOpen = item.classList.contains("is-open");
         if (isOpen) {
-          item.classList.remove("active");
+          item.classList.remove("is-open");
           btn.setAttribute("aria-expanded", "false");
           content.style.maxHeight = "0px";
-          chevron?.classList.remove("rotate-180");
         } else {
-          item.classList.add("active");
+          item.classList.add("is-open");
           btn.setAttribute("aria-expanded", "true");
           content.style.maxHeight = content.scrollHeight + "px";
-          chevron?.classList.add("rotate-180");
         }
       });
     });

@@ -17,11 +17,11 @@ const { title, description } = Astro.props;
     <BaseHead title={title} description={description || SITE_DESCRIPTION} />
     <style>
       :root {
-        --pf-forest: #2d6a4f;
-        --pf-forest-light: #40916c;
-        --pf-forest-dark: #1b4332;
-        --pf-amber: #d4640a;
-        --pf-amber-light: #f4a261;
+        --pf-purple: #3d2f7a;
+        --pf-purple-light: #6b5db5;
+        --pf-purple-dark: #271e52;
+        --pf-teal: #2ac4b3;
+        --pf-teal-light: #4dd9cb;
         --pf-warm-bg: #fffbf5;
         --pf-warm-section: #fff8ee;
       }
@@ -35,24 +35,24 @@ const { title, description } = Astro.props;
 
       /* ── Shared section styles used across Pond Fest pages ── */
       .pf-section {
-        padding: 3rem 1.5rem;
+        padding: 5rem 1.5rem;
         width: 100%;
         box-sizing: border-box;
       }
       .pf-section--warm {
         background-color: var(--pf-warm-section);
       }
-      .pf-section--forest {
-        background-color: var(--pf-forest);
+      .pf-section--purple {
+        background-color: var(--pf-purple);
         color: #fff;
       }
-      .pf-section--forest h2,
-      .pf-section--forest h3,
-      .pf-section--forest p {
+      .pf-section--purple h2,
+      .pf-section--purple h3,
+      .pf-section--purple p {
         color: #fff;
       }
       .pf-section--dark {
-        background-color: var(--color-primary-950);
+        background-color: var(--pf-purple-dark);
         color: #fff;
       }
       .pf-section--dark h2,
@@ -66,23 +66,43 @@ const { title, description } = Astro.props;
       }
       .pf-section h2 {
         font-family: var(--font-header);
-        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-size: clamp(2rem, 5vw, 3.2rem);
         text-align: center;
         margin-bottom: 2rem;
         letter-spacing: 0.03em;
       }
-      .pf-section--forest h2 {
-        color: var(--pf-amber-light);
+      .pf-section--purple h2 {
+        color: var(--pf-teal-light);
       }
       .pf-section--dark h2 {
-        color: var(--pf-amber-light);
+        color: var(--pf-teal);
+      }
+
+      /* ── Eyebrow label utility ── */
+      .pf-eyebrow {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-weight: 700;
+        opacity: 0.6;
+        text-align: center;
+        display: block;
+        margin-bottom: 0.4rem;
+      }
+
+      /* ── Card base ── */
+      .pf-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
       }
 
       /* ── Button styles ── */
       .pf-btn {
         display: inline-block;
         padding: 0.65rem 1.4rem;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 0.95rem;
         font-weight: 700;
         text-decoration: none;
@@ -91,30 +111,42 @@ const { title, description } = Astro.props;
         transition: all 0.2s ease;
         border: 2px solid transparent;
         white-space: nowrap;
+        letter-spacing: 0.04em;
       }
       .pf-btn--primary {
-        background-color: var(--pf-amber);
+        background-color: var(--pf-teal);
         color: #fff;
-        border-color: var(--pf-amber);
+        border-color: var(--pf-teal);
       }
       .pf-btn--primary:hover {
-        background-color: var(--pf-amber-light);
-        border-color: var(--pf-amber-light);
+        background-color: #1fa899;
+        border-color: #1fa899;
+        color: #fff;
+      }
+      .pf-btn--purple {
+        background-color: var(--pf-purple);
+        color: #fff;
+        border-color: var(--pf-purple);
+      }
+      .pf-btn--purple:hover {
+        background-color: var(--pf-purple-light);
+        border-color: var(--pf-purple-light);
         color: #fff;
       }
       .pf-btn--outline {
         background-color: transparent;
-        color: var(--color-primary-800);
-        border-color: var(--color-primary-800);
+        color: var(--pf-purple);
+        border-color: var(--pf-purple);
       }
       .pf-btn--outline:hover {
-        background-color: var(--color-primary-800);
+        background-color: var(--pf-purple);
         color: #fff;
       }
       .pf-btn--outline-light {
         background-color: transparent;
         color: #fff;
         border-color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
       }
       .pf-btn--outline-light:hover {
         background-color: rgba(255, 255, 255, 0.15);
