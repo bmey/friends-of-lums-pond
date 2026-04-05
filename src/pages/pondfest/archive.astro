@@ -1,0 +1,363 @@
+---
+import Layout from "../../layouts/PondFestLayout.astro";
+import { PONDFEST_2024 } from "../../data/pondfest/archive/2024";
+import { PONDFEST_2025 } from "../../data/pondfest/archive/2025";
+import type { ArchiveYear } from "../../data/pondfest/types";
+
+// Add future years here, newest first
+const years: ArchiveYear[] = [PONDFEST_2025, PONDFEST_2024];
+
+function formatCurrency(n: number) {
+  return "$" + n.toLocaleString("en-US");
+}
+---
+
+<Layout
+  title="Pond Fest Archive | Friends of Lums Pond"
+  description="A history of every Pond Fest — the annual signature fundraiser of Friends of Lums Pond State Park."
+>
+  <!-- ══ HEADER ═════════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-archive-header">
+      <h1 class="pf-archive-title">Pond Fest Archive</h1>
+      <p>
+        Every second Saturday of October, Pond Fest brings the community
+        together to celebrate and support Lums Pond State Park. Here is the
+        story so far.
+      </p>
+      <a href="/pondfest" class="pf-btn pf-btn--outline-light">
+        <i class="fa-solid fa-arrow-left"></i> Back to Pond Fest
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ TOTALS BANNER ════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--forest">
+    <div class="pf-section-inner pf-totals">
+      <div class="pf-total-stat">
+        <span class="pf-total-num">{years.length}</span>
+        <span class="pf-total-label">Events</span>
+      </div>
+      <div class="pf-total-divider"></div>
+      <div class="pf-total-stat">
+        <span class="pf-total-num">
+          {
+            formatCurrency(
+              years.reduce((sum, y) => sum + (y.grossRevenue ?? 0), 0)
+            )
+          }
+        </span>
+        <span class="pf-total-label">Raised for the Park</span>
+      </div>
+      <div class="pf-total-divider"></div>
+      <div class="pf-total-stat">
+        <span class="pf-total-num">
+          {
+            years
+              .reduce((sum, y) => sum + (y.attendees ?? 0), 0)
+              .toLocaleString()
+          }+
+        </span>
+        <span class="pf-total-label">Attendees</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ YEAR CARDS ════════════════════════════════════════════════════ -->
+  <section class="pf-section">
+    <div class="pf-section-inner">
+      {
+        years.map((y) => (
+          <article class="pf-year-card">
+            <div class="pf-year-card-header">
+              <div class="pf-year-badge">{y.year}</div>
+              <div class="pf-year-meta">
+                <h2 class="pf-year-title">Pond Fest {y.year}</h2>
+                <p class="pf-year-date">
+                  <i class="fa-solid fa-calendar-days" /> {y.dateDisplay}
+                </p>
+                <div class="pf-year-stats">
+                  {y.attendees && (
+                    <span class="pf-stat-chip">
+                      <i class="fa-solid fa-people-group" />{" "}
+                      {y.attendees.toLocaleString()}+ attendees
+                    </span>
+                  )}
+                  {y.grossRevenue && (
+                    <span class="pf-stat-chip pf-stat-chip--green">
+                      <i class="fa-solid fa-circle-dollar-to-slot" />{" "}
+                      {formatCurrency(y.grossRevenue)} raised
+                    </span>
+                  )}
+                  {y.fundraisingGoal && (
+                    <span class="pf-stat-chip pf-stat-chip--subtle">
+                      <i class="fa-solid fa-bullseye" /> Goal:{" "}
+                      {formatCurrency(y.fundraisingGoal)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div class="pf-year-card-body">
+              <div class="pf-year-col">
+                <h3>Highlights</h3>
+                <ul class="pf-highlights">
+                  {y.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="pf-year-col">
+                <h3>Fundraising Goals</h3>
+                {y.fundingGoals.map((goal) => (
+                  <div class="pf-archive-goal">
+                    <strong>{goal.name}</strong>
+                    <p>{goal.description}</p>
+                  </div>
+                ))}
+
+                {(y.detailPageUrl || y.photoGalleryUrl) && (
+                  <div class="pf-year-links">
+                    {y.detailPageUrl && (
+                      <a href={y.detailPageUrl} class="pf-btn pf-btn--outline">
+                        <i class="fa-solid fa-file-lines" /> Full Event Page
+                      </a>
+                    )}
+                    {y.photoGalleryUrl && (
+                      <a
+                        href={y.photoGalleryUrl}
+                        class="pf-btn pf-btn--outline"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        <i class="fa-solid fa-images" /> Photos
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ══ FOOTER CTA ════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--warm">
+    <div class="pf-section-inner pf-archive-footer-cta">
+      <h2>Be Part of Pond Fest History</h2>
+      <p>
+        Pond Fest is held every second Saturday of October at Lums Pond State
+        Park. Join us as a volunteer, vendor, sponsor, or guest.
+      </p>
+      <a href="/pondfest" class="pf-btn pf-btn--primary">
+        See This Year's Event
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pf-archive-header {
+    text-align: center;
+  }
+  .pf-archive-header p {
+    max-width: 600px;
+    margin: 0 auto 1.5rem auto;
+    opacity: 0.85;
+  }
+  .pf-archive-title {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--pf-amber-light);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Totals banner ── */
+  .pf-totals {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  .pf-total-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pf-total-num {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--pf-amber-light);
+    line-height: 1;
+  }
+  .pf-total-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+  }
+  .pf-total-divider {
+    width: 1px;
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  /* ── Year cards ── */
+  .pf-year-card {
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  .pf-year-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: var(--pf-warm-section);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+  .pf-year-badge {
+    font-family: var(--font-header);
+    font-size: 2.5rem;
+    color: var(--pf-forest);
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 5rem;
+    text-align: center;
+    background: #fff;
+    border: 2px solid var(--pf-forest-light);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+  }
+  .pf-year-meta {
+    flex: 1;
+  }
+  .pf-year-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+    color: var(--color-primary-950);
+  }
+  .pf-year-date {
+    font-size: 0.9rem;
+    color: var(--color-gray-600);
+    margin-bottom: 0.6rem;
+  }
+  .pf-year-date i {
+    margin-right: 0.3em;
+    opacity: 0.7;
+  }
+  .pf-year-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .pf-stat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: var(--color-primary-100);
+    color: var(--color-primary-900);
+  }
+  .pf-stat-chip--green {
+    background: #d8f3dc;
+    color: var(--pf-forest-dark);
+  }
+  .pf-stat-chip--subtle {
+    background: var(--color-gray-100);
+    color: var(--color-gray-700);
+  }
+
+  .pf-year-card-body {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  .pf-year-col h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-gray-500);
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-gray-200);
+    padding-bottom: 0.4rem;
+  }
+  .pf-highlights {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+    color: var(--color-gray-800);
+    line-height: 1.6;
+  }
+  .pf-highlights li {
+    margin-bottom: 0.25rem;
+  }
+  .pf-archive-goal {
+    margin-bottom: 0.75rem;
+  }
+  .pf-archive-goal strong {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--pf-forest-dark);
+    margin-bottom: 0.15rem;
+  }
+  .pf-archive-goal p {
+    font-size: 0.88rem;
+    color: var(--color-gray-700);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .pf-year-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  /* ── Footer CTA ── */
+  .pf-archive-footer-cta {
+    text-align: center;
+  }
+  .pf-archive-footer-cta p {
+    max-width: 540px;
+    margin: 0 auto 1.5rem auto;
+    color: var(--color-gray-700);
+  }
+
+  /* ── Responsive ── */
+  @media (min-width: 640px) {
+    .pf-year-card-body {
+      grid-template-columns: 1fr 1fr;
+    }
+    .pf-total-divider {
+      display: block;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .pf-year-card-header {
+      flex-direction: column;
+    }
+    .pf-year-badge {
+      min-width: auto;
+    }
+    .pf-total-divider {
+      display: none;
+    }
+  }
+</style>
