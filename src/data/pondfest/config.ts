@@ -25,6 +25,27 @@ export const EVENT_MAP_IMAGE_URL = ""; // e.g. "/pondfest/map-event.jpg"
 export const PARKING_MAP_IMAGE_URL = "";
 export const VENDOR_MAP_IMAGE_URL = "";
 
+// ─────────────────────────────────────────────
+// PHOTOS — download from Lightroom → public/pondfest/photos/
+// Then reference as "/pondfest/photos/filename.jpg"
+// ─────────────────────────────────────────────
+
+// Full-width photo band between Lineup and Get Involved sections
+// Recommended: wide panoramic crowd/stage shot (landscape, high-res)
+export const PHOTO_BAND_1_URL = "";
+
+// Gallery grid on the index page (4 photos shown, landscape 4:3 recommended)
+export const GALLERY_PHOTOS: string[] = [
+  // e.g. "/pondfest/photos/crowd-1.jpg",
+  // e.g. "/pondfest/photos/music-1.jpg",
+  // e.g. "/pondfest/photos/kids-1.jpg",
+  // e.g. "/pondfest/photos/vendors-1.jpg",
+];
+
+// Background photo for the History Teaser section
+// Recommended: aerial or wide crowd/event overview shot
+export const HISTORY_BG_PHOTO = "";
+
 // External URLs — update as they become available
 export const TICKETS_URL = ""; // Eventbrite link
 export const VOLUNTEER_URL = ""; // SignUpGenius or Google Form
@@ -77,12 +98,14 @@ export const FUNDING_GOALS: FundingGoal[] = [
     name: "Youth Scholarships",
     description:
       "Subsidize environmental education field trips for Title 1 schools at Lums Pond. In 2024, 524 students attended these outdoor experiences.",
+    imageUrl: "", // e.g. "/pondfest/photos/students-field-trip.jpg"
     donorboxUrl: "",
   },
   {
     name: "Accessible Kayak Launch",
     description:
       "Complete funding for a BoardSafe Accessible Kayak Launch, opening Lums Pond's waters to visitors of all abilities.",
+    imageUrl: "", // e.g. "/pondfest/photos/kayak-launch.jpg"
     donorboxUrl: "",
   },
 ];

@@ -20,6 +20,7 @@ export interface FAQItem {
 export interface FundingGoal {
   name: string;
   description: string;
+  imageUrl?: string; // photo to show alongside this goal (4:3 or 16:9 recommended)
   donorboxUrl?: string;
 }
 
@@ -32,6 +33,7 @@ export interface ArchiveYear {
   fundraisingGoal?: number;
   highlights: string[];
   fundingGoals: FundingGoal[];
+  featuredPhotoUrl?: string; // hero photo shown at top of year card in archive
   photoGalleryUrl?: string;
   detailPageUrl?: string; // internal path, e.g. "/resources/pondfest2025"
 }
