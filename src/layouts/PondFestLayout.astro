@@ -15,95 +15,261 @@ const { title, description } = Astro.props;
 <html lang="en">
   <head>
     <BaseHead title={title} description={description || SITE_DESCRIPTION} />
-    <style>
+    <style is:global>
+      /* ════════════════════════════════════════════════════════════════
+         POND FEST DESIGN SYSTEM — global, applies to all pf-* pages
+         ════════════════════════════════════════════════════════════════ */
+
+      /* ── Color tokens ── */
       :root {
-        --pf-purple: #3d2f7a;
-        --pf-purple-light: #6b5db5;
-        --pf-purple-dark: #271e52;
-        --pf-teal: #2ac4b3;
-        --pf-teal-light: #4dd9cb;
-        --pf-warm-bg: #fffbf5;
-        --pf-warm-section: #fff8ee;
+        /* Dark (festival night) */
+        --pf-dark:          #0b0917;
+        --pf-dark-alt:      #12101f;
+        /* Brand purple */
+        --pf-purple:        #3d2f7a;
+        --pf-purple-light:  #6b5db5;
+        --pf-purple-dark:   #271e52;
+        /* Light (editorial warmth) */
+        --pf-light:         #fffbf5;
+        --pf-light-alt:     #f5f2ff;
+        /* Teal accent */
+        --pf-teal:          #2ac4b3;
+        --pf-teal-light:    #4dd9cb;
+        /* Legacy aliases — keeps existing code working */
+        --pf-warm-bg:       var(--pf-dark);
+        --pf-warm-section:  var(--pf-dark-alt);
       }
+
       body {
-        background-color: var(--pf-warm-bg);
+        background-color: var(--pf-dark);
+        color: #e8e4f0;
       }
+
       main {
         width: 100%;
         padding: 0;
       }
 
-      /* ── Shared section styles used across Pond Fest pages ── */
+      /* ── Base section ── */
       .pf-section {
-        padding: 5rem 1.5rem;
+        padding: clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px);
         width: 100%;
         box-sizing: border-box;
       }
-      .pf-section--warm {
-        background-color: var(--pf-warm-section);
+
+      /* No horizontal padding — used for full-bleed grids / photo bands */
+      .pf-section--flush {
+        padding-left: 0;
+        padding-right: 0;
       }
-      .pf-section--purple {
-        background-color: var(--pf-purple);
-        color: #fff;
-      }
-      .pf-section--purple h2,
-      .pf-section--purple h3,
-      .pf-section--purple p {
-        color: #fff;
-      }
-      .pf-section--dark {
-        background-color: var(--pf-purple-dark);
-        color: #fff;
-      }
-      .pf-section--dark h2,
-      .pf-section--dark h3,
-      .pf-section--dark p {
-        color: #fff;
-      }
+
+      /* ── Section color variants ── */
+      .pf-section--dark    { background-color: var(--pf-dark); }
+      .pf-section--dark-alt { background-color: var(--pf-dark-alt); }
+      .pf-section--purple  { background-color: var(--pf-purple); }
+      .pf-section--light   { background-color: var(--pf-light); }
+      .pf-section--light-alt { background-color: var(--pf-light-alt); }
+
+      /* Legacy — map old class names to new ones */
+      .pf-section--warm  { background-color: var(--pf-dark-alt); }
+
+      /* ── Section inner widths ── */
       .pf-section-inner {
-        max-width: 900px;
+        max-width: 1400px;
         margin: 0 auto;
       }
+      .pf-section-inner--narrow {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .pf-section-inner--mid {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      /* ── Section typography ── */
       .pf-section h2 {
         font-family: var(--font-header);
-        font-size: clamp(2rem, 5vw, 3.2rem);
-        text-align: center;
-        margin-bottom: 2rem;
-        letter-spacing: 0.03em;
+        font-size: clamp(2.2rem, 5vw, 3.8rem);
+        letter-spacing: 0.02em;
+        line-height: 1.05;
+        margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
       }
-      .pf-section--purple h2 {
-        color: var(--pf-teal-light);
-      }
-      .pf-section--dark h2 {
-        color: var(--pf-teal);
-      }
-
-      /* ── Eyebrow label utility ── */
-      .pf-eyebrow {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
+      .pf-section h3 {
+        font-size: clamp(1.1rem, 2vw, 1.4rem);
         font-weight: 700;
-        opacity: 0.6;
-        text-align: center;
-        display: block;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.6rem;
       }
 
-      /* ── Card base ── */
-      .pf-card {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+      /* Dark section text */
+      .pf-section--dark h2,
+      .pf-section--dark-alt h2,
+      .pf-section--warm h2   { color: var(--pf-teal-light); }
+      .pf-section--dark p,
+      .pf-section--dark-alt p,
+      .pf-section--warm p    { color: rgba(255, 255, 255, 0.78); }
+      .pf-section--dark h3,
+      .pf-section--dark-alt h3,
+      .pf-section--warm h3   { color: #fff; }
+
+      /* Purple section text */
+      .pf-section--purple h2 { color: #fff; }
+      .pf-section--purple p  { color: rgba(255, 255, 255, 0.82); }
+      .pf-section--purple h3 { color: var(--pf-teal-light); }
+
+      /* Light section text */
+      .pf-section--light h2,
+      .pf-section--light-alt h2 { color: var(--pf-purple-dark); }
+      .pf-section--light p,
+      .pf-section--light-alt p  { color: #3a2e5a; }
+      .pf-section--light h3,
+      .pf-section--light-alt h3 { color: var(--pf-purple); }
+
+      /* ── Eyebrow label ── */
+      .pf-eyebrow {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      .pf-section--dark .pf-eyebrow,
+      .pf-section--dark-alt .pf-eyebrow,
+      .pf-section--purple .pf-eyebrow { color: var(--pf-teal); }
+      .pf-section--light .pf-eyebrow,
+      .pf-section--light-alt .pf-eyebrow { color: var(--pf-purple); }
+
+      /* ── Split layout (image + text, 2-col) ── */
+      .pf-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: clamp(400px, 45vw, 680px);
+      }
+      .pf-split--reverse .pf-split-media { order: 2; }
+      .pf-split--reverse .pf-split-text  { order: 1; }
+
+      .pf-split-media {
+        overflow: hidden;
+        position: relative;
+      }
+      .pf-split-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .pf-split-media .pf-img-placeholder {
+        width: 100%;
+        height: 100%;
+        min-height: clamp(300px, 40vw, 600px);
+        background: linear-gradient(
+          135deg,
+          var(--pf-purple-dark) 0%,
+          var(--pf-purple) 55%,
+          var(--pf-teal) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.2);
+        font-size: 3rem;
+      }
+
+      .pf-split-text {
+        padding: clamp(3rem, 7vw, 7rem) clamp(2rem, 5vw, 6rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      @media (max-width: 768px) {
+        .pf-split {
+          grid-template-columns: 1fr;
+        }
+        .pf-split--reverse .pf-split-media { order: 1; }
+        .pf-split--reverse .pf-split-text  { order: 2; }
+        .pf-split-media .pf-img-placeholder {
+          min-height: 260px;
+        }
+      }
+
+      /* ── Photo band (full-bleed horizontal strip) ── */
+      .pf-photo-band {
+        width: 100%;
+        height: clamp(260px, 30vw, 500px);
+        background-size: cover;
+        background-position: center;
+        background-attachment: scroll;
+        position: relative;
         overflow: hidden;
       }
+      .pf-photo-band-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          var(--pf-purple-dark) 0%,
+          var(--pf-purple) 50%,
+          var(--pf-teal) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.2);
+        font-size: 4rem;
+      }
+      @media (min-width: 769px) {
+        .pf-photo-band { background-attachment: fixed; }
+      }
 
-      /* ── Button styles ── */
+      /* ── Gallery grid ── */
+      .pf-gallery-grid {
+        display: grid;
+        gap: 4px;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+      }
+      .pf-gallery-item {
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        position: relative;
+      }
+      .pf-gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .pf-gallery-item:hover img {
+        transform: scale(1.04);
+      }
+      .pf-gallery-item .pf-img-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          var(--pf-purple-dark),
+          var(--pf-purple),
+          var(--pf-teal)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.18);
+        font-size: 2.5rem;
+      }
+      @media (min-width: 640px) {
+        .pf-gallery-grid { grid-template-columns: repeat(4, 1fr); }
+      }
+
+      /* ── Buttons ── */
       .pf-btn {
         display: inline-block;
-        padding: 0.65rem 1.4rem;
+        padding: clamp(0.6rem, 1.2vw, 0.8rem) clamp(1.25rem, 2.5vw, 1.75rem);
         border-radius: 8px;
-        font-size: 0.95rem;
+        font-size: clamp(0.88rem, 1.5vw, 1rem);
         font-weight: 700;
         text-decoration: none;
         text-align: center;
@@ -119,8 +285,8 @@ const { title, description } = Astro.props;
         border-color: var(--pf-teal);
       }
       .pf-btn--primary:hover {
-        background-color: #1fa899;
-        border-color: #1fa899;
+        background-color: var(--pf-teal-light);
+        border-color: var(--pf-teal-light);
         color: #fff;
       }
       .pf-btn--purple {
@@ -135,29 +301,46 @@ const { title, description } = Astro.props;
       }
       .pf-btn--outline {
         background-color: transparent;
+        color: var(--pf-teal);
+        border-color: var(--pf-teal);
+      }
+      .pf-btn--outline:hover {
+        background-color: var(--pf-teal);
+        color: #fff;
+      }
+      .pf-btn--outline-dark {
+        background-color: transparent;
         color: var(--pf-purple);
         border-color: var(--pf-purple);
       }
-      .pf-btn--outline:hover {
+      .pf-btn--outline-dark:hover {
         background-color: var(--pf-purple);
         color: #fff;
       }
       .pf-btn--outline-light {
         background-color: transparent;
         color: #fff;
-        border-color: rgba(255, 255, 255, 0.7);
+        border-color: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(4px);
       }
       .pf-btn--outline-light:hover {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: rgba(255, 255, 255, 0.12);
         border-color: #fff;
       }
       .pf-btn--disabled {
-        background-color: var(--color-gray-200);
-        color: var(--color-gray-500);
-        border-color: var(--color-gray-200);
+        background-color: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.35);
+        border-color: rgba(255, 255, 255, 0.12);
         cursor: default;
         pointer-events: none;
+      }
+
+      /* ── Legacy card class — kept for day-of panel compatibility ── */
+      .pf-card {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
       }
     </style>
   </head>
