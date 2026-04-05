@@ -20,7 +20,19 @@ import {
   SPONSORS,
   FUNDING_GOALS,
   FAQ,
+  DAY_OF_ALERT,
+  SHUTTLE_INFO,
+  PARKING_NOTES,
+  RAFFLE_LINK,
+  AUCTION_LINK,
+  FEEDBACK_LINK,
+  DONATION_EMBED_URL,
+  EVENT_MAP_IMAGE_URL,
+  PARKING_MAP_IMAGE_URL,
+  VENDOR_MAP_IMAGE_URL,
 } from "../../data/pondfest/config";
+
+const hasMaps = EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
 
 const sponsorsByTier = {
   platinum: SPONSORS.filter((s) => s.tier === "platinum"),
@@ -143,6 +155,16 @@ const tierLabels: Record<string, string> = {
   title={`Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
   description={`Pond Fest ${CURRENT_YEAR} — ${EVENT_DATE_DISPLAY}. ${EVENT_TAGLINE}`}
 >
+  <!-- ══ ALERT BANNER (shown when DAY_OF_ALERT is set in config) ═════ -->
+  {
+    DAY_OF_ALERT && (
+      <div class="pf-alert-banner" role="alert">
+        <i class="fa-solid fa-circle-info" />
+        {DAY_OF_ALERT}
+      </div>
+    )
+  }
+
   <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
   <section class="pf-hero" style={`background-image: url('${HERO_IMAGE_URL}')`}>
     <div class="pf-hero-overlay">
@@ -185,6 +207,149 @@ const tierLabels: Record<string, string> = {
       </div>
     </div>
   </section>
+
+  <!-- ══ DAY-OF PANEL (shown by JS when within 7 days of event) ══════ -->
+  <div
+    id="pf-day-of-panel"
+    data-event-date={EVENT_DATE}
+    style="display:none"
+    class="pf-day-of-panel"
+  >
+    <!-- Quick navigation -->
+    <section class="pf-section pf-section--forest">
+      <div class="pf-section-inner">
+        <h2>Day-of Quick Links</h2>
+        <div class="pf-dayof-quicknav">
+          {hasMaps && <a href="#pf-maps" class="pf-quicknav-btn"><i class="fa-solid fa-map"></i> Maps</a>}
+          {RAFFLE_LINK && <a href={RAFFLE_LINK} target="_blank" rel="noopener" class="pf-quicknav-btn"><i class="fa-solid fa-ticket"></i> Raffles</a>}
+          {AUCTION_LINK && <a href={AUCTION_LINK} target="_blank" rel="noopener" class="pf-quicknav-btn"><i class="fa-solid fa-gavel"></i> Auction</a>}
+          {DONATION_EMBED_URL && <a href="#pf-donate" class="pf-quicknav-btn"><i class="fa-solid fa-circle-dollar-to-slot"></i> Donate</a>}
+          {FEEDBACK_LINK && <a href={FEEDBACK_LINK} target="_blank" rel="noopener" class="pf-quicknav-btn"><i class="fa-solid fa-comment-dots"></i> Feedback</a>}
+        </div>
+      </div>
+    </section>
+
+    <!-- Maps -->
+    {hasMaps && (
+      <section class="pf-section pf-section--warm" id="pf-maps">
+        <div class="pf-section-inner">
+          <h2>Event Maps</h2>
+          <div class="pf-maps-grid">
+            {EVENT_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Event Map</h3>
+                <a href={EVENT_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img src={EVENT_MAP_IMAGE_URL} alt="Pond Fest event map" class="pf-map-img" loading="lazy" />
+                  <span class="pf-map-tap-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
+                </a>
+              </div>
+            )}
+            {PARKING_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Parking Map</h3>
+                <a href={PARKING_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img src={PARKING_MAP_IMAGE_URL} alt="Pond Fest parking map" class="pf-map-img" loading="lazy" />
+                  <span class="pf-map-tap-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
+                </a>
+              </div>
+            )}
+            {VENDOR_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Vendor Map</h3>
+                <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img src={VENDOR_MAP_IMAGE_URL} alt="Pond Fest vendor map" class="pf-map-img" loading="lazy" />
+                  <span class="pf-map-tap-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
+                </a>
+              </div>
+            )}
+          </div>
+          {PARKING_NOTES && (
+            <div class="pf-parking-notes">
+              <i class="fa-solid fa-circle-parking"></i>
+              <p>{PARKING_NOTES}</p>
+            </div>
+          )}
+          {SHUTTLE_INFO && (
+            <div class="pf-shuttle-info">
+              <i class="fa-solid fa-bus"></i>
+              <p>{SHUTTLE_INFO}</p>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    <!-- Raffle / Auction links -->
+    {(RAFFLE_LINK || AUCTION_LINK) && (
+      <section class="pf-section">
+        <div class="pf-section-inner">
+          <h2>Raffles &amp; Auction</h2>
+          <div class="pf-dayof-link-cards">
+            {RAFFLE_LINK && (
+              <a href={RAFFLE_LINK} target="_blank" rel="noopener" class="pf-dayof-link-card">
+                <i class="fa-solid fa-ticket pf-dayof-link-icon"></i>
+                <div>
+                  <strong>Raffle Info &amp; Results</strong>
+                  <p>View raffle items and winner announcements</p>
+                </div>
+                <i class="fa-solid fa-arrow-right pf-dayof-link-arrow"></i>
+              </a>
+            )}
+            {AUCTION_LINK && (
+              <a href={AUCTION_LINK} target="_blank" rel="noopener" class="pf-dayof-link-card">
+                <i class="fa-solid fa-gavel pf-dayof-link-icon"></i>
+                <div>
+                  <strong>Silent Auction</strong>
+                  <p>View auction items and place or check bids</p>
+                </div>
+                <i class="fa-solid fa-arrow-right pf-dayof-link-arrow"></i>
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Donation embed -->
+    {DONATION_EMBED_URL && (
+      <section class="pf-section pf-section--warm" id="pf-donate">
+        <div class="pf-section-inner pf-donate-section">
+          <h2>Donate Today</h2>
+          <p>Every dollar raised goes directly to Lums Pond State Park programs and facilities.</p>
+          <script src="https://donorbox.org/widget.js" paypalExpress="false" is:inline></script>
+          <iframe
+            src={DONATION_EMBED_URL}
+            name="donorbox"
+            allowpaymentrequest="allowpaymentrequest"
+            seamless="seamless"
+            frameborder="0"
+            scrolling="no"
+            height="900px"
+            width="100%"
+            style="max-width: 500px; min-width: 250px; max-height: none !important; display: block; margin: 0 auto;"
+            allow="payment"
+          />
+        </div>
+      </section>
+    )}
+
+    <!-- Feedback link -->
+    {FEEDBACK_LINK && (
+      <section class="pf-section pf-section--forest">
+        <div class="pf-section-inner pf-feedback-section">
+          <h2>Share Your Feedback</h2>
+          <p>
+            Thank you for spending the day with us at Pond Fest! Your feedback helps
+            us make next year even better. It only takes two minutes.
+          </p>
+          <a href={FEEDBACK_LINK} target="_blank" rel="noopener" class="pf-btn pf-btn--outline-light">
+            <i class="fa-solid fa-comment-dots"></i> Go to Survey
+          </a>
+        </div>
+      </section>
+    )}
+  </div>
+  <!-- ══ END DAY-OF PANEL ════════════════════════════════��═════════════ -->
 
   <!-- ══ FUNDRAISING GOALS ════════════════════════════════════════════ -->
   {
@@ -778,6 +943,163 @@ const tierLabels: Record<string, string> = {
     }
   }
 
+  /* ── Alert banner ── */
+  .pf-alert-banner {
+    background-color: #e76f00;
+    color: #fff;
+    text-align: center;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .pf-alert-banner i {
+    margin-right: 0.4em;
+  }
+
+  /* ── Day-of panel ── */
+  .pf-dayof-quicknav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+  }
+  .pf-quicknav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .pf-quicknav-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+
+  /* ── Maps ── */
+  .pf-maps-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    margin-bottom: 1.25rem;
+  }
+  .pf-map-item {
+    text-align: center;
+  }
+  .pf-map-item h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-gray-700);
+  }
+  .pf-map-item a {
+    display: block;
+    text-decoration: none;
+  }
+  .pf-map-img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--color-gray-200);
+    object-fit: cover;
+    max-height: 300px;
+  }
+  .pf-map-tap-hint {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-gray-500);
+    margin-top: 0.3rem;
+  }
+  .pf-parking-notes,
+  .pf-shuttle-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #fff;
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin-top: 0.75rem;
+    border: 1px solid var(--color-gray-200);
+    font-size: 0.9rem;
+    color: var(--color-gray-800);
+  }
+  .pf-parking-notes i,
+  .pf-shuttle-info i {
+    color: var(--pf-forest);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .pf-parking-notes p,
+  .pf-shuttle-info p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── Raffle / Auction link cards ── */
+  .pf-dayof-link-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pf-dayof-link-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-gray-950);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .pf-dayof-link-card:hover {
+    border-color: var(--pf-forest-light);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: var(--color-gray-950);
+  }
+  .pf-dayof-link-card > div {
+    flex: 1;
+  }
+  .pf-dayof-link-card strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+  }
+  .pf-dayof-link-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-gray-600);
+  }
+  .pf-dayof-link-icon {
+    font-size: 1.3rem;
+    color: var(--pf-forest);
+    flex-shrink: 0;
+  }
+  .pf-dayof-link-arrow {
+    color: var(--color-gray-400);
+    flex-shrink: 0;
+  }
+
+  /* ── Donate / Feedback sections ── */
+  .pf-donate-section,
+  .pf-feedback-section {
+    text-align: center;
+  }
+  .pf-donate-section p,
+  .pf-feedback-section p {
+    max-width: 540px;
+    margin: 0 auto 1.25rem auto;
+    opacity: 0.85;
+  }
+
   /* ── Print ── */
   @media print {
     .pf-hero {
@@ -854,4 +1176,28 @@ const tierLabels: Record<string, string> = {
 
   setupFAQ();
   document.addEventListener("astro:after-swap", setupFAQ);
+
+  // ── Day-of mode detection ──────────────────────────────────────────
+  function applyEventMode() {
+    const panel = document.getElementById("pf-day-of-panel");
+    if (!panel) return;
+
+    const eventDateStr = panel.dataset.eventDate;
+    if (!eventDateStr) return;
+
+    const eventMs = new Date(eventDateStr).getTime();
+    const now = Date.now();
+    const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    const diff = eventMs - now;
+
+    const isDayOf = diff <= sevenDaysMs && diff > -oneDayMs;
+
+    if (isDayOf) {
+      panel.style.display = "";
+    }
+  }
+
+  applyEventMode();
+  document.addEventListener("astro:after-swap", applyEventMode);
 </script>
