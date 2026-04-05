@@ -1,0 +1,671 @@
+---
+import Layout from "../../layouts/PondFestLayout.astro";
+import { CURRENT_YEAR, PONDFEST_EMAIL } from "../../data/pondfest/config";
+
+// Password gate: SHA-256("iheartLUMS")
+// The plaintext password is never stored here — only the hash.
+// Verification happens entirely in the browser via Web Crypto API.
+const PASSWORD_HASH =
+  "590d53eafe1af77165bf5e4a5a761b88923abf4a25a6495314ca93b306e3e204";
+
+// ─── Resource link data ────────────────────────────────────────────────────
+// Update these URLs as documents are created or change locations.
+// All links open in a new tab.
+
+const googleDocs = [
+  { label: "Pond Fest Policies & Guidelines", url: "" },
+  { label: "Event Budget", url: "" },
+  { label: "Sponsor Package", url: "" },
+  { label: "Event Timeline / Master Run-of-Show", url: "" },
+  { label: "Vendor Agreement", url: "" },
+  { label: "Risk Assessment & Safety Plan", url: "" },
+];
+
+const forms = [
+  { label: "Volunteer Sign-Up", url: "" },
+  { label: "Performer Interest Form", url: "https://forms.gle/dMEmKxYs7ovnyG658" },
+  { label: "Vendor Application", url: "" },
+  { label: "Sponsor Interest Form", url: "" },
+  { label: "Donation / Raffle Item Submission", url: "" },
+  { label: "Post-Event Feedback Survey", url: "" },
+];
+
+const meetingNotes = [
+  { label: "2026 Planning Meeting Notes (Google Drive folder)", url: "" },
+  { label: "2025 Committee Notes Archive", url: "" },
+];
+
+const conceptMaps = [
+  { label: "Event Layout Concept Map", url: "" },
+  { label: "Volunteer Roles Org Chart", url: "" },
+  { label: "Sponsorship Funnel Map", url: "" },
+];
+
+const roles = [
+  {
+    role: "Co-Chair",
+    description: "Overall event leadership, final decision authority, external communications",
+    signupUrl: "",
+  },
+  {
+    role: "Vendor Coordinator",
+    description: "Recruit and manage vendors, assign spots, day-of vendor check-in",
+    signupUrl: "",
+  },
+  {
+    role: "Sponsor Coordinator",
+    description: "Outreach to sponsors, manage packages, ensure sponsor recognition at event",
+    signupUrl: "",
+  },
+  {
+    role: "Volunteer Coordinator",
+    description: "Recruit and schedule volunteers, manage sign-up system, day-of volunteer assignments",
+    signupUrl: "",
+  },
+  {
+    role: "Music / Entertainment Coordinator",
+    description: "Book performers, manage stage schedule, coordinate with sound",
+    signupUrl: "",
+  },
+  {
+    role: "Kids Zone Lead",
+    description: "Plan and run the kids zone: activities, crafts, staffing",
+    signupUrl: "",
+  },
+  {
+    role: "Raffle & Auction Coordinator",
+    description: "Solicit raffle donations, manage items, run day-of raffle",
+    signupUrl: "",
+  },
+  {
+    role: "Logistics & Setup Lead",
+    description: "Tent/table rental, day-of setup and teardown crew",
+    signupUrl: "",
+  },
+  {
+    role: "Marketing & Social Media",
+    description: "Event promotion across social media, flyers, press outreach",
+    signupUrl: "",
+  },
+  {
+    role: "Website / Tech",
+    description: "Maintain the event website, QR codes, day-of digital resources",
+    signupUrl: "",
+  },
+];
+
+const keyContacts = [
+  {
+    name: "Bryan Mey",
+    role: "President / Co-Chair",
+    contact: "pondfest@friendsoflumspond.org",
+    notes: "Technology, sponsorship, general leadership",
+  },
+  {
+    name: "Jessie Mey",
+    role: "Co-Chair",
+    contact: "",
+    notes: "Experience design, community outreach, volunteers",
+  },
+  {
+    name: "Jenny Grady",
+    role: "Vendor Coordinator",
+    contact: "",
+    notes: "All vendor and crafter questions",
+  },
+  {
+    name: "Bob Conley Sr",
+    role: "Logistics",
+    contact: "",
+    notes: "Setup, teardown, physical logistics",
+  },
+];
+---
+
+<Layout
+  title={`Pond Fest ${CURRENT_YEAR} — Volunteer Resources`}
+  description="Internal organizer resources for Pond Fest committee members."
+>
+  <!-- ══ GATE (shown when locked) ════════════════════════════════════ -->
+  <div id="pf-vol-gate" class="pf-vol-gate">
+    <div class="pf-vol-gate-card">
+      <i class="fa-solid fa-lock pf-gate-icon"></i>
+      <h1>Pond Fest Volunteer Resources</h1>
+      <p>
+        This page contains internal planning resources for Pond Fest committee
+        members and volunteers. Please enter the access password to continue.
+      </p>
+      <form id="pf-gate-form" class="pf-gate-form" autocomplete="off">
+        <label for="pf-gate-input" class="sr-only">Password</label>
+        <input
+          id="pf-gate-input"
+          type="password"
+          placeholder="Enter password"
+          class="pf-gate-input"
+          autocomplete="current-password"
+        />
+        <button type="submit" class="pf-btn pf-btn--primary pf-gate-submit">
+          Enter
+        </button>
+      </form>
+      <p id="pf-gate-error" class="pf-gate-error" style="display:none">
+        Incorrect password. Ask a committee member for access.
+      </p>
+      <p class="pf-gate-hint">
+        Need the password? Email{" "}
+        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ══ CONTENT (hidden until unlocked) ════════════════════════════ -->
+  <div id="pf-vol-content" style="display:none">
+    <!-- Header -->
+    <section class="pf-section pf-section--forest">
+      <div class="pf-section-inner pf-vol-header">
+        <h1 class="pf-vol-title">Pond Fest {CURRENT_YEAR} — Volunteer Resources</h1>
+        <p>
+          Welcome, committee member. This page is your central hub for planning
+          documents, forms, roles, and contacts. Keep this URL private — share
+          it only with committee members and approved volunteers.
+        </p>
+        <button id="pf-lock-btn" class="pf-btn pf-btn--outline-light pf-lock-btn">
+          <i class="fa-solid fa-lock-open"></i> Lock this page
+        </button>
+      </div>
+    </section>
+
+    <!-- Key Google Docs -->
+    <section class="pf-section pf-section--warm">
+      <div class="pf-section-inner">
+        <h2>Key Documents</h2>
+        <div class="pf-vol-link-list">
+          {
+            googleDocs.map((doc) =>
+              doc.url ? (
+                <a
+                  href={doc.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="pf-vol-link-item"
+                >
+                  <i class="fa-brands fa-google pf-vol-link-icon" />
+                  <span>{doc.label}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square pf-vol-link-ext" />
+                </a>
+              ) : (
+                <div class="pf-vol-link-item pf-vol-link-item--placeholder">
+                  <i class="fa-brands fa-google pf-vol-link-icon" />
+                  <span>{doc.label}</span>
+                  <span class="pf-vol-todo">Link TBD</span>
+                </div>
+              )
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Forms -->
+    <section class="pf-section">
+      <div class="pf-section-inner">
+        <h2>Forms</h2>
+        <div class="pf-vol-link-list">
+          {
+            forms.map((form) =>
+              form.url ? (
+                <a
+                  href={form.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="pf-vol-link-item"
+                >
+                  <i class="fa-solid fa-wpforms pf-vol-link-icon" />
+                  <span>{form.label}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square pf-vol-link-ext" />
+                </a>
+              ) : (
+                <div class="pf-vol-link-item pf-vol-link-item--placeholder">
+                  <i class="fa-solid fa-wpforms pf-vol-link-icon" />
+                  <span>{form.label}</span>
+                  <span class="pf-vol-todo">Link TBD</span>
+                </div>
+              )
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Meeting Notes -->
+    <section class="pf-section pf-section--warm">
+      <div class="pf-section-inner">
+        <h2>Meeting Notes</h2>
+        <div class="pf-vol-link-list">
+          {
+            meetingNotes.map((note) =>
+              note.url ? (
+                <a
+                  href={note.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="pf-vol-link-item"
+                >
+                  <i class="fa-solid fa-file-lines pf-vol-link-icon" />
+                  <span>{note.label}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square pf-vol-link-ext" />
+                </a>
+              ) : (
+                <div class="pf-vol-link-item pf-vol-link-item--placeholder">
+                  <i class="fa-solid fa-file-lines pf-vol-link-icon" />
+                  <span>{note.label}</span>
+                  <span class="pf-vol-todo">Link TBD</span>
+                </div>
+              )
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Concept Maps -->
+    <section class="pf-section">
+      <div class="pf-section-inner">
+        <h2>Concept Maps &amp; Planning Diagrams</h2>
+        <div class="pf-vol-link-list">
+          {
+            conceptMaps.map((map) =>
+              map.url ? (
+                <a
+                  href={map.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="pf-vol-link-item"
+                >
+                  <i class="fa-solid fa-diagram-project pf-vol-link-icon" />
+                  <span>{map.label}</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square pf-vol-link-ext" />
+                </a>
+              ) : (
+                <div class="pf-vol-link-item pf-vol-link-item--placeholder">
+                  <i class="fa-solid fa-diagram-project pf-vol-link-icon" />
+                  <span>{map.label}</span>
+                  <span class="pf-vol-todo">Link TBD</span>
+                </div>
+              )
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Roles -->
+    <section class="pf-section pf-section--warm">
+      <div class="pf-section-inner">
+        <h2>Roles &amp; Jobs to Be Done</h2>
+        <div class="pf-roles-grid">
+          {
+            roles.map((r) => (
+              <div class="pf-role-card">
+                <strong class="pf-role-title">{r.role}</strong>
+                <p class="pf-role-desc">{r.description}</p>
+                {r.signupUrl ? (
+                  <a
+                    href={r.signupUrl}
+                    target="_blank"
+                    rel="noopener"
+                    class="pf-btn pf-btn--outline pf-role-btn"
+                  >
+                    Sign Up
+                  </a>
+                ) : (
+                  <span class="pf-vol-todo pf-role-todo">Sign-up link TBD</span>
+                )}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Contacts -->
+    <section class="pf-section">
+      <div class="pf-section-inner">
+        <h2>Key Contacts</h2>
+        <div class="pf-contacts-grid">
+          {
+            keyContacts.map((c) => (
+              <div class="pf-contact-card">
+                <div class="pf-contact-avatar">
+                  <i class="fa-solid fa-circle-user" />
+                </div>
+                <div class="pf-contact-info">
+                  <strong>{c.name}</strong>
+                  <span class="pf-contact-role">{c.role}</span>
+                  {c.contact && (
+                    <a href={`mailto:${c.contact}`} class="pf-contact-email">
+                      {c.contact}
+                    </a>
+                  )}
+                  {c.notes && <p class="pf-contact-notes">{c.notes}</p>}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* ── Gate ── */
+  .pf-vol-gate {
+    min-height: calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    background: var(--pf-warm-section);
+  }
+  .pf-vol-gate-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-gray-200);
+  }
+  .pf-gate-icon {
+    font-size: 2.5rem;
+    color: var(--pf-forest);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .pf-vol-gate-card h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary-950);
+  }
+  .pf-vol-gate-card > p {
+    font-size: 0.92rem;
+    color: var(--color-gray-700);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+  .pf-gate-form {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .pf-gate-input {
+    flex: 1;
+    min-width: 160px;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--color-gray-950);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .pf-gate-input:focus {
+    border-color: var(--pf-forest-light);
+    box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.15);
+  }
+  .pf-gate-submit {
+    white-space: nowrap;
+  }
+  .pf-gate-error {
+    color: #c0392b;
+    font-size: 0.88rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
+  .pf-gate-hint {
+    font-size: 0.82rem;
+    color: var(--color-gray-500);
+    margin-top: 1.25rem;
+    margin-bottom: 0;
+  }
+
+  /* ── Vol content header ── */
+  .pf-vol-header {
+    text-align: center;
+  }
+  .pf-vol-header > p {
+    max-width: 600px;
+    margin: 0 auto 1.25rem auto;
+    opacity: 0.85;
+    font-size: 0.95rem;
+  }
+  .pf-vol-title {
+    font-family: var(--font-header);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    color: var(--pf-amber-light);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+  .pf-lock-btn {
+    font-size: 0.85rem;
+  }
+
+  /* ── Link lists (docs, forms, notes, maps) ── */
+  .pf-vol-link-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .pf-vol-link-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    background: #fff;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--color-gray-950);
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  a.pf-vol-link-item:hover {
+    border-color: var(--pf-forest-light);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    color: var(--color-gray-950);
+  }
+  .pf-vol-link-item--placeholder {
+    opacity: 0.65;
+  }
+  .pf-vol-link-icon {
+    color: var(--pf-forest);
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 1.2rem;
+    text-align: center;
+  }
+  .pf-vol-link-item span:nth-child(2) {
+    flex: 1;
+  }
+  .pf-vol-link-ext {
+    font-size: 0.75rem;
+    color: var(--color-gray-400);
+    flex-shrink: 0;
+  }
+  .pf-vol-todo {
+    font-size: 0.78rem;
+    color: var(--pf-amber);
+    font-weight: 600;
+    flex-shrink: 0;
+    background: #fff0e0;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  /* ── Roles grid ── */
+  .pf-roles-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  .pf-role-card {
+    background: #fff;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+  }
+  .pf-role-title {
+    display: block;
+    font-size: 1rem;
+    color: var(--pf-forest-dark);
+    margin-bottom: 0.25rem;
+  }
+  .pf-role-desc {
+    font-size: 0.88rem;
+    color: var(--color-gray-700);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+  .pf-role-btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+  }
+  .pf-role-todo {
+    display: inline-block;
+    margin-top: 0.1rem;
+  }
+
+  /* ── Contacts grid ── */
+  .pf-contacts-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  .pf-contact-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--pf-warm-section);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-gray-200);
+  }
+  .pf-contact-avatar {
+    font-size: 2rem;
+    color: var(--color-gray-300);
+    flex-shrink: 0;
+  }
+  .pf-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .pf-contact-info strong {
+    font-size: 1rem;
+    color: var(--color-primary-950);
+  }
+  .pf-contact-role {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-gray-500);
+    font-weight: 600;
+  }
+  .pf-contact-email {
+    font-size: 0.88rem;
+    color: var(--pf-forest);
+    text-decoration: none;
+  }
+  .pf-contact-email:hover {
+    text-decoration: underline;
+  }
+  .pf-contact-notes {
+    font-size: 0.85rem;
+    color: var(--color-gray-600);
+    margin: 0.1rem 0 0 0;
+    line-height: 1.3;
+  }
+
+  /* ── Responsive ── */
+  @media (min-width: 600px) {
+    .pf-roles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .pf-contacts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .pf-roles-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script define:vars={{ PASSWORD_HASH }}>
+  const SESSION_KEY = "pf_vol_unlocked";
+
+  async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  function showContent() {
+    const gate = document.getElementById("pf-vol-gate");
+    const content = document.getElementById("pf-vol-content");
+    if (gate) gate.style.display = "none";
+    if (content) content.style.display = "";
+  }
+
+  function lockPage() {
+    sessionStorage.removeItem(SESSION_KEY);
+    const gate = document.getElementById("pf-vol-gate");
+    const content = document.getElementById("pf-vol-content");
+    if (gate) gate.style.display = "";
+    if (content) content.style.display = "none";
+    const input = document.getElementById("pf-gate-input");
+    if (input) input.value = "";
+  }
+
+  function init() {
+    // Check session storage for previously validated session
+    if (sessionStorage.getItem(SESSION_KEY) === "1") {
+      showContent();
+      return;
+    }
+
+    const form = document.getElementById("pf-gate-form");
+    const errorEl = document.getElementById("pf-gate-error");
+    const lockBtn = document.getElementById("pf-lock-btn");
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = document.getElementById("pf-gate-input");
+      const value = input?.value ?? "";
+      const hash = await hashPassword(value);
+      if (hash === PASSWORD_HASH) {
+        sessionStorage.setItem(SESSION_KEY, "1");
+        if (errorEl) errorEl.style.display = "none";
+        showContent();
+      } else {
+        if (errorEl) errorEl.style.display = "";
+        if (input) input.value = "";
+        input?.focus();
+      }
+    });
+
+    lockBtn?.addEventListener("click", lockPage);
+  }
+
+  init();
+  document.addEventListener("astro:after-swap", init);
+</script>
