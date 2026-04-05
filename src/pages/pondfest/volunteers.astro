@@ -23,7 +23,10 @@ const googleDocs = [
 
 const forms = [
   { label: "Volunteer Sign-Up", url: "" },
-  { label: "Performer Interest Form", url: "https://forms.gle/dMEmKxYs7ovnyG658" },
+  {
+    label: "Performer Interest Form",
+    url: "https://forms.gle/dMEmKxYs7ovnyG658",
+  },
   { label: "Vendor Application", url: "" },
   { label: "Sponsor Interest Form", url: "" },
   { label: "Donation / Raffle Item Submission", url: "" },
@@ -44,27 +47,32 @@ const conceptMaps = [
 const roles = [
   {
     role: "Co-Chair",
-    description: "Overall event leadership, final decision authority, external communications",
+    description:
+      "Overall event leadership, final decision authority, external communications",
     signupUrl: "",
   },
   {
     role: "Vendor Coordinator",
-    description: "Recruit and manage vendors, assign spots, day-of vendor check-in",
+    description:
+      "Recruit and manage vendors, assign spots, day-of vendor check-in",
     signupUrl: "",
   },
   {
     role: "Sponsor Coordinator",
-    description: "Outreach to sponsors, manage packages, ensure sponsor recognition at event",
+    description:
+      "Outreach to sponsors, manage packages, ensure sponsor recognition at event",
     signupUrl: "",
   },
   {
     role: "Volunteer Coordinator",
-    description: "Recruit and schedule volunteers, manage sign-up system, day-of volunteer assignments",
+    description:
+      "Recruit and schedule volunteers, manage sign-up system, day-of volunteer assignments",
     signupUrl: "",
   },
   {
     role: "Music / Entertainment Coordinator",
-    description: "Book performers, manage stage schedule, coordinate with sound",
+    description:
+      "Book performers, manage stage schedule, coordinate with sound",
     signupUrl: "",
   },
   {
@@ -89,7 +97,8 @@ const roles = [
   },
   {
     role: "Website / Tech",
-    description: "Maintain the event website, QR codes, day-of digital resources",
+    description:
+      "Maintain the event website, QR codes, day-of digital resources",
     signupUrl: "",
   },
 ];
@@ -98,26 +107,27 @@ const keyContacts = [
   {
     name: "Bryan Mey",
     role: "President / Co-Chair",
-    contact: "pondfest@friendsoflumspond.org",
-    notes: "Technology, sponsorship, general leadership",
+    contact: "president@friendsoflumspond.org",
+    notes: "Technology, brand design, general leadership",
   },
   {
     name: "Jessie Mey",
     role: "Co-Chair",
-    contact: "",
-    notes: "Experience design, community outreach, volunteers",
+    contact: "jessiemey@friendsoflumspond.org",
+    notes:
+      "Experience design, physical logistics, community outreach, volunteers",
   },
   {
     name: "Jenny Grady",
     role: "Vendor Coordinator",
-    contact: "",
+    contact: "jennygrady@friendsoflumspond.org",
     notes: "All vendor and crafter questions",
   },
   {
-    name: "Bob Conley Sr",
-    role: "Logistics",
-    contact: "",
-    notes: "Setup, teardown, physical logistics",
+    name: "Patty Jacob",
+    role: "Secretary / Drinks Coordinator",
+    contact: "pattyjacob@friendsoflumspond.org",
+    notes: "All drinks and distribution questions",
   },
 ];
 ---
@@ -163,13 +173,18 @@ const keyContacts = [
     <!-- Header -->
     <section class="pf-section pf-section--purple">
       <div class="pf-section-inner pf-vol-header">
-        <h1 class="pf-vol-title">Pond Fest {CURRENT_YEAR} — Volunteer Resources</h1>
+        <h1 class="pf-vol-title">
+          Pond Fest {CURRENT_YEAR} — Volunteer Resources
+        </h1>
         <p>
           Welcome, committee member. This page is your central hub for planning
           documents, forms, roles, and contacts. Keep this URL private — share
           it only with committee members and approved volunteers.
         </p>
-        <button id="pf-lock-btn" class="pf-btn pf-btn--outline-light pf-lock-btn">
+        <button
+          id="pf-lock-btn"
+          class="pf-btn pf-btn--outline-light pf-lock-btn"
+        >
           <i class="fa-solid fa-lock-open"></i> Lock this page
         </button>
       </div>
@@ -199,7 +214,7 @@ const keyContacts = [
                   <span>{doc.label}</span>
                   <span class="pf-vol-todo">Link TBD</span>
                 </div>
-              )
+              ),
             )
           }
         </div>
@@ -230,7 +245,7 @@ const keyContacts = [
                   <span>{form.label}</span>
                   <span class="pf-vol-todo">Link TBD</span>
                 </div>
-              )
+              ),
             )
           }
         </div>
@@ -261,7 +276,7 @@ const keyContacts = [
                   <span>{note.label}</span>
                   <span class="pf-vol-todo">Link TBD</span>
                 </div>
-              )
+              ),
             )
           }
         </div>
@@ -292,7 +307,7 @@ const keyContacts = [
                   <span>{map.label}</span>
                   <span class="pf-vol-todo">Link TBD</span>
                 </div>
-              )
+              ),
             )
           }
         </div>
@@ -411,7 +426,9 @@ const keyContacts = [
     color: var(--color-gray-950);
     background: #fff;
     outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
   }
   .pf-gate-input:focus {
     border-color: var(--pf-teal);
@@ -472,7 +489,9 @@ const keyContacts = [
     color: rgba(255, 255, 255, 0.85);
     font-size: 0.92rem;
     font-weight: 500;
-    transition: border-color 0.15s, background 0.15s;
+    transition:
+      border-color 0.15s,
+      background 0.15s;
   }
   a.pf-vol-link-item:hover {
     border-left-color: var(--pf-teal);
