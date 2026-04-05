@@ -32,7 +32,7 @@ function formatCurrency(n: number) {
   </section>
 
   <!-- ══ TOTALS BANNER ════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--forest">
+  <section class="pf-section pf-section--purple">
     <div class="pf-section-inner pf-totals">
       <div class="pf-total-stat">
         <span class="pf-total-num">{years.length}</span>
@@ -172,7 +172,7 @@ function formatCurrency(n: number) {
   .pf-archive-title {
     font-family: var(--font-header);
     font-size: clamp(2rem, 6vw, 3.5rem);
-    color: var(--pf-amber-light);
+    color: var(--pf-teal);
     margin-bottom: 0.5rem;
     letter-spacing: 0.03em;
   }
@@ -193,16 +193,18 @@ function formatCurrency(n: number) {
   }
   .pf-total-num {
     font-family: var(--font-header);
-    font-size: clamp(2rem, 6vw, 3rem);
-    color: var(--pf-amber-light);
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    color: var(--pf-teal-light);
     line-height: 1;
+    padding-bottom: 0.15em;
+    border-bottom: 3px solid rgba(77, 217, 203, 0.4);
   }
   .pf-total-label {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     opacity: 0.8;
-    margin-top: 0.25rem;
+    margin-top: 0.4rem;
   }
   .pf-total-divider {
     width: 1px;
@@ -213,32 +215,28 @@ function formatCurrency(n: number) {
   /* ── Year cards ── */
   .pf-year-card {
     margin-bottom: 2.5rem;
-    border: 1px solid var(--color-gray-200);
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
   }
   .pf-year-card-header {
     display: flex;
     align-items: flex-start;
     gap: 1.25rem;
     padding: 1.5rem;
-    background: var(--pf-warm-section);
-    border-bottom: 1px solid var(--color-gray-200);
+    background: linear-gradient(135deg, rgba(61, 47, 122, 0.06) 0%, #fff8ee 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
   .pf-year-badge {
     font-family: var(--font-header);
-    font-size: 2.5rem;
-    color: var(--pf-forest);
+    font-size: 3.5rem;
+    color: var(--pf-teal);
     line-height: 1;
     flex-shrink: 0;
     min-width: 5rem;
     text-align: center;
-    background: #fff;
-    border: 2px solid var(--pf-forest-light);
-    border-radius: 8px;
-    padding: 0.4rem 0.6rem;
+    padding: 0.2rem 0.4rem;
   }
   .pf-year-meta {
     flex: 1;
@@ -246,7 +244,7 @@ function formatCurrency(n: number) {
   .pf-year-title {
     font-size: 1.4rem;
     margin-bottom: 0.2rem;
-    color: var(--color-primary-950);
+    color: var(--pf-purple-dark);
   }
   .pf-year-date {
     font-size: 0.9rem;
@@ -266,16 +264,17 @@ function formatCurrency(n: number) {
     display: inline-flex;
     align-items: center;
     gap: 0.3em;
-    padding: 0.25rem 0.6rem;
+    padding: 0.3rem 0.75rem;
     border-radius: 999px;
     font-size: 0.82rem;
     font-weight: 600;
-    background: var(--color-primary-100);
-    color: var(--color-primary-900);
+    background: rgba(61, 47, 122, 0.08);
+    color: var(--pf-purple);
   }
   .pf-stat-chip--green {
-    background: #d8f3dc;
-    color: var(--pf-forest-dark);
+    background: var(--pf-teal);
+    color: #fff;
+    box-shadow: 0 1px 4px rgba(42, 196, 179, 0.3);
   }
   .pf-stat-chip--subtle {
     background: var(--color-gray-100);
@@ -289,31 +288,47 @@ function formatCurrency(n: number) {
     grid-template-columns: 1fr;
   }
   .pf-year-col h3 {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-gray-500);
+    letter-spacing: 0.12em;
+    color: var(--pf-teal);
+    font-weight: 700;
     margin-bottom: 0.75rem;
-    border-bottom: 1px solid var(--color-gray-200);
     padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(42, 196, 179, 0.2);
   }
   .pf-highlights {
     margin: 0;
-    padding-left: 1.25rem;
+    padding: 0;
+    list-style: none;
     font-size: 0.9rem;
     color: var(--color-gray-800);
     line-height: 1.6;
   }
   .pf-highlights li {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .pf-highlights li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pf-teal);
   }
   .pf-archive-goal {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.9rem;
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--pf-teal);
   }
   .pf-archive-goal strong {
     display: block;
     font-size: 0.95rem;
-    color: var(--pf-forest-dark);
+    color: var(--pf-purple-dark);
     margin-bottom: 0.15rem;
   }
   .pf-archive-goal p {
