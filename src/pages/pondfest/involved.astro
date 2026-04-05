@@ -1,0 +1,292 @@
+---
+import Layout from "../../layouts/PondFestLayout.astro";
+import {
+  CURRENT_YEAR,
+  VOLUNTEER_URL,
+  PERFORMER_URL,
+  VENDOR_URL,
+  SPONSOR_URL,
+  PONDFEST_EMAIL,
+} from "../../data/pondfest/config";
+
+const paths = [
+  {
+    icon: "fa-hand-holding-heart",
+    title: "Volunteer",
+    heading: "Help Make Pond Fest Happen",
+    description:
+      "Pond Fest runs on the energy and dedication of volunteers. Whether you can help with setup and teardown, run the kids zone, staff the information tables, assist with vendors, or help day-of in any number of ways — we need you. No experience necessary, just enthusiasm for the park and community.",
+    details: [
+      "Flexible shifts — half day or full day",
+      "Volunteer perks: free admission and a thank-you gift",
+      "Great opportunity for students needing service hours",
+      "Join a fun, welcoming group of park supporters",
+    ],
+    url: VOLUNTEER_URL,
+    cta: "Sign Up to Volunteer",
+    color: "green",
+  },
+  {
+    icon: "fa-guitar",
+    title: "Perform",
+    heading: "Share Your Music with the Community",
+    description:
+      "Pond Fest features live music all day across multiple outdoor stages. We welcome local and regional artists of all genres. Whether you are a solo act, duo, or full band, we would love to hear from you. Fill out our performer interest form and tell us about yourself.",
+    details: [
+      "Multiple outdoor stages (Wingspan, Monarch, Nest Box)",
+      "Open Mic slots available throughout the day",
+      "Headlining and supporting act positions",
+      "Exposure to 1,000+ community members",
+    ],
+    url: PERFORMER_URL,
+    cta: "Apply to Perform",
+    color: "blue",
+  },
+  {
+    icon: "fa-store",
+    title: "Vend",
+    heading: "Bring Your Business to Pond Fest",
+    description:
+      "Join 40+ local artisans, crafters, and community nonprofits at Pond Fest. It is a fantastic opportunity to connect with hundreds of community members who appreciate supporting local. We welcome food vendors, craft makers, artisans, service businesses, and nonprofits.",
+    details: [
+      "Outdoor vendor spaces in a scenic park setting",
+      "Audience of 1,000+ engaged community members",
+      "Table and tent space available",
+      "Past vendors include crafters, local businesses, and nonprofits",
+    ],
+    url: VENDOR_URL,
+    cta: "Apply to Vend",
+    color: "amber",
+  },
+  {
+    icon: "fa-star",
+    title: "Sponsor",
+    heading: "Support the Park and Get Visibility",
+    description:
+      "Pond Fest sponsorships directly fund Lums Pond State Park programs and facilities. In return, your business or organization gets prominent recognition at the event and across our marketing materials. We offer tiered sponsorship packages from Family-level to Platinum.",
+    details: [
+      "Recognition at the event and on event signage",
+      "Listing on this website under your sponsor tier",
+      "Mention in social media and email communications",
+      "Good-will with 1,000+ community members who attend",
+    ],
+    url: SPONSOR_URL,
+    cta: "Become a Sponsor",
+    color: "forest",
+  },
+];
+---
+
+<Layout
+  title={`Get Involved — Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
+  description={`Volunteer, perform, vend, or sponsor Pond Fest ${CURRENT_YEAR} at Lums Pond State Park.`}
+>
+  <!-- ══ HEADER ═════════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-involved-header">
+      <h1 class="pf-involved-title">Get Involved</h1>
+      <p>
+        Pond Fest is a community effort. There are four ways to be part of it
+        — as a volunteer, performer, vendor, or sponsor. Choose your path
+        below.
+      </p>
+      <a href="/pondfest" class="pf-btn pf-btn--outline-light">
+        <i class="fa-solid fa-arrow-left"></i> Back to Pond Fest
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ PATHWAY CARDS ════════════════════════════════════════════════ -->
+  <section class="pf-section">
+    <div class="pf-section-inner pf-involved-grid-section">
+      {
+        paths.map((path) => (
+          <article class={`pf-path-card pf-path-card--${path.color}`}>
+            <div class="pf-path-icon-wrap">
+              <i class={`fa-solid ${path.icon} pf-path-icon`} />
+            </div>
+            <div class="pf-path-body">
+              <div class="pf-path-tag">{path.title}</div>
+              <h2>{path.heading}</h2>
+              <p>{path.description}</p>
+              <ul class="pf-path-details">
+                {path.details.map((d) => (
+                  <li>
+                    <i class="fa-solid fa-check pf-check-icon" /> {d}
+                  </li>
+                ))}
+              </ul>
+              <div class="pf-path-cta">
+                {path.url ? (
+                  <a
+                    href={path.url}
+                    class="pf-btn pf-btn--primary"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {path.cta}
+                  </a>
+                ) : (
+                  <div class="pf-coming-soon-cta">
+                    <span class="pf-btn pf-btn--disabled">
+                      {path.cta} — Registration Opening Soon
+                    </span>
+                    <p class="pf-cta-fallback">
+                      In the meantime, email{" "}
+                      <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ═══════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--warm">
+    <div class="pf-section-inner pf-involved-contact">
+      <h2>Questions?</h2>
+      <p>
+        Reach out to the Pond Fest committee at
+        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a> — we are
+        happy to help with anything not covered by the forms above.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pf-involved-header {
+    text-align: center;
+  }
+  .pf-involved-header p {
+    max-width: 580px;
+    margin: 0 auto 1.5rem auto;
+    opacity: 0.85;
+  }
+  .pf-involved-title {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--pf-amber-light);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  .pf-involved-grid-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* ── Pathway cards ── */
+  .pf-path-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 10px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  .pf-path-icon-wrap {
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+  .pf-path-card--green .pf-path-icon-wrap {
+    background: #d8f3dc;
+    color: var(--pf-forest-dark);
+  }
+  .pf-path-card--blue .pf-path-icon-wrap {
+    background: var(--color-primary-100);
+    color: var(--color-primary-800);
+  }
+  .pf-path-card--amber .pf-path-icon-wrap {
+    background: #fff0e0;
+    color: var(--pf-amber);
+  }
+  .pf-path-card--forest .pf-path-icon-wrap {
+    background: #d8f3dc;
+    color: var(--pf-forest-dark);
+  }
+
+  .pf-path-body {
+    flex: 1;
+  }
+  .pf-path-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--color-gray-500);
+    margin-bottom: 0.25rem;
+  }
+  .pf-path-body h2 {
+    font-size: 1.3rem;
+    color: var(--color-primary-950);
+    margin-bottom: 0.5rem;
+  }
+  .pf-path-body > p {
+    font-size: 0.95rem;
+    color: var(--color-gray-700);
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+  .pf-path-details {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .pf-path-details li {
+    font-size: 0.88rem;
+    color: var(--color-gray-700);
+    display: flex;
+    align-items: baseline;
+    gap: 0.4em;
+  }
+  .pf-check-icon {
+    color: var(--pf-forest-light);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .pf-coming-soon-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .pf-cta-fallback {
+    font-size: 0.85rem;
+    color: var(--color-gray-600);
+    margin: 0;
+  }
+
+  /* ── Contact ── */
+  .pf-involved-contact {
+    text-align: center;
+  }
+  .pf-involved-contact p {
+    font-size: 1rem;
+    color: var(--color-gray-700);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    .pf-path-card {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
