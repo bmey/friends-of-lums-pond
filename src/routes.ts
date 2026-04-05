@@ -26,6 +26,11 @@ export const ROUTES: Route[] = [
     path: "about",
   },
   {
+    icon: "fa-campground",
+    name: "Pond Fest",
+    path: "pondfest",
+  },
+  {
     icon: "fa-book",
     name: "Resources",
     path: "resources",

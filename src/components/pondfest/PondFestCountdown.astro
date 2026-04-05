@@ -1,0 +1,178 @@
+---
+interface Props {
+  startDate: string; // ISO datetime string, e.g. "2026-10-10T10:00:00"
+  year: number;
+}
+
+const { startDate, year } = Astro.props;
+---
+
+<div class="pf-countdown-wrapper" data-start-date={startDate} data-year={year}>
+  <!-- Pre-event: countdown -->
+  <div id="pf-countdown-display" class="pf-countdown">
+    <div class="pf-countdown-label">starts in</div>
+    <div class="pf-countdown-units">
+      <div class="pf-time-unit">
+        <span class="pf-time-num" id="pf-days">--</span>
+        <span class="pf-time-label">days</span>
+      </div>
+      <div class="pf-time-sep">:</div>
+      <div class="pf-time-unit">
+        <span class="pf-time-num" id="pf-hours">--</span>
+        <span class="pf-time-label">hours</span>
+      </div>
+      <div class="pf-time-sep">:</div>
+      <div class="pf-time-unit">
+        <span class="pf-time-num" id="pf-minutes">--</span>
+        <span class="pf-time-label">min</span>
+      </div>
+      <div class="pf-time-sep">:</div>
+      <div class="pf-time-unit">
+        <span class="pf-time-num" id="pf-seconds">--</span>
+        <span class="pf-time-label">sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day-of message (hidden until JS activates it) -->
+  <div id="pf-today-message" class="pf-today-message" style="display:none">
+    <p>Today is Pond Fest! See you at the park.</p>
+  </div>
+
+  <!-- Post-event message (hidden until JS activates it) -->
+  <div id="pf-over-message" class="pf-over-message" style="display:none">
+    <p>
+      Pond Fest {year} has wrapped — thank you for being part of it!
+      <br />
+      <a href="/pondfest/archive" class="pf-archive-link">See event highlights</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .pf-countdown-wrapper {
+    text-align: center;
+    padding: 0.5rem 0;
+  }
+  .pf-countdown-label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .pf-countdown-units {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  .pf-time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 4rem;
+  }
+  .pf-time-num {
+    font-family: var(--font-header);
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 1;
+    font-weight: 700;
+  }
+  .pf-time-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+    margin-top: 0.1rem;
+  }
+  .pf-time-sep {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    line-height: 1;
+    opacity: 0.5;
+    padding-bottom: 1.2rem;
+  }
+  .pf-today-message,
+  .pf-over-message {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
+  }
+  .pf-archive-link {
+    color: var(--pf-amber-light);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .pf-time-unit {
+      min-width: 3rem;
+    }
+    .pf-time-sep {
+      padding-bottom: 1rem;
+    }
+  }
+</style>
+
+<script>
+  function initCountdown() {
+    const wrapper = document.querySelector(
+      ".pf-countdown-wrapper",
+    ) as HTMLElement | null;
+    if (!wrapper) return;
+
+    const startDateStr = wrapper.dataset.startDate;
+    if (!startDateStr) return;
+
+    const targetMs = new Date(startDateStr).getTime();
+    const oneDayMs = 24 * 60 * 60 * 1000;
+
+    const countdownEl = document.getElementById("pf-countdown-display");
+    const todayEl = document.getElementById("pf-today-message");
+    const overEl = document.getElementById("pf-over-message");
+
+    const daysEl = document.getElementById("pf-days");
+    const hoursEl = document.getElementById("pf-hours");
+    const minutesEl = document.getElementById("pf-minutes");
+    const secondsEl = document.getElementById("pf-seconds");
+
+    function pad(n: number) {
+      return n < 10 ? "0" + n : String(n);
+    }
+
+    function tick() {
+      const now = Date.now();
+      const diff = targetMs - now;
+
+      if (diff > 0) {
+        // Pre-event: show countdown
+        const days = Math.floor(diff / oneDayMs);
+        const hours = Math.floor((diff % oneDayMs) / (60 * 60 * 1000));
+        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((diff % (60 * 1000)) / 1000);
+
+        if (daysEl) daysEl.textContent = String(days);
+        if (hoursEl) hoursEl.textContent = pad(hours);
+        if (minutesEl) minutesEl.textContent = pad(minutes);
+        if (secondsEl) secondsEl.textContent = pad(seconds);
+      } else if (diff > -oneDayMs) {
+        // Event is today
+        if (countdownEl) countdownEl.style.display = "none";
+        if (todayEl) todayEl.style.display = "";
+        clearInterval(interval);
+      } else {
+        // Event is over
+        if (countdownEl) countdownEl.style.display = "none";
+        if (overEl) overEl.style.display = "";
+        clearInterval(interval);
+      }
+    }
+
+    tick();
+    const interval = setInterval(tick, 1000);
+  }
+
+  initCountdown();
+  document.addEventListener("astro:after-swap", initCountdown);
+</script>

@@ -1,0 +1,139 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_DESCRIPTION } from "../consts";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description || SITE_DESCRIPTION} />
+    <style>
+      :root {
+        --pf-forest: #2d6a4f;
+        --pf-forest-light: #40916c;
+        --pf-forest-dark: #1b4332;
+        --pf-amber: #d4640a;
+        --pf-amber-light: #f4a261;
+        --pf-warm-bg: #fffbf5;
+        --pf-warm-section: #fff8ee;
+      }
+      body {
+        background-color: var(--pf-warm-bg);
+      }
+      main {
+        width: 100%;
+        padding: 0;
+      }
+
+      /* ── Shared section styles used across Pond Fest pages ── */
+      .pf-section {
+        padding: 3rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .pf-section--warm {
+        background-color: var(--pf-warm-section);
+      }
+      .pf-section--forest {
+        background-color: var(--pf-forest);
+        color: #fff;
+      }
+      .pf-section--forest h2,
+      .pf-section--forest h3,
+      .pf-section--forest p {
+        color: #fff;
+      }
+      .pf-section--dark {
+        background-color: var(--color-primary-950);
+        color: #fff;
+      }
+      .pf-section--dark h2,
+      .pf-section--dark h3,
+      .pf-section--dark p {
+        color: #fff;
+      }
+      .pf-section-inner {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .pf-section h2 {
+        font-family: var(--font-header);
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        text-align: center;
+        margin-bottom: 2rem;
+        letter-spacing: 0.03em;
+      }
+      .pf-section--forest h2 {
+        color: var(--pf-amber-light);
+      }
+      .pf-section--dark h2 {
+        color: var(--pf-amber-light);
+      }
+
+      /* ── Button styles ── */
+      .pf-btn {
+        display: inline-block;
+        padding: 0.65rem 1.4rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+        white-space: nowrap;
+      }
+      .pf-btn--primary {
+        background-color: var(--pf-amber);
+        color: #fff;
+        border-color: var(--pf-amber);
+      }
+      .pf-btn--primary:hover {
+        background-color: var(--pf-amber-light);
+        border-color: var(--pf-amber-light);
+        color: #fff;
+      }
+      .pf-btn--outline {
+        background-color: transparent;
+        color: var(--color-primary-800);
+        border-color: var(--color-primary-800);
+      }
+      .pf-btn--outline:hover {
+        background-color: var(--color-primary-800);
+        color: #fff;
+      }
+      .pf-btn--outline-light {
+        background-color: transparent;
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.7);
+      }
+      .pf-btn--outline-light:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: #fff;
+      }
+      .pf-btn--disabled {
+        background-color: var(--color-gray-200);
+        color: var(--color-gray-500);
+        border-color: var(--color-gray-200);
+        cursor: default;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
