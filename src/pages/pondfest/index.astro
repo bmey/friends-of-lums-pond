@@ -820,7 +820,7 @@ const tierLabels: Record<string, string> = {
 <style>
   /* ── Hero ── */
   .pf-hero {
-    min-height: 85vh;
+    min-height: max(85vh, 780px);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -899,6 +899,11 @@ const tierLabels: Record<string, string> = {
     .pf-hero-ctas .pf-btn {
       width: 100%;
       max-width: 300px;
+    }
+  }
+  @media (min-width: 768px) {
+    .pf-hero-title {
+      white-space: nowrap;
     }
   }
 
