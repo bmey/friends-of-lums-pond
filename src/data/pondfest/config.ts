@@ -98,14 +98,14 @@ export const FUNDING_GOALS: FundingGoal[] = [
     name: "Youth Scholarships",
     description:
       "Subsidize environmental education field trips for Title 1 schools at Lums Pond. In 2024, 524 students attended these outdoor experiences.",
-    imageUrl: "", // e.g. "/pondfest/photos/students-field-trip.jpg"
+    imageUrl: "/pondfest/field_trip.jpeg",
     donorboxUrl: "",
   },
   {
     name: "Accessible Kayak Launch",
     description:
       "Complete funding for a BoardSafe Accessible Kayak Launch, opening Lums Pond's waters to visitors of all abilities.",
-    imageUrl: "", // e.g. "/pondfest/photos/kayak-launch.jpg"
+    imageUrl: "/pondfest/kayak-launch.jpg",
     donorboxUrl: "",
   },
 ];
