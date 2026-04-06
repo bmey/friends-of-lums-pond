@@ -34,12 +34,21 @@ export const VENDOR_MAP_IMAGE_URL = "";
 // Recommended: wide panoramic crowd/stage shot (landscape, high-res)
 export const PHOTO_BAND_1_URL = "/pondfest/wide-1.jpg";
 
-// Gallery grid on the index page (4 photos shown, landscape 4:3 recommended)
+// Gallery grid on the index page — drop new files in public/pondfest/gallery/ and add paths here
 export const GALLERY_PHOTOS: string[] = [
-  // e.g. "/pondfest/photos/crowd-1.jpg",
-  // e.g. "/pondfest/photos/music-1.jpg",
-  // e.g. "/pondfest/photos/kids-1.jpg",
-  // e.g. "/pondfest/photos/vendors-1.jpg",
+  "/pondfest/gallery/gallery1.jpg",
+  "/pondfest/gallery/gallery2.jpg",
+  "/pondfest/gallery/gallery3.jpg",
+  "/pondfest/gallery/gallery4.jpg",
+  "/pondfest/gallery/gallery5.jpg",
+  "/pondfest/gallery/gallery6.jpg",
+  "/pondfest/gallery/gallery7.jpg",
+  "/pondfest/gallery/gallery8.jpg",
+  "/pondfest/gallery/gallery9.jpg",
+  "/pondfest/gallery/gallery10.jpg",
+  "/pondfest/gallery/gallery11.jpg",
+  "/pondfest/gallery/gallery12.jpg",
+  "/pondfest/gallery/gallery13.jpg",
 ];
 
 // Background photo for the History Teaser section

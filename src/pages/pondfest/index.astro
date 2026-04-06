@@ -761,24 +761,38 @@ const tierLabels: Record<string, string> = {
     </div>
   </section>
 
-  <!-- ══ GALLERY ════════════════════════════════════════════════════ -->
-  <div class="pf-gallery-grid" aria-label="Pond Fest photo gallery">
+  <!-- ══ FEST MEMORIES ════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark pf-memories-section">
+    <div class="pf-section-inner pf-memories-header">
+      <span class="pf-eyebrow">From Past Events</span>
+      <h2>Fest Memories</h2>
+    </div>
     {
-      GALLERY_PHOTOS.length > 0
-        ? GALLERY_PHOTOS.slice(0, 4).map((url) => (
+      GALLERY_PHOTOS.length > 0 ? (
+        <div class="pf-gallery-masonry" aria-label="Pond Fest photo gallery">
+          {GALLERY_PHOTOS.map((url, i) => (
             <div class="pf-gallery-item">
-              <img src={url} alt="Pond Fest event" loading="lazy" />
+              <img
+                src={url}
+                alt={`Pond Fest memory ${i + 1}`}
+                loading="lazy"
+              />
             </div>
-          ))
-        : [0, 1, 2, 3].map((i) => (
+          ))}
+        </div>
+      ) : (
+        <div class="pf-gallery-masonry pf-gallery-masonry--placeholder" aria-label="Pond Fest photo gallery">
+          {[...Array(8)].map((_, i) => (
             <div class="pf-gallery-item">
               <div class="pf-img-placeholder">
                 <i class="fa-solid fa-camera" />
               </div>
             </div>
-          ))
+          ))}
+        </div>
+      )
     }
-  </div>
+  </section>
 
   <!-- ══ HISTORY TEASER ═════════════════════════════════════════════ -->
   <section
@@ -1489,7 +1503,7 @@ const tierLabels: Record<string, string> = {
       color: #000;
     }
     .pf-photo-band,
-    .pf-gallery-grid {
+    .pf-gallery-masonry {
       display: none;
     }
     .pf-hero-ctas,

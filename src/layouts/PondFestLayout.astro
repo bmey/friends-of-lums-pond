@@ -223,31 +223,51 @@ const { title, description } = Astro.props;
         .pf-photo-band { background-attachment: fixed; }
       }
 
-      /* ── Gallery grid ── */
-      .pf-gallery-grid {
-        display: grid;
-        gap: 4px;
-        grid-template-columns: repeat(2, 1fr);
+      /* ── Fest Memories masonry gallery ── */
+      .pf-memories-section {
+        padding-bottom: 0;
+      }
+      .pf-memories-header {
+        text-align: center;
+        padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+      }
+      .pf-gallery-masonry {
+        columns: 2;
+        column-gap: 3px;
         width: 100%;
+        line-height: 0;
+      }
+      @media (min-width: 540px) {
+        .pf-gallery-masonry { columns: 3; }
+      }
+      @media (min-width: 900px) {
+        .pf-gallery-masonry { columns: 4; }
+      }
+      @media (min-width: 1300px) {
+        .pf-gallery-masonry { columns: 5; }
       }
       .pf-gallery-item {
-        aspect-ratio: 4 / 3;
+        break-inside: avoid;
+        margin-bottom: 3px;
         overflow: hidden;
         position: relative;
+        display: block;
       }
       .pf-gallery-item img {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
         display: block;
         transition: transform 0.4s ease;
       }
       .pf-gallery-item:hover img {
         transform: scale(1.04);
       }
+      .pf-gallery-masonry--placeholder .pf-gallery-item {
+        aspect-ratio: 4 / 3;
+      }
       .pf-gallery-item .pf-img-placeholder {
         width: 100%;
-        height: 100%;
+        aspect-ratio: 4 / 3;
         background: linear-gradient(
           135deg,
           var(--pf-purple-dark),
@@ -259,9 +279,6 @@ const { title, description } = Astro.props;
         justify-content: center;
         color: rgba(255, 255, 255, 0.18);
         font-size: 2.5rem;
-      }
-      @media (min-width: 640px) {
-        .pf-gallery-grid { grid-template-columns: repeat(4, 1fr); }
       }
 
       /* ── Buttons ── */
