@@ -32,7 +32,7 @@ export const VENDOR_MAP_IMAGE_URL = "";
 
 // Full-width photo band between Lineup and Get Involved sections
 // Recommended: wide panoramic crowd/stage shot (landscape, high-res)
-export const PHOTO_BAND_1_URL = "";
+export const PHOTO_BAND_1_URL = "/pondfest/wide-1.jpg";
 
 // Gallery grid on the index page (4 photos shown, landscape 4:3 recommended)
 export const GALLERY_PHOTOS: string[] = [
