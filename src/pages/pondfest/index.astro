@@ -1216,7 +1216,7 @@ const tierLabels: Record<string, string> = {
     gap: clamp(1rem, 2vw, 1.5rem);
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 640px) {
+  @media (min-width: 860px) {
     .pf-involved-grid {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -1231,6 +1231,15 @@ const tierLabels: Record<string, string> = {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .pf-involved-card .pf-btn {
+    width: 100%;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    box-sizing: border-box;
   }
   .pf-involved-icon {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
