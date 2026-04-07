@@ -94,7 +94,7 @@ list of raffle baskets
         scrolling="no"
         seamless="seamless"
         src="https://donorbox.org/embed/2025-youth-scholarships?only_donation_meter=true&donation_meter_color=%23004a87"
-        style="max-width:332px; min-width:250px; min-height: 90px; max-height:none!important"
+        style="max-width:332px; min-width:0; min-height: 90px; max-height:none!important"
         width="100%"></iframe>
 
       <h3>Bike Repair Station</h3>
@@ -118,7 +118,7 @@ list of raffle baskets
         scrolling="no"
         seamless="seamless"
         src="https://donorbox.org/embed/bike-repair-station?only_donation_meter=true&donation_meter_color=%23004a87"
-        style="max-width:332px; min-width:250px; min-height: 90px; max-height:none!important"
+        style="max-width:332px; min-width:0; min-height: 90px; max-height:none!important"
         width="100%"></iframe>
 
       <h2 id="vendors">Event Amenities & Activities</h2>
@@ -131,7 +131,6 @@ list of raffle baskets
           </tr>
         </thead>
         <tbody>
-          <tr>
             <tr><td>A1</td><td>Vendors</td></tr>
             <tr><td>A2</td><td>Kid Crafts</td></tr>
             <tr><td>A3</td><td>Face Painting</td></tr>
@@ -147,11 +146,9 @@ list of raffle baskets
             <tr><td>C4</td><td>Food Trucks</td></tr>
             <tr><td>C5</td><td>Raffles</td></tr>
             <tr><td>C6</td><td>Lums Pond Park Staff</td></tr>
-            <tr><td>C7</td><td>Friends of Lums Pond Info + Event Shirts</td></tr
-            >
+            <tr><td>C7</td><td>Friends of Lums Pond Info + Event Shirts</td></tr>
             <tr><td>C8</td><td>Tickets</td></tr>
             <tr><td>C9</td><td>Event Info + Check-In</td></tr>
-          </tr>
         </tbody>
       </table>
 
@@ -218,7 +215,6 @@ list of raffle baskets
           </tr>
         </thead>
         <tbody>
-          <tr>
             <tr><td>C4</td><td>A Flicker of Daisy Candle Co.</td></tr>
             <tr><td>A4</td><td>Beaded Expressions by Mary</td></tr>
             <tr><td>F1</td><td>Bear Public Libraries/Dolly Parton</td></tr>
@@ -233,10 +229,7 @@ list of raffle baskets
             <tr><td>F1</td><td>Curious Tiel Designs</td></tr>
             <tr><td>A10</td><td>Delaware Readiness Teams</td></tr>
             <tr><td>A6</td><td>First State Urgent Vet</td></tr>
-            <tr
-              ><td>A12</td><td>Granite-Corinthian Lodge No. 34 A.F. & A.M.</td
-              ></tr
-            >
+            <tr><td>A12</td><td>Granite-Corinthian Lodge No. 34 A.F. & A.M.</td></tr>
             <tr><td>A7</td><td>Grass Roots Rescue</td></tr>
             <tr><td>D1</td><td>Guild Mortgage</td></tr>
             <tr><td>B4</td><td>House rabbit society of SE PA Delaware</td></tr>
@@ -259,7 +252,6 @@ list of raffle baskets
             <tr><td>A5</td><td>Way Outside Studios</td></tr>
             <tr><td>F3</td><td>Will’s Wash & Go LLC.</td></tr>
             <tr><td>A1</td><td>You Shine Boutique</td></tr>
-          </tr>
         </tbody>
       </table>
 
@@ -271,7 +263,6 @@ list of raffle baskets
           </tr>
         </thead>
         <tbody>
-          <tr>
             <tr><td>A1</td><td>You Shine Boutique</td></tr>
             <tr><td>A2</td><td>Sew What ?</td></tr>
             <tr><td>A3</td><td>Crafty Gals</td></tr>
@@ -284,10 +275,7 @@ list of raffle baskets
             <tr><td>A9</td><td>Birth to Three</td></tr>
             <tr><td>A10</td><td>Delaware Readiness Teams</td></tr>
             <tr><td>A11</td><td>Sally the Starter</td></tr>
-            <tr
-              ><td>A12</td><td>Granite-Corinthian Lodge No. 34 A.F. & A.M.</td
-              ></tr
-            >
+            <tr><td>A12</td><td>Granite-Corinthian Lodge No. 34 A.F. & A.M.</td></tr>
             <tr><td>B1</td><td>Sit Means SIt</td></tr>
             <tr><td>B2</td><td>Small Wonder Delaware</td></tr>
             <tr><td>B3</td><td>Mother Flosser Embroidery</td></tr>
@@ -312,7 +300,6 @@ list of raffle baskets
             <tr><td>G2</td><td>Crafty Sass Gifts</td></tr>
             <tr><td>G3</td><td>Catalyst Accessories</td></tr>
             <tr><td>G4</td><td>Ridgway Law</td></tr>
-          </tr>
         </tbody>
       </table>
 
@@ -494,16 +481,19 @@ list of raffle baskets
     display: none;
   }
 
+  table {
+    overflow-x: auto;
+    display: block;
+    width: 100%;
+  }
   tr:nth-child(even) {
-    background-color: #ddd;
+    background-color: rgba(0, 0, 0, 0.05);
   }
 
   #map-jump {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: lightblue;
-    border: 1px solid lightskyblue;
+    background-color: var(--color-primary-100);
+    border: 1px solid var(--color-primary-300);
     padding: 1rem 2rem;
     margin: 1rem auto;
     border-radius: 8px;

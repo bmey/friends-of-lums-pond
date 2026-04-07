@@ -2,7 +2,7 @@
 import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
-import { FACEBOOK_URL, SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import { FACEBOOK_URL } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
 import { getUrl } from "../../components/getUrl";
@@ -15,7 +15,7 @@ const posts = (await getCollection("blog")).sort(
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title="News | Friends of Lums Pond" description="News and updates from Friends of Lums Pond — events, volunteer opportunities, park projects, and community announcements." />
     <style>
       main {
         max-width: 960px;
@@ -98,7 +98,7 @@ const posts = (await getCollection("blog")).sort(
         margin: 0;
         color: rgb(var(--gray));
       }
-      ul li a:hover h4,
+      ul li a:hover h2,
       ul li a:hover .date {
         color: rgb(var(--accent));
       }
@@ -132,7 +132,7 @@ const posts = (await getCollection("blog")).sort(
     <Header />
     <main>
       <div class="pageheader">
-        <h2>News</h2>
+        <h1>News</h1>
         <nav>
           <a href={FACEBOOK_URL} target="_blank">
             <i class="fa-brands fa-facebook"></i>
@@ -154,9 +154,9 @@ const posts = (await getCollection("blog")).sort(
                     width={720}
                     height={360}
                     src={getUrl("blog/" + post.data.heroImage)}
-                    alt=""
+                    alt={post.data.title}
                   />
-                  <h4 class="title">{post.data.title}</h4>
+                  <h2 class="title">{post.data.title}</h2>
                   <p class="date">
                     <FormattedDate date={post.data.pubDate} />
                   </p>

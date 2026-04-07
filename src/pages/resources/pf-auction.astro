@@ -1,6 +1,5 @@
 
 ---
-import { Masonry } from 'astro-masonry';
 import { Image } from "astro:assets";
 import PondFestShirt from "../../images/pf2025-images/pondfest-shirt.png";
 import Layout from "../../layouts/PFLivePage.astro";
@@ -16,107 +15,78 @@ import { AUCTIONS } from "../data/pf2025/auctions";
 import { PF_LIVE_ALERT } from "../data/pf2025/pf-consts";
 ---
 <style>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
   html {
-      font-size: 22px;
+    font-size: 22px;
   }
   body {
-      padding: 1rem;
-  }
-  .map-modal-link {
-    padding: .1em;
-
-    color: red;
-    background: black;
-
-    height: 3rem;
-    font-size: 1em;
-    margin: 3%;
-
-
-    border-style: solid;
-    border-color: blue;
+    padding: 1rem;
   }
   .map-container {
     display: grid;
     grid-template-columns: 48% 48%;
     padding: 3%;
   }
-
-#event-lineup-img {
-  width: auto;
-  height : auto;
-  max-height: 100%;
-  max-width: 100%;
-}
-.beer-vendor-img {
-  width: auto;
-  height : auto;
-  max-height: 500%;
-  max-width: 50%;
-}
-
-tr:nth-child(even) {
-    background-color: #ddd;
-}
-
-:is(h1, h2, h3, h4, h5, h6) {
-    padding-top: .5em;
-}
-
-#accordion__button {
+  #event-lineup-img {
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+  }
+  .beer-vendor-img {
+    width: auto;
+    height: auto;
+    max-height: 500%;
+    max-width: 50%;
+  }
+  tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  :is(h1, h2, h3, h4, h5, h6) {
+    padding-top: 0.5em;
+  }
+  #accordion__button {
     width: 100%;
-}
-.raffle-container {
+  }
+  .raffle-container {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    gap: .1rem;
-    text-align: center;
-}
-.raffle-tile {
-}
-.raffle-name {
-    font-weight: bold;
-}
-.raffle-desc {
-    max-height:100%;
-}
-.raffle-status {
-    background: lightgray;
-}
-.sponsor {
-    color: black;
-    padding: 0.2rem;
-    line-height: 1rem;
-}
-.sponsors {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
     gap: 0.1rem;
     text-align: center;
-}
-.sponsor-headers {
+  }
+  .raffle-name {
+    font-weight: bold;
+  }
+  .raffle-desc {
+    max-height: 100%;
+  }
+  .raffle-status {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .raffle-tile {
+    border: 1px solid rgba(107, 93, 181, 0.6);
+    border-radius: 6px;
+    padding: 0.5rem;
+  }
+  .sponsor {
+    padding: 0.2rem;
+    line-height: 1rem;
+  }
+  .sponsors {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 0.1rem;
     text-align: center;
-    h6 {
-        margin-bottom: 4px;
-    }
-    h5 {
-        margin-bottom: 4px;
-    }
-    h4 {
-        margin-top: 400px;
-    }
-}
-h4 {
+  }
+  .sponsor-headers {
+    text-align: center;
+  }
+  h4 {
     margin-top: 1rem;
-}
-
-
+  }
 </style>
 
 <Layout title="Silent Action for Pond Fest 2025" alert_text={ PF_LIVE_ALERT }>
@@ -124,7 +94,7 @@ h4 {
 <div class="raffle-container">
     {
       AUCTIONS.map((auction) => (
-        <div class="raffle-tile rounded-md border border-purple-900">
+        <div class="raffle-tile">
           <div class="raffle-name">{auction.name}</div>
           <div class="raffle-desc">{auction.description}</div>
           <div class="raffle-status">{auction.status}</div>

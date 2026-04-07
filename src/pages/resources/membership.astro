@@ -2,7 +2,7 @@
 import Layout from "../../layouts/SecondaryPage.astro";
 ---
 
-<Layout title="Membership">
+<Layout title="Membership" description="Join Friends of Lums Pond. Learn about member benefits, annual dues, volunteer perks, and how to become part of our community.">
   <div id="map-jump">
     Need to pay annual dues?
     <br />
@@ -10,7 +10,7 @@ import Layout from "../../layouts/SecondaryPage.astro";
       >Click here</a
     >
   </div>
-  <h4>Benefits</h4>
+  <h2>Benefits</h2>
   <p>
     When you join Friends of Lums Pond, you become an integral part of our
     mission. As a member, you enjoy a range of benefits:
@@ -70,7 +70,7 @@ import Layout from "../../layouts/SecondaryPage.astro";
     </li>
   </ul>
 
-  <h3>Becoming a member</h3>
+  <h2>Becoming a member</h2>
 
   <ul>
     <li>
@@ -103,15 +103,15 @@ import Layout from "../../layouts/SecondaryPage.astro";
     <li>Thank you for being a friend of Lums Pond!</li>
   </ul>
 
-  <h4>Member merchandise</h4>
-  <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+  <h2>Member merchandise</h2>
+  <script is:inline async src="https://js.stripe.com/v3/pricing-table.js"></script>
   <stripe-pricing-table
     pricing-table-id="prctbl_1PySnhRpfaCQlFMK3wfzbBvl"
     publishable-key="pk_live_51Mca4QRpfaCQlFMKQWcTTn3EjtrTSVX89qQ8eZ1odXoTGjlVB1FljXODsQJyyr4R2Kqp51Fw8zXoNtFrsingXyLj006MNNU91H"
   >
   </stripe-pricing-table>
    Merch FAQ:
-  <ul style="font-size: 1rem;">
+  <ul>
     <li>
       You can pick up your merchandise in-person at any of our volunteer events.
       Please contact the volunteer coordinator when you arrive.
@@ -127,12 +127,13 @@ import Layout from "../../layouts/SecondaryPage.astro";
 <style>
   #map-jump {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: lightblue;
-    border: 1px solid lightskyblue;
+    background-color: var(--color-primary-100);
+    border: 1px solid var(--color-primary-300);
     padding: 1rem 2rem;
     margin: 1rem auto;
     border-radius: 8px;
+  }
+  h2 {
+    margin-top: 2.5rem;
   }
 </style>

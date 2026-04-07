@@ -12,34 +12,17 @@ import {
 ---
 
 <style>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
   html {
     font-size: 22px;
   }
   body {
     padding: 1rem;
   }
-  .map-modal-link {
-    padding: 0.1em;
-
-    color: red;
-    background: black;
-
-    height: 3rem;
-    font-size: 1em;
-    margin: 3%;
-
-    border-style: solid;
-    border-color: blue;
-  }
   .map-container {
     display: grid;
     grid-template-columns: 48% 48%;
     padding: 3%;
   }
-
   #event-lineup-img {
     width: auto;
     height: auto;
@@ -52,15 +35,12 @@ import {
     max-height: 500%;
     max-width: 50%;
   }
-
   tr:nth-child(even) {
-    background-color: #ddd;
+    background-color: rgba(255, 255, 255, 0.08);
   }
-
   :is(h1, h2, h3, h4, h5, h6) {
     padding-top: 0.5em;
   }
-
   #accordion__button {
     width: 100%;
   }
@@ -72,8 +52,6 @@ import {
     gap: 0.1rem;
     text-align: center;
   }
-  .raffle-tile {
-  }
   .raffle-name {
     font-weight: bold;
   }
@@ -81,10 +59,10 @@ import {
     max-height: 100%;
   }
   .raffle-status {
-    background: lightgray;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
   }
   .sponsor {
-    color: black;
     padding: 0.2rem;
     line-height: 1rem;
   }
@@ -97,23 +75,11 @@ import {
   }
   .sponsor-headers {
     text-align: center;
-    h6 {
-      margin-bottom: 4px;
-    }
-    h5 {
-      margin-bottom: 4px;
-    }
-    h4 {
-      margin-top: 400px;
-    }
   }
   h4 {
     margin-top: 1rem;
   }
   @media (min-width: 400px) {
-    .cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
     .sponsors {
       grid-template-columns: repeat(3, 1fr);
     }
