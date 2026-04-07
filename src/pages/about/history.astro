@@ -1,0 +1,871 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+// Photo URLs — swap in real images as they become available
+const HERO_PHOTO = "/blog/pond-fest-hero.jpeg";
+const ORIGINS_PHOTO = "/blog/23-06-21_hero.jpg";
+const SERVICE_PHOTO = "/blog/23-10-26_hero.jpg";
+const COMMITTEE_PHOTO = "/blog/23-02-21_1.jpg";
+const PONDFEST_PHOTO = "/blog/25-05-09_pond-fest-hero.jpg";
+const PONDFEST_CROWD_PHOTO = "/blog/25-05-09_pond-fest-1.jpg";
+const STATION_PHOTO = ""; // fill in when available: photo of the bike repair station
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title="Our Story | Friends of Lums Pond"
+      description="The history of Friends of Lums Pond — from a dog park advocacy group to Delaware's premier state park friends organization. Over two decades of community, conservation, and celebration."
+    />
+    <style is:global>
+      /* ─── Page-level overrides ─── */
+      body {
+        background: #fff;
+      }
+    </style>
+    <style>
+      /* ══════════════════════════════════════════════
+         TOKENS
+      ═══════════════════════════════════════════════ */
+      :root {
+        --hs-dark:     #04294d; /* primary-950 */
+        --hs-dark-alt: #073673; /* primary-900 */
+        --hs-blue:     #0291f5; /* primary-500 */
+        --hs-blue-lt:  #76c7ff; /* primary-300 */
+        --hs-cream:    #f6f7f9; /* gray-50 */
+        --hs-text-lt:  rgba(255,255,255,0.82);
+        --hs-text-lt2: rgba(255,255,255,0.55);
+      }
+
+      /* ══════════════════════════════════════════════
+         SCROLL REVEAL
+      ═══════════════════════════════════════════════ */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.2s; }
+      .reveal-delay-3 { transition-delay: 0.3s; }
+      .reveal-delay-4 { transition-delay: 0.4s; }
+
+      /* ══════════════════════════════════════════════
+         SECTIONS
+      ═══════════════════════════════════════════════ */
+      .hs-section {
+        width: 100%;
+        overflow: hidden;
+      }
+      .hs-inner {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: clamp(60px, 9vw, 130px) clamp(1.25rem, 6vw, 80px);
+      }
+      .hs-inner--narrow {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: clamp(60px, 9vw, 130px) clamp(1.25rem, 6vw, 80px);
+        text-align: center;
+      }
+
+      /* Dark sections */
+      .hs-section--dark   { background: var(--hs-dark); color: #fff; }
+      .hs-section--dark-alt { background: var(--hs-dark-alt); color: #fff; }
+
+      /* Light sections */
+      .hs-section--light  { background: var(--hs-cream); color: var(--color-gray-950); }
+      .hs-section--white  { background: #fff; color: var(--color-gray-950); }
+
+      /* ══════════════════════════════════════════════
+         HERO
+      ═══════════════════════════════════════════════ */
+      .hero {
+        position: relative;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: var(--hs-dark);
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        opacity: 0.35;
+      }
+      @media (max-width: 768px) {
+        .hero-bg { background-attachment: scroll; }
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 6vw, 4rem);
+        max-width: 900px;
+      }
+      .hero-eyebrow {
+        font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--hs-blue-lt);
+        font-weight: 700;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      .hero-title {
+        font-family: var(--font-header);
+        font-size: clamp(3rem, 10vw, 7rem);
+        color: #fff;
+        line-height: 1;
+        letter-spacing: 0.02em;
+        margin-bottom: 1.25rem;
+      }
+      .hero-sub {
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        color: var(--hs-text-lt);
+        max-width: 580px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.6;
+      }
+      .hero-cta-row {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .hero-scroll-hint {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--hs-text-lt2);
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        animation: bob 2s ease-in-out infinite;
+      }
+      @keyframes bob {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50%       { transform: translateX(-50%) translateY(6px); }
+      }
+
+      /* ══════════════════════════════════════════════
+         STAT STRIP
+      ═══════════════════════════════════════════════ */
+      .stat-strip {
+        background: var(--hs-dark-alt);
+        padding: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 6vw, 80px);
+      }
+      .stat-strip-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(1rem, 5vw, 4rem);
+        flex-wrap: wrap;
+        text-align: center;
+      }
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1 1 120px;
+      }
+      .stat-num {
+        font-family: var(--font-header);
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        color: var(--hs-blue-lt);
+        line-height: 1;
+        border-bottom: 3px solid rgba(118, 199, 255, 0.35);
+        padding-bottom: 0.1em;
+        margin-bottom: 0.4rem;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--hs-text-lt2);
+      }
+      .stat-divider {
+        width: 1px;
+        height: 3rem;
+        background: rgba(255,255,255,0.15);
+      }
+      @media (max-width: 500px) {
+        .stat-divider { display: none; }
+        .stat-item { flex-basis: 40%; }
+      }
+
+      /* ══════════════════════════════════════════════
+         YEAR STAMP
+      ═══════════════════════════════════════════════ */
+      .year-stamp {
+        font-family: var(--font-header);
+        font-size: clamp(1.2rem, 3vw, 1.6rem);
+        letter-spacing: 0.06em;
+        display: inline-block;
+        padding: 0.25em 0.75em;
+        border-radius: 3px;
+        margin-bottom: 1.25rem;
+      }
+      .year-stamp--blue {
+        background: rgba(2, 145, 245, 0.15);
+        color: var(--hs-blue-lt);
+      }
+      .year-stamp--dark {
+        background: rgba(2, 145, 245, 0.1);
+        color: var(--hs-blue);
+      }
+
+      /* ══════════════════════════════════════════════
+         SECTION HEADINGS
+      ═══════════════════════════════════════════════ */
+      .hs-section--dark h2,
+      .hs-section--dark-alt h2 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        font-family: var(--font-header);
+      }
+      .hs-section--light h2,
+      .hs-section--white h2 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        color: var(--color-primary-950);
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        font-family: var(--font-header);
+      }
+      .hs-section--dark p,
+      .hs-section--dark-alt p {
+        color: var(--hs-text-lt);
+        line-height: 1.7;
+      }
+      .hs-section--light p,
+      .hs-section--white p {
+        color: var(--color-gray-700);
+        line-height: 1.7;
+      }
+
+      /* ══════════════════════════════════════════════
+         SPLIT LAYOUT
+      ═══════════════════════════════════════════════ */
+      .hs-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: clamp(380px, 50vw, 640px);
+      }
+      .hs-split--reverse { direction: rtl; }
+      .hs-split--reverse > * { direction: ltr; }
+
+      .hs-split-media {
+        position: relative;
+        overflow: hidden;
+        min-height: 320px;
+      }
+      .hs-split-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .hs-split-media-placeholder {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        background: linear-gradient(135deg, var(--hs-dark) 0%, var(--hs-dark-alt) 60%, #0b4080 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(3rem, 7vw, 6rem);
+        color: rgba(255,255,255,0.1);
+      }
+
+      .hs-split-text {
+        padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 4vw, 4rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      @media (max-width: 768px) {
+        .hs-split { grid-template-columns: 1fr; direction: ltr; }
+        .hs-split--reverse > * { direction: ltr; }
+      }
+
+      /* ══════════════════════════════════════════════
+         CENTERED STORY BLOCK
+      ═══════════════════════════════════════════════ */
+      .story-block {
+        max-width: 660px;
+      }
+
+      /* ══════════════════════════════════════════════
+         MILESTONE CHIPS
+      ═══════════════════════════════════════════════ */
+      .milestone-list {
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .milestone-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+      }
+      .milestone-list li::before {
+        content: "";
+        flex-shrink: 0;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        margin-top: 0.55em;
+        background: var(--hs-blue-lt);
+      }
+      .hs-section--light .milestone-list li::before,
+      .hs-section--white .milestone-list li::before {
+        background: var(--hs-blue);
+      }
+
+      /* ══════════════════════════════════════════════
+         HIGHLIGHT NUMBER
+      ═══════════════════════════════════════════════ */
+      .highlight-num {
+        font-family: var(--font-header);
+        font-size: clamp(4rem, 12vw, 8rem);
+        color: var(--hs-blue-lt);
+        line-height: 1;
+        opacity: 0.15;
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        pointer-events: none;
+        user-select: none;
+      }
+      .hs-section--light .highlight-num,
+      .hs-section--white .highlight-num {
+        color: var(--hs-dark);
+        opacity: 0.07;
+      }
+
+      /* ══════════════════════════════════════════════
+         TIMELINE SPINE (compressed middle section)
+      ═══════════════════════════════════════════════ */
+      .timeline-spine {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 2rem 0;
+        padding-left: clamp(1rem, 3vw, 2rem);
+        border-left: 3px solid var(--hs-blue);
+      }
+      .timeline-spine-item {
+        padding: clamp(0.75rem, 1.5vw, 1.25rem) 0 clamp(0.75rem, 1.5vw, 1.25rem) clamp(1rem, 2vw, 2rem);
+        position: relative;
+      }
+      .timeline-spine-item::before {
+        content: "";
+        position: absolute;
+        left: -0.55rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--hs-blue-lt);
+        border: 2px solid var(--hs-dark-alt);
+      }
+      .timeline-spine-item strong {
+        display: block;
+        color: var(--hs-blue-lt);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.2rem;
+      }
+      .timeline-spine-item p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--hs-text-lt) !important;
+        line-height: 1.5;
+      }
+
+      /* ══════════════════════════════════════════════
+         NEEDS-INFO NOTICE
+      ═══════════════════════════════════════════════ */
+      .info-needed {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        color: var(--hs-blue-lt);
+        background: rgba(2, 145, 245, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        border: 1px solid rgba(2, 145, 245, 0.2);
+      }
+
+      /* ══════════════════════════════════════════════
+         CTA BUTTONS (inherit site style)
+      ═══════════════════════════════════════════════ */
+      .hs-btn {
+        display: inline-block;
+        padding: 0.75em 1.75em;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .hs-btn--primary {
+        background: var(--hs-blue);
+        color: #fff;
+        border: 2px solid var(--hs-blue);
+      }
+      .hs-btn--primary:hover {
+        background: var(--color-primary-400);
+        border-color: var(--color-primary-400);
+        color: #fff;
+      }
+      .hs-btn--outline {
+        background: transparent;
+        color: #fff;
+        border: 2px solid rgba(255,255,255,0.4);
+      }
+      .hs-btn--outline:hover {
+        border-color: #fff;
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+      }
+      .hs-btn--outline-dark {
+        background: transparent;
+        color: var(--color-primary-800);
+        border: 2px solid var(--color-primary-300);
+      }
+      .hs-btn--outline-dark:hover {
+        background: var(--color-primary-50);
+        color: var(--color-primary-800);
+      }
+
+      /* ══════════════════════════════════════════════
+         QUOTE PULL
+      ═══════════════════════════════════════════════ */
+      .pull-quote {
+        font-family: var(--font-header);
+        font-size: clamp(1.4rem, 3vw, 2.2rem);
+        line-height: 1.3;
+        color: var(--hs-blue-lt);
+        margin: 2rem 0;
+        padding-left: 1.5rem;
+        border-left: 4px solid var(--hs-blue);
+      }
+      .hs-section--light .pull-quote,
+      .hs-section--white .pull-quote {
+        color: var(--color-primary-800);
+        border-left-color: var(--hs-blue);
+      }
+
+      /* ══════════════════════════════════════════════
+         EYEBROW
+      ═══════════════════════════════════════════════ */
+      .hs-eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.75rem;
+      }
+      .hs-section--dark .hs-eyebrow,
+      .hs-section--dark-alt .hs-eyebrow { color: var(--hs-blue-lt); }
+      .hs-section--light .hs-eyebrow,
+      .hs-section--white .hs-eyebrow  { color: var(--hs-blue); }
+
+      /* ══════════════════════════════════════════════
+         PHOTO CAPTION
+      ═══════════════════════════════════════════════ */
+      .photo-caption {
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.4);
+        text-align: center;
+        padding: 0.5rem 1rem;
+        background: rgba(0,0,0,0.3);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <!-- ══ HERO ════════════════════════════════════════════════════════ -->
+    <section class="hero">
+      <div
+        class="hero-bg"
+        style={`background-image: url('${HERO_PHOTO}')`}
+      ></div>
+      <div class="hero-content reveal">
+        <span class="hero-eyebrow">Friends of Lums Pond — Est. 2002</span>
+        <h1 class="hero-title">Our Story</h1>
+        <p class="hero-sub">
+          From a handful of neighbors who cared about a dog park to a growing
+          nonprofit bringing thousands of people to Delaware's most beloved
+          freshwater pond.
+        </p>
+        <div class="hero-cta-row">
+          <a href="#chapter-1" class="hs-btn hs-btn--primary">Read Our History</a>
+          <a href="/pondfest" class="hs-btn hs-btn--outline">Pond Fest 2026</a>
+        </div>
+      </div>
+      <div class="hero-scroll-hint">
+        <span>Scroll</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+    </section>
+
+    <!-- ══ STAT STRIP ════════════════════════════════════════════════ -->
+    <div class="stat-strip reveal" id="chapter-1">
+      <div class="stat-strip-inner">
+        <div class="stat-item">
+          <span class="stat-num">20+</span>
+          <span class="stat-label">Years of Service</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">1,600+</span>
+          <span class="stat-label">Pond Fest Attendees</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">$20K+</span>
+          <span class="stat-label">Raised for the Park</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Park We Love</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ORIGINS ════════════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--light">
+      <div class="hs-split">
+        <div class="hs-split-media">
+          {ORIGINS_PHOTO
+            ? <img src={ORIGINS_PHOTO} alt="FOLP volunteers at Lums Pond" />
+            : <div class="hs-split-media-placeholder"><i class="fa-solid fa-paw"></i></div>
+          }
+        </div>
+        <div class="hs-split-text reveal">
+          <span class="year-stamp year-stamp--dark">Early 2000s</span>
+          <span class="hs-eyebrow">Before We Had a Name</span>
+          <h2>It Started with a Dog Park</h2>
+          <p>
+            Long before Pond Fest, before a board of directors, before any of the
+            structure that shapes Friends of Lums Pond today — there was a group
+            of neighbors who simply loved Lums Pond State Park and wanted to make
+            it better.
+          </p>
+          <p>
+            The earliest organizing happened around advocacy for a dog park at the
+            park. That grassroots energy — neighbors showing up for something they
+            cared about — became the seed of everything that followed.
+          </p>
+          <span class="info-needed">
+            <i class="fa-solid fa-circle-info"></i>
+            More details coming soon — we're gathering stories from our founding members
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FOUNDED ════════════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--dark">
+      <div class="hs-inner">
+        <div style="position:relative">
+          <span class="highlight-num">2002</span>
+          <div class="story-block reveal">
+            <span class="year-stamp year-stamp--blue">2002</span>
+            <span class="hs-eyebrow">A New Chapter</span>
+            <h2>An Organization is Born</h2>
+            <p>
+              Friends of Lums Pond, Inc. was officially incorporated as a Delaware
+              501(c)(3) nonprofit organization. With a Friends agreement with the
+              Division of Parks and Recreation in hand, the group had a formal
+              structure to pursue its mission: safeguard and enrich Lums Pond
+              State Park through volunteerism, fundraising, education, and
+              advocacy.
+            </p>
+            <p>
+              It was a small beginning — but a meaningful one. The park now had
+              a dedicated group of citizens in its corner.
+            </p>
+            <span class="info-needed">
+              <i class="fa-solid fa-circle-info"></i>
+              Founding member details being gathered — check back soon
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ YEARS OF SERVICE ════════════════════════════════════════ -->
+    <section class="hs-section hs-section--dark-alt">
+      <div class="hs-split hs-split--reverse">
+        <div class="hs-split-media">
+          {SERVICE_PHOTO
+            ? <img src={SERVICE_PHOTO} alt="FOLP trail cleanup volunteers" />
+            : <div class="hs-split-media-placeholder"><i class="fa-solid fa-tree"></i></div>
+          }
+        </div>
+        <div class="hs-split-text reveal">
+          <span class="year-stamp year-stamp--blue">2002 – 2020</span>
+          <span class="hs-eyebrow">Steady Service</span>
+          <h2>Two Decades of Quiet Dedication</h2>
+          <p>
+            For nearly two decades, Friends of Lums Pond showed up — quietly,
+            consistently, season after season. Trail cleanups. Invasive species
+            removal. Community programs. A persistent, caring presence in a park
+            that Delaware's residents have come to love.
+          </p>
+          <div class="timeline-spine">
+            <div class="timeline-spine-item">
+              <strong>Ongoing</strong>
+              <p>Regular trail maintenance and invasive species removal throughout the park</p>
+            </div>
+            <div class="timeline-spine-item">
+              <strong>Ongoing</strong>
+              <p>Volunteer coordination with Delaware State Parks under the Friends agreement</p>
+            </div>
+            <div class="timeline-spine-item">
+              <strong>Ongoing</strong>
+              <p>Community building and membership growth among park-loving neighbors</p>
+            </div>
+          </div>
+          <span class="info-needed">
+            <i class="fa-solid fa-circle-info"></i>
+            Were you there? We're collecting stories from this era — <a href="mailto:president@friendsoflumspond.org" style="color:var(--hs-blue-lt)">email us</a>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ NEW ENERGY ════════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--light">
+      <div class="hs-split">
+        <div class="hs-split-media">
+          {COMMITTEE_PHOTO
+            ? <img src={COMMITTEE_PHOTO} alt="FOLP committee meeting" />
+            : <div class="hs-split-media-placeholder" style="background: linear-gradient(135deg,#deefff,#76c7ff)"><i class="fa-solid fa-people-group" style="color:rgba(4,41,77,0.2)"></i></div>
+          }
+        </div>
+        <div class="hs-split-text reveal">
+          <span class="year-stamp year-stamp--dark">2021 – 2022</span>
+          <span class="hs-eyebrow">A New Chapter</span>
+          <h2>New Faces, New Structure</h2>
+          <p>
+            Fresh energy arrived with a wave of new members in 2021 and 2022.
+            For the first time in the organization's history, FOLP formed a
+            full executive committee of seven — bringing together dedicated
+            leaders for each major area of the organization's work.
+          </p>
+          <p>
+            This wasn't just an administrative change. It was a signal that the
+            organization was ready to do more — to grow, to take on bigger
+            projects, and to be more visible in the community it served.
+          </p>
+          <ul class="milestone-list">
+            <li>Executive committee of seven formed for the first time</li>
+            <li>Consistent growth in active membership and volunteer participation</li>
+            <li>Deepened partnership with Delaware State Parks management</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ POND FEST BORN ════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--dark">
+      <div class="hs-inner" style="position:relative">
+        <span class="highlight-num">2024</span>
+        <div class="reveal">
+          <span class="year-stamp year-stamp--blue">July 2024</span>
+          <span class="hs-eyebrow">The Idea That Changed Everything</span>
+          <h2>Pond Fest is Born</h2>
+          <p style="max-width: 680px">
+            In the summer of 2024, a small planning committee had a big idea:
+            what if FOLP hosted a real festival at Lums Pond — live music, food
+            trucks, vendors, community — and used it as the organization's first
+            major fundraiser? Three months later, they found out the answer.
+          </p>
+        </div>
+      </div>
+      <div class="hs-split" style="margin-top: 0">
+        <div class="hs-split-media" style="position:relative">
+          {PONDFEST_PHOTO
+            ? <>
+                <img src={PONDFEST_PHOTO} alt="Pond Fest 2024" />
+                <div class="photo-caption">Pond Fest 2024 — October 12, Lums Pond State Park</div>
+              </>
+            : <div class="hs-split-media-placeholder"><i class="fa-solid fa-music"></i></div>
+          }
+        </div>
+        <div class="hs-split-text reveal">
+          <span class="year-stamp year-stamp--blue">October 12, 2024</span>
+          <span class="hs-eyebrow">First Pond Fest</span>
+          <h2>600 Neighbors, One Pond</h2>
+          <p>
+            The first Pond Fest wildly exceeded every expectation. What started
+            as a $4,000 fundraising goal turned into $10,738 raised in a single
+            afternoon. Nearly 600 people showed up.
+          </p>
+          <ul class="milestone-list">
+            <li>~600 attendees — the largest FOLP event in history</li>
+            <li>$10,738 raised — nearly 3× the goal</li>
+            <li>35+ local vendors, artisans, and nonprofits</li>
+            <li>Live music across two outdoor stages</li>
+            <li>Beer garden, food trucks, kids zone, raffle</li>
+          </ul>
+
+          <div class="pull-quote" style="margin-top:2rem">
+            "The amount of interest was almost overwhelming — as if we are all
+            craving something positive and pure to pour our hearts into."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 2025 ════════════════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--light">
+      <div class="hs-split hs-split--reverse">
+        <div class="hs-split-media" style="position:relative">
+          {PONDFEST_CROWD_PHOTO
+            ? <>
+                <img src={PONDFEST_CROWD_PHOTO} alt="Pond Fest 2025 crowd" />
+                <div class="photo-caption" style="background:rgba(0,0,0,0.5); color:rgba(255,255,255,0.6)">Pond Fest 2025 — October 4</div>
+              </>
+            : <div class="hs-split-media-placeholder" style="background:linear-gradient(135deg,#deefff,#b6e0ff)"><i class="fa-solid fa-wrench" style="color:rgba(4,41,77,0.15)"></i></div>
+          }
+        </div>
+        <div class="hs-split-text reveal">
+          <span class="year-stamp year-stamp--dark">2025</span>
+          <span class="hs-eyebrow">Turning Dollars Into Impact</span>
+          <h2>The First Bike Repair Station</h2>
+          <p>
+            The promise of Pond Fest 2024 was simple: raise money, put it back
+            into the park. In spring 2025, that promise became real. FOLP
+            installed the first-ever bike repair station at Lums Pond State
+            Park — a lasting improvement for every cyclist who uses the trails.
+          </p>
+          <p>
+            Then, in October 2025, Pond Fest returned — bigger, more polished,
+            and even more loved by the community.
+          </p>
+          <ul class="milestone-list">
+            <li>Spring 2025: Dero Fixit Plus bike repair station installed in the park</li>
+            <li>October 4, 2025: Pond Fest 2025 — expanded lineup, new stages</li>
+            <li>1,000+ attendees — nearly double the first year</li>
+            <li>Continued membership and volunteer growth</li>
+          </ul>
+          {STATION_PHOTO && <img src={STATION_PHOTO} alt="Bike repair station at Lums Pond" style="margin-top:1.5rem; border-radius:8px; max-width:100%" />}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 2026 ════════════════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--dark-alt">
+      <div class="hs-inner" style="position:relative">
+        <span class="highlight-num">2026</span>
+        <div class="reveal">
+          <span class="year-stamp year-stamp--blue">2026</span>
+          <span class="hs-eyebrow">Breaking New Ground</span>
+          <h2>The Year of Firsts</h2>
+          <p style="max-width:620px">
+            2026 has already produced two milestones the organization has never
+            hit before — and the biggest Pond Fest yet is still to come.
+          </p>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin-top:2.5rem">
+          <div class="reveal reveal-delay-1" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:2rem">
+            <i class="fa-solid fa-award" style="font-size:2rem; color:var(--hs-blue-lt); margin-bottom:1rem; display:block"></i>
+            <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.5rem">First Grant — March 2026</h3>
+            <p style="font-size:0.92rem; margin:0">FOLP was awarded its first-ever grant, opening a new chapter for how the organization can fund park improvements.</p>
+          </div>
+          <div class="reveal reveal-delay-2" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:2rem">
+            <i class="fa-solid fa-hand-holding-heart" style="font-size:2rem; color:var(--hs-blue-lt); margin-bottom:1rem; display:block"></i>
+            <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.5rem">First DoMore24 — March 2026</h3>
+            <p style="font-size:0.92rem; margin:0">Friends of Lums Pond participated in Delaware's DoMore24 giving challenge for the first time, reaching new donors across the community.</p>
+          </div>
+          <div class="reveal reveal-delay-3" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:2rem">
+            <i class="fa-solid fa-music" style="font-size:2rem; color:var(--hs-blue-lt); margin-bottom:1rem; display:block"></i>
+            <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.5rem">Pond Fest 2026 — October 10</h3>
+            <p style="font-size:0.92rem; margin:0">The third annual Pond Fest is coming October 10, 2026. The goal: $30,000 raised for the park and the community.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CTA ════════════════════════════════════════════════════════ -->
+    <section class="hs-section hs-section--dark">
+      <div class="hs-inner--narrow reveal">
+        <span class="hs-eyebrow" style="color:var(--hs-blue-lt)">The Next Chapter is Unwritten</span>
+        <h2 style="font-family:var(--font-header); font-size:clamp(2.2rem,6vw,4rem); color:#fff; margin-bottom:1rem">
+          Be Part of What Comes Next
+        </h2>
+        <p style="color:var(--hs-text-lt); margin-bottom:2rem; font-size:clamp(1rem,1.5vw,1.1rem)">
+          Lums Pond State Park is Delaware's largest freshwater pond and one of
+          its most treasured public spaces. Every trail cleanup, every event,
+          every donation is a vote for keeping it that way.
+        </p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
+          <a href="/pondfest" class="hs-btn hs-btn--primary">Pond Fest 2026</a>
+          <a href="/pondfest/involved" class="hs-btn hs-btn--outline">Get Involved</a>
+          <a href="/about" class="hs-btn hs-btn--outline">About FOLP</a>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+
+    <script>
+      // Scroll reveal
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
