@@ -1,0 +1,192 @@
+---
+import Modal from "../Modal.astro";
+
+interface Props {
+  id: string;
+  title: string;
+  intro: string;
+  email: string;
+  subject?: string;
+}
+
+const { id, title, intro, email, subject = "" } = Astro.props;
+const mailtoHref = subject
+  ? `mailto:${email}?subject=${encodeURIComponent(subject)}`
+  : `mailto:${email}`;
+---
+
+<Modal id={id}>
+  <div slot="main" class="email-modal-body" data-email-cta onclick="event.stopPropagation()">
+    <h2 class="email-modal-title">{title}</h2>
+    <p class="email-modal-intro">{intro}</p>
+    <div class="email-modal-address">{email}</div>
+    <div class="email-modal-actions">
+      <button
+        type="button"
+        class="pf-btn pf-btn--primary email-modal-action"
+        data-copy-email={email}
+      >
+        <i class="fa-solid fa-copy"></i>
+        <span data-copy-label>Copy address</span>
+      </button>
+      <a
+        href={mailtoHref}
+        class="pf-btn pf-btn--outline-light email-modal-action"
+        data-close-on-click
+      >
+        <i class="fa-solid fa-envelope"></i>
+        Open in email client
+      </a>
+    </div>
+    <form method="dialog" class="email-modal-close-form">
+      <button type="submit" class="email-modal-close">Close</button>
+    </form>
+  </div>
+  <span slot="close" style="display:none"></span>
+</Modal>
+
+<style>
+  :global(dialog:has(> [data-email-cta])) {
+    background: transparent;
+  }
+  .email-modal-body {
+    background: linear-gradient(135deg, #1a1040 0%, #271e52 100%);
+    color: #fff;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    width: min(92vw, 32rem);
+    box-sizing: border-box;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+  .email-modal-title {
+    font-family: var(--font-header);
+    font-size: clamp(1.4rem, 3.5vw, 1.85rem);
+    color: var(--pf-teal-light);
+    margin: 0 0 0.75rem 0;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+  }
+  .email-modal-intro {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 1.25rem 0;
+  }
+  .email-modal-address {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+    color: #fff;
+    word-break: break-all;
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+  .email-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .email-modal-action {
+    flex: 1 1 12rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    line-height: 1.2;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .email-modal-close-form {
+    margin: 0;
+  }
+  .email-modal-close {
+    width: 100%;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
+    border: none;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .email-modal-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+</style>
+
+<script is:inline define:vars={{ id }}>
+  (function () {
+    const dialog = document.getElementById(id);
+    if (!dialog) return;
+
+    document
+      .querySelectorAll(`[data-open-modal="${id}"]`)
+      .forEach((trigger) => {
+        trigger.addEventListener("click", (e) => {
+          e.preventDefault();
+          dialog.showModal();
+        });
+      });
+
+    const copyBtn = dialog.querySelector(`[data-copy-email]`);
+    if (copyBtn) {
+      const email = copyBtn.getAttribute("data-copy-email") || "";
+      const labelEl = copyBtn.querySelector("[data-copy-label]");
+      const originalLabel = labelEl ? labelEl.textContent : "";
+      let resetTimer = null;
+
+      const showCopied = () => {
+        if (!labelEl) return;
+        labelEl.textContent = "Copied!";
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          labelEl.textContent = originalLabel;
+        }, 1500);
+      };
+
+      const fallbackCopy = (text) => {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "absolute";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+        } catch (_) {}
+        document.body.removeChild(ta);
+      };
+
+      copyBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(email);
+          } else {
+            fallbackCopy(email);
+          }
+          showCopied();
+        } catch (_) {
+          fallbackCopy(email);
+          showCopied();
+        }
+      });
+    }
+
+    dialog.querySelectorAll(`[data-close-on-click]`).forEach((el) => {
+      el.addEventListener("click", () => {
+        setTimeout(() => dialog.close(), 0);
+      });
+    });
+  })();
+</script>

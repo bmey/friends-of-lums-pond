@@ -63,9 +63,8 @@ export const SPONSOR_URL =
   "https://drive.google.com/file/d/1guZhsINdNO_mcN29o0vkPVAfxpLt1ruv/view?usp=sharing";
 export const VENDOR_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdcFDJyBj1_WAk3yI60c3QFRcmQ1936RhkllGyDqWKf-m5k0Q/viewform";
-export const PERFORMER_URL = ""; // 2026 interest form
 
-// Contact
+// Contact — also where performer interest is directed (no form)
 export const PONDFEST_EMAIL = "pondfest@friendsoflumspond.org";
 
 // ─────────────────────────────────────────────

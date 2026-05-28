@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/PondFestLayout.astro";
 import PondFestCountdown from "../../components/pondfest/PondFestCountdown.astro";
+import EmailCTAModal from "../../components/pondfest/EmailCTAModal.astro";
 import {
   CURRENT_YEAR,
   EVENT_DATE,
@@ -14,7 +15,6 @@ import {
   VOLUNTEER_URL,
   SPONSOR_URL,
   VENDOR_URL,
-  PERFORMER_URL,
   PONDFEST_EMAIL,
   LINEUP,
   SPONSORS,
@@ -76,7 +76,7 @@ const ctaLinks = [
   },
   {
     label: "Perform",
-    url: PERFORMER_URL,
+    useEmailModal: true,
     style: "pf-btn--outline-light",
     icon: "fa-music",
   },
@@ -134,7 +134,7 @@ const involvedPaths = [
     icon: "fa-guitar",
     title: "Perform",
     desc: "Are you a local musician or performer? We want to hear from you.",
-    url: PERFORMER_URL,
+    useEmailModal: true,
     cta: "Apply to Perform",
   },
   {
@@ -199,7 +199,16 @@ const tierLabels: Record<string, string> = {
         <div class="pf-hero-ctas">
           {
             ctaLinks.map((cta) =>
-              cta.url ? (
+              "useEmailModal" in cta && cta.useEmailModal ? (
+                <button
+                  type="button"
+                  class={`pf-btn ${cta.style}`}
+                  data-open-modal="performModal"
+                >
+                  <i class={`fa-solid ${cta.icon}`} />
+                  {cta.label}
+                </button>
+              ) : "url" in cta && cta.url ? (
                 <a
                   href={cta.url}
                   class={`pf-btn ${cta.style}`}
@@ -626,7 +635,15 @@ const tierLabels: Record<string, string> = {
               <i class={`fa-solid ${path.icon} pf-involved-icon`} />
               <h3>{path.title}</h3>
               <p>{path.desc}</p>
-              {path.url ? (
+              {"useEmailModal" in path && path.useEmailModal ? (
+                <button
+                  type="button"
+                  class="pf-btn pf-btn--outline-light"
+                  data-open-modal="performModal"
+                >
+                  {path.cta}
+                </button>
+              ) : "url" in path && path.url ? (
                 <a
                   href={path.url}
                   class="pf-btn pf-btn--outline-light"
@@ -829,6 +846,14 @@ const tierLabels: Record<string, string> = {
       </a>
     </div>
   </section>
+
+  <EmailCTAModal
+    id="performModal"
+    title="Apply to Perform at Pond Fest"
+    intro="We'd love to hear from you. Email us with a quick intro — who you are, your genre, and links to your music — and the lineup team will be in touch."
+    email={PONDFEST_EMAIL}
+    subject="Pond Fest Performer Interest"
+  />
 </Layout>
 
 <style>
