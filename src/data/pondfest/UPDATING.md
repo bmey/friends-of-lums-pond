@@ -77,10 +77,11 @@ export const TICKETS_URL = "https://www.eventbrite.com/e/pond-fest-2027...";
 export const VOLUNTEER_URL = "https://www.signupgenius.com/...";
 export const SPONSOR_URL = "https://forms.gle/...";
 export const VENDOR_URL = "https://forms.gle/...";
-export const PERFORMER_URL = "https://forms.gle/...";
 ```
 
 If a URL is empty (`""`), that button will appear grayed out on the page with a "Coming Soon" note.
+
+Note: Performers don't use a form — the "Apply to Perform" buttons open a small popup directing them to email `pondfest@friendsoflumspond.org`.
 
 ### 5. Update funding goals
 

@@ -1,9 +1,9 @@
 ---
 import Layout from "../../layouts/PondFestLayout.astro";
+import EmailCTAModal from "../../components/pondfest/EmailCTAModal.astro";
 import {
   CURRENT_YEAR,
   VOLUNTEER_URL,
-  PERFORMER_URL,
   VENDOR_URL,
   SPONSOR_URL,
   PONDFEST_EMAIL,
@@ -35,14 +35,14 @@ const paths = [
     title: "Perform",
     heading: "Share Your Music with the Community",
     description:
-      "Pond Fest features live music all day across multiple outdoor stages. We welcome local and regional artists of all genres. Whether you are a solo act, duo, or full band, we would love to hear from you. Fill out our performer interest form and tell us about yourself.",
+      "Pond Fest features live music all day across multiple outdoor stages. We welcome local and regional artists of all genres. Whether you are a solo act, duo, or full band, we would love to hear from you. Send us a quick email and tell us about yourself.",
     details: [
       "Multiple outdoor stages (Wingspan, Monarch, Nest Box)",
       "Open Mic slots available throughout the day",
       "Headlining and supporting act positions",
       "Exposure to 1,000+ community members",
     ],
-    url: PERFORMER_URL,
+    useEmailModal: true,
     cta: "Apply to Perform",
     imageUrl: "", // e.g. "/pondfest/photos/performers.jpg"
     gradientFrom: "#271e52",
@@ -145,7 +145,15 @@ const paths = [
               ))}
             </ul>
             <div class="pathway-cta">
-              {path.url ? (
+              {"useEmailModal" in path && path.useEmailModal ? (
+                <button
+                  type="button"
+                  class="pf-btn pf-btn--primary"
+                  data-open-modal="performModal"
+                >
+                  {path.cta}
+                </button>
+              ) : "url" in path && path.url ? (
                 <a
                   href={path.url}
                   class="pf-btn pf-btn--primary"
@@ -184,6 +192,14 @@ const paths = [
       </p>
     </div>
   </section>
+
+  <EmailCTAModal
+    id="performModal"
+    title="Apply to Perform at Pond Fest"
+    intro="We'd love to hear from you. Email us with a quick intro — who you are, your genre, and links to your music — and the lineup team will be in touch."
+    email={PONDFEST_EMAIL}
+    subject="Pond Fest Performer Interest"
+  />
 </Layout>
 
 <style>
