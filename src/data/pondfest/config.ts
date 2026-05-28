@@ -58,8 +58,10 @@ export const HISTORY_BG_PHOTO = "";
 // External URLs — update as they become available
 export const TICKETS_URL = ""; // Eventbrite link
 export const VOLUNTEER_URL = "https://forms.gle/dMEmKxYs7ovnyG658"; // SignUpGenius or Google Form
-export const SPONSOR_URL = "https://drive.google.com/file/d/1guZhsINdNO_mcN29o0vkPVAfxpLt1ruv/view?usp=sharing";
-export const VENDOR_URL = ""; // Vendor interest form
+export const SPONSOR_URL =
+  "https://drive.google.com/file/d/1guZhsINdNO_mcN29o0vkPVAfxpLt1ruv/view?usp=sharing";
+export const VENDOR_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdcFDJyBj1_WAk3yI60c3QFRcmQ1936RhkllGyDqWKf-m5k0Q/viewform";
 export const PERFORMER_URL = ""; // 2026 interest form
 
 // Contact
