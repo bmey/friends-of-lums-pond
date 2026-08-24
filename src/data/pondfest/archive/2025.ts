@@ -8,8 +8,8 @@ export const PONDFEST_2025: ArchiveYear = {
   grossRevenue: 19000,
   fundraisingGoal: 10000,
   highlights: [
-    "Second annual Pond Fest — largest event to date with ~1,500 attendees",
-    "Raised ~$19,000 gross — nearly doubling the $10,000 goal",
+    "Second annual Pond Fest, and the largest to date with about 1,500 attendees",
+    "Raised about $19,000 gross, nearly double the $10,000 goal",
     "Expanded to three named pavilion stages: Wingspan, Monarch, and Nest Box",
     "11 live acts including Secondhand Stray, FINN, Big Izzy and Bullfrog, The Mad Dabbers, and Ballet Folklórico",
     "Open Mic stage all day at the Nest Box pavilion",

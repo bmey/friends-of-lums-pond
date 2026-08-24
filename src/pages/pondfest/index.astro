@@ -12,6 +12,7 @@ import {
   EVENT_TAGLINE,
   FUNDRAISING_GOAL,
   HERO_IMAGE_URL,
+  HERO_IMAGE_MOBILE_URL,
   OG_IMAGE_URL,
   MERCH_URL,
   PONDFEST_DONATE_URL,
@@ -45,6 +46,7 @@ import {
   PARKING_MAP_IMAGE_URL,
   VENDOR_MAP_IMAGE_URL,
   PHOTO_BAND_1_URL,
+  PHOTO_BAND_1_MOBILE_URL,
   GALLERY_PHOTOS,
   PHOTO_CREDIT_NAME,
   PHOTO_CREDIT_URL,
@@ -203,7 +205,12 @@ const emceeLine =
   }
 
   <!-- ══ HERO ═══════════════════════════════════════════════════════ -->
-  <section class="pf-hero" style={`background-image: url('${HERO_IMAGE_URL}')`}>
+  <section
+    class="pf-hero"
+    style={`--pf-hero-img: url('${HERO_IMAGE_URL}'); --pf-hero-img-sm: url('${
+      HERO_IMAGE_MOBILE_URL || HERO_IMAGE_URL
+    }')`}
+  >
     <div class="pf-hero-overlay">
       <div class="pf-hero-content">
         <div class="pf-hero-eyebrow">Friends of Lums Pond presents</div>
@@ -754,7 +761,9 @@ const emceeLine =
   <div
     class="pf-photo-band"
     style={PHOTO_BAND_1_URL
-      ? `background-image: url('${PHOTO_BAND_1_URL}')`
+      ? `--pf-band-img: url('${PHOTO_BAND_1_URL}'); --pf-band-img-sm: url('${
+          PHOTO_BAND_1_MOBILE_URL || PHOTO_BAND_1_URL
+        }')`
       : undefined}
     role="img"
     aria-label="Pond Fest event photo"
@@ -1120,6 +1129,7 @@ const emceeLine =
 <style>
   /* ── Hero ── */
   .pf-hero {
+    background-image: var(--pf-hero-img);
     /* min-height only. The overlay below is in normal flow, so on a narrow
        screen the content pushes this section open instead of spilling out
        of a fixed box and over the header. */
@@ -1130,6 +1140,11 @@ const emceeLine =
     position: relative;
     display: flex;
     align-items: center;
+  }
+  @media (max-width: 768px) {
+    .pf-hero {
+      background-image: var(--pf-hero-img-sm, var(--pf-hero-img));
+    }
   }
   .pf-hero::before {
     content: "";

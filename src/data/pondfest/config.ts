@@ -27,6 +27,9 @@ export const FUNDRAISING_GOAL = "$30,000";
 
 // Hero and map images — place files in public/pondfest/
 export const HERO_IMAGE_URL = "/pondfest/hero.jpg";
+// Phone-sized copy of the hero. It is a CSS background, so without this a
+// phone downloads the full desktop file before it can paint anything.
+export const HERO_IMAGE_MOBILE_URL = "/pondfest/hero-sm.jpg";
 export const OG_IMAGE_URL = "/pondfest/og.jpg";
 export const EVENT_MAP_IMAGE_URL = "/pondfest/map-event.jpg";
 export const EVENT_MAP_FULL_URL = "/pondfest/map-event-full.jpg";
@@ -41,6 +44,7 @@ export const VENDOR_MAP_IMAGE_URL = "";
 // Full-width photo band between Lineup and Get Involved sections
 // Recommended: wide panoramic crowd/stage shot (landscape, high-res)
 export const PHOTO_BAND_1_URL = "/pondfest/wide-1.jpg";
+export const PHOTO_BAND_1_MOBILE_URL = "/pondfest/wide-1-sm.jpg";
 
 // Gallery grid on the index page. Drop new files in public/pondfest/gallery/ and
 // add paths here. Keep photos already used in AMENITIES out of this list so the
@@ -381,9 +385,9 @@ export const AMENITIES: Amenity[] = [
     desc: "The park's own playground sits right in the middle of Area 2, open all day and free. Handy when someone has had enough of standing in lines.",
     imageUrl: "/pondfest/playground.jpg",
     imageAlt: "The big kids' playground at Lums Pond State Park",
-    // Sourced from a public TripAdvisor upload with no identifiable author, so
-    // there is no credit we can print honestly. Replace with our own photo.
-    credit: "",
+    credit: "Delaware State Parks",
+    creditUrl:
+      "https://www.destateparks.com/playground-roundup-new-castle-county/",
   },
   {
     id: "kayak-launch",

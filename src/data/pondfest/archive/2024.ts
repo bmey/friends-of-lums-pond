@@ -8,9 +8,9 @@ export const PONDFEST_2024: ArchiveYear = {
   grossRevenue: 10738,
   fundraisingGoal: 4000,
   highlights: [
-    "First-ever Pond Fest — FOLP's inaugural signature fundraiser",
+    "First-ever Pond Fest, and FOLP's inaugural signature fundraiser",
     "~600 attendees from the local community",
-    "Raised $10,738 gross — far exceeding the $4,000 goal",
+    "Raised $10,738 gross, far exceeding the $4,000 goal",
     "Two live music acts: PJ's Pub Tour and Lucky Stone",
     "35+ craft vendors, artisans, and nonprofits",
     "Beer garden featuring JAKL Beer Works and Volunteer Brewing Co.",
