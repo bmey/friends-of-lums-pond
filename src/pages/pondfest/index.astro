@@ -211,24 +211,21 @@ const emceeLine =
           Pond Fest <span class="pf-hero-year">{CURRENT_YEAR}</span>
         </h1>
         <p class="pf-hero-meta">
-          <i class="fa-solid fa-calendar-days"></i>
-          {EVENT_DATE_DISPLAY}
-           &nbsp;&middot;&nbsp;
-          <i class="fa-solid fa-clock"></i>
-          {EVENT_TIME}
+          <span class="pf-nowrap">
+            <i class="fa-solid fa-calendar-days"></i>
+            {EVENT_DATE_DISPLAY}
+          </span>
+          <span class="pf-hero-meta-sep">&nbsp;&middot;&nbsp;</span>
+          <span class="pf-nowrap">
+            <i class="fa-solid fa-clock"></i>
+            {EVENT_TIME}
+          </span>
           <br />
-          <i class="fa-solid fa-location-dot"></i>
-          {EVENT_LOCATION}
+          <span class="pf-nowrap">
+            <i class="fa-solid fa-location-dot"></i>
+            {EVENT_LOCATION}
+          </span>
         </p>
-        <div class="pf-hero-75th">
-          <img
-            src={SEVENTY_FIFTH_LOGO_WHITE}
-            alt="Delaware State Parks 75th anniversary"
-            width="160"
-            loading="eager"
-          />
-          <span>Celebrating 75 Years of Delaware State Parks</span>
-        </div>
         <p class="pf-hero-tagline">{EVENT_TAGLINE}</p>
         <p class="pf-hero-free">
           Free to attend &middot; standard park entrance fee applies ($5 DE /
@@ -264,6 +261,17 @@ const emceeLine =
       </div>
     </div>
   </section>
+
+  <!-- ══ 75th STRIP — sits under the hero so the hero stays short ═══ -->
+  <a class="pf-75th-strip" href="#pf-75th">
+    <img
+      src={SEVENTY_FIFTH_LOGO_WHITE}
+      alt="Delaware State Parks 75th anniversary"
+      width="120"
+      loading="lazy"
+    />
+    <span>Celebrating 75 Years of Delaware State Parks</span>
+  </a>
 
   <!-- ══ DAY-OF PANEL — thin toolbar, shown the week of the event ════ -->
   <div
@@ -761,7 +769,10 @@ const emceeLine =
   </div>
 
   <!-- ══ 75 YEARS OF DELAWARE STATE PARKS ══════════════════════════ -->
-  <section class="pf-section pf-section--flush pf-section--dark-alt pf-75th">
+  <section
+    class="pf-section pf-section--flush pf-section--dark-alt pf-75th"
+    id="pf-75th"
+  >
     <div class="pf-split pf-split--reverse">
       <div class="pf-split-media pf-75th-media">
         {
@@ -1109,6 +1120,9 @@ const emceeLine =
 <style>
   /* ── Hero ── */
   .pf-hero {
+    /* min-height only. The overlay below is in normal flow, so on a narrow
+       screen the content pushes this section open instead of spilling out
+       of a fixed box and over the header. */
     min-height: max(85vh, 780px);
     background-size: cover;
     background-position: center;
@@ -1117,7 +1131,8 @@ const emceeLine =
     display: flex;
     align-items: center;
   }
-  .pf-hero-overlay {
+  .pf-hero::before {
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -1125,10 +1140,15 @@ const emceeLine =
       rgba(11, 9, 23, 0.7) 0%,
       rgba(11, 9, 23, 0.85) 100%
     );
+  }
+  .pf-hero-overlay {
+    position: relative;
+    z-index: 1;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem clamp(1.5rem, 5vw, 5rem);
+    padding: clamp(2.5rem, 7vw, 4rem) clamp(1.5rem, 5vw, 5rem);
     box-sizing: border-box;
   }
   .pf-hero-content {
@@ -1167,26 +1187,55 @@ const emceeLine =
     opacity: 0.6;
     margin-right: 0.25em;
   }
-  /* 75th anniversary badge — deliberately quiet */
-  .pf-hero-75th {
+  /* keep the date, the time and the location each in one piece, so a narrow
+     screen never strands "PM" on a line of its own */
+  .pf-nowrap {
+    white-space: nowrap;
+  }
+  /* on a phone the date and the time each take their own line, so the
+     separator between them has nothing left to separate */
+  @media (max-width: 480px) {
+    .pf-hero-meta-sep {
+      display: none;
+    }
+    .pf-hero-meta .pf-nowrap {
+      display: block;
+    }
+    /* the spans are their own lines now, so the explicit break would
+       leave a blank one */
+    .pf-hero-meta br {
+      display: none;
+    }
+  }
+  /* 75th anniversary strip — deliberately quiet, and out of the hero so the
+     hero does not have to carry it on a phone */
+  .pf-75th-strip {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
     flex-wrap: wrap;
-    margin: 0.9rem 0 1rem;
+    background: var(--pf-dark);
+    padding: clamp(1rem, 3vw, 1.4rem) clamp(1.5rem, 5vw, 5rem);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
-  .pf-hero-75th img {
+  .pf-75th-strip img {
     width: 100%;
-    max-width: 160px;
+    max-width: 120px;
     height: auto;
     display: block;
+    opacity: 0.9;
   }
-  .pf-hero-75th span {
-    font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+  .pf-75th-strip span {
+    font-size: clamp(0.68rem, 1.5vw, 0.8rem);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+  }
+  .pf-75th-strip:hover span {
+    color: rgba(255, 255, 255, 0.85);
   }
   .pf-hero-tagline {
     font-size: clamp(0.95rem, 2vw, 1.1rem);
@@ -1212,10 +1261,20 @@ const emceeLine =
     .pf-hero-ctas {
       flex-direction: column;
       align-items: center;
+      margin-top: 1.25rem;
     }
     .pf-hero-ctas .pf-btn {
       width: 100%;
       max-width: 300px;
+    }
+    .pf-hero-title {
+      font-size: clamp(3rem, 13vw, 4.5rem);
+    }
+    .pf-hero-tagline {
+      margin-bottom: 0.35rem;
+    }
+    .pf-hero-free {
+      margin-bottom: 0.5rem;
     }
   }
   @media (min-width: 768px) {
@@ -2172,10 +2231,16 @@ const emceeLine =
       min-height: auto;
       background-image: none !important;
     }
+    .pf-hero::before {
+      display: none;
+    }
     .pf-hero-overlay {
       position: static;
       background: none;
       padding: 0;
+    }
+    .pf-75th-strip {
+      display: none;
     }
     .pf-hero-content {
       color: #000;
