@@ -65,16 +65,18 @@ export const LINEUP: Performer[] = [
     name: "Billy Pierce Band",
     stage: "Wingspan Stage", // shows as a teal badge
     time: "2:00 PM – 4:00 PM", // shows next to the badge
-    imageUrl: "/pondfest/lineup/billy-pierce-band.jpg", // square photo, ~400px
-    url: "https://www.billypierce.com/", // makes the name a link
-    blurb: "Delaware slide-guitar blues.", // one muted line under the name
+    imageUrl: "/pondfest/lineup/billy-pierce-band.webp",
+    imageWidth: 410, // the file's real pixel size — the frame uses it
+    imageHeight: 482, // to reserve space so nothing jumps as photos load
+    url: "https://www.billypierce.com/", // adds a "Website" / "Facebook" button
+    blurb: "Delaware slide-guitar blues.", // a short paragraph under the name
   },
 ];
 ```
 
-Acts without an `imageUrl` get a coloured tile with the first letter of their name, so the list still looks even. Keep the list alphabetical (ignoring a leading "The") until set times are known, then reorder it by schedule.
+Each act gets its own panel with the photo breaking out of the top edge, and the panels flip left/right down the page. On phones the photo goes full-bleed across the top of the panel and the words sit underneath. Acts without an `imageUrl` get a coloured tile with the first letter of their name instead. Keep the list alphabetical (ignoring a leading "The") until set times are known, then reorder it by schedule.
 
-Photos go in `public/pondfest/lineup/`, named after the act (`guilt-45-band.jpg`). Square, about 400×400. **Never guess a photo credit.** If you don't know who took it, leave the photo off.
+Photos go in `public/pondfest/lineup/`, named after the act (`guilt-45-band.webp`). Use whatever shape the band sent — portrait, square, or a wide band shot all work, and the panel follows the photo. Crop only to bring anything narrower than about 9:10 back up to it, keep the longest side around 600–1400px, and save as WebP at quality 80 (roughly 25–100KB each). Set `imageWidth`/`imageHeight` to the finished file's real dimensions. **Never guess a photo credit.** Bands supply their own promo photos, so no credit line is shown; if you get a photo from anywhere else and don't know who took it, leave it off.
 
 **Emcees** use the same shape and only need names. They render as one line under the band list ("Hosted all day by …").
 
