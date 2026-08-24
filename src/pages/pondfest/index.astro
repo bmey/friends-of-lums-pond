@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/PondFestLayout.astro";
 import PondFestCountdown from "../../components/pondfest/PondFestCountdown.astro";
+import PondFestVideo from "../../components/pondfest/PondFestVideo.astro";
 import EmailCTAModal from "../../components/pondfest/EmailCTAModal.astro";
 import {
   CURRENT_YEAR,
@@ -11,34 +12,53 @@ import {
   EVENT_TAGLINE,
   FUNDRAISING_GOAL,
   HERO_IMAGE_URL,
-  TICKETS_URL,
+  OG_IMAGE_URL,
+  MERCH_URL,
+  PONDFEST_DONATE_URL,
   VOLUNTEER_URL,
   SPONSOR_URL,
   VENDOR_URL,
   PONDFEST_EMAIL,
+  FACEBOOK_URL,
+  HASHTAGS,
   LINEUP,
+  EMCEES,
   SPONSORS,
   FUNDING_GOALS,
+  AMENITIES,
+  AMENITIES_INTRO,
+  EVERY_AREA,
   FAQ,
   DAY_OF_ALERT,
   SHUTTLE_INFO,
   PARKING_NOTES,
+  FEE_NOTE,
+  BRING_NOTE,
+  RAIN_DATE_NOTE,
   RAFFLE_LINK,
   AUCTION_LINK,
   FEEDBACK_LINK,
-  DONATION_EMBED_URL,
   EVENT_MAP_IMAGE_URL,
+  EVENT_MAP_FULL_URL,
   PARKING_MAP_IMAGE_URL,
   VENDOR_MAP_IMAGE_URL,
   PHOTO_BAND_1_URL,
   GALLERY_PHOTOS,
+  PHOTO_CREDIT_NAME,
+  PHOTO_CREDIT_URL,
   HISTORY_BG_PHOTO,
+  SEVENTY_FIFTH_URL,
+  SEVENTY_FIFTH_LOGO_WHITE,
+  HEART_OF_PARKS_VIDEO_URL,
+  HEART_OF_PARKS_POSTER_URL,
+  HEART_OF_PARKS_CAPTIONS_URL,
 } from "../../data/pondfest/config";
 
 const hasMaps =
   EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
 
 const sponsorsByTier = {
+  diamond: SPONSORS.filter((s) => s.tier === "diamond"),
   platinum: SPONSORS.filter((s) => s.tier === "platinum"),
   gold: SPONSORS.filter((s) => s.tier === "gold"),
   silver: SPONSORS.filter((s) => s.tier === "silver"),
@@ -49,12 +69,20 @@ const sponsorsByTier = {
 const hasSponsors = SPONSORS.length > 0;
 const hasLineup = LINEUP.length > 0;
 
+// Hero CTAs. Entries without a link are dropped rather than rendered
+// disabled — the hero never shows a dead button.
 const ctaLinks = [
   {
-    label: "Get Tickets",
-    url: TICKETS_URL,
+    label: "Donate",
+    url: PONDFEST_DONATE_URL,
     style: "pf-btn--primary",
-    icon: "fa-ticket",
+    icon: "fa-circle-dollar-to-slot",
+  },
+  {
+    label: "Pre-Order Shirts",
+    url: MERCH_URL,
+    style: "pf-btn--outline-light",
+    icon: "fa-shirt",
   },
   {
     label: "Volunteer",
@@ -80,53 +108,22 @@ const ctaLinks = [
     style: "pf-btn--outline-light",
     icon: "fa-music",
   },
-];
+].filter((cta) => ("useEmailModal" in cta && cta.useEmailModal) || cta.url);
 
-// Real photos for each feature — add URLs from your Lightroom album
-const features = [
-  {
-    icon: "fa-music",
-    title: "Live Music",
-    desc: "Multiple stages featuring local and regional artists throughout the day.",
-    imageUrl: "/pondfest/live-music.jpg",
-  },
-  {
-    icon: "fa-beer-mug-empty",
-    title: "Beer Garden",
-    desc: "Craft brews from Delaware's best local breweries (21+).",
-    imageUrl: "/pondfest/beer.jpg",
-  },
-  {
-    icon: "fa-utensils",
-    title: "Food Trucks",
-    desc: "A variety of local food trucks for every appetite.",
-    imageUrl: "/pondfest/food-truck2.jpg",
-  },
-  {
-    icon: "fa-child",
-    title: "Kids Zone",
-    desc: "Games, crafts, face painting, and activities for all ages.",
-    imageUrl: "/pondfest/kid-zone.jpg",
-  },
-  {
-    icon: "fa-store",
-    title: "Craft Vendors",
-    desc: "40+ local artisans, crafters, and community nonprofits.",
-    imageUrl: "/pondfest/vendor.jpg",
-  },
-  {
-    icon: "fa-ticket",
-    title: "Raffles & Auction",
-    desc: "Win exciting prizes donated by local businesses and supporters.",
-    imageUrl: "/pondfest/raffles.jpg",
-  },
-];
+// "Plan Your Visit" info notes — order matters, fees first
+const planNotes = [
+  { icon: "fa-ticket", text: FEE_NOTE },
+  { icon: "fa-square-parking", text: PARKING_NOTES },
+  { icon: "fa-bus", text: SHUTTLE_INFO },
+  { icon: "fa-bag-shopping", text: BRING_NOTE },
+  { icon: "fa-cloud-rain", text: RAIN_DATE_NOTE },
+].filter((n) => n.text);
 
 const involvedPaths = [
   {
     icon: "fa-hand-holding-heart",
     title: "Volunteer",
-    desc: "Help make Pond Fest happen. We need hands for setup, kids zone, info tables, and more.",
+    desc: "Help make Pond Fest happen. We need hands for setup, Junior Jam, info tables, and more.",
     url: VOLUNTEER_URL,
     cta: "Sign Up to Volunteer",
   },
@@ -147,24 +144,41 @@ const involvedPaths = [
   {
     icon: "fa-star",
     title: "Sponsor",
-    desc: "Support the park and get visibility with hundreds of community members.",
+    desc: "Support the park and get visibility with thousands of attendees.",
     url: SPONSOR_URL,
     cta: "Become a Sponsor",
   },
 ];
 
 const tierLabels: Record<string, string> = {
+  diamond: "Diamond Sponsors",
   platinum: "Platinum Sponsors",
   gold: "Gold Sponsors",
   silver: "Silver Sponsors",
   bronze: "Bronze Sponsors",
   family: "Family Sponsors",
 };
+
+// Monogram fallback for acts with no photo — "The Sarah Koon Band" -> S
+const monogram = (name: string) =>
+  name
+    .replace(/^the\s+/i, "")
+    .charAt(0)
+    .toUpperCase();
+
+const emceeNames = EMCEES.map((e) => e.name);
+const emceeLine =
+  emceeNames.length > 1
+    ? `${emceeNames.slice(0, -1).join(", ")} & ${
+        emceeNames[emceeNames.length - 1]
+      }`
+    : emceeNames[0];
 ---
 
 <Layout
   title={`Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
-  description={`Pond Fest ${CURRENT_YEAR} — ${EVENT_DATE_DISPLAY}. ${EVENT_TAGLINE}`}
+  description={`Pond Fest ${CURRENT_YEAR}. ${EVENT_DATE_DISPLAY}, Lums Pond State Park. Free community festival: live music on three stages, beer garden, food trucks, kids' activities, and more. Standard park entrance fee applies.`}
+  ogImage={OG_IMAGE_URL}
 >
   <!-- ══ ALERT BANNER ════════════════════════════════════════════════ -->
   {
@@ -194,7 +208,20 @@ const tierLabels: Record<string, string> = {
           <i class="fa-solid fa-location-dot"></i>
           {EVENT_LOCATION}
         </p>
+        <div class="pf-hero-75th">
+          <img
+            src={SEVENTY_FIFTH_LOGO_WHITE}
+            alt="Delaware State Parks 75th anniversary"
+            width="160"
+            loading="eager"
+          />
+          <span>Celebrating 75 Years of Delaware State Parks</span>
+        </div>
         <p class="pf-hero-tagline">{EVENT_TAGLINE}</p>
+        <p class="pf-hero-free">
+          Free to attend &middot; standard park entrance fee applies ($5 DE /
+          $10 out-of-state vehicles)
+        </p>
         <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
         <div class="pf-hero-ctas">
           {
@@ -208,7 +235,7 @@ const tierLabels: Record<string, string> = {
                   <i class={`fa-solid ${cta.icon}`} />
                   {cta.label}
                 </button>
-              ) : "url" in cta && cta.url ? (
+              ) : (
                 <a
                   href={cta.url}
                   class={`pf-btn ${cta.style}`}
@@ -218,11 +245,6 @@ const tierLabels: Record<string, string> = {
                   <i class={`fa-solid ${cta.icon}`} />
                   {cta.label}
                 </a>
-              ) : (
-                <span class="pf-btn pf-btn--disabled" title="Link coming soon">
-                  <i class={`fa-solid ${cta.icon}`} />
-                  {cta.label}
-                </span>
               ),
             )
           }
@@ -231,7 +253,7 @@ const tierLabels: Record<string, string> = {
     </div>
   </section>
 
-  <!-- ══ DAY-OF PANEL ═══════════════════════════════════════════════ -->
+  <!-- ══ DAY-OF PANEL — thin toolbar, shown the week of the event ════ -->
   <div
     id="pf-day-of-panel"
     data-event-date={EVENT_DATE}
@@ -243,13 +265,9 @@ const tierLabels: Record<string, string> = {
       <div class="pf-section-inner pf-section-inner--mid">
         <h2>Day-of Quick Links</h2>
         <div class="pf-dayof-quicknav">
-          {
-            hasMaps && (
-              <a href="#pf-maps" class="pf-quicknav-btn">
-                <i class="fa-solid fa-map" /> Maps
-              </a>
-            )
-          }
+          <a href="#pf-plan" class="pf-quicknav-btn">
+            <i class="fa-solid fa-map"></i> Plan Your Visit
+          </a>
           {
             RAFFLE_LINK && (
               <a
@@ -274,13 +292,14 @@ const tierLabels: Record<string, string> = {
               </a>
             )
           }
-          {
-            DONATION_EMBED_URL && (
-              <a href="#pf-donate" class="pf-quicknav-btn">
-                <i class="fa-solid fa-circle-dollar-to-slot" /> Donate
-              </a>
-            )
-          }
+          <a
+            href={PONDFEST_DONATE_URL}
+            target="_blank"
+            rel="noopener"
+            class="pf-quicknav-btn"
+          >
+            <i class="fa-solid fa-circle-dollar-to-slot"></i> Donate
+          </a>
           {
             FEEDBACK_LINK && (
               <a
@@ -296,85 +315,6 @@ const tierLabels: Record<string, string> = {
         </div>
       </div>
     </section>
-
-    {
-      hasMaps && (
-        <section class="pf-section pf-section--dark-alt" id="pf-maps">
-          <div class="pf-section-inner pf-section-inner--mid">
-            <h2>Event Maps</h2>
-            <div class="pf-maps-grid">
-              {EVENT_MAP_IMAGE_URL && (
-                <div class="pf-map-item">
-                  <h3>Event Map</h3>
-                  <a href={EVENT_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                    <img
-                      src={EVENT_MAP_IMAGE_URL}
-                      alt="Pond Fest event map"
-                      class="pf-map-img"
-                      loading="lazy"
-                    />
-                    <span class="pf-map-tap-hint">
-                      <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
-                      enlarge
-                    </span>
-                  </a>
-                </div>
-              )}
-              {PARKING_MAP_IMAGE_URL && (
-                <div class="pf-map-item">
-                  <h3>Parking Map</h3>
-                  <a
-                    href={PARKING_MAP_IMAGE_URL}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <img
-                      src={PARKING_MAP_IMAGE_URL}
-                      alt="Pond Fest parking map"
-                      class="pf-map-img"
-                      loading="lazy"
-                    />
-                    <span class="pf-map-tap-hint">
-                      <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
-                      enlarge
-                    </span>
-                  </a>
-                </div>
-              )}
-              {VENDOR_MAP_IMAGE_URL && (
-                <div class="pf-map-item">
-                  <h3>Vendor Map</h3>
-                  <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                    <img
-                      src={VENDOR_MAP_IMAGE_URL}
-                      alt="Pond Fest vendor map"
-                      class="pf-map-img"
-                      loading="lazy"
-                    />
-                    <span class="pf-map-tap-hint">
-                      <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
-                      enlarge
-                    </span>
-                  </a>
-                </div>
-              )}
-            </div>
-            {PARKING_NOTES && (
-              <div class="pf-info-note">
-                <i class="fa-solid fa-circle-parking" />
-                <p>{PARKING_NOTES}</p>
-              </div>
-            )}
-            {SHUTTLE_INFO && (
-              <div class="pf-info-note">
-                <i class="fa-solid fa-bus" />
-                <p>{SHUTTLE_INFO}</p>
-              </div>
-            )}
-          </div>
-        </section>
-      )
-    }
 
     {
       (RAFFLE_LINK || AUCTION_LINK) && (
@@ -419,37 +359,6 @@ const tierLabels: Record<string, string> = {
     }
 
     {
-      DONATION_EMBED_URL && (
-        <section class="pf-section pf-section--dark-alt" id="pf-donate">
-          <div class="pf-section-inner--narrow pf-donate-section">
-            <h2>Donate Today</h2>
-            <p>
-              Money raised goes directly to funding or enhancing Lums Pond State
-              Park programs and facilities.
-            </p>
-            <script
-              src="https://donorbox.org/widget.js"
-              paypalExpress="false"
-              is:inline
-            />
-            <iframe
-              src={DONATION_EMBED_URL}
-              name="donorbox"
-              allowpaymentrequest="allowpaymentrequest"
-              seamless="seamless"
-              frameborder="0"
-              scrolling="no"
-              height="900px"
-              width="100%"
-              style="max-width: 500px; min-width: 250px; max-height: none !important; display: block; margin: 0 auto;"
-              allow="payment"
-            />
-          </div>
-        </section>
-      )
-    }
-
-    {
       FEEDBACK_LINK && (
         <section class="pf-section pf-section--purple">
           <div class="pf-section-inner--narrow pf-feedback-section">
@@ -484,6 +393,19 @@ const tierLabels: Record<string, string> = {
             Money raised goes directly to funding or enhancing Lums Pond State
             Park programs and facilities.
           </p>
+          <p>
+            Since 2024, Pond Fest has raised about $30,000 for the park. This
+            year's goal: match it in a single day.
+          </p>
+          <a
+            href={PONDFEST_DONATE_URL}
+            class="pf-btn pf-btn--primary"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fa-solid fa-circle-dollar-to-slot" /> Donate to Pond Fest{" "}
+            {CURRENT_YEAR}
+          </a>
         </div>
 
         {FUNDING_GOALS.map((goal, i) => (
@@ -511,7 +433,7 @@ const tierLabels: Record<string, string> = {
                   target="_blank"
                   rel="noopener"
                 >
-                  Donate to this goal
+                  Donate
                 </a>
               ) : (
                 <span class="pf-goals-donate-soon">
@@ -525,34 +447,163 @@ const tierLabels: Record<string, string> = {
     )
   }
 
-  <!-- ══ WHAT TO EXPECT — photo tiles on light bg ══════════════════ -->
+  <!-- ══ WHAT TO EXPECT — one card per amenity, photo led ══════════ -->
   <section class="pf-section pf-section--light">
     <div class="pf-section-inner">
       <div class="pf-expect-header">
         <span class="pf-eyebrow">The Experience</span>
         <h2>What to Expect</h2>
+        <p class="pf-amen-intro">{AMENITIES_INTRO}</p>
       </div>
-      <div class="pf-features-grid">
+
+      <div class="pf-amen-grid">
         {
-          features.map((f) => (
-            <div class="pf-feature-tile">
-              <div class="pf-feature-media">
-                {f.imageUrl ? (
-                  <img src={f.imageUrl} alt={f.title} loading="lazy" />
-                ) : (
-                  <div class="pf-feature-icon-bg">
-                    <i class={`fa-solid ${f.icon}`} />
-                  </div>
-                )}
+          AMENITIES.map((a) => (
+            <article
+              class={`pf-amen-card ${
+                a.imageUrl ? "" : "pf-amen-card--nophoto"
+              }`}
+              id={a.id}
+            >
+              {a.imageUrl ? (
+                <div class="pf-amen-media">
+                  <img
+                    src={a.imageUrl}
+                    alt={a.imageAlt || a.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ) : (
+                <div
+                  class="pf-amen-media pf-amen-media--icon"
+                  aria-hidden="true"
+                >
+                  <i class={`fa-solid ${a.icon}`} />
+                </div>
+              )}
+              <div class="pf-amen-body">
+                <h3 class="pf-amen-title">
+                  <i
+                    class={`fa-solid ${a.icon} pf-amen-title-icon`}
+                    aria-hidden="true"
+                  />
+                  <span>{a.title}</span>
+                  {a.badge && <span class="pf-amen-badge">{a.badge}</span>}
+                </h3>
+                <p class="pf-amen-desc">{a.desc}</p>
+                <span class="pf-amen-area">
+                  <i class="fa-solid fa-location-dot" aria-hidden="true" />
+                  {a.area}
+                </span>
               </div>
-              <div class="pf-feature-body">
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-              </div>
-            </div>
+            </article>
           ))
         }
       </div>
+
+      {
+        EVERY_AREA.length > 0 && (
+          <div class="pf-everywhere">
+            <h3 class="pf-everywhere-label">In every area</h3>
+            <ul class="pf-everywhere-list">
+              {EVERY_AREA.map((item) => (
+                <li>
+                  <i class={`fa-solid ${item.icon}`} />
+                  <span>{item.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <p class="pf-amen-footnote">
+        Not sure where anything is? <a href="#pf-plan">Plan Your Visit</a> has
+        the event map.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ PLAN YOUR VISIT — map + logistics, always on ══════════════ -->
+  <section class="pf-section pf-section--dark-alt" id="pf-plan">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <div class="pf-plan-header">
+        <span class="pf-eyebrow">Before You Go</span>
+        <h2>Plan Your Visit</h2>
+      </div>
+      {
+        hasMaps && (
+          <div class="pf-maps-grid">
+            {EVENT_MAP_IMAGE_URL && (
+              <div class="pf-map-item pf-map-item--event">
+                <h3>Event Map</h3>
+                <a
+                  href={EVENT_MAP_FULL_URL || EVENT_MAP_IMAGE_URL}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <img
+                    src={EVENT_MAP_IMAGE_URL}
+                    alt="Pond Fest event map showing Areas 1, 2 and 3 at Lums Pond State Park"
+                    class="pf-map-img"
+                    loading="lazy"
+                  />
+                  <span class="pf-map-tap-hint">
+                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                    enlarge
+                  </span>
+                </a>
+              </div>
+            )}
+            {PARKING_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Parking Map</h3>
+                <a href={PARKING_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img
+                    src={PARKING_MAP_IMAGE_URL}
+                    alt="Pond Fest parking map"
+                    class="pf-map-img"
+                    loading="lazy"
+                  />
+                  <span class="pf-map-tap-hint">
+                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                    enlarge
+                  </span>
+                </a>
+              </div>
+            )}
+            {VENDOR_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Vendor Map</h3>
+                <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img
+                    src={VENDOR_MAP_IMAGE_URL}
+                    alt="Pond Fest vendor map"
+                    class="pf-map-img"
+                    loading="lazy"
+                  />
+                  <span class="pf-map-tap-hint">
+                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                    enlarge
+                  </span>
+                </a>
+              </div>
+            )}
+          </div>
+        )
+      }
+      {
+        planNotes.map((note) => (
+          <div class="pf-info-note">
+            <i class={`fa-solid ${note.icon}`} />
+            <p>{note.text}</p>
+          </div>
+        ))
+      }
+      <p class="pf-plan-hashtags">
+        Share your day: {HASHTAGS.join(" ")}
+      </p>
     </div>
   </section>
 
@@ -565,11 +616,48 @@ const tierLabels: Record<string, string> = {
             <div class="pf-lineup-header">
               <span class="pf-eyebrow">Live Music</span>
               <h2>Music Lineup</h2>
+              <p class="pf-lineup-intro">
+                Eleven acts across three stages: Wingspan and Monarch in Area 1,
+                and the Nest Box pavilion stage in Area 2. Every performer is
+                donating their time, so the music you hear all day is money that
+                stays with the park. Set times go up as soon as we have them, so
+                follow us on{" "}
+                <a href={FACEBOOK_URL} target="_blank" rel="noopener">
+                  Facebook
+                </a>{" "}
+                if you don't want to miss your favorites.
+              </p>
             </div>
             <div class="pf-lineup-grid">
               {LINEUP.map((performer) => (
                 <div class="pf-performer-row">
-                  <div class="pf-performer-name">{performer.name}</div>
+                  <div class="pf-performer-thumb">
+                    {performer.imageUrl ? (
+                      <img
+                        src={performer.imageUrl}
+                        alt={performer.name}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span class="pf-performer-monogram" aria-hidden="true">
+                        {monogram(performer.name)}
+                      </span>
+                    )}
+                  </div>
+                  <div class="pf-performer-main">
+                    <div class="pf-performer-name">
+                      {performer.url ? (
+                        <a href={performer.url} target="_blank" rel="noopener">
+                          {performer.name}
+                        </a>
+                      ) : (
+                        performer.name
+                      )}
+                    </div>
+                    {performer.blurb && (
+                      <div class="pf-performer-blurb">{performer.blurb}</div>
+                    )}
+                  </div>
                   {performer.stage && (
                     <span class="pf-performer-stage">{performer.stage}</span>
                   )}
@@ -579,6 +667,12 @@ const tierLabels: Record<string, string> = {
                 </div>
               ))}
             </div>
+            {emceeLine && (
+              <div class="pf-emcee-strip">
+                <i class="fa-solid fa-microphone-lines" />
+                <span>Hosted all day by {emceeLine}</span>
+              </div>
+            )}
           </>
         ) : (
           <div class="pf-coming-soon">
@@ -586,16 +680,12 @@ const tierLabels: Record<string, string> = {
             <h2 class="pf-coming-soon-headline">Lineup Coming Soon</h2>
             <div class="pf-coming-soon-line" />
             <p>
-              Artist announcements drop as we get closer to October — follow us
+              Artist announcements drop as we get closer to October. Follow us
               on{" "}
-              <a
-                href="https://www.facebook.com/FriendsofLumsPond"
-                target="_blank"
-                rel="noopener"
-              >
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener">
                 Facebook
               </a>{" "}
-              so you don't miss it.
+              so you don't miss them.
             </p>
           </div>
         )
@@ -620,6 +710,66 @@ const tierLabels: Record<string, string> = {
       )
     }
   </div>
+
+  <!-- ══ 75 YEARS OF DELAWARE STATE PARKS ══════════════════════════ -->
+  <section class="pf-section pf-section--flush pf-section--dark-alt pf-75th">
+    <div class="pf-split pf-split--reverse">
+      <div class="pf-split-media pf-75th-media">
+        {
+          HEART_OF_PARKS_VIDEO_URL ? (
+            <figure class="pf-75th-figure">
+              <PondFestVideo
+                src={HEART_OF_PARKS_VIDEO_URL}
+                poster={HEART_OF_PARKS_POSTER_URL}
+                captions={HEART_OF_PARKS_CAPTIONS_URL}
+                label="Heart of the Parks: Bryan Mey on 75 years of Delaware State Parks"
+              />
+              <figcaption>
+                FOLP President Bryan Mey on what 75 years means for Lums Pond,
+                from Delaware State Parks' <em>Heart of the Parks</em> series.
+              </figcaption>
+            </figure>
+          ) : (
+            <div class="pf-img-placeholder">
+              <i class="fa-solid fa-film" />
+            </div>
+          )
+        }
+      </div>
+      <div class="pf-split-text pf-75th-text">
+        <img
+          class="pf-75th-corner-logo"
+          src={SEVENTY_FIFTH_LOGO_WHITE}
+          alt="Delaware State Parks 75th anniversary"
+          width="160"
+          loading="lazy"
+        />
+        <span class="pf-eyebrow">1951 &ndash; 2026</span>
+        <h2>75 Years of Delaware State Parks</h2>
+        <p>
+          Delaware State Parks turns 75 in 2026, and Pond Fest is proud to be
+          part of the celebration. Since 1951, these parks have protected the
+          places Delawareans love, including our own Lums Pond, home of the
+          state's largest freshwater pond. Most people don't realize Delaware's
+          state parks are roughly 65% self-funded. Entrance fees, programs, and
+          community support keep them running, which is why a Friends group, and
+          a festival like this one, matter.
+        </p>
+        {
+          SEVENTY_FIFTH_URL && (
+            <a
+              class="pf-75th-link"
+              href={SEVENTY_FIFTH_URL}
+              target="_blank"
+              rel="noopener"
+            >
+              Explore 75 years of Delaware State Parks →
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
 
   <!-- ══ GET INVOLVED ═══════════════════════════════════════════════ -->
   <section class="pf-section pf-section--dark">
@@ -654,7 +804,7 @@ const tierLabels: Record<string, string> = {
                 </a>
               ) : (
                 <span class="pf-btn pf-btn--disabled">
-                  {path.cta} — Coming Soon
+                  {path.cta} (Coming Soon)
                 </span>
               )}
             </div>
@@ -676,32 +826,55 @@ const tierLabels: Record<string, string> = {
       <h2>Sponsors</h2>
       {
         hasSponsors ? (
-          <div class="pf-sponsor-tiers">
-            {(["platinum", "gold", "silver", "bronze", "family"] as const).map(
-              (tier) =>
-                sponsorsByTier[tier].length > 0 && (
-                  <div class="pf-sponsor-tier">
-                    <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
-                    <div class="pf-sponsor-list">
-                      {sponsorsByTier[tier].map((s) =>
-                        s.url ? (
-                          <a
-                            href={s.url}
-                            target="_blank"
-                            rel="noopener"
-                            class="pf-sponsor-name"
-                          >
-                            {s.name}
-                          </a>
-                        ) : (
-                          <span class="pf-sponsor-name">{s.name}</span>
-                        ),
-                      )}
+          <>
+            <div class="pf-sponsor-tiers">
+              {(
+                [
+                  "diamond",
+                  "platinum",
+                  "gold",
+                  "silver",
+                  "bronze",
+                  "family",
+                ] as const
+              ).map(
+                (tier) =>
+                  sponsorsByTier[tier].length > 0 && (
+                    <div class="pf-sponsor-tier">
+                      <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
+                      <div class="pf-sponsor-list">
+                        {sponsorsByTier[tier].map((s) =>
+                          s.url ? (
+                            <a
+                              href={s.url}
+                              target="_blank"
+                              rel="noopener"
+                              class="pf-sponsor-name"
+                            >
+                              {s.name}
+                            </a>
+                          ) : (
+                            <span class="pf-sponsor-name">{s.name}</span>
+                          ),
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ),
-            )}
-          </div>
+                  ),
+              )}
+            </div>
+            <p class="pf-sponsor-cta">
+              Every sponsorship level for {CURRENT_YEAR} is still open, Family
+              through Diamond.{" "}
+              {SPONSOR_URL ? (
+                <a href={SPONSOR_URL} target="_blank" rel="noopener">
+                  Become a sponsor
+                </a>
+              ) : (
+                <a href={`mailto:${PONDFEST_EMAIL}`}>Become a sponsor</a>
+              )}{" "}
+              and put your name on the biggest Pond Fest yet.
+            </p>
+          </>
         ) : (
           <div class="pf-sponsor-empty">
             <p>
@@ -732,6 +905,10 @@ const tierLabels: Record<string, string> = {
         <p>
           Everything you need to know about Pond Fest. Can't find your answer?
           Email <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+        </p>
+        <p class="pf-press-link">
+          Writing about Pond Fest, or promoting it as a sponsor, vendor, or
+          performer? <a href="/pondfest/press">Press &amp; media kit →</a>
         </p>
       </div>
       <div class="pf-faq">
@@ -789,16 +966,15 @@ const tierLabels: Record<string, string> = {
         <div class="pf-gallery-masonry" aria-label="Pond Fest photo gallery">
           {GALLERY_PHOTOS.map((url, i) => (
             <div class="pf-gallery-item">
-              <img
-                src={url}
-                alt={`Pond Fest memory ${i + 1}`}
-                loading="lazy"
-              />
+              <img src={url} alt={`Pond Fest memory ${i + 1}`} loading="lazy" />
             </div>
           ))}
         </div>
       ) : (
-        <div class="pf-gallery-masonry pf-gallery-masonry--placeholder" aria-label="Pond Fest photo gallery">
+        <div
+          class="pf-gallery-masonry pf-gallery-masonry--placeholder"
+          aria-label="Pond Fest photo gallery"
+        >
           {[...Array(8)].map((_, i) => (
             <div class="pf-gallery-item">
               <div class="pf-img-placeholder">
@@ -807,6 +983,20 @@ const tierLabels: Record<string, string> = {
             </div>
           ))}
         </div>
+      )
+    }
+    {
+      PHOTO_CREDIT_NAME && (
+        <p class="pf-photo-credit">
+          Event photography by{" "}
+          {PHOTO_CREDIT_URL ? (
+            <a href={PHOTO_CREDIT_URL} target="_blank" rel="noopener">
+              {PHOTO_CREDIT_NAME}
+            </a>
+          ) : (
+            PHOTO_CREDIT_NAME
+          )}
+        </p>
       )
     }
   </section>
@@ -850,7 +1040,7 @@ const tierLabels: Record<string, string> = {
   <EmailCTAModal
     id="performModal"
     title="Apply to Perform at Pond Fest"
-    intro="We'd love to hear from you. Email us with a quick intro — who you are, your genre, and links to your music — and the lineup team will be in touch."
+    intro="We'd love to hear from you. Send a quick note about who you are, your genre, and where we can listen, and the lineup team will get back to you."
     email={PONDFEST_EMAIL}
     subject="Pond Fest Performer Interest"
   />
@@ -917,11 +1107,39 @@ const tierLabels: Record<string, string> = {
     opacity: 0.6;
     margin-right: 0.25em;
   }
+  /* 75th anniversary badge — deliberately quiet */
+  .pf-hero-75th {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 0.9rem 0 1rem;
+  }
+  .pf-hero-75th img {
+    width: 100%;
+    max-width: 160px;
+    height: auto;
+    display: block;
+  }
+  .pf-hero-75th span {
+    font-size: clamp(0.72rem, 1.5vw, 0.82rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+  }
   .pf-hero-tagline {
     font-size: clamp(0.95rem, 2vw, 1.1rem);
     opacity: 0.8;
     font-style: italic;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .pf-hero-free {
+    font-size: clamp(0.82rem, 1.6vw, 0.95rem);
+    font-weight: 700;
+    color: var(--pf-teal-light);
+    margin: 0 0 1rem;
+    line-height: 1.5;
   }
   .pf-hero-ctas {
     display: flex;
@@ -985,59 +1203,6 @@ const tierLabels: Record<string, string> = {
     background: rgba(255, 255, 255, 0.22);
     color: #fff;
   }
-  .pf-maps-grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    margin-bottom: 1.25rem;
-  }
-  .pf-map-item {
-    text-align: center;
-  }
-  .pf-map-item h3 {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-  }
-  .pf-map-item a {
-    display: block;
-    text-decoration: none;
-  }
-  .pf-map-img {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    object-fit: cover;
-    max-height: 300px;
-  }
-  .pf-map-tap-hint {
-    display: block;
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 0.3rem;
-  }
-  .pf-info-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
-    padding: 0.9rem 1.1rem;
-    margin-top: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.9rem;
-  }
-  .pf-info-note i {
-    color: var(--pf-teal);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-  }
-  .pf-info-note p {
-    margin: 0;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.82);
-  }
   .pf-dayof-link-cards {
     display: flex;
     flex-direction: column;
@@ -1081,14 +1246,84 @@ const tierLabels: Record<string, string> = {
     color: rgba(255, 255, 255, 0.3);
     flex-shrink: 0;
   }
-  .pf-donate-section,
   .pf-feedback-section {
     text-align: center;
   }
-  .pf-donate-section p,
   .pf-feedback-section p {
     max-width: 540px;
     margin: 0 auto 1.25rem auto;
+  }
+
+  /* ── Plan Your Visit ── */
+  .pf-plan-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .pf-maps-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    margin-bottom: 1.25rem;
+  }
+  /* The event map is the day-of program — give it the full width */
+  .pf-map-item--event {
+    grid-column: 1 / -1;
+  }
+  .pf-map-item {
+    text-align: center;
+  }
+  .pf-map-item h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .pf-map-item a {
+    display: block;
+    text-decoration: none;
+  }
+  .pf-map-img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .pf-map-item:not(.pf-map-item--event) .pf-map-img {
+    object-fit: cover;
+    max-height: 300px;
+  }
+  .pf-map-tap-hint {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.3rem;
+  }
+  .pf-info-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+  }
+  .pf-info-note i {
+    color: var(--pf-teal);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .pf-info-note p {
+    margin: 0;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .pf-plan-hashtags {
+    text-align: center;
+    margin: 1.5rem 0 0;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--pf-teal-light) !important;
   }
 
   /* ── Fundraising Goals ── */
@@ -1098,6 +1333,9 @@ const tierLabels: Record<string, string> = {
   .pf-goals-intro {
     text-align: center;
     margin-bottom: clamp(2rem, 4vw, 4rem);
+  }
+  .pf-goals-intro .pf-btn {
+    margin-top: 0.75rem;
   }
   .pf-goals-split {
     margin-top: clamp(2rem, 3vw, 3rem);
@@ -1120,67 +1358,232 @@ const tierLabels: Record<string, string> = {
     font-style: italic;
   }
 
-  /* ── What to Expect ── */
+  /* ── What to Expect / amenity grid ── */
   .pf-expect-header {
     text-align: center;
-    margin-bottom: clamp(2rem, 4vw, 4rem);
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
   }
-  .pf-features-grid {
+  .pf-amen-intro {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+    line-height: 1.7;
+  }
+
+  .pf-amen-grid {
     display: grid;
-    gap: clamp(1.5rem, 3vw, 3rem);
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1180px;
+    margin: 0 auto;
+    align-items: start;
   }
-  @media (min-width: 768px) {
-    .pf-features-grid {
-      grid-template-columns: repeat(3, 1fr);
+  @media (min-width: 900px) {
+    .pf-amen-grid {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: clamp(2rem, 4vw, 3.5rem);
+      row-gap: clamp(2.5rem, 5vw, 4rem);
+      /* the stagger below is a transform, so the last card in the
+         right-hand column needs room to hang past the grid */
+      padding-bottom: clamp(2.5rem, 5vw, 5rem);
+    }
+    /* staggered columns: the right column drops half a card */
+    .pf-amen-card:nth-child(2n) {
+      transform: translateY(clamp(2.5rem, 5vw, 5rem));
     }
   }
-  .pf-feature-tile {
+
+  .pf-amen-card {
+    display: flex;
+    flex-direction: column;
   }
-  .pf-feature-media {
+  .pf-amen-media {
     aspect-ratio: 4 / 3;
+    border-radius: 14px;
     overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 1rem;
     background: var(--pf-light-alt);
+    margin-bottom: 1.1rem;
   }
-  .pf-feature-media img {
+  .pf-amen-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s ease;
   }
-  .pf-feature-tile:hover .pf-feature-media img {
-    transform: scale(1.04);
+  .pf-amen-card:hover .pf-amen-media img {
+    transform: scale(1.03);
   }
-  .pf-feature-icon-bg {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--pf-light-alt), #e8e3f8);
+  /* cards with no photo yet: a tile carrying the icon at poster size */
+  .pf-amen-media--icon {
+    aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
-    color: var(--pf-purple);
+    background: linear-gradient(
+      135deg,
+      var(--pf-purple) 0%,
+      var(--pf-purple-dark) 55%,
+      #1c1638 100%
+    );
+    position: relative;
   }
-  .pf-feature-body h3 {
-    font-size: 1.05rem;
+  .pf-amen-media--icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 78% 22%,
+      rgba(94, 200, 195, 0.35),
+      transparent 55%
+    );
+  }
+  /* a ring behind the glyph, so the tile still reads as a designed
+     panel rather than an empty block */
+  .pf-amen-media--icon::before {
+    content: "";
+    position: absolute;
+    width: clamp(6.5rem, 15vw, 9.5rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .pf-amen-media--icon i {
+    font-size: clamp(2.75rem, 6vw, 4rem);
+    color: rgba(255, 255, 255, 0.92);
+    position: relative;
+    z-index: 1;
+  }
+
+  .pf-amen-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .pf-amen-title {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem) !important;
+    color: var(--pf-purple-dark) !important;
+    margin: 0 !important;
+    line-height: 1.25;
+  }
+  .pf-amen-title-icon {
+    color: var(--pf-teal);
+    font-size: 0.8em;
+    flex-shrink: 0;
+  }
+  .pf-amen-badge {
+    padding: 0.15em 0.6em;
+    border-radius: 999px;
+    background: var(--pf-purple);
+    color: #fff;
+    font-size: 0.6rem;
     font-weight: 700;
-    color: var(--pf-purple-dark);
-    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    white-space: nowrap;
+    align-self: center;
   }
-  .pf-feature-body p {
+  .pf-amen-desc {
+    font-size: clamp(0.92rem, 1.6vw, 1rem);
+    line-height: 1.6;
+    color: #4a3d6b;
+    margin: 0;
+    max-width: 46ch;
+  }
+  .pf-amen-area {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--pf-purple);
+    margin-top: 0.2rem;
+  }
+  .pf-amen-area i {
+    color: var(--pf-teal);
+    font-size: 0.9em;
+  }
+
+  /* ── the logistics strip under the grid ── */
+  .pf-everywhere {
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.14);
+    border-radius: 12px;
+    padding: clamp(1.1rem, 2.5vw, 1.75rem);
+    margin: clamp(1rem, 2vw, 2rem) auto 0;
+    max-width: 1180px;
+  }
+  .pf-everywhere-label {
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--pf-purple) !important;
+    margin-bottom: 0.9rem !important;
+  }
+  .pf-everywhere-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .pf-everywhere-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1000px) {
+    .pf-everywhere-list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .pf-everywhere-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6em;
     font-size: 0.9rem;
     color: #3a2e5a;
-    line-height: 1.5;
-    margin: 0;
+    line-height: 1.45;
+  }
+  .pf-everywhere-list i {
+    color: var(--pf-teal);
+    flex-shrink: 0;
+  }
+  .pf-amen-footnote {
+    text-align: center;
+    font-size: 0.9rem;
+    margin: 1.25rem auto 0;
+  }
+  .pf-amen-footnote a {
+    color: var(--pf-purple);
+    font-weight: 700;
   }
 
   /* ── Music Lineup ── */
   .pf-lineup-header,
   .pf-coming-soon {
     text-align: center;
+  }
+  .pf-lineup-intro {
+    max-width: 720px;
+    margin: 0.75rem auto 0;
+    font-size: clamp(0.92rem, 1.7vw, 1.02rem);
+    line-height: 1.7;
+  }
+  .pf-lineup-intro a {
+    color: var(--pf-teal);
+    text-decoration: none;
+  }
+  .pf-lineup-intro a:hover {
+    text-decoration: underline;
   }
   .pf-coming-soon {
     padding: clamp(1rem, 3vw, 3rem) 0;
@@ -1221,14 +1624,60 @@ const tierLabels: Record<string, string> = {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 0;
+    padding: 0.9rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .pf-performer-name {
+  .pf-performer-thumb {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      var(--pf-purple-dark) 0%,
+      var(--pf-purple) 55%,
+      var(--pf-teal) 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pf-performer-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .pf-performer-monogram {
+    font-family: var(--font-header);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .pf-performer-main {
     flex: 1;
+    min-width: 0;
+  }
+  .pf-performer-name {
     font-size: 1.05rem;
     font-weight: 600;
     color: #fff;
+  }
+  .pf-performer-name a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(42, 196, 179, 0.6);
+  }
+  .pf-performer-name a:hover {
+    color: var(--pf-teal-light);
+    border-bottom-color: var(--pf-teal-light);
+  }
+  .pf-performer-blurb {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.45;
+    margin-top: 0.15rem;
   }
   .pf-performer-stage {
     font-size: 0.78rem;
@@ -1243,6 +1692,81 @@ const tierLabels: Record<string, string> = {
   .pf-performer-time {
     font-size: 0.88rem;
     color: rgba(255, 255, 255, 0.55);
+  }
+  .pf-emcee-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    margin-top: clamp(1.25rem, 3vw, 2rem);
+    padding: 1rem 1.25rem;
+    border-radius: 999px;
+    background: rgba(42, 196, 179, 0.12);
+    border: 1px solid rgba(42, 196, 179, 0.35);
+    text-align: center;
+  }
+  .pf-emcee-strip i {
+    color: var(--pf-teal);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .pf-emcee-strip span {
+    font-size: clamp(0.92rem, 1.8vw, 1.05rem);
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* ── 75th anniversary ── */
+  .pf-75th-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    box-sizing: border-box;
+    background: var(--pf-dark);
+  }
+  .pf-75th-figure {
+    margin: 0;
+    width: 100%;
+  }
+  .pf-75th-figure figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.5;
+  }
+  .pf-75th-text {
+    position: relative;
+  }
+  .pf-75th-corner-logo {
+    position: absolute;
+    top: clamp(1.25rem, 3vw, 2.5rem);
+    right: clamp(1.25rem, 3vw, 2.5rem);
+    width: 110px;
+    max-width: 160px;
+    height: auto;
+    opacity: 0.75;
+  }
+  .pf-75th-text h2 {
+    font-size: clamp(1.9rem, 4vw, 3rem) !important;
+  }
+  .pf-75th-link {
+    align-self: flex-start;
+    color: var(--pf-teal-light);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(77, 217, 203, 0.4);
+  }
+  .pf-75th-link:hover {
+    border-bottom-color: var(--pf-teal-light);
+  }
+  @media (max-width: 520px) {
+    .pf-75th-corner-logo {
+      position: static;
+      display: block;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
   }
 
   /* ── Get Involved ── */
@@ -1347,6 +1871,14 @@ const tierLabels: Record<string, string> = {
     color: var(--pf-teal);
     text-decoration: underline;
   }
+  .pf-sponsor-cta {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+  }
+  .pf-sponsor-cta a {
+    color: var(--pf-purple);
+    font-weight: 700;
+  }
   .pf-sponsor-empty {
     margin-top: 1.5rem;
     font-size: 1rem;
@@ -1382,6 +1914,11 @@ const tierLabels: Record<string, string> = {
   }
   .pf-faq-intro p a:hover {
     text-decoration: underline;
+  }
+  .pf-press-link {
+    margin-top: 1rem !important;
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.6) !important;
   }
   .pf-faq {
     display: flex;
@@ -1442,6 +1979,21 @@ const tierLabels: Record<string, string> = {
     margin: 0;
   }
 
+  /* ── Photo credit ── */
+  .pf-photo-credit {
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.45) !important;
+    padding: 1rem clamp(24px, 6vw, 80px) 0;
+    margin: 0;
+  }
+  .pf-photo-credit a {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .pf-photo-credit a:hover {
+    color: var(--pf-teal-light);
+  }
+
   /* ── History Teaser ── */
   .pf-history-section {
     background-size: cover;
@@ -1495,7 +2047,7 @@ const tierLabels: Record<string, string> = {
     font-size: clamp(0.95rem, 2vw, 1.05rem);
   }
 
-  /* ── Print ── */
+  /* ── Print — the page doubles as the day-of program ── */
   @media print {
     .pf-hero {
       min-height: auto;
@@ -1528,7 +2080,8 @@ const tierLabels: Record<string, string> = {
       color: #000;
     }
     .pf-photo-band,
-    .pf-gallery-masonry {
+    .pf-gallery-masonry,
+    .pf-75th-media {
       display: none;
     }
     .pf-hero-ctas,

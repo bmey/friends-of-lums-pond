@@ -8,7 +8,7 @@ import AttentionLinkButton from "../components/blog/AttentionLinkButton.astro";
 import IndexTeaser from "../components/IndexTeaser.astro";
 import { JOIN_URL, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Hero from "../images/HERO.jpeg";
-import EventIcon from "../images/5k-text.png";
+import PondFestLogo from "../images/pondfest.png";
 ---
 
 <!doctype html>
@@ -33,13 +33,15 @@ import EventIcon from "../images/5k-text.png";
       </div>
       <div class="teasers">
         <div class="pondfest-container">
-          <Image src={EventIcon} alt="icon for fundraiser" width="160" />
+          <Image src={PondFestLogo} alt="Pond Fest logo" width="160" />
           <p>
-            Come on out for a 5K through Middletown! This fundraising event will
-            raise money for an accessible kayak launch.
+            Pond Fest returns Saturday, October 10! Live music on three stages,
+            a beer garden, food trucks, and a full day of family fun across
+            three areas of Lums Pond State Park, all to raise $30,000 for the
+            park we love. Free to attend; standard park entrance fee applies.
           </p>
-          <AttentionLinkButton href={getUrl("blog/26-01-28-halfway-5k")}>
-            Learn more
+          <AttentionLinkButton href={getUrl("pondfest")}>
+            Plan your day
           </AttentionLinkButton>
         </div>
         <IndexTeaser icon="fa-magnifying-glass" title="About">

@@ -7,14 +7,19 @@ import { SITE_DESCRIPTION } from "../consts";
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string; // absolute path to a social card, e.g. "/pondfest/og.jpg"
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogImage } = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description || SITE_DESCRIPTION} />
+    <BaseHead
+      title={title}
+      description={description || SITE_DESCRIPTION}
+      image={ogImage}
+    />
     <style is:global>
       /* ════════════════════════════════════════════════════════════════
          POND FEST DESIGN SYSTEM — global, applies to all pf-* pages
@@ -23,21 +28,21 @@ const { title, description } = Astro.props;
       /* ── Color tokens ── */
       :root {
         /* Dark (festival night) */
-        --pf-dark:          #0b0917;
-        --pf-dark-alt:      #12101f;
+        --pf-dark: #0b0917;
+        --pf-dark-alt: #12101f;
         /* Brand purple */
-        --pf-purple:        #3d2f7a;
-        --pf-purple-light:  #6b5db5;
-        --pf-purple-dark:   #271e52;
+        --pf-purple: #3d2f7a;
+        --pf-purple-light: #6b5db5;
+        --pf-purple-dark: #271e52;
         /* Light (editorial warmth) */
-        --pf-light:         #fffbf5;
-        --pf-light-alt:     #f5f2ff;
+        --pf-light: #fffbf5;
+        --pf-light-alt: #f5f2ff;
         /* Teal accent */
-        --pf-teal:          #2ac4b3;
-        --pf-teal-light:    #4dd9cb;
+        --pf-teal: #2ac4b3;
+        --pf-teal-light: #4dd9cb;
         /* Legacy aliases — keeps existing code working */
-        --pf-warm-bg:       var(--pf-dark);
-        --pf-warm-section:  var(--pf-dark-alt);
+        --pf-warm-bg: var(--pf-dark);
+        --pf-warm-section: var(--pf-dark-alt);
       }
 
       body {
@@ -64,14 +69,26 @@ const { title, description } = Astro.props;
       }
 
       /* ── Section color variants ── */
-      .pf-section--dark    { background-color: var(--pf-dark); }
-      .pf-section--dark-alt { background-color: var(--pf-dark-alt); }
-      .pf-section--purple  { background-color: var(--pf-purple); }
-      .pf-section--light   { background-color: var(--pf-light); }
-      .pf-section--light-alt { background-color: var(--pf-light-alt); }
+      .pf-section--dark {
+        background-color: var(--pf-dark);
+      }
+      .pf-section--dark-alt {
+        background-color: var(--pf-dark-alt);
+      }
+      .pf-section--purple {
+        background-color: var(--pf-purple);
+      }
+      .pf-section--light {
+        background-color: var(--pf-light);
+      }
+      .pf-section--light-alt {
+        background-color: var(--pf-light-alt);
+      }
 
       /* Legacy — map old class names to new ones */
-      .pf-section--warm  { background-color: var(--pf-dark-alt); }
+      .pf-section--warm {
+        background-color: var(--pf-dark-alt);
+      }
 
       /* ── Section inner widths ── */
       .pf-section-inner {
@@ -104,26 +121,44 @@ const { title, description } = Astro.props;
       /* Dark section text */
       .pf-section--dark h2,
       .pf-section--dark-alt h2,
-      .pf-section--warm h2   { color: var(--pf-teal-light); }
+      .pf-section--warm h2 {
+        color: var(--pf-teal-light);
+      }
       .pf-section--dark p,
       .pf-section--dark-alt p,
-      .pf-section--warm p    { color: rgba(255, 255, 255, 0.78); }
+      .pf-section--warm p {
+        color: rgba(255, 255, 255, 0.78);
+      }
       .pf-section--dark h3,
       .pf-section--dark-alt h3,
-      .pf-section--warm h3   { color: #fff; }
+      .pf-section--warm h3 {
+        color: #fff;
+      }
 
       /* Purple section text */
-      .pf-section--purple h2 { color: #fff; }
-      .pf-section--purple p  { color: rgba(255, 255, 255, 0.82); }
-      .pf-section--purple h3 { color: var(--pf-teal-light); }
+      .pf-section--purple h2 {
+        color: #fff;
+      }
+      .pf-section--purple p {
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .pf-section--purple h3 {
+        color: var(--pf-teal-light);
+      }
 
       /* Light section text */
       .pf-section--light h2,
-      .pf-section--light-alt h2 { color: var(--pf-purple-dark); }
+      .pf-section--light-alt h2 {
+        color: var(--pf-purple-dark);
+      }
       .pf-section--light p,
-      .pf-section--light-alt p  { color: #3a2e5a; }
+      .pf-section--light-alt p {
+        color: #3a2e5a;
+      }
       .pf-section--light h3,
-      .pf-section--light-alt h3 { color: var(--pf-purple); }
+      .pf-section--light-alt h3 {
+        color: var(--pf-purple);
+      }
 
       /* ── Eyebrow label ── */
       .pf-eyebrow {
@@ -136,9 +171,13 @@ const { title, description } = Astro.props;
       }
       .pf-section--dark .pf-eyebrow,
       .pf-section--dark-alt .pf-eyebrow,
-      .pf-section--purple .pf-eyebrow { color: var(--pf-teal); }
+      .pf-section--purple .pf-eyebrow {
+        color: var(--pf-teal);
+      }
       .pf-section--light .pf-eyebrow,
-      .pf-section--light-alt .pf-eyebrow { color: var(--pf-purple); }
+      .pf-section--light-alt .pf-eyebrow {
+        color: var(--pf-purple);
+      }
 
       /* ── Split layout (image + text, 2-col) ── */
       .pf-split {
@@ -146,8 +185,12 @@ const { title, description } = Astro.props;
         grid-template-columns: 1fr 1fr;
         min-height: clamp(400px, 45vw, 680px);
       }
-      .pf-split--reverse .pf-split-media { order: 2; }
-      .pf-split--reverse .pf-split-text  { order: 1; }
+      .pf-split--reverse .pf-split-media {
+        order: 2;
+      }
+      .pf-split--reverse .pf-split-text {
+        order: 1;
+      }
 
       .pf-split-media {
         overflow: hidden;
@@ -187,8 +230,12 @@ const { title, description } = Astro.props;
         .pf-split {
           grid-template-columns: 1fr;
         }
-        .pf-split--reverse .pf-split-media { order: 1; }
-        .pf-split--reverse .pf-split-text  { order: 2; }
+        .pf-split--reverse .pf-split-media {
+          order: 1;
+        }
+        .pf-split--reverse .pf-split-text {
+          order: 2;
+        }
         .pf-split-media .pf-img-placeholder {
           min-height: 260px;
         }
@@ -220,7 +267,9 @@ const { title, description } = Astro.props;
         font-size: 4rem;
       }
       @media (min-width: 769px) {
-        .pf-photo-band { background-attachment: fixed; }
+        .pf-photo-band {
+          background-attachment: fixed;
+        }
       }
 
       /* ── Fest Memories masonry gallery ── */
@@ -238,13 +287,19 @@ const { title, description } = Astro.props;
         line-height: 0;
       }
       @media (min-width: 540px) {
-        .pf-gallery-masonry { columns: 3; }
+        .pf-gallery-masonry {
+          columns: 3;
+        }
       }
       @media (min-width: 900px) {
-        .pf-gallery-masonry { columns: 4; }
+        .pf-gallery-masonry {
+          columns: 4;
+        }
       }
       @media (min-width: 1300px) {
-        .pf-gallery-masonry { columns: 5; }
+        .pf-gallery-masonry {
+          columns: 5;
+        }
       }
       .pf-gallery-item {
         break-inside: avoid;
