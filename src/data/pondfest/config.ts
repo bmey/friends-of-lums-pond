@@ -143,21 +143,141 @@ export const FEEDBACK_LINK = ""; // Google Form survey link
 // ─────────────────────────────────────────────
 
 export const LINEUP: Performer[] = [
-  { name: "Benny Preston" },
+  {
+    name: "Benny Preston",
+    imageUrl: "/pondfest/lineup/benny-preston.webp",
+    imageWidth: 422,
+    imageHeight: 496,
+    blurb:
+      "Benny is a 50-year veteran of the Delaware music scene, known for his " +
+      "high-energy performances and crowd-pleasing style. With an extensive " +
+      "repertoire spanning the 1950s to today's hits, he delivers something " +
+      "for every generation, keeping audiences entertained from the first " +
+      "song to the last.",
+  },
   {
     name: "Billy Pierce Band",
-    imageUrl: "/pondfest/lineup/billy-pierce-band.jpg",
+    imageUrl: "/pondfest/lineup/billy-pierce-band.webp",
+    imageWidth: 410,
+    imageHeight: 482,
     url: "https://www.billypierce.com/",
+    blurb:
+      "Billy Pierce is an electric slide disciple of the Sonny Landreth " +
+      "earthy New Orleans style. Billy's crafted his songs into blues, " +
+      "rhythm and swamp funk. He has opened for Indigenous, Mike Zito and " +
+      "Tyrone Vaughn of the Texas Vaughn musical dynasty. Billy has recorded " +
+      "8 CDs and is working on 2 more.",
   },
-  { name: "Brian Corcoran" },
-  { name: "Camp" },
-  { name: "Cher's Playground" },
-  { name: "Dansino" },
-  { name: "Guilt 45 Band", imageUrl: "/pondfest/lineup/guilt-45-band.jpg" },
-  { name: "Hippocampus", imageUrl: "/pondfest/lineup/hippocampus.jpg" },
-  { name: "Mauka & Makai" },
-  { name: "The Sarah Koon Band" },
-  { name: "Scott & Tammy" },
+  {
+    name: "Brian Corcoran",
+    imageUrl: "/pondfest/lineup/brian-corcoran.webp",
+    imageWidth: 511,
+    imageHeight: 601,
+    blurb:
+      "Brian is a Delaware-based singer-songwriter whose performances blend " +
+      "heartfelt original music with timeless Americana favorites. Drawing " +
+      "from folk, blues, and rock traditions, he delivers an engaging mix of " +
+      "originals and beloved covers that connect with audiences of all ages.",
+  },
+  {
+    name: "Camp",
+    imageUrl: "/pondfest/lineup/camp.webp",
+    imageWidth: 1360,
+    imageHeight: 633,
+    blurb:
+      "Camp is an instrumental experience that fuses the energy of surf rock, " +
+      "the attitude of punk, the spontaneity of jazz, and the adventurous " +
+      "spirit of indie rock. Their music delivers infectious rhythms, " +
+      "unexpected twists, with a uniquely quirky edge.",
+  },
+  {
+    name: "Cher's Playground",
+    imageUrl: "/pondfest/lineup/chers-playground.webp",
+    imageWidth: 934,
+    imageHeight: 633,
+    url: "https://www.facebook.com/chersplayground/",
+    blurb:
+      "Cher's Playground is a Delaware-based musical duo and cover band " +
+      "featuring powerhouse vocalist Cher Goodchild. Known for their " +
+      "energetic performances and crowd-pleasing setlists, they bring " +
+      "beloved hits and fan-favorite covers to every stage, creating an " +
+      "unforgettable live music experience.",
+  },
+  {
+    name: "Dansino",
+    imageUrl: "/pondfest/lineup/dansino.webp",
+    imageWidth: 643,
+    imageHeight: 633,
+    blurb:
+      "Dansino is the spirited acoustic duo of Anthony Ambrosino and Bob " +
+      "Danyo, delivering exceptional musicianship, and an energetic live " +
+      "performance. Both are accomplished vocalists, with Anthony on guitar " +
+      "and Bob on mandolin, creating a distinctive blend of acoustic " +
+      "favorites that entertains audiences of all ages.",
+  },
+  {
+    name: "Guilt 45 Band",
+    imageUrl: "/pondfest/lineup/guilt-45-band.webp",
+    imageWidth: 602,
+    imageHeight: 633,
+    url: "https://www.facebook.com/guilt45band",
+    blurb:
+      "Guilt 45 Band is a 4-piece grunge & alternative band covering the best " +
+      "of the 90s and 2000s. They're bringing back the Seattle Sound to " +
+      "kick-start the nostalgia of that era while introducing younger " +
+      "generations to those iconic moments. In addition to the classics, " +
+      "Guilt 45 is always adding to their 200+ song catalog with fan " +
+      "favorites, one-hit wonders, and deep cuts to make every show fresh " +
+      "and exciting.",
+  },
+  {
+    name: "Hippocampus",
+    imageUrl: "/pondfest/lineup/hippocampus.webp",
+    imageWidth: 615,
+    imageHeight: 460,
+    url: "https://www.facebook.com/hippocampus2/",
+    blurb:
+      "Hippocampus is one of Delaware's premier high-energy bands, blending " +
+      "jazz, blues, rock, and pop into a dynamic American sound reminiscent " +
+      "of Phish and Dave Matthews Band. Known for their electrifying live " +
+      "performances, the band mixes crowd-favorite covers with compelling " +
+      "original music, creating an engaging experience for all.",
+  },
+  {
+    name: "Mauka & Makai",
+    imageUrl: "/pondfest/lineup/mauka-and-makai.webp",
+    imageWidth: 406,
+    imageHeight: 477,
+    blurb:
+      "Mauka & Makai are Frieda Fisher-Tyler & Robin Tyler. Based in Kent " +
+      "County, Delaware, this talented duo has been making music together " +
+      "for the past two years, bringing energy and chemistry to every " +
+      "performance. Their crowd-pleasing setlist blends beloved covers from " +
+      "folk, pop, and island-inspired genres, creating a fun, feel-good " +
+      "sound that keeps audiences coming back for more.",
+  },
+  {
+    name: "The Sarah Koon Band",
+    imageUrl: "/pondfest/lineup/sarah-koon-band.webp",
+    imageWidth: 475,
+    imageHeight: 559,
+    url: "https://www.facebook.com/sarahkoonmusic/",
+    blurb:
+      "Sarah Koon is a Wilmington, DE-based indie pop/art-rock band centered " +
+      "around classically trained pianist and singer-songwriter Sarah Koon. " +
+      "Her music features original cinematic melodies with a quirky charm.",
+  },
+  {
+    name: "Scott & Tammy",
+    imageUrl: "/pondfest/lineup/scott-and-tammy.webp",
+    imageWidth: 844,
+    imageHeight: 633,
+    blurb:
+      "Scott & Tammy are a husband & wife duo based out of Smyrna, Delaware. " +
+      "They play acoustic covers and originals with Scott on guitar, Tammy " +
+      "on washboard and other percussion instruments. Their influences " +
+      "include Grateful Dead, Peter Rowan and Animal from the Muppets.",
+  },
 ];
 
 export const EMCEES: Performer[] = [
@@ -219,6 +339,7 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-music",
     title: "Live Music",
     area: "Areas 1 & 2",
+    url: "#pf-lineup", // jumps down to the full lineup on this page
     desc: "Eleven acts on three stages: Wingspan and Monarch in Area 1, the Nest Box pavilion in Area 2. Every performer is donating the day.",
     imageUrl: "/pondfest/live-music.jpg",
     imageAlt: "Two singers performing on a Pond Fest stage",

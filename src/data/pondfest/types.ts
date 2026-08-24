@@ -2,9 +2,11 @@ export interface Performer {
   name: string;
   stage?: string;
   time?: string;
-  imageUrl?: string; // /pondfest/lineup/<slug>.jpg
+  imageUrl?: string; // /pondfest/lineup/<slug>.webp
+  imageWidth?: number; // natural pixel size of the file — sets the frame's
+  imageHeight?: number; // aspect ratio so nothing jumps while photos load
   url?: string; // act's official site or page
-  blurb?: string; // one-liner, filled from band outreach
+  blurb?: string; // a short paragraph, in the act's own words where possible
 }
 
 export type SponsorTier =
