@@ -245,11 +245,18 @@ const { title, description, ogImage } = Astro.props;
       .pf-photo-band {
         width: 100%;
         height: clamp(260px, 30vw, 500px);
+        background-image: var(--pf-band-img);
         background-size: cover;
         background-position: center;
         background-attachment: scroll;
         position: relative;
         overflow: hidden;
+      }
+      /* a phone gets a phone-sized copy of the band */
+      @media (max-width: 768px) {
+        .pf-photo-band {
+          background-image: var(--pf-band-img-sm, var(--pf-band-img));
+        }
       }
       .pf-photo-band-placeholder {
         width: 100%;
