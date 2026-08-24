@@ -1,0 +1,43 @@
+---
+interface Props {
+  src: string;
+  poster?: string;
+  captions?: string;
+  label?: string; // accessible label for the player
+}
+
+const { src, poster, captions, label } = Astro.props;
+---
+
+<video
+  controls
+  preload="none"
+  playsinline
+  poster={poster}
+  aria-label={label}
+  class="pf-video"
+>
+  <source src={src} type="video/mp4" />
+  {
+    captions && (
+      <track
+        kind="captions"
+        src={captions}
+        srclang="en"
+        label="English"
+        default
+      />
+    )
+  }
+</video>
+
+<style>
+  /* preload="none" keeps the file off the wire until someone presses play */
+  .pf-video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    background: #000;
+  }
+</style>

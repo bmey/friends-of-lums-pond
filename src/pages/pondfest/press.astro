@@ -1,0 +1,565 @@
+---
+import Layout from "../../layouts/PondFestLayout.astro";
+import {
+  CURRENT_YEAR,
+  EVENT_DATE_DISPLAY,
+  EVENT_TIME,
+  EVENT_LOCATION,
+  FUNDRAISING_GOAL,
+  OG_IMAGE_URL,
+  EVENT_MAP_FULL_URL,
+  PONDFEST_EMAIL,
+  PRESIDENT_EMAIL,
+  FACEBOOK_URL,
+  INSTAGRAM_URL,
+  HASHTAGS,
+  PHOTO_CREDIT_NAME,
+  SEVENTY_FIFTH_URL,
+} from "../../data/pondfest/config";
+
+const facts = [
+  {
+    term: "What",
+    def: `Pond Fest ${CURRENT_YEAR}, the third annual Pond Fest`,
+  },
+  { term: "When", def: `${EVENT_DATE_DISPLAY}, ${EVENT_TIME}` },
+  { term: "Rain date", def: "Sunday, October 11, 2026" },
+  {
+    term: "Where",
+    def: `${EVENT_LOCATION} (1068 Howell School Rd, Bear, DE 19701)`,
+  },
+  {
+    term: "Admission",
+    def: "Free to attend. The standard Delaware State Parks vehicle entrance fee applies at the gate: $5 Delaware plates, $10 out-of-state; annual passes accepted.",
+  },
+  {
+    term: "Footprint",
+    def: "Three park areas, connected by a free all-day shuttle",
+  },
+  {
+    term: "Attendance",
+    def: "About 1,500 attended in 2025; 2,500+ expected in 2026",
+  },
+  { term: "Music", def: "11 volunteer musical acts across three stages" },
+  { term: "Fundraising goal", def: `${FUNDRAISING_GOAL} in a single day` },
+  {
+    term: "Beneficiaries",
+    def: "Title I school field trip assistance, and the adaptive kayak launch at Lums Pond",
+  },
+  {
+    term: "Presented by",
+    def: "Friends of Lums Pond State Park, a 100% volunteer-run 501(c)(3) nonprofit",
+  },
+];
+
+const downloads = [
+  {
+    name: "Pond Fest logo",
+    href: "/pondfest/press/pondfest-logo.png",
+    meta: "PNG · 118 KB · 500 × 500",
+    desc: "The round Pond Fest mark, on a transparent background.",
+  },
+  {
+    name: "Friends of Lums Pond logo (seal)",
+    href: "/pondfest/press/folp-logo-seal.png",
+    meta: "PNG · 19 KB · 338 × 338",
+    desc: "Our round heron seal, on a transparent background. Use this one where the logo has to sit in a small square.",
+  },
+  {
+    name: "Friends of Lums Pond logo (horizontal)",
+    href: "/pondfest/press/folp-logo-horizontal.png",
+    meta: "PNG · 18 KB · 611 × 162",
+    desc: "The seal with the wordmark alongside it, on a transparent background. Best for a banner, a footer, or a sponsor board.",
+  },
+  {
+    name: `Pond Fest ${CURRENT_YEAR} lineup graphic`,
+    href: "/pondfest/press/pondfest-2026-lineup.png",
+    meta: "PNG · 2.0 MB · 1620 × 1821",
+    desc: "All 13 volunteer performers, ready to post or print.",
+  },
+  {
+    name: "Event map (full resolution)",
+    href: EVENT_MAP_FULL_URL,
+    meta: "JPG · 539 KB · 3716 × 2477",
+    desc: "All three areas, with stages, vendors, food, and parking.",
+  },
+  {
+    name: "Social share card",
+    href: OG_IMAGE_URL,
+    meta: "JPG · 177 KB · 1200 × 630",
+    desc: "Sized for a Facebook or LinkedIn link preview.",
+  },
+];
+
+const BOILERPLATE =
+  "The Friends of Lums Pond State Park is a 501(c)(3) nonprofit organization that partners with Delaware State Parks to support programs, projects and experiences at Lums Pond State Park. The organization is 100% volunteer-run. To learn more or get involved, visit friendsoflumspond.org.";
+---
+
+<Layout
+  title={`Pond Fest ${CURRENT_YEAR} Press & Partner Kit | Friends of Lums Pond`}
+  description={`Media assets, fast facts, boilerplate, and shareable graphics for Pond Fest ${CURRENT_YEAR} at Lums Pond State Park.`}
+  ogImage={OG_IMAGE_URL}
+>
+  <!-- ══ HEADER ═════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark press-header">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow"
+        >For Media, Sponsors, Vendors &amp; Performers</span
+      >
+      <h1 class="press-title">
+        Pond Fest {CURRENT_YEAR} Press &amp; Partner Kit
+      </h1>
+      <p class="press-lede">
+        Everything you need to write about, promote, or share Pond Fest.
+        Questions or a request we haven't covered? Email{" "}
+        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>.
+      </p>
+      <div class="press-header-ctas">
+        <a href="/pondfest" class="pf-btn pf-btn--outline-light">
+          <i class="fa-solid fa-arrow-left"></i> Back to Pond Fest
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FAST FACTS ═════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark-alt">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow">The Basics</span>
+      <h2>Fast Facts</h2>
+      <dl class="press-facts">
+        {
+          facts.map((f) => (
+            <div class="press-fact">
+              <dt>{f.term}</dt>
+              <dd>{f.def}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- ══ DOWNLOADS ══════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow">Assets</span>
+      <h2>Downloads</h2>
+      <p class="press-section-intro">
+        Right-click and save, or tap to open. These are free to use in coverage
+        of Pond Fest and in your own promotion of it. Please keep the logos
+        unaltered: no recoloring, no stretching, and nothing added inside the
+        mark. Need a bigger file or a vector version? Email{" "}
+        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a> and we will
+        send it over.
+      </p>
+      <ul class="press-downloads">
+        {
+          downloads.map((d) => (
+            <li>
+              <a href={d.href} target="_blank" rel="noopener">
+                <i class="fa-solid fa-download" />
+                <span class="press-download-name">{d.name}</span>
+              </a>
+              <span class="press-download-meta">{d.meta}</span>
+              <span class="press-download-desc">{d.desc}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="press-note">
+        The Delaware State Parks 75th anniversary logo is
+        <strong>not in this kit</strong>. It is licensed to Friends of Lums Pond
+        for our own use and is not ours to pass along. For 75th anniversary
+        assets and information, see{" "}
+        <a href={SEVENTY_FIFTH_URL} target="_blank" rel="noopener">
+          destateparks.com/75-years
+        </a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ PHOTOS ═════════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark-alt">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow">Event Photography</span>
+      <h2>Photos</h2>
+      <p>
+        High-resolution event photos are available for media use on request.
+        Email <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a> and tell
+        us what you need. Please credit {PHOTO_CREDIT_NAME}.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ BOILERPLATE ════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow">About the Organization</span>
+      <h2>Boilerplate</h2>
+      <p class="press-section-intro">
+        Copy this paragraph as-is for the "about" line at the end of a story or
+        release.
+      </p>
+      <blockquote class="press-boilerplate">
+        <p id="press-boilerplate-text">{BOILERPLATE}</p>
+      </blockquote>
+      <button
+        type="button"
+        class="pf-btn pf-btn--outline"
+        data-copy-target="press-boilerplate-text"
+      >
+        <i class="fa-solid fa-copy"></i> Copy boilerplate
+      </button>
+    </div>
+  </section>
+
+  <!-- ══ SHARE IT ═══════════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--purple">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow">Spread the Word</span>
+      <h2>Share It</h2>
+      <p class="press-section-intro">
+        Sponsors, vendors, and performers: these are yours to use. Post them,
+        print them, hand them out.
+      </p>
+      <div class="press-share">
+        <div class="press-qr">
+          <img
+            src="/pondfest/press/pondfest-qr.png"
+            alt="QR code linking to friendsoflumspond.org/pondfest"
+            width="200"
+            height="200"
+            loading="lazy"
+          />
+          <a
+            href="/pondfest/press/pondfest-qr.png"
+            target="_blank"
+            rel="noopener"
+            class="press-qr-link"
+          >
+            Download QR code (PNG · 396 × 396)
+          </a>
+          <p class="press-qr-caption">
+            Points at <strong>friendsoflumspond.org/pondfest</strong>, which
+            holds the schedule, the map, and everything else, and doubles as the
+            day-of program.
+          </p>
+        </div>
+        <div class="press-share-details">
+          <h3>Hashtags</h3>
+          <p class="press-hashtags">{HASHTAGS.join(" ")}</p>
+          <h3>Find us</h3>
+          <ul class="press-socials">
+            <li>
+              <i class="fa-brands fa-facebook"></i>
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener">
+                facebook.com/FriendsofLumsPond
+              </a>
+            </li>
+            <li>
+              <i class="fa-brands fa-instagram"></i>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener">
+                instagram.com/friendsoflumspond
+              </a>
+            </li>
+            <li>
+              <i class="fa-solid fa-globe"></i>
+              <a href="/pondfest">friendsoflumspond.org/pondfest</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MEDIA CONTACT ══════════════════════════════════════════════ -->
+  <section class="pf-section pf-section--dark">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <span class="pf-eyebrow">Talk to a Person</span>
+      <h2>Media Contact</h2>
+      <div class="press-contacts">
+        <div class="press-contact">
+          <strong>Bryan Mey</strong>
+          <span>President, Friends of Lums Pond State Park</span>
+          <a href={`mailto:${PRESIDENT_EMAIL}`}>{PRESIDENT_EMAIL}</a>
+        </div>
+        <div class="press-contact">
+          <strong>General enquiries</strong>
+          <span>Pond Fest committee</span>
+          <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* ── Header ── */
+  .press-title {
+    font-family: var(--font-header);
+    font-size: clamp(2rem, 5.5vw, 3.8rem);
+    color: var(--pf-teal-light);
+    margin: 0 0 0.75rem;
+    letter-spacing: 0.02em;
+    line-height: 1.05;
+  }
+  .press-lede {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .press-lede a,
+  .press-note a,
+  .press-section-intro a,
+  .press-socials a {
+    color: var(--pf-teal-light);
+  }
+  .press-header-ctas {
+    margin-top: 1.5rem;
+  }
+  .press-section-intro {
+    max-width: 640px;
+    margin-bottom: 1.75rem !important;
+  }
+
+  /* ── Fast facts ── */
+  .press-facts {
+    margin: 1.5rem 0 0;
+    display: grid;
+    gap: 0;
+  }
+  .press-fact {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  @media (min-width: 640px) {
+    .press-fact {
+      grid-template-columns: 180px 1fr;
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+  }
+  .press-fact dt {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--pf-teal);
+  }
+  .press-fact dd {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  /* ── Downloads ── */
+  .press-downloads {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) {
+    .press-downloads {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .press-downloads li {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .press-downloads a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6em;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+  }
+  .press-downloads a:hover .press-download-name {
+    color: var(--pf-teal-light);
+    text-decoration: underline;
+  }
+  .press-downloads a i {
+    color: var(--pf-teal);
+    flex-shrink: 0;
+  }
+  .press-download-meta {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .press-download-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .press-note {
+    margin-top: 1.75rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.6;
+    padding: 1rem 1.15rem;
+    border-left: 3px solid var(--pf-teal);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* ── Boilerplate ── */
+  .press-boilerplate {
+    margin: 0 0 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    max-width: 760px;
+  }
+  .press-boilerplate p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+
+  /* ── Share it ── */
+  .press-share {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 720px) {
+    .press-share {
+      grid-template-columns: 260px 1fr;
+    }
+  }
+  .press-qr img {
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .press-qr-link {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-size: 0.82rem;
+    color: #fff;
+  }
+  .press-qr-caption {
+    font-size: 0.85rem !important;
+    line-height: 1.55;
+    margin-top: 0.6rem !important;
+  }
+  .press-share-details h3 {
+    margin-top: 0;
+  }
+  .press-share-details h3:not(:first-child) {
+    margin-top: 1.5rem;
+  }
+  .press-hashtags {
+    font-size: clamp(1.05rem, 2.5vw, 1.4rem) !important;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #fff !important;
+    margin: 0;
+  }
+  .press-socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .press-socials li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7em;
+    font-size: 0.95rem;
+  }
+  .press-socials i {
+    color: var(--pf-teal-light);
+    width: 1.1em;
+    flex-shrink: 0;
+  }
+  .press-socials a {
+    color: #fff;
+  }
+
+  /* ── Media contact ── */
+  .press-contacts {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .press-contacts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .press-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 1.1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .press-contact strong {
+    color: #fff;
+    font-size: 1.05rem;
+  }
+  .press-contact span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .press-contact a {
+    color: var(--pf-teal-light);
+    font-size: 0.92rem;
+    margin-top: 0.2rem;
+  }
+</style>
+
+<script>
+  // Copy-to-clipboard for the boilerplate paragraph
+  function setupCopyButtons() {
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-copy-target]")
+      .forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const target = document.getElementById(btn.dataset.copyTarget || "");
+          if (!target?.textContent) return;
+          const original = btn.innerHTML;
+          try {
+            await navigator.clipboard.writeText(target.textContent.trim());
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+          } catch {
+            btn.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i> Select and copy manually';
+          }
+          setTimeout(() => {
+            btn.innerHTML = original;
+          }, 2500);
+        });
+      });
+  }
+
+  setupCopyButtons();
+  document.addEventListener("astro:after-swap", setupCopyButtons);
+</script>

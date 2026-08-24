@@ -14,11 +14,14 @@ function formatCurrency(n: number) {
 
 <Layout
   title="Pond Fest Archive | Friends of Lums Pond"
-  description="A history of every Pond Fest — the annual signature fundraiser of Friends of Lums Pond State Park."
+  description="A history of every Pond Fest, the annual signature fundraiser of Friends of Lums Pond State Park."
 >
   <!-- ══ HEADER ═════════════════════════════════════════════════════════ -->
   <section class="pf-section pf-section--dark archive-header">
-    <div class="pf-section-inner pf-section-inner--narrow" style="text-align:center">
+    <div
+      class="pf-section-inner pf-section-inner--narrow"
+      style="text-align:center"
+    >
       <span class="pf-eyebrow">Every October Since 2024</span>
       <h1 class="archive-title">Pond Fest Archive</h1>
       <p>
@@ -44,7 +47,7 @@ function formatCurrency(n: number) {
         <span class="total-num">
           {
             formatCurrency(
-              years.reduce((sum, y) => sum + (y.grossRevenue ?? 0), 0)
+              years.reduce((sum, y) => sum + (y.grossRevenue ?? 0), 0),
             )
           }
         </span>
@@ -160,7 +163,10 @@ function formatCurrency(n: number) {
 
   <!-- ══ FOOTER CTA ════════════════════════════════════════════════════ -->
   <section class="pf-section pf-section--purple">
-    <div class="pf-section-inner pf-section-inner--narrow" style="text-align:center">
+    <div
+      class="pf-section-inner pf-section-inner--narrow"
+      style="text-align:center"
+    >
       <h2>Be Part of Pond Fest History</h2>
       <p>
         Pond Fest is held every second Saturday of October at Lums Pond State
@@ -223,7 +229,9 @@ function formatCurrency(n: number) {
     background: rgba(255, 255, 255, 0.2);
   }
   @media (max-width: 420px) {
-    .total-divider { display: none; }
+    .total-divider {
+      display: none;
+    }
   }
 
   /* ── Year card ── */
