@@ -301,6 +301,8 @@ export const AMENITIES: Amenity[] = [
     area: "Area 2",
     desc: "Also from The Little Farm DE, set up beside the animals. Tigers, butterflies, and whatever else the artist can talk a kid into.",
     url: "https://thelittlefarmde.com",
+    imageUrl: "/pondfest/face-painting.jpg",
+    imageAlt: "An artist painting a young visitor's face at Pond Fest",
   },
   {
     id: "vendors",
@@ -376,7 +378,12 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-child-reaching",
     title: "Playground",
     area: "Area 2",
-    desc: "The park's own playground sits right in the middle of Area 2, open all day and free.",
+    desc: "The park's own playground sits right in the middle of Area 2, open all day and free. Handy when someone has had enough of standing in lines.",
+    imageUrl: "/pondfest/playground.jpg",
+    imageAlt: "The big kids' playground at Lums Pond State Park",
+    // Sourced from a public TripAdvisor upload with no identifiable author, so
+    // there is no credit we can print honestly. Replace with our own photo.
+    credit: "",
   },
   {
     id: "kayak-launch",
