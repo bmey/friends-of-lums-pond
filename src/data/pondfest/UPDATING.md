@@ -147,6 +147,18 @@ export const AMENITIES: Amenity[] = [
 ];
 ```
 
+Optional fields worth knowing:
+
+- `time` only when the activity does **not** run all day, e.g. `"12:00 to 4:00"`.
+  It renders as a second chip next to the area. Leave it off and the card simply
+  does not claim a schedule.
+- `url` links the card title out to the partner's own site.
+- `credit` and `creditUrl` are the photo credit shown under the image. Leave
+  `credit` off and the card credits Amanda Rose Photography, which is right for
+  anything from our own event albums. Set it for a partner or stock photo. Set
+  it to `""` when we genuinely do not know who took the picture; a blank credit
+  is better than a wrong one.
+
 Two things to know about the photos:
 
 - Leave `imageUrl` empty and the card renders an icon tile on a purple gradient

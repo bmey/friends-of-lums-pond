@@ -225,7 +225,7 @@ export const AMENITIES: Amenity[] = [
     title: "Junior Jam",
     area: "Area 1",
     badge: "Price TBD",
-    desc: "Our kids' zone: duck pond, pumpkin painting, temporary tattoos, and a kid-sized stage. Every stop stamps a backstage pass, and a full pass earns a prize.",
+    desc: "Our kids' zone, and the reason a lot of families come at all. Duck pond, pumpkin painting, temporary tattoos, and a stage sized for people who are three feet tall. Every kid gets a backstage pass on the way in and a stamp at each activity, and a full pass earns a prize on the way out.",
     imageUrl: "/pondfest/kid-zone.jpg",
     imageAlt: "Kids painting pumpkins at a picnic table in the kids' zone",
   },
@@ -235,7 +235,7 @@ export const AMENITIES: Amenity[] = [
     title: "First Responders Block Party",
     area: "Area 3",
     badge: "Expanded",
-    desc: "A full day with Delaware's fire, police, and EMS crews. Bigger than last year, with more agencies and more to climb on.",
+    desc: "A full day with Delaware's fire, police, and EMS crews, and the biggest it has been. More agencies than last year, more equipment on the grass, and the people who answer the call standing next to it, happy to talk to your kids.",
     imageUrl: "/pondfest/gallery/gallery4.jpg",
     imageAlt: "A fire engine on display at Pond Fest",
   },
@@ -272,15 +272,35 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-lightbulb",
     title: "Kids Entrepreneur Market",
     area: "Area 2",
+    time: "12:00 to 4:00",
     badge: "New",
-    desc: "Twenty-plus booths run start to finish by young entrepreneurs. Bring small bills.",
+    desc: "A farmers market with young entrepreneurs at the center of it. Twenty-plus booths, every one run by a kid selling something they made: handmade crafts, baked goods, original products, and the odd invention. Kids Markets is a nonprofit that helps kids launch and run a real small business, and they take care of registration, setup, and insurance so the kids can get on with the selling. Cash is the safest bet at the booths.",
+    url: "https://kidsmarkets.com/markets/bear",
+    imageUrl: "/pondfest/kids-market.jpg",
+    imageAlt:
+      "Young sellers behind a Kids Market booth of homemade jam and baked goods",
+    credit: "Kids Markets",
+    creditUrl: "https://kidsmarkets.com/",
   },
   {
     id: "pony-rides",
     icon: "fa-horse",
-    title: "Pony Rides, Petting Zoo & Face Painting",
+    title: "Pony Rides & Petting Zoo",
     area: "Area 2",
-    desc: "The Little Farm DE brings the animals, and the face painters set up alongside them.",
+    desc: "The Little Farm DE brings a trailer of animals down for the day. Ponies to ride, and a petting area with the smaller ones for kids who would rather keep both feet on the ground.",
+    url: "https://thelittlefarmde.com",
+    imageUrl: "/pondfest/little-farm.jpg",
+    imageAlt: "A duck, a pig and a calf lying together at The Little Farm DE",
+    credit: "The Little Farm DE",
+    creditUrl: "https://thelittlefarmde.com",
+  },
+  {
+    id: "face-painting",
+    icon: "fa-paintbrush",
+    title: "Face Painting",
+    area: "Area 2",
+    desc: "Also from The Little Farm DE, set up beside the animals. Tigers, butterflies, and whatever else the artist can talk a kid into.",
+    url: "https://thelittlefarmde.com",
   },
   {
     id: "vendors",
@@ -296,7 +316,8 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-book-open",
     title: "Story Time Tent",
     area: "Area 1",
-    desc: "Local authors reading to kids on a rotation all day, with books to take home.",
+    desc: "Local authors take turns reading to kids under the tent through the afternoon, on a posted schedule rather than straight through. Each author keeps a booth nearby, so you can meet them and pick up a copy once the reading is done.",
+    time: "Set times posted closer to the event",
     imageUrl: "/pondfest/vendor.jpg",
     imageAlt: "A book table set up under the trees near the pond",
   },
@@ -306,14 +327,22 @@ export const AMENITIES: Amenity[] = [
     title: "Pickleball Tournament",
     area: "Area 2",
     badge: "Entry TBD",
-    desc: "A ladder tournament run by the Diamond State Pickleball Club. Win your court, move up a court.",
+    desc: "A ladder tournament run by the Diamond State Pickleball Club. Win your court and you move up a court, lose and you move down, so you spend the day playing people at your own level. Mixed teams, and entry details are still being sorted.",
+    imageUrl: "/pondfest/pickleball.jpg",
+    imageAlt: "A player stretching for a return during a pickleball match",
+    credit: "Venti Views on Unsplash",
+    creditUrl: "https://unsplash.com/photos/UfnsQzOGLu8",
   },
   {
     id: "horseshoes",
     icon: "fa-bullseye",
     title: "Horseshoes",
     area: "Area 2",
-    desc: "Open play with the First State Horseshoe Club. Walk up, pick up a shoe, and someone will teach you.",
+    desc: "Open play with the First State Horseshoe Club. Walk up, pick up a shoe, and someone will show you how it is done. No experience and no equipment needed.",
+    imageUrl: "/pondfest/horseshoes.jpg",
+    imageAlt: "Horseshoes resting in the sand of a pitching box",
+    credit: "Taylor Heery on Unsplash",
+    creditUrl: "https://unsplash.com/photos/g1YbrNS3T-o",
   },
   {
     id: "raffles",
@@ -357,6 +386,7 @@ export const AMENITIES: Amenity[] = [
     desc: "Come see the spot on the water where the accessible launch is going, and what your donation is buying.",
     imageUrl: "/pondfest/kayak-launch.jpg",
     imageAlt: "An accessible kayak launch with a wheelchair transfer bench",
+    credit: "",
   },
   {
     id: "rc-aircraft",
@@ -379,10 +409,16 @@ export const AMENITIES: Amenity[] = [
   {
     id: "rainbow-records",
     icon: "fa-record-vinyl",
-    title: "Rainbow Records Bus",
+    title: "Rainbow Record Bus",
     area: "Area 1",
     badge: "New",
-    desc: "Crate digging on wheels. The Newark record shop is bringing its bus to Pond Fest for the first time.",
+    desc: "Crate digging on wheels: a school bus rebuilt into a record shop, bins down both sides and a rug in the middle. Rainbow Records of Newark is bringing it to Pond Fest for the first time this year, parked up next to the Airstream.",
+    url: "https://rainbowrecordsde.com/",
+    imageUrl: "/pondfest/rainbow-records-bus.jpg",
+    imageAlt:
+      "The inside of the Rainbow Record Bus, lined with bins of records",
+    credit: "Rainbow Records",
+    creditUrl: "https://rainbowrecordsde.com/",
   },
 ];
 
@@ -395,6 +431,21 @@ export const EVERY_AREA: EveryAreaItem[] = [
   { icon: "fa-square-parking", title: "Free parking at every area" },
   { icon: "fa-restroom", title: "Restrooms in all three areas" },
   { icon: "fa-kit-medical", title: "Info, check-in, and first aid in Area 1" },
+];
+
+// ─────────────────────────────────────────────
+// SUPPORT DISCLOSURE — shown at the foot of /pondfest
+// Says plainly that taking someone's money is not an
+// endorsement of them. Standard nonprofit language;
+// run any edit past the board before shipping it.
+// ─────────────────────────────────────────────
+
+export const SUPPORT_DISCLOSURE_TITLE = "About Our Sponsors and Supporters";
+
+export const SUPPORT_DISCLOSURE: string[] = [
+  "Friends of Lums Pond State Park is a 501(c)(3) nonprofit, run entirely by volunteers. Our work is the park, and we are nonpartisan.",
+  "Pond Fest is paid for by businesses, community groups, and individuals from across our area, and it is put on with the help of dozens of vendors, performers, and partner organizations. Accepting a sponsorship, donation, or vendor fee is not an endorsement of that person or organization, or of their products, services, opinions, or political or religious views. Their support likewise does not mean they endorse everything we say or do. They are here because they want to support Lums Pond State Park, and that is the common ground we ask everyone to stand on.",
+  "As a 501(c)(3) we do not support or oppose candidates for public office, and Pond Fest is not a venue for campaign activity. What we are after is a welcoming, family-friendly day where the whole community feels at home, and we reserve the right to decline support or participation that works against that.",
 ];
 
 // ─────────────────────────────────────────────

@@ -28,6 +28,8 @@ import {
   AMENITIES,
   AMENITIES_INTRO,
   EVERY_AREA,
+  SUPPORT_DISCLOSURE,
+  SUPPORT_DISCLOSURE_TITLE,
   FAQ,
   DAY_OF_ALERT,
   SHUTTLE_INFO,
@@ -157,6 +159,16 @@ const tierLabels: Record<string, string> = {
   silver: "Silver Sponsors",
   bronze: "Bronze Sponsors",
   family: "Family Sponsors",
+};
+
+// Photo credit for one amenity card. An unset `credit` means the house
+// photographer; an empty string means we do not know and would rather say
+// nothing than guess.
+const amenityCredit = (a: (typeof AMENITIES)[number]) => {
+  if (a.credit === undefined)
+    return { name: PHOTO_CREDIT_NAME, url: PHOTO_CREDIT_URL };
+  if (a.credit === "") return null;
+  return { name: a.credit, url: a.creditUrl };
 };
 
 // Monogram fallback for acts with no photo — "The Sarah Koon Band" -> S
@@ -466,14 +478,32 @@ const emceeLine =
               id={a.id}
             >
               {a.imageUrl ? (
-                <div class="pf-amen-media">
-                  <img
-                    src={a.imageUrl}
-                    alt={a.imageAlt || a.title}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
+                <figure class="pf-amen-figure">
+                  <div class="pf-amen-media">
+                    <img
+                      src={a.imageUrl}
+                      alt={a.imageAlt || a.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  {amenityCredit(a) && (
+                    <figcaption class="pf-amen-credit">
+                      Photo:{" "}
+                      {amenityCredit(a)!.url ? (
+                        <a
+                          href={amenityCredit(a)!.url}
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          {amenityCredit(a)!.name}
+                        </a>
+                      ) : (
+                        amenityCredit(a)!.name
+                      )}
+                    </figcaption>
+                  )}
+                </figure>
               ) : (
                 <div
                   class="pf-amen-media pf-amen-media--icon"
@@ -488,14 +518,33 @@ const emceeLine =
                     class={`fa-solid ${a.icon} pf-amen-title-icon`}
                     aria-hidden="true"
                   />
-                  <span>{a.title}</span>
+                  {a.url ? (
+                    <a
+                      href={a.url}
+                      target="_blank"
+                      rel="noopener"
+                      class="pf-amen-title-link"
+                    >
+                      {a.title}
+                    </a>
+                  ) : (
+                    <span>{a.title}</span>
+                  )}
                   {a.badge && <span class="pf-amen-badge">{a.badge}</span>}
                 </h3>
                 <p class="pf-amen-desc">{a.desc}</p>
-                <span class="pf-amen-area">
-                  <i class="fa-solid fa-location-dot" aria-hidden="true" />
-                  {a.area}
-                </span>
+                <div class="pf-amen-meta">
+                  <span class="pf-amen-area">
+                    <i class="fa-solid fa-location-dot" aria-hidden="true" />
+                    {a.area}
+                  </span>
+                  {a.time && (
+                    <span class="pf-amen-area pf-amen-time">
+                      <i class="fa-solid fa-clock" aria-hidden="true" />
+                      {a.time}
+                    </span>
+                  )}
+                </div>
               </div>
             </article>
           ))
@@ -1037,6 +1086,17 @@ const emceeLine =
     </div>
   </section>
 
+  <section class="pf-section pf-section--dark-alt pf-disclosure">
+    <div class="pf-section-inner pf-section-inner--mid">
+      <h2 class="pf-disclosure-title">{SUPPORT_DISCLOSURE_TITLE}</h2>
+      {SUPPORT_DISCLOSURE.map((para) => <p>{para}</p>)}
+      <p>
+        Questions about this, or about who supports Pond Fest? Email{" "}
+        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>.
+      </p>
+    </div>
+  </section>
+
   <EmailCTAModal
     id="performModal"
     title="Apply to Perform at Pond Fest"
@@ -1565,6 +1625,65 @@ const emceeLine =
   .pf-amen-footnote a {
     color: var(--pf-purple);
     font-weight: 700;
+  }
+
+  .pf-amen-figure {
+    margin: 0 0 1.1rem;
+  }
+  .pf-amen-figure .pf-amen-media {
+    margin-bottom: 0;
+  }
+  .pf-amen-credit {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: rgba(58, 46, 90, 0.6);
+  }
+  .pf-amen-credit a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .pf-amen-credit a:hover {
+    color: var(--pf-purple);
+  }
+  .pf-amen-title-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 2px solid var(--pf-teal);
+  }
+  .pf-amen-title-link:hover {
+    color: var(--pf-purple);
+  }
+  .pf-amen-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin-top: 0.2rem;
+  }
+  /* times are read, not shouted, so they opt out of the chip's caps */
+  .pf-amen-time {
+    color: var(--pf-purple-dark);
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-size: 0.76rem;
+    font-weight: 600;
+  }
+
+  /* ── Sponsor and supporter disclosure ── */
+  .pf-disclosure .pf-disclosure-title {
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem) !important;
+    margin-bottom: 1rem;
+  }
+  .pf-disclosure p {
+    font-size: 0.85rem !important;
+    line-height: 1.7;
+    max-width: 68ch;
+    color: rgba(255, 255, 255, 0.62) !important;
+  }
+  .pf-disclosure a {
+    color: var(--pf-teal-light);
   }
 
   /* ── Music Lineup ── */

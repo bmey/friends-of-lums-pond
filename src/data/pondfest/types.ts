@@ -38,11 +38,16 @@ export interface Amenity {
   id: string; // anchor id, e.g. "junior-jam"
   icon: string; // Font Awesome name, e.g. "fa-music"
   title: string;
-  desc: string; // one or two sentences of caption
+  desc: string; // caption; a few sentences is fine where there is more to say
   area: string; // where to find it: "Area 1", "Areas 1 & 2", "All three areas"
+  time?: string; // only when it does NOT run all day, e.g. "12:00 to 4:00"
   badge?: string; // small chip: "New", "21+", "Price TBD"
+  url?: string; // partner's own site; turns the card title into a link
   imageUrl?: string; // real photo; falls back to an icon tile when empty
   imageAlt?: string; // what the photo actually shows
+  credit?: string; // photo credit. Omit for Amanda Rose (the default),
+  // set to "" to show no credit at all
+  creditUrl?: string; // where the credit links to
 }
 
 // Short logistics strip under the amenity grid
