@@ -58,6 +58,16 @@ export interface EveryAreaItem {
   title: string;
 }
 
+// ── Page navigation ──
+// One destination in the quick-links row and the jump sheet. An `href`
+// starting with "#" is a section on this page; anything else is an outside
+// link and opens in a new tab.
+export interface NavSection {
+  href: string;
+  label: string;
+  icon: string; // Font Awesome name, e.g. "fa-map"
+}
+
 export interface ArchiveYear {
   year: number;
   date: string; // ISO date string
