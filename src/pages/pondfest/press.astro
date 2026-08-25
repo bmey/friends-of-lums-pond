@@ -91,6 +91,60 @@ const downloads = [
   },
 ];
 
+const photos = [
+  {
+    file: "/pondfest/live-music.jpg",
+    caption:
+      "Live music at Pond Fest at Lums Pond State Park in Bear, Delaware.",
+    credit: PHOTO_CREDIT_NAME,
+    meta: "JPG · 124 KB · 1000 × 1008",
+    width: 1000,
+    height: 1008,
+  },
+  {
+    file: "/pondfest/face-painting.jpg",
+    caption: "A young visitor gets her face painted at Pond Fest.",
+    credit: PHOTO_CREDIT_NAME,
+    meta: "JPG · 100 KB · 1000 × 750",
+    width: 1000,
+    height: 750,
+  },
+  {
+    file: "/pondfest/food-truck2.jpg",
+    caption:
+      "Visitors line up at food trucks during Pond Fest at Lums Pond State Park.",
+    credit: PHOTO_CREDIT_NAME,
+    meta: "JPG · 100 KB · 1000 × 666",
+    width: 1000,
+    height: 666,
+  },
+  {
+    file: "/pondfest/kid-zone.jpg",
+    caption: "Kids paint pumpkins in the Junior Jam kids' zone.",
+    credit: PHOTO_CREDIT_NAME,
+    meta: "JPG · 117 KB · 1000 × 750",
+    width: 1000,
+    height: 750,
+  },
+  {
+    file: "/pondfest/beer.jpg",
+    caption:
+      "The Pond Fest beer garden features local Delaware craft breweries.",
+    credit: PHOTO_CREDIT_NAME,
+    meta: "JPG · 68 KB · 1000 × 750",
+    width: 1000,
+    height: 750,
+  },
+  {
+    file: "/pondfest/gallery/gallery4.jpg",
+    caption: "A fire engine on display at the First Responders Block Party.",
+    credit: PHOTO_CREDIT_NAME,
+    meta: "JPG · 83 KB · 800 × 600",
+    width: 800,
+    height: 600,
+  },
+];
+
 const BOILERPLATE =
   "The Friends of Lums Pond State Park is a 501(c)(3) nonprofit organization that partners with Delaware State Parks to support programs, projects and experiences at Lums Pond State Park. The organization is 100% volunteer-run. To learn more or get involved, visit friendsoflumspond.org.";
 ---
@@ -184,11 +238,35 @@ const BOILERPLATE =
     <div class="pf-section-inner pf-section-inner--mid">
       <span class="pf-eyebrow">Event Photography</span>
       <h2>Photos</h2>
-      <p>
-        High-resolution event photos are available for media use on request.
-        Email <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a> and tell
-        us what you need. Please credit {PHOTO_CREDIT_NAME}.
+      <p class="press-section-intro">
+        The following photos from past Pond Fest events are available for
+        editorial use. Please credit the photographer as noted. For additional
+        images or high-resolution files, contact{" "}
+        <a href={`mailto:${PONDFEST_EMAIL}`}>{PONDFEST_EMAIL}</a>.
       </p>
+      <ul class="press-photos">
+        {
+          photos.map((p) => (
+            <li>
+              <img
+                src={p.file}
+                alt={p.caption}
+                width={p.width}
+                height={p.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <p class="press-photo-caption">{p.caption}</p>
+              <p class="press-photo-credit">Credit: {p.credit}</p>
+              <a href={p.file} download class="press-photo-download">
+                <i class="fa-solid fa-download" />
+                <span>Download</span>
+                <span class="press-photo-meta">{p.meta}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -415,6 +493,82 @@ const BOILERPLATE =
     border-left: 3px solid var(--pf-teal);
     background: rgba(255, 255, 255, 0.04);
     border-radius: 0 6px 6px 0;
+  }
+
+  /* ── Photos ── */
+  .press-photos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 560px) {
+    .press-photos {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .press-photos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .press-photos li {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .press-photos img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .press-photo-caption {
+    margin: 0 !important;
+    padding: 0.9rem 1.1rem 0;
+    font-size: 0.88rem !important;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.82) !important;
+    flex-grow: 1;
+  }
+  .press-photo-credit {
+    margin: 0 !important;
+    padding: 0.45rem 1.1rem 0;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+  .press-photo-download {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6em;
+    margin: 0.9rem 1.1rem 1.1rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .press-photo-download:hover span:first-of-type {
+    color: var(--pf-teal-light);
+    text-decoration: underline;
+  }
+  .press-photo-download i {
+    color: var(--pf-teal);
+    flex-shrink: 0;
+  }
+  .press-photo-meta {
+    font-size: 0.72rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.45);
   }
 
   /* ── Boilerplate ── */
