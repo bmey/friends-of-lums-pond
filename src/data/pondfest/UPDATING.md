@@ -225,6 +225,8 @@ This will automatically appear on the `/pondfest/archive` page.
 
 The **day-of quick links bar** (Plan Your Visit, Raffles, Auction, Donate, Feedback) appears on its own from seven days before `EVENT_DATE` until the day after. You don't switch it on; you only need to fill in the links above.
 
+The **section nav** switches over on the same schedule. The rest of the year it lists the parts of the page (What to Expect, Plan Your Visit, Music Lineup, Get Involved, Sponsors, FAQ). During that same week it becomes an action list instead — Map & Parking, Music Lineup, What to Expect, then Raffle, Silent Auction, Donate and Share Feedback — and it stays stuck to the top of the screen from the moment the page loads, so somebody standing at the gate does not have to scroll past the hero to find the map. Each of those last four appears only when its link above is filled in, so an empty `FEEDBACK_LINK` simply means no Feedback row.
+
 Everything visitors need on the day (the map, parking, the shuttle, fees, the rain date) lives in the always-on **Plan Your Visit** section, so it works whether they look it up in September or standing at the gate.
 
 **Weather and status.** Set `DAY_OF_ALERT` at any time; it shows at the top of the page as soon as the site rebuilds (a few minutes after you commit).
@@ -249,6 +251,24 @@ export const DAY_OF_ALERT =
 ```
 
 Then clear it back to `""`.
+
+---
+
+## The section nav (you probably don't need to touch this)
+
+The Pond Fest page is long, so it carries three navigation helpers: a row of quick links right under the hero, a slim bar that sticks to the top once you scroll past them and names whichever section you're currently in, and a back-to-top button.
+
+All three read from one list, `navSections`, near the top of `src/pages/pondfest/index.astro`. **Sections drop out of the nav on their own when they have nothing in them** — clear `LINEUP` at the start of the year and "Music Lineup" disappears from the quick links and the jump menu until you add the first act back. So the normal yearly reset needs no nav edits at all.
+
+You only need to open that list if the page itself gains or loses a whole section. An entry looks like:
+
+```ts
+{ href: "#pf-plan", label: "Plan Your Visit", icon: "fa-map" },
+```
+
+`href` is the section's `id` with a `#` in front, `label` is what people see, and `icon` is a free Font Awesome name (the same rule as `AMENITIES`: check it isn't Pro-only, or it renders as a blank box).
+
+Keep it to about six or seven entries. The jump menu is sized to fit on a phone screen without scrolling, which is the whole point of it.
 
 ---
 

@@ -43,11 +43,35 @@ const { title, description, ogImage } = Astro.props;
         /* Legacy aliases — keeps existing code working */
         --pf-warm-bg: var(--pf-dark);
         --pf-warm-section: var(--pf-dark-alt);
+
+        /* Height of the sticky section nav. Anchor targets offset by it. */
+        --pf-nav-h: 48px;
       }
 
       body {
         background-color: var(--pf-dark);
         color: #e8e4f0;
+      }
+
+      /* On event day the section nav is pinned from the very top rather than
+         waiting for the hero to scroll by. It is fixed, so the page has to
+         give up the space or the bar sits on top of the site header. */
+      body.pf-dayof {
+        padding-top: var(--pf-nav-h);
+      }
+
+      /* ── Anchor jumps ──
+         Every in-page link has to clear the sticky bar. That includes the
+         amenity cards, which link to each other from inside "What to
+         Expect". */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+      .pf-section[id],
+      .pf-amen-card[id] {
+        scroll-margin-top: calc(var(--pf-nav-h) + 12px);
       }
 
       main {

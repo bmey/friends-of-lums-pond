@@ -1,0 +1,91 @@
+---
+// The visible jump row that sits directly under the hero. It is also the
+// sentinel for the sticky bar: once this scrolls out of view,
+// PondFestSectionNav pins itself to the top.
+import type { NavSection } from "../../data/pondfest/types";
+
+interface Props {
+  sections: NavSection[];
+}
+
+const { sections } = Astro.props;
+---
+
+<nav id="pf-quicklinks" class="pf-quicklinks" aria-label="Jump to a section">
+  <ul class="pf-quicklinks-list">
+    {
+      sections.map((s) => (
+        <li>
+          <a href={s.href} class="pf-quicklink">
+            <i class={`fa-solid ${s.icon}`} aria-hidden="true" />
+            <span>{s.label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .pf-quicklinks {
+    background: var(--pf-dark-alt);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: clamp(0.9rem, 2.5vw, 1.25rem) clamp(1rem, 5vw, 5rem);
+  }
+  .pf-quicklinks-list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1000px;
+    /* two up on a phone, then as many as fit */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  @media (min-width: 720px) {
+    .pf-quicklinks-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+  }
+
+  .pf-quicklink {
+    /* 48px minimum, so it is a comfortable thumb target */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-height: 48px;
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: clamp(0.82rem, 2vw, 0.92rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .pf-quicklink:hover,
+  .pf-quicklink:focus-visible {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--pf-teal);
+    color: #fff;
+  }
+  .pf-quicklink i {
+    color: var(--pf-teal-light);
+    font-size: 0.95em;
+  }
+
+  @media print {
+    .pf-quicklinks {
+      display: none;
+    }
+  }
+</style>

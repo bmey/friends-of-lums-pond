@@ -3,6 +3,8 @@ import Layout from "../../layouts/PondFestLayout.astro";
 import PondFestCountdown from "../../components/pondfest/PondFestCountdown.astro";
 import PondFestVideo from "../../components/pondfest/PondFestVideo.astro";
 import EmailCTAModal from "../../components/pondfest/EmailCTAModal.astro";
+import PondFestQuickLinks from "../../components/pondfest/PondFestQuickLinks.astro";
+import PondFestSectionNav from "../../components/pondfest/PondFestSectionNav.astro";
 import {
   CURRENT_YEAR,
   EVENT_DATE,
@@ -73,8 +75,11 @@ const sponsorsByTier = {
 const hasSponsors = SPONSORS.length > 0;
 const hasLineup = LINEUP.length > 0;
 
-// Hero CTAs. Entries without a link are dropped rather than rendered
-// disabled — the hero never shows a dead button.
+// Hero CTAs. Deliberately only the two that are not offered anywhere else:
+// Volunteer, Sponsor, Vend and Perform all have their own cards in "Get
+// Involved", and repeating them here only made the hero taller on a phone.
+// Entries without a link are dropped rather than rendered disabled — the
+// hero never shows a dead button.
 const ctaLinks = [
   {
     label: "Donate",
@@ -88,31 +93,7 @@ const ctaLinks = [
     style: "pf-btn--outline-light",
     icon: "fa-shirt",
   },
-  {
-    label: "Volunteer",
-    url: VOLUNTEER_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-hand-holding-heart",
-  },
-  {
-    label: "Sponsor",
-    url: SPONSOR_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-star",
-  },
-  {
-    label: "Vend",
-    url: VENDOR_URL,
-    style: "pf-btn--outline-light",
-    icon: "fa-store",
-  },
-  {
-    label: "Perform",
-    useEmailModal: true,
-    style: "pf-btn--outline-light",
-    icon: "fa-music",
-  },
-].filter((cta) => ("useEmailModal" in cta && cta.useEmailModal) || cta.url);
+].filter((cta) => cta.url);
 
 // "Plan Your Visit" info notes — order matters, fees first
 const planNotes = [
@@ -153,6 +134,85 @@ const involvedPaths = [
     cta: "Become a Sponsor",
   },
 ];
+
+// ── Page navigation ──
+// Feeds the quick-links row under the hero and the jump sheet in the sticky
+// bar. A section whose content is empty drops out of both on its own, so an
+// early-in-the-year page with no lineup yet never offers a dead link.
+const navSections = [
+  {
+    href: "#pf-fundraising",
+    label: "Fundraising",
+    icon: "fa-bullseye",
+    show: FUNDING_GOALS.length > 0,
+  },
+  {
+    href: "#pf-expect",
+    label: "What to Expect",
+    icon: "fa-tent-arrow-turn-left",
+  },
+  { href: "#pf-plan", label: "Plan Your Visit", icon: "fa-map" },
+  {
+    href: "#pf-lineup",
+    label: "Music Lineup",
+    icon: "fa-music",
+    show: hasLineup,
+  },
+  {
+    href: "#pf-involved",
+    label: "Get Involved",
+    icon: "fa-hand-holding-heart",
+  },
+  {
+    href: "#pf-sponsors",
+    label: "Sponsors",
+    icon: "fa-star",
+    show: hasSponsors,
+  },
+  { href: "#pf-faq", label: "FAQ", icon: "fa-circle-question" },
+].filter((s) => s.show !== false);
+
+// Event day asks different questions: where do I park, who is playing, how
+// do I bid. The same client-side EVENT_DATE gate that reveals the day-of
+// panel swaps the nav over to this list.
+const dayOfNavLinks = [
+  { href: "#pf-plan", label: "Map & Parking", icon: "fa-map-location-dot" },
+  {
+    href: "#pf-lineup",
+    label: "Music Lineup",
+    icon: "fa-music",
+    show: hasLineup,
+  },
+  {
+    href: "#pf-expect",
+    label: "What to Expect",
+    icon: "fa-tent-arrow-turn-left",
+  },
+  {
+    href: RAFFLE_LINK,
+    label: "Raffle",
+    icon: "fa-ticket",
+    show: !!RAFFLE_LINK,
+  },
+  {
+    href: AUCTION_LINK,
+    label: "Silent Auction",
+    icon: "fa-gavel",
+    show: !!AUCTION_LINK,
+  },
+  {
+    href: PONDFEST_DONATE_URL,
+    label: "Donate",
+    icon: "fa-circle-dollar-to-slot",
+    show: !!PONDFEST_DONATE_URL,
+  },
+  {
+    href: FEEDBACK_LINK,
+    label: "Share Feedback",
+    icon: "fa-comment-dots",
+    show: !!FEEDBACK_LINK,
+  },
+].filter((s) => s.show !== false);
 
 const tierLabels: Record<string, string> = {
   diamond: "Diamond Sponsors",
@@ -260,33 +320,26 @@ const emceeLine =
         <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
         <div class="pf-hero-ctas">
           {
-            ctaLinks.map((cta) =>
-              "useEmailModal" in cta && cta.useEmailModal ? (
-                <button
-                  type="button"
-                  class={`pf-btn ${cta.style}`}
-                  data-open-modal="performModal"
-                >
-                  <i class={`fa-solid ${cta.icon}`} />
-                  {cta.label}
-                </button>
-              ) : (
-                <a
-                  href={cta.url}
-                  class={`pf-btn ${cta.style}`}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <i class={`fa-solid ${cta.icon}`} />
-                  {cta.label}
-                </a>
-              ),
-            )
+            ctaLinks.map((cta) => (
+              <a
+                href={cta.url}
+                class={`pf-btn ${cta.style}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <i class={`fa-solid ${cta.icon}`} />
+                {cta.label}
+              </a>
+            ))
           }
         </div>
       </div>
     </div>
   </section>
+
+  <!-- ══ QUICK LINKS — first thing past the fold, and the sentinel the
+       sticky bar watches to know when to pin itself ══════════════════ -->
+  <PondFestQuickLinks sections={navSections} />
 
   <!-- ══ 75th STRIP — sits under the hero so the hero stays short ═══ -->
   <a class="pf-75th-strip" href="#pf-75th">
@@ -431,7 +484,10 @@ const emceeLine =
   <!-- ══ FUNDRAISING GOALS — split image+text on purple ════════════ -->
   {
     FUNDING_GOALS.length > 0 && (
-      <section class="pf-section pf-section--purple pf-goals-section">
+      <section
+        class="pf-section pf-section--purple pf-goals-section"
+        id="pf-fundraising"
+      >
         <div class="pf-section-inner pf-section-inner--narrow pf-goals-intro">
           <span class="pf-eyebrow">Fundraising for {CURRENT_YEAR}</span>
           <h2>Raising {FUNDRAISING_GOAL} for the Park</h2>
@@ -494,7 +550,7 @@ const emceeLine =
   }
 
   <!-- ══ WHAT TO EXPECT — one card per amenity, photo led ══════════ -->
-  <section class="pf-section pf-section--light">
+  <section class="pf-section pf-section--light" id="pf-expect">
     <div class="pf-section-inner">
       <div class="pf-expect-header">
         <span class="pf-eyebrow">The Experience</span>
@@ -897,7 +953,7 @@ const emceeLine =
   </section>
 
   <!-- ══ GET INVOLVED ═══════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--dark">
+  <section class="pf-section pf-section--dark" id="pf-involved">
     <div class="pf-section-inner pf-section-inner--mid">
       <div class="pf-involved-header">
         <span class="pf-eyebrow">Be Part of It</span>
@@ -945,7 +1001,7 @@ const emceeLine =
   </section>
 
   <!-- ══ SPONSORS ═══════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--light-alt">
+  <section class="pf-section pf-section--light-alt" id="pf-sponsors">
     <div class="pf-section-inner pf-section-inner--mid pf-sponsors-inner">
       <span class="pf-eyebrow">Thank You</span>
       <h2>Sponsors</h2>
@@ -1022,7 +1078,7 @@ const emceeLine =
   </section>
 
   <!-- ══ FAQ — 2-column on desktop ═════════════════════════════════ -->
-  <section class="pf-section pf-section--dark-alt">
+  <section class="pf-section pf-section--dark-alt" id="pf-faq">
     <div class="pf-section-inner pf-faq-layout">
       <div class="pf-faq-intro">
         <span class="pf-eyebrow">Questions</span>
@@ -1081,7 +1137,10 @@ const emceeLine =
   </section>
 
   <!-- ══ FEST MEMORIES ════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--dark pf-memories-section">
+  <section
+    class="pf-section pf-section--dark pf-memories-section"
+    id="pf-memories"
+  >
     <div class="pf-section-inner pf-memories-header">
       <span class="pf-eyebrow">From Past Events</span>
       <h2>Fest Memories</h2>
@@ -1179,6 +1238,12 @@ const emceeLine =
     intro="We'd love to hear from you. Send a quick note about who you are, your genre, and where we can listen, and the lineup team will get back to you."
     email={PONDFEST_EMAIL}
     subject="Pond Fest Performer Interest"
+  />
+
+  <PondFestSectionNav
+    sections={navSections}
+    dayOfLinks={dayOfNavLinks}
+    donateUrl={PONDFEST_DONATE_URL}
   />
 </Layout>
 
@@ -2493,9 +2558,23 @@ const emceeLine =
     const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
     const oneDayMs = 24 * 60 * 60 * 1000;
     const diff = eventMs - now;
-    if (diff <= sevenDaysMs && diff > -oneDayMs) {
-      panel.style.display = "";
-    }
+    const isEventWeek = diff <= sevenDaysMs && diff > -oneDayMs;
+    if (!isEventWeek) return;
+
+    panel.style.display = "";
+
+    // The section nav swaps to the day-of action list on the same schedule,
+    // and pins itself from the top of the page rather than waiting for the
+    // hero to scroll by.
+    const nav = document.getElementById("pf-sectionnav");
+    if (!nav) return;
+    nav.dataset.mode = "day";
+    // the bar is fixed and always on in this mode, so the page owes it the space
+    document.body.classList.add("pf-dayof");
+    const preList = nav.querySelector<HTMLElement>('[data-pf-list="pre"]');
+    const dayList = nav.querySelector<HTMLElement>('[data-pf-list="day"]');
+    if (preList) preList.hidden = true;
+    if (dayList) dayList.hidden = false;
   }
 
   applyEventMode();
