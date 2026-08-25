@@ -66,6 +66,12 @@ export const PHOTO_CREDIT_URL = "https://www.amandaroseportraits.com/";
 // Recommended: aerial or wide crowd/event overview shot
 export const HISTORY_BG_PHOTO = "";
 
+// Official press release (PDF, hosted on the FOLP Google Drive).
+// Shared "anyone with the link"; the uc?export=download form saves the file
+// rather than opening Drive's preview page.
+export const PRESS_RELEASE_URL =
+  "https://drive.google.com/uc?export=download&id=1tZ2AZCvFQ4G2_D00sGxbsDemE-zqpbvT";
+
 // ─────────────────────────────────────────────
 // 75th ANNIVERSARY OF DELAWARE STATE PARKS (2026)
 // ─────────────────────────────────────────────
