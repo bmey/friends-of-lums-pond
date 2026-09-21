@@ -4,8 +4,9 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
- /* additional color reference https://coolors.co/004a87-00213d-ffefd6 */
-:root, ::backdrop {
+/* additional color reference https://coolors.co/004a87-00213d-ffefd6 */
+:root,
+::backdrop {
   /* https://uicolors.app/create -- primary:congress blue:#004A87 */
   --color-primary-rgb-50: 239, 247, 255;
   --color-primary-rgb-100: 222, 239, 255;
@@ -184,4 +185,15 @@ hr {
 
 .agenda-table td:first-child {
   padding-right: 1.25rem;
+}
+/* Font Awesome loads after the page renders (its kit script is deferred in
+   BaseHead). Until then each icon is an empty <i> with no size, so rows wrap
+   and cards grow when the icons arrive, shifting everything below them.
+   Reserving a 1em box up front keeps the layout still; Font Awesome's own
+   rules take over once it loads. */
+i[class*="fa-"] {
+  display: inline-block;
+  min-width: 1em;
+  min-height: 1em;
+  text-align: center;
 }

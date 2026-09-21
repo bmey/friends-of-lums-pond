@@ -20,6 +20,8 @@ const { title, description, ogImage } = Astro.props;
       description={description || SITE_DESCRIPTION}
       image={ogImage}
     />
+    <!-- per-page head extras, e.g. a preload for the hero image -->
+    <slot name="head" />
     <style is:global>
       /* ════════════════════════════════════════════════════════════════
          POND FEST DESIGN SYSTEM — global, applies to all pf-* pages
@@ -84,6 +86,28 @@ const { title, description, ogImage } = Astro.props;
         padding: clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px);
         width: 100%;
         box-sizing: border-box;
+      }
+
+      /* Below-the-fold sections skip layout and paint until they are scrolled
+         near. On a page this long that is most of the rendering work. The
+         placeholder height only matters for the scrollbar; it is replaced by
+         the real height as each section comes into view. */
+      .pf-section--lazy {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 900px;
+      }
+      /* Printing (the page doubles as the day-of program) and anything else
+         that captures the whole page at once must see every section. */
+      @media print {
+        .pf-section--lazy {
+          content-visibility: visible;
+        }
+      }
+      /* The page toggles this on briefly (see index.astro) to lay every
+         section out once, so the browser knows their real heights and
+         in-page jumps land exactly. */
+      .pf-render-all .pf-section--lazy {
+        content-visibility: visible;
       }
 
       /* No horizontal padding — used for full-bleed grids / photo bands */

@@ -32,10 +32,14 @@ const { src, poster, captions, label } = Astro.props;
 </video>
 
 <style>
-  /* preload="none" keeps the file off the wire until someone presses play */
+  /* preload="none" keeps the file off the wire until someone presses play.
+     The box is reserved at 16:9 (the files are 720p) so nothing below it
+     moves when the poster arrives; that matters for anchor jumps, which
+     land wrong if a section above the target changes height late. */
   .pf-video {
     width: 100%;
     height: auto;
+    aspect-ratio: 16 / 9;
     border-radius: 8px;
     display: block;
     background: #000;

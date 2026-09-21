@@ -64,8 +64,16 @@ const socialImage = new URL(image || defaultImage.src, Astro.url);
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialImage} />
 
-<script src="https://kit.fontawesome.com/891037cb97.js" crossorigin="anonymous"
-></script>
+<!-- Deferred: the kit is ~a fifth of the head's blocking work, and the icons
+     only decorate content that is styled without them. Preconnects warm the
+     two Font Awesome hosts and the header font host while HTML is parsing. -->
+<link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+<link rel="preconnect" href="https://ka-f.fontawesome.com" crossorigin />
+<link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
+<script
+  src="https://kit.fontawesome.com/891037cb97.js"
+  crossorigin="anonymous"
+  defer></script>
 
 <!-- Google tag (gtag.js) -->
 <script
