@@ -326,19 +326,19 @@ export const EMCEES: Performer[] = [
 
 export const SPONSORS: Sponsor[] = [
   { name: "Masonic Charities of Delaware", tier: "diamond" },
-  { name: "Patterson Schwartz", tier: "platinum" },
   { name: "Granite-Corinthian Lodge No. 34 A.F. & A.M.", tier: "platinum" },
+  { name: "Patterson Schwartz", tier: "platinum" },
   { name: "ChristianaCare", tier: "gold" },
   { name: "Union Park BMW", tier: "gold" },
   { name: "Mr Mulch", tier: "gold" },
   { name: "T&D Bus Service", tier: "gold" },
-  { name: "Eric Morrison", tier: "silver" },
-  { name: "Rainbow Records", tier: "silver" },
   { name: "Premier Paws LLC", tier: "silver" },
   { name: "Little Bear Dog Care", tier: "silver" },
+  { name: "Rainbow Records", tier: "silver" },
   { name: "Deerfield Golf Club", tier: "silver" },
   { name: "The F.A. Bartlett Tree Expert Company", tier: "silver" },
   { name: "Guild Mortgage", tier: "silver" },
+  { name: "Eric Morrison", tier: "silver" },
   { name: "Snarky Bark Pet Treats", tier: "bronze" },
   { name: "Councilman David Carter", tier: "special" },
   { name: "Councilman Kevin Caneco", tier: "special" },
@@ -362,7 +362,7 @@ export const FUNDING_GOALS: FundingGoal[] = [
       "Complete funding for a BoardSafe Accessible Kayak Launch, opening Lums Pond's waters to visitors of all abilities.",
     imageUrl: "/pondfest/kayak-launch.jpg",
     donorboxUrl: PONDFEST_DONATE_URL,
-    learnMoreUrl: "https://boardsafedocks.com/accessible-kayak-launch/",
+    learnMoreUrl: "https://boardsafedocks.com/products/adaptive-kayak-launch/",
     learnMoreLabel: "About the BoardSafe launch",
   },
 ];
@@ -371,50 +371,62 @@ export const FUNDING_GOALS: FundingGoal[] = [
 // MERCH — the dedicated section on the index page
 // Product shots go in public/pondfest/merch/ as WebP with a transparent
 // background, trimmed to the product, about 640px on the long side.
-// Omit `price` for anything not sold online; set `presale: false` for
-// items only sold at the fest tent (they never get a pre-order link).
+// Prices are deliberately not listed: the pre-sale store and the fest tent
+// charge different amounts. `availability` says where you can get each item
+// ("both" is the default; see types.ts).
 // ─────────────────────────────────────────────
 
 export const MERCH_INTRO =
-  "This year's design puts a great blue heron behind the drum kit. Pre-order and it ships " +
-  "to you in about a week, or shop the walk-in merch tent in Area 1 on the day.";
+  "This year's design puts a great blue heron behind the drum kit. Pre-order yours now and " +
+  "collect it at the info tent in Area 1 on event day, or shop the walk-in merch tent " +
+  "during the fest.";
 
 export const MERCH_ITEMS: MerchItem[] = [
   {
     name: "Nature Rocks Tee",
-    price: "$25 to $28 adult, $18 youth",
-    note: "The full 2026 lineup on the back",
+    note: "Adult and youth sizes. The full 2026 lineup on the back",
     imageUrl: "/pondfest/merch/tee.webp",
     imageAlt:
       "Charcoal Pond Fest 2026 T-shirt with a heron on drums on the front and the band lineup on the back",
   },
   {
     name: "Fleece Hoodie",
-    price: "$40 to $43 adult, $40 youth",
-    note: "Limited edition",
+    note: "Limited edition, pre-order only",
+    availability: "presale",
     imageUrl: "/pondfest/merch/hoodie.webp",
     imageAlt: "Dark Pond Fest fleece hoodie with the heron drummer in white",
   },
   {
     name: "Charcoal Trucker Hat",
-    price: "$25",
     imageUrl: "/pondfest/merch/hat-charcoal.webp",
     imageAlt:
       "Charcoal and white trucker hat with the heron drummer embroidered in white",
   },
   {
     name: "White Rope Hat",
-    price: "$25",
     imageUrl: "/pondfest/merch/hat-white.webp",
     imageAlt:
       "White five-panel hat with a navy rope and the heron drummer in color",
   },
   {
     name: "Fleece Blanket",
-    presale: false,
+    availability: "fest",
     imageUrl: "/pondfest/merch/blanket.webp",
     imageAlt: "Folded dark fleece blanket with the heron drummer in white",
   },
+];
+
+// Small goods sold at the merch tent on the day. No photos: they are all the
+// same heron artwork, and a row of names reads faster than eight pictures.
+export const MERCH_AT_THE_FEST: string[] = [
+  "Stickers",
+  "Keychains",
+  "Posters",
+  "Pins",
+  "Temporary tattoos",
+  "Magnets",
+  "Koozies",
+  "Collector cup",
 ];
 
 // ─────────────────────────────────────────────
@@ -613,7 +625,7 @@ export const AMENITIES: Amenity[] = [
     title: "Pond Fest Merch Store",
     area: "Area 1",
     url: "#pf-merch", // jumps down to the Merch section on this page
-    desc: "New this year as a walk-in shop: this year's heron-drummer tees, hoodies, hats, and a fleece blanket. Grab a basket, browse, and check out at the counter. Want yours before the fest? The pre-order store ships ahead of the day while it is open. See the Merch section for the full lineup.",
+    desc: "New this year as a walk-in shop: this year's heron-drummer tees, hats, and a fleece blanket, plus stickers, pins, posters, and other small goods. Grab a basket, browse, and check out at the counter. Pre-orders are collected at the info tent in Area 1. See the Merch section for the full lineup.",
     imageUrl: "/pondfest/gallery/gallery13.jpg",
     imageAlt: "Pond Fest T-shirts hanging on display at the merch tent",
   },
@@ -634,7 +646,7 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-person-swimming",
     title: "Adaptive Kayak Launch Site",
     area: "Area 2",
-    url: "https://boardsafedocks.com/accessible-kayak-launch/",
+    url: "https://boardsafedocks.com/products/adaptive-kayak-launch/",
     desc: "Come see the spot on the water where the BoardSafe accessible launch is going, and what your donation is buying.",
     imageUrl: "/pondfest/kayak-launch.jpg",
     imageAlt: "An accessible kayak launch with a wheelchair transfer bench",
@@ -683,7 +695,6 @@ export const EVERY_AREA: EveryAreaItem[] = [
   { icon: "fa-square-parking", title: "Free parking at every area" },
   { icon: "fa-dog", title: "Leashed dogs welcome" },
   { icon: "fa-restroom", title: "Restrooms in all three areas" },
-  { icon: "fa-kit-medical", title: "Info, check-in, and first aid in Area 1" },
 ];
 
 // ─────────────────────────────────────────────

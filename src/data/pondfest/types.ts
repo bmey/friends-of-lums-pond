@@ -65,14 +65,19 @@ export interface AmenityLink {
 }
 
 // ── Merch section ──
+// No prices here on purpose: the pre-sale store and the fest tent charge
+// different amounts, so a single number on the page would be wrong in one
+// place or the other. The store has its own prices; the tent posts its own.
 export interface MerchItem {
   name: string;
-  price?: string; // display string, e.g. "$25 to $28 adult, $18 youth"
   imageUrl: string; // /pondfest/merch/<slug>.webp, transparent background
   imageAlt: string;
-  note?: string; // one short line under the price, e.g. "Limited edition"
-  presale?: boolean; // default true. false = only sold at the fest tent, so
-  // the item never gets a pre-order link.
+  note?: string; // one short line under the name, e.g. "Limited edition"
+  // Where you can get it. Default "both".
+  //   "both"    — pre-order it now, or buy it at the fest tent
+  //   "presale" — pre-order only; not sold at the fest
+  //   "fest"    — only at the fest tent; never gets a pre-order link
+  availability?: "both" | "presale" | "fest";
 }
 
 // Short logistics strip under the amenity grid
