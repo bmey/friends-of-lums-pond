@@ -17,12 +17,17 @@ import {
   HERO_IMAGE_MOBILE_URL,
   OG_IMAGE_URL,
   MERCH_URL,
+  MERCH_PRESALE_DEADLINE,
+  MERCH_PRESALE_DEADLINE_DISPLAY,
+  MERCH_INTRO,
+  MERCH_ITEMS,
   PONDFEST_DONATE_URL,
   VOLUNTEER_URL,
   SPONSOR_URL,
   VENDOR_URL,
   PONDFEST_EMAIL,
   FACEBOOK_URL,
+  FACEBOOK_EVENT_URL,
   HASHTAGS,
   LINEUP,
   EMCEES,
@@ -40,6 +45,7 @@ import {
   FEE_NOTE,
   BRING_NOTE,
   RAIN_DATE_NOTE,
+  DOG_NOTE,
   RAFFLE_LINK,
   AUCTION_LINK,
   FEEDBACK_LINK,
@@ -50,6 +56,7 @@ import {
   PHOTO_BAND_1_URL,
   PHOTO_BAND_1_MOBILE_URL,
   GALLERY_PHOTOS,
+  GALLERY_PREVIEW_COUNT,
   PHOTO_CREDIT_NAME,
   PHOTO_CREDIT_URL,
   HISTORY_BG_PHOTO,
@@ -59,6 +66,7 @@ import {
   HEART_OF_PARKS_POSTER_URL,
   HEART_OF_PARKS_CAPTIONS_URL,
 } from "../../data/pondfest/config";
+import { publicImageSize } from "../../data/pondfest/imageSize";
 
 const hasMaps =
   EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
@@ -70,10 +78,19 @@ const sponsorsByTier = {
   silver: SPONSORS.filter((s) => s.tier === "silver"),
   bronze: SPONSORS.filter((s) => s.tier === "bronze"),
   family: SPONSORS.filter((s) => s.tier === "family"),
+  special: SPONSORS.filter((s) => s.tier === "special"),
 };
 
 const hasSponsors = SPONSORS.length > 0;
 const hasLineup = LINEUP.length > 0;
+
+// Is the merch pre-sale still open? Decided at build time here, and again in
+// the browser (see applyPresaleDeadline below) so the buttons disappear on
+// the deadline itself rather than at the next deploy.
+const presaleOpen =
+  !!MERCH_URL &&
+  (!MERCH_PRESALE_DEADLINE ||
+    new Date(MERCH_PRESALE_DEADLINE).getTime() > Date.now());
 
 // Hero CTAs. Deliberately only the two that are not offered anywhere else:
 // Volunteer, Sponsor, Vend and Perform all have their own cards in "Get
@@ -86,20 +103,23 @@ const ctaLinks = [
     url: PONDFEST_DONATE_URL,
     style: "pf-btn--primary",
     icon: "fa-circle-dollar-to-slot",
+    presale: false,
   },
   {
-    label: "Pre-Order Shirts",
+    label: "Pre-Order Merch",
     url: MERCH_URL,
     style: "pf-btn--outline-light",
     icon: "fa-shirt",
+    presale: true, // dropped once the pre-sale deadline passes
   },
-].filter((cta) => cta.url);
+].filter((cta) => cta.url && (!cta.presale || presaleOpen));
 
 // "Plan Your Visit" info notes — order matters, fees first
 const planNotes = [
   { icon: "fa-ticket", text: FEE_NOTE },
   { icon: "fa-square-parking", text: PARKING_NOTES },
   { icon: "fa-bus", text: SHUTTLE_INFO },
+  { icon: "fa-dog", text: DOG_NOTE },
   { icon: "fa-bag-shopping", text: BRING_NOTE },
   { icon: "fa-cloud-rain", text: RAIN_DATE_NOTE },
 ].filter((n) => n.text);
@@ -150,6 +170,12 @@ const navSections = [
     href: "#pf-expect",
     label: "What to Expect",
     icon: "fa-tent-arrow-turn-left",
+  },
+  {
+    href: "#pf-merch",
+    label: "Merch",
+    icon: "fa-shirt",
+    show: MERCH_ITEMS.length > 0,
   },
   { href: "#pf-plan", label: "Plan Your Visit", icon: "fa-map" },
   {
@@ -221,6 +247,7 @@ const tierLabels: Record<string, string> = {
   silver: "Silver Sponsors",
   bronze: "Bronze Sponsors",
   family: "Family Sponsors",
+  special: "Special Thanks",
 };
 
 // Photo credit for one amenity card. An unset `credit` means the house
@@ -259,20 +286,53 @@ const actLink = (url: string) => {
   return { icon: "fa-solid fa-arrow-up-right-from-square", label: "Website" };
 };
 
-const emceeNames = EMCEES.map((e) => e.name);
-const emceeLine =
-  emceeNames.length > 1
-    ? `${emceeNames.slice(0, -1).join(", ")} & ${
-        emceeNames[emceeNames.length - 1]
-      }`
-    : emceeNames[0];
+// Natural sizes for photos that do not sit in fixed-ratio boxes, so the
+// browser reserves their space before they load and nothing jumps while
+// someone scrolls. Measured from the files at build time.
+const galleryPhotos = await Promise.all(
+  GALLERY_PHOTOS.map(async (url) => ({ url, ...(await publicImageSize(url)) })),
+);
+const galleryPreview = galleryPhotos.slice(0, GALLERY_PREVIEW_COUNT);
+const galleryMore = galleryPhotos.slice(GALLERY_PREVIEW_COUNT);
+
+const merchItems = await Promise.all(
+  MERCH_ITEMS.map(async (item) => ({
+    ...item,
+    ...(await publicImageSize(item.imageUrl)),
+  })),
+);
+const hasMerch = merchItems.length > 0;
+// The event map scales to the column width, so it needs its real size too.
+const eventMapSize = EVENT_MAP_IMAGE_URL
+  ? await publicImageSize(EVENT_MAP_IMAGE_URL)
+  : {};
+// The 75th strip sits above every section, so its logo must reserve its
+// height too or the whole page shifts down when the logo arrives.
+const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
 ---
 
 <Layout
   title={`Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
-  description={`Pond Fest ${CURRENT_YEAR}. ${EVENT_DATE_DISPLAY}, Lums Pond State Park. Free community festival: live music on three stages, beer garden, food trucks, kids' activities, and more. Standard park entrance fee applies.`}
+  description={`Pond Fest ${CURRENT_YEAR}. ${EVENT_DATE_DISPLAY}, Lums Pond State Park. Free, dog-friendly community festival: live music on three stages, beer garden, food trucks, kids' activities, and more. Standard park entrance fee applies.`}
   ogImage={OG_IMAGE_URL}
 >
+  <!-- The hero is a CSS background, which the browser only discovers after
+       it has parsed the stylesheet. Preloading starts the download alongside
+       the HTML instead, one file per screen size. -->
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={HERO_IMAGE_MOBILE_URL || HERO_IMAGE_URL}
+    media="(max-width: 768px)"
+  />
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={HERO_IMAGE_URL}
+    media="(min-width: 769px)"
+  />
   <!-- ══ ALERT BANNER ════════════════════════════════════════════════ -->
   {
     DAY_OF_ALERT && (
@@ -289,6 +349,7 @@ const emceeLine =
     style={`--pf-hero-img: url('${HERO_IMAGE_URL}'); --pf-hero-img-sm: url('${
       HERO_IMAGE_MOBILE_URL || HERO_IMAGE_URL
     }')`}
+    data-presale-deadline={MERCH_PRESALE_DEADLINE || undefined}
   >
     <div class="pf-hero-overlay">
       <div class="pf-hero-content">
@@ -317,6 +378,10 @@ const emceeLine =
           Free to attend &middot; standard park entrance fee applies ($5 DE /
           $10 out-of-state vehicles)
         </p>
+        <p class="pf-hero-dogs">
+          <i class="fa-solid fa-dog" aria-hidden="true"></i>
+           Dog-friendly &middot; leashed dogs welcome
+        </p>
         <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
         <div class="pf-hero-ctas">
           {
@@ -326,6 +391,7 @@ const emceeLine =
                 class={`pf-btn ${cta.style}`}
                 target="_blank"
                 rel="noopener"
+                data-pf-presale={cta.presale ? "" : undefined}
               >
                 <i class={`fa-solid ${cta.icon}`} />
                 {cta.label}
@@ -333,6 +399,19 @@ const emceeLine =
             ))
           }
         </div>
+        {
+          FACEBOOK_EVENT_URL && (
+            <a
+              class="pf-hero-event"
+              href={FACEBOOK_EVENT_URL}
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="fa-brands fa-facebook" aria-hidden="true" />
+              RSVP on the Facebook event
+            </a>
+          )
+        }
       </div>
     </div>
   </section>
@@ -346,8 +425,9 @@ const emceeLine =
     <img
       src={SEVENTY_FIFTH_LOGO_WHITE}
       alt="Delaware State Parks 75th anniversary"
-      width="120"
-      loading="lazy"
+      width={seventyFifthLogoSize.width || 120}
+      height={seventyFifthLogoSize.height}
+      decoding="async"
     />
     <span>Celebrating 75 Years of Delaware State Parks</span>
   </a>
@@ -481,7 +561,7 @@ const emceeLine =
   </div>
   <!-- ══ END DAY-OF PANEL ═══════════════════════════════════════════ -->
 
-  <!-- ══ FUNDRAISING GOALS — split image+text on purple ════════════ -->
+  <!-- ══ FUNDRAISING GOALS — intro, then one card per goal ═════════ -->
   {
     FUNDING_GOALS.length > 0 && (
       <section
@@ -492,11 +572,11 @@ const emceeLine =
           <span class="pf-eyebrow">Fundraising for {CURRENT_YEAR}</span>
           <h2>Raising {FUNDRAISING_GOAL} for the Park</h2>
           <p>
-            Money raised goes directly to funding or enhancing Lums Pond State
-            Park programs and facilities.
+            Every dollar Pond Fest generates goes directly to funding or
+            enhancing Lums Pond State Park programs and facilities.
           </p>
           <p>
-            Since 2024, Pond Fest has raised about $30,000 for the park. This
+            Pond Fest has generated about $30,000 for Lums Pond since 2024. This
             year's goal: match it in a single day.
           </p>
           <a
@@ -510,47 +590,66 @@ const emceeLine =
           </a>
         </div>
 
-        {FUNDING_GOALS.map((goal, i) => (
-          <div
-            class={`pf-split ${
-              i % 2 !== 0 ? "pf-split--reverse" : ""
-            } pf-goals-split`}
-          >
-            <div class="pf-split-media">
-              {goal.imageUrl ? (
-                <img src={goal.imageUrl} alt={goal.name} loading="lazy" />
-              ) : (
-                <div class="pf-img-placeholder">
-                  <i class="fa-solid fa-camera" />
+        <div class="pf-goals-grid">
+          {FUNDING_GOALS.map((goal) => (
+            <article class="pf-goal-card">
+              <div class="pf-goal-media">
+                {goal.imageUrl ? (
+                  <img
+                    src={goal.imageUrl}
+                    alt={goal.name}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class="pf-img-placeholder">
+                    <i class="fa-solid fa-camera" />
+                  </div>
+                )}
+              </div>
+              <div class="pf-goal-body">
+                <h3>{goal.name}</h3>
+                <p>{goal.description}</p>
+                <div class="pf-goal-actions">
+                  {goal.donorboxUrl ? (
+                    <a
+                      href={goal.donorboxUrl}
+                      class="pf-btn pf-btn--primary"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Donate
+                    </a>
+                  ) : (
+                    <span class="pf-goals-donate-soon">
+                      Donation link coming soon
+                    </span>
+                  )}
+                  {goal.learnMoreUrl && (
+                    <a
+                      href={goal.learnMoreUrl}
+                      class="pf-goal-more"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {goal.learnMoreLabel || "Learn more"}
+                      <i
+                        class="fa-solid fa-arrow-up-right-from-square"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  )}
                 </div>
-              )}
-            </div>
-            <div class="pf-split-text">
-              <h3>{goal.name}</h3>
-              <p>{goal.description}</p>
-              {goal.donorboxUrl ? (
-                <a
-                  href={goal.donorboxUrl}
-                  class="pf-btn pf-btn--primary"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Donate
-                </a>
-              ) : (
-                <span class="pf-goals-donate-soon">
-                  Donation link coming soon
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
     )
   }
 
   <!-- ══ WHAT TO EXPECT — one card per amenity, photo led ══════════ -->
-  <section class="pf-section pf-section--light" id="pf-expect">
+  <section class="pf-section pf-section--light pf-section--lazy" id="pf-expect">
     <div class="pf-section-inner">
       <div class="pf-expect-header">
         <span class="pf-eyebrow">The Experience</span>
@@ -646,6 +745,28 @@ const emceeLine =
                     </span>
                   )}
                 </div>
+                {a.links && a.links.length > 0 && (
+                  <div class="pf-amen-links">
+                    {a.links.map((link) => (
+                      <a
+                        href={link.url}
+                        class="pf-amen-link"
+                        target={isOnPageLink(link.url) ? undefined : "_blank"}
+                        rel={isOnPageLink(link.url) ? undefined : "noopener"}
+                      >
+                        <i
+                          class={`fa-solid ${
+                            link.url.startsWith("mailto:")
+                              ? "fa-envelope"
+                              : "fa-arrow-up-right-from-square"
+                          }`}
+                          aria-hidden="true"
+                        />
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             </article>
           ))
@@ -675,8 +796,97 @@ const emceeLine =
     </div>
   </section>
 
+  <!-- ══ MERCH — this year's gear; pre-order while the store is open ═ -->
+  {
+    hasMerch && (
+      <section
+        class="pf-section pf-section--light-alt pf-section--lazy pf-merch-section"
+        id="pf-merch"
+      >
+        <div class="pf-section-inner pf-section-inner--mid">
+          <div class="pf-merch-header">
+            <span class="pf-eyebrow">Wear the Fest</span>
+            <h2>Pond Fest Merch</h2>
+            <p class="pf-merch-intro">{MERCH_INTRO}</p>
+          </div>
+
+          {presaleOpen && (
+            <div class="pf-merch-presale" data-pf-presale>
+              <div class="pf-merch-presale-text">
+                <strong>Pre-sales are open</strong>
+                <span>
+                  Order by {MERCH_PRESALE_DEADLINE_DISPLAY}. After that, it is
+                  the merch tent in Area 1 on the day.
+                </span>
+              </div>
+              <a
+                href={MERCH_URL}
+                class="pf-btn pf-btn--purple"
+                target="_blank"
+                rel="noopener"
+              >
+                <i class="fa-solid fa-cart-shopping" /> Pre-Order Merch
+              </a>
+            </div>
+          )}
+          <div
+            class="pf-merch-presale pf-merch-presale--closed"
+            data-pf-presale-closed
+            hidden={presaleOpen}
+          >
+            <div class="pf-merch-presale-text">
+              <strong>Pre-sales have closed</strong>
+              <span>
+                Shop the walk-in merch tent in Area 1 during Pond Fest. Grab a
+                basket, browse, and check out at the counter.
+              </span>
+            </div>
+          </div>
+
+          <ul class="pf-merch-grid">
+            {merchItems.map((item) => (
+              <li class="pf-merch-item">
+                <div class="pf-merch-media">
+                  <img
+                    src={item.imageUrl}
+                    alt={item.imageAlt}
+                    width={item.width}
+                    height={item.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <h3 class="pf-merch-name">{item.name}</h3>
+                {item.price && <p class="pf-merch-price">{item.price}</p>}
+                {item.note && <p class="pf-merch-note">{item.note}</p>}
+                {presaleOpen && item.presale !== false && (
+                  <a
+                    href={MERCH_URL}
+                    class="pf-merch-item-link"
+                    target="_blank"
+                    rel="noopener"
+                    data-pf-presale
+                  >
+                    Pre-order<span class="sr-only"> {item.name}</span>
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+                  </a>
+                )}
+                {item.presale === false && (
+                  <span class="pf-merch-item-tent">Fest tent only</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
   <!-- ══ PLAN YOUR VISIT — map + logistics, always on ══════════════ -->
-  <section class="pf-section pf-section--dark-alt" id="pf-plan">
+  <section
+    class="pf-section pf-section--dark-alt pf-section--lazy"
+    id="pf-plan"
+  >
     <div class="pf-section-inner pf-section-inner--mid">
       <div class="pf-plan-header">
         <span class="pf-eyebrow">Before You Go</span>
@@ -697,7 +907,10 @@ const emceeLine =
                     src={EVENT_MAP_IMAGE_URL}
                     alt="Pond Fest event map showing Areas 1, 2 and 3 at Lums Pond State Park"
                     class="pf-map-img"
+                    width={eventMapSize.width}
+                    height={eventMapSize.height}
                     loading="lazy"
+                    decoding="async"
                   />
                   <span class="pf-map-tap-hint">
                     <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
@@ -751,14 +964,26 @@ const emceeLine =
           </div>
         ))
       }
-      <p class="pf-plan-hashtags">
-        Share your day: {HASHTAGS.join(" ")}
-      </p>
+      <div class="pf-plan-social">
+        {
+          FACEBOOK_EVENT_URL && (
+            <a
+              href={FACEBOOK_EVENT_URL}
+              class="pf-btn pf-btn--outline-light"
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="fa-brands fa-facebook" /> RSVP on the Facebook event
+            </a>
+          )
+        }
+        <p class="pf-plan-hashtags">Share your day: {HASHTAGS.join(" ")}</p>
+      </div>
     </div>
   </section>
 
   <!-- ══ MUSIC LINEUP ═══════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--dark" id="pf-lineup">
+  <section class="pf-section pf-section--dark pf-section--lazy" id="pf-lineup">
     <div class="pf-section-inner">
       {
         hasLineup ? (
@@ -843,10 +1068,37 @@ const emceeLine =
                 </article>
               ))}
             </div>
-            {emceeLine && (
+            {EMCEES.length > 0 && (
               <div class="pf-emcee-strip">
                 <i class="fa-solid fa-microphone-lines" />
-                <span>Hosted all day by {emceeLine}</span>
+                <span>
+                  Hosted all day by{" "}
+                  {EMCEES.map((e, i) => (
+                    <>
+                      {i > 0 && (i === EMCEES.length - 1 ? " & " : ", ")}
+                      {e.url ? (
+                        <a
+                          href={e.url}
+                          target="_blank"
+                          rel="noopener"
+                          class="pf-emcee-link"
+                        >
+                          {e.name}
+                          <i
+                            class={`${actLink(e.url).icon} pf-emcee-link-icon`}
+                            aria-hidden="true"
+                          />
+                          <span class="sr-only">
+                            {" "}
+                            on {actLink(e.url).label}
+                          </span>
+                        </a>
+                      ) : (
+                        e.name
+                      )}
+                    </>
+                  ))}
+                </span>
               </div>
             )}
           </>
@@ -891,7 +1143,7 @@ const emceeLine =
 
   <!-- ══ 75 YEARS OF DELAWARE STATE PARKS ══════════════════════════ -->
   <section
-    class="pf-section pf-section--flush pf-section--dark-alt pf-75th"
+    class="pf-section pf-section--flush pf-section--dark-alt pf-section--lazy pf-75th"
     id="pf-75th"
   >
     <div class="pf-split pf-split--reverse">
@@ -953,7 +1205,10 @@ const emceeLine =
   </section>
 
   <!-- ══ GET INVOLVED ═══════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--dark" id="pf-involved">
+  <section
+    class="pf-section pf-section--dark pf-section--lazy"
+    id="pf-involved"
+  >
     <div class="pf-section-inner pf-section-inner--mid">
       <div class="pf-involved-header">
         <span class="pf-eyebrow">Be Part of It</span>
@@ -1001,7 +1256,10 @@ const emceeLine =
   </section>
 
   <!-- ══ SPONSORS ═══════════════════════════════════════════════════ -->
-  <section class="pf-section pf-section--light-alt" id="pf-sponsors">
+  <section
+    class="pf-section pf-section--light-alt pf-section--lazy"
+    id="pf-sponsors"
+  >
     <div class="pf-section-inner pf-section-inner--mid pf-sponsors-inner">
       <span class="pf-eyebrow">Thank You</span>
       <h2>Sponsors</h2>
@@ -1017,11 +1275,12 @@ const emceeLine =
                   "silver",
                   "bronze",
                   "family",
+                  "special",
                 ] as const
               ).map(
                 (tier) =>
                   sponsorsByTier[tier].length > 0 && (
-                    <div class="pf-sponsor-tier">
+                    <div class="pf-sponsor-tier" data-tier={tier}>
                       <h3 class="pf-sponsor-tier-label">{tierLabels[tier]}</h3>
                       <div class="pf-sponsor-list">
                         {sponsorsByTier[tier].map((s) =>
@@ -1078,7 +1337,7 @@ const emceeLine =
   </section>
 
   <!-- ══ FAQ — 2-column on desktop ═════════════════════════════════ -->
-  <section class="pf-section pf-section--dark-alt" id="pf-faq">
+  <section class="pf-section pf-section--dark-alt pf-section--lazy" id="pf-faq">
     <div class="pf-section-inner pf-faq-layout">
       <div class="pf-faq-intro">
         <span class="pf-eyebrow">Questions</span>
@@ -1138,7 +1397,7 @@ const emceeLine =
 
   <!-- ══ FEST MEMORIES ════════════════════════════════════════════ -->
   <section
-    class="pf-section pf-section--dark pf-memories-section"
+    class="pf-section pf-section--dark pf-section--lazy pf-memories-section"
     id="pf-memories"
   >
     <div class="pf-section-inner pf-memories-header">
@@ -1146,14 +1405,53 @@ const emceeLine =
       <h2>Fest Memories</h2>
     </div>
     {
-      GALLERY_PHOTOS.length > 0 ? (
-        <div class="pf-gallery-masonry" aria-label="Pond Fest photo gallery">
-          {GALLERY_PHOTOS.map((url, i) => (
-            <div class="pf-gallery-item">
-              <img src={url} alt={`Pond Fest memory ${i + 1}`} loading="lazy" />
+      galleryPhotos.length > 0 ? (
+        <>
+          <div
+            class="pf-gallery-masonry"
+            aria-label="Pond Fest photo gallery"
+            id="pf-gallery"
+          >
+            {galleryPreview.map((photo, i) => (
+              <div class="pf-gallery-item">
+                <img
+                  src={photo.url}
+                  alt={`Pond Fest memory ${i + 1}`}
+                  width={photo.width}
+                  height={photo.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            ))}
+            {galleryMore.map((photo, i) => (
+              <div class="pf-gallery-item" data-pf-gallery-more hidden>
+                <img
+                  src={photo.url}
+                  alt={`Pond Fest memory ${galleryPreview.length + i + 1}`}
+                  width={photo.width}
+                  height={photo.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+          {galleryMore.length > 0 && (
+            <div class="pf-gallery-more">
+              <button
+                type="button"
+                class="pf-btn pf-btn--outline-light"
+                data-pf-gallery-toggle
+                aria-controls="pf-gallery"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-images" aria-hidden="true" />
+                Show {galleryMore.length} more photos
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       ) : (
         <div
           class="pf-gallery-masonry pf-gallery-masonry--placeholder"
@@ -1187,7 +1485,7 @@ const emceeLine =
 
   <!-- ══ HISTORY TEASER ═════════════════════════════════════════════ -->
   <section
-    class="pf-section pf-section--dark pf-history-section"
+    class="pf-section pf-section--dark pf-section--lazy pf-history-section"
     style={HISTORY_BG_PHOTO
       ? `background-image: url('${HISTORY_BG_PHOTO}')`
       : undefined}
@@ -1203,7 +1501,7 @@ const emceeLine =
         <span class="pf-history-stat-dot">&middot;</span>
         <div class="pf-history-stat">
           <span class="pf-history-stat-num">$30K</span>
-          <span class="pf-history-stat-label">Raised</span>
+          <span class="pf-history-stat-label">Generated</span>
         </div>
         <span class="pf-history-stat-dot">&middot;</span>
         <div class="pf-history-stat">
@@ -1221,7 +1519,9 @@ const emceeLine =
     </div>
   </section>
 
-  <section class="pf-section pf-section--dark-alt pf-disclosure">
+  <section
+    class="pf-section pf-section--dark-alt pf-section--lazy pf-disclosure"
+  >
     <div class="pf-section-inner pf-section-inner--mid">
       <h2 class="pf-disclosure-title">{SUPPORT_DISCLOSURE_TITLE}</h2>
       {SUPPORT_DISCLOSURE.map((para) => <p>{para}</p>)}
@@ -1248,6 +1548,13 @@ const emceeLine =
 </Layout>
 
 <style>
+  /* Everything this page toggles with the hidden attribute (gallery extras,
+     the pre-sale buttons) has its own display value, which would otherwise
+     win over the stylesheet reset's [hidden] rule. */
+  [hidden] {
+    display: none !important;
+  }
+
   /* ── Hero ── */
   .pf-hero {
     background-image: var(--pf-hero-img);
@@ -1383,8 +1690,43 @@ const emceeLine =
     font-size: clamp(0.82rem, 1.6vw, 0.95rem);
     font-weight: 700;
     color: var(--pf-teal-light);
-    margin: 0 0 1rem;
+    margin: 0 0 0.6rem;
     line-height: 1.5;
+  }
+  .pf-hero-dogs {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    font-size: clamp(0.78rem, 1.5vw, 0.9rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    padding: 0.3em 0.95em;
+    margin: 0 0 1rem;
+  }
+  .pf-hero-dogs i {
+    color: var(--pf-teal-light);
+  }
+  .pf-hero-event {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 1.1rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+  }
+  .pf-hero-event:hover,
+  .pf-hero-event:focus-visible {
+    color: #fff;
+    border-bottom-color: #fff;
   }
   .pf-hero-ctas {
     display: flex;
@@ -1573,28 +1915,112 @@ const emceeLine =
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.82);
   }
+  .pf-plan-social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.75rem;
+  }
   .pf-plan-hashtags {
     text-align: center;
-    margin: 1.5rem 0 0;
+    margin: 0;
     font-weight: 700;
     letter-spacing: 0.04em;
     color: var(--pf-teal-light) !important;
   }
 
   /* ── Fundraising Goals ── */
-  .pf-goals-section {
-    padding-bottom: 0;
-  }
   .pf-goals-intro {
     text-align: center;
-    margin-bottom: clamp(2rem, 4vw, 4rem);
+    margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
   }
   .pf-goals-intro .pf-btn {
     margin-top: 0.75rem;
   }
-  .pf-goals-split {
-    margin-top: clamp(2rem, 3vw, 3rem);
+  /* One card per goal, side by side once there is room. The photo is a fixed
+     16:9 strip, so it never outgrows the few sentences under it. */
+  .pf-goals-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    max-width: 1000px;
+    margin: 0 auto;
   }
+  @media (min-width: 760px) {
+    .pf-goals-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .pf-goal-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .pf-goal-media {
+    aspect-ratio: 16 / 9;
+    background: var(--pf-purple-dark);
+  }
+  .pf-goal-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .pf-goal-media .pf-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--pf-purple-dark), var(--pf-teal));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 2.5rem;
+  }
+  .pf-goal-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.1rem, 2.5vw, 1.6rem)
+      clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .pf-goal-body h3 {
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    margin-bottom: 0.5rem;
+  }
+  .pf-goal-body p {
+    font-size: clamp(0.92rem, 1.6vw, 1rem);
+    line-height: 1.6;
+    margin: 0 0 1.1rem;
+    flex: 1;
+  }
+  .pf-goal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+  }
+  .pf-goal-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    color: var(--pf-teal-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(77, 217, 203, 0.4);
+  }
+  .pf-goal-more:hover,
+  .pf-goal-more:focus-visible {
+    border-bottom-color: var(--pf-teal-light);
+  }
+  .pf-goal-more i {
+    font-size: 0.75em;
+  }
+  /* (the split rules below still dress the 75th anniversary section) */
   .pf-split-text h3 {
     font-size: clamp(1.4rem, 3vw, 2rem);
     color: var(--pf-teal-light);
@@ -1870,6 +2296,166 @@ const emceeLine =
     font-weight: 600;
   }
 
+  /* ── extra buttons on an amenity card: registration, a mailto ── */
+  .pf-amen-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .pf-amen-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(61, 47, 122, 0.35);
+    background: #fff;
+    color: var(--pf-purple);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      border-color 0.15s;
+  }
+  .pf-amen-link:hover,
+  .pf-amen-link:focus-visible {
+    background: var(--pf-purple);
+    border-color: var(--pf-purple);
+    color: #fff;
+  }
+  .pf-amen-link i {
+    font-size: 0.8em;
+  }
+
+  /* ── Merch ── */
+  .pf-merch-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .pf-merch-intro {
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+    line-height: 1.7;
+  }
+  .pf-merch-presale {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.16);
+    border-left: 5px solid var(--pf-teal);
+    border-radius: 12px;
+    padding: clamp(1rem, 2vw, 1.4rem) clamp(1.1rem, 2.5vw, 1.6rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .pf-merch-presale--closed {
+    border-left-color: var(--pf-purple-light);
+  }
+  .pf-merch-presale-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1 1 280px;
+  }
+  .pf-merch-presale-text strong {
+    color: var(--pf-purple-dark);
+    font-size: 1.05rem;
+  }
+  .pf-merch-presale-text span {
+    color: #4a3d6b;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .pf-merch-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+  }
+  @media (min-width: 700px) {
+    .pf-merch-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1000px) {
+    .pf-merch-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+  .pf-merch-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.12);
+    border-radius: 14px;
+    padding: 1rem 0.9rem 1.1rem;
+  }
+  .pf-merch-media {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+  .pf-merch-media img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  .pf-merch-name {
+    font-size: 1rem !important;
+    color: var(--pf-purple-dark) !important;
+    margin: 0 0 0.2rem !important;
+  }
+  .pf-merch-price {
+    margin: 0 !important;
+    font-size: 0.88rem !important;
+    font-weight: 700;
+    color: var(--pf-purple) !important;
+  }
+  .pf-merch-note {
+    margin: 0.2rem 0 0 !important;
+    font-size: 0.78rem !important;
+    color: rgba(58, 46, 90, 0.7) !important;
+  }
+  .pf-merch-item-link,
+  .pf-merch-item-tent {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .pf-merch-item-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--pf-teal);
+    text-decoration: none;
+  }
+  .pf-merch-item-link:hover,
+  .pf-merch-item-link:focus-visible {
+    color: var(--pf-purple);
+  }
+  .pf-merch-item-tent {
+    color: rgba(58, 46, 90, 0.55);
+  }
+
   /* ── Sponsor and supporter disclosure ── */
   .pf-disclosure .pf-disclosure-title {
     font-size: clamp(1.15rem, 2.2vw, 1.5rem) !important;
@@ -2136,6 +2722,21 @@ const emceeLine =
     font-weight: 700;
     color: #fff;
   }
+  .pf-emcee-link {
+    color: var(--pf-teal-light);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(77, 217, 203, 0.45);
+    white-space: nowrap;
+  }
+  .pf-emcee-link:hover,
+  .pf-emcee-link:focus-visible {
+    border-bottom-color: var(--pf-teal-light);
+  }
+  .pf-emcee-link-icon {
+    font-size: 0.75em;
+    margin-left: 0.35em;
+    opacity: 0.8;
+  }
 
   /* ── 75th anniversary ── */
   .pf-75th-media {
@@ -2271,19 +2872,36 @@ const emceeLine =
     gap: 0.5rem 1.5rem;
     justify-content: center;
   }
-  .pf-sponsor-tier:nth-child(1) .pf-sponsor-name {
-    font-size: 1.4rem;
+  /* Type size follows the tier itself, not its position in the list, so a
+     year with no Diamond sponsor does not promote Platinum to the top size. */
+  .pf-sponsor-name {
+    font-size: 0.95rem;
+    color: #3a2e5a;
+  }
+  .pf-sponsor-tier[data-tier="diamond"] .pf-sponsor-name {
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--pf-purple-dark);
   }
-  .pf-sponsor-tier:nth-child(2) .pf-sponsor-name {
-    font-size: 1.15rem;
+  .pf-sponsor-tier[data-tier="platinum"] .pf-sponsor-name {
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--pf-purple);
   }
-  .pf-sponsor-tier:nth-child(n + 3) .pf-sponsor-name {
-    font-size: 0.95rem;
-    color: #3a2e5a;
+  .pf-sponsor-tier[data-tier="gold"] .pf-sponsor-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  /* Special Thanks sits apart from the paid tiers: a rule above it, and
+     Gold-sized type */
+  .pf-sponsor-tier[data-tier="special"] {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(61, 47, 122, 0.14);
+  }
+  .pf-sponsor-tier[data-tier="special"] .pf-sponsor-name {
+    font-size: 1.05rem;
+    font-weight: 600;
   }
   .pf-sponsor-name {
     text-decoration: none;
@@ -2400,6 +3018,11 @@ const emceeLine =
     margin: 0;
   }
 
+  .pf-gallery-more {
+    text-align: center;
+    padding: clamp(1.25rem, 3vw, 2rem) clamp(24px, 6vw, 80px) 0;
+  }
+
   /* ── Photo credit ── */
   .pf-photo-credit {
     text-align: center;
@@ -2512,6 +3135,9 @@ const emceeLine =
       display: none;
     }
     .pf-hero-ctas,
+    .pf-hero-event,
+    .pf-merch-presale,
+    .pf-gallery-more,
     .pf-btn--disabled {
       display: none;
     }
@@ -2579,4 +3205,133 @@ const emceeLine =
 
   applyEventMode();
   document.addEventListener("astro:after-swap", applyEventMode);
+
+  // ── Merch pre-sale deadline ────────────────────────────────────────
+  // The build already leaves the pre-order buttons out once the deadline
+  // has passed; this covers the hours between the deadline and the next
+  // deploy, so the store never looks open when it is not.
+  function applyPresaleDeadline() {
+    const hero = document.querySelector<HTMLElement>(".pf-hero");
+    const deadline = hero?.dataset.presaleDeadline;
+    if (!deadline) return;
+    if (Date.now() < new Date(deadline).getTime()) return;
+    document
+      .querySelectorAll<HTMLElement>("[data-pf-presale]")
+      .forEach((el) => (el.hidden = true));
+    document
+      .querySelectorAll<HTMLElement>("[data-pf-presale-closed]")
+      .forEach((el) => (el.hidden = false));
+  }
+
+  applyPresaleDeadline();
+  document.addEventListener("astro:after-swap", applyPresaleDeadline);
+
+  // ── Gallery "show more" ───────────────────────────────────────────
+  // The extra photos are in the page but hidden, and a hidden lazy image
+  // is never requested, so they cost nothing until someone asks for them.
+  function setupGalleryMore() {
+    const btn = document.querySelector<HTMLButtonElement>(
+      "[data-pf-gallery-toggle]",
+    );
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll<HTMLElement>("[data-pf-gallery-more]")
+        .forEach((el) => (el.hidden = false));
+      btn.setAttribute("aria-expanded", "true");
+      btn.closest<HTMLElement>(".pf-gallery-more")?.remove();
+    });
+  }
+
+  setupGalleryMore();
+  document.addEventListener("astro:after-swap", setupGalleryMore);
+
+  // ── Lazy sections vs. in-page jumps ───────────────────────────────
+  // Sections below the fold skip layout and paint until they are scrolled
+  // near (content-visibility: auto). Until a section has been laid out once
+  // the browser only has a guessed height for it, and a jump to a section
+  // further down inherits the error. Laying everything out once, then
+  // letting the sections skip again, makes the browser remember each real
+  // height, so later jumps land exactly. That happens in idle time after the
+  // first paint, and on demand for any in-page link used before then.
+  function settleLazySections(then?: () => void) {
+    const root = document.documentElement;
+    root.classList.add("pf-render-all");
+    // the sizes are recorded at the end of a frame, so release a frame later
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        root.classList.remove("pf-render-all");
+        then?.();
+      }),
+    );
+  }
+
+  // A jump can land while fonts, icons and images are still arriving, and
+  // any of those can reflow what sits above the target. After a jump,
+  // re-check the target's position as they come in and nudge it back, but
+  // only while the reader is still where the jump left them.
+  const NAV_OFFSET = 60; // matches scroll-margin-top: nav height + 12px
+  function keepAimed(el: Element) {
+    const docTop = () => window.scrollY + el.getBoundingClientRect().top;
+    let aimedY = Math.round(docTop() - NAV_OFFSET);
+    const check = () => {
+      if (Math.abs(window.scrollY - aimedY) > 8) return; // reader moved on
+      if (Math.abs(el.getBoundingClientRect().top - NAV_OFFSET) < 4) return;
+      settleLazySections(() => {
+        el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+        aimedY = Math.round(docTop() - NAV_OFFSET);
+      });
+    };
+    setTimeout(check, 1500); // once the smooth scroll has finished
+    setTimeout(check, 3500);
+    document.fonts?.ready.then(() => setTimeout(check, 50));
+    if (document.readyState !== "complete")
+      window.addEventListener("load", () => setTimeout(check, 50), {
+        once: true,
+      });
+  }
+
+  function setupLazySections() {
+    document.addEventListener(
+      "click",
+      (e) => {
+        const a = (e.target as Element | null)?.closest?.('a[href^="#"]');
+        if (!a) return;
+        settleLazySections();
+        let el: Element | null = null;
+        try {
+          el = document.querySelector(a.getAttribute("href") || "");
+        } catch {
+          el = null;
+        }
+        if (el) keepAimed(el);
+      },
+      true,
+    );
+    // Opened with a #section link: the browser already jumped using guessed
+    // heights, so jump again once every section has its real one.
+    let target: Element | null = null;
+    try {
+      target = location.hash ? document.querySelector(location.hash) : null;
+    } catch {
+      target = null;
+    }
+    if (target) {
+      const el = target;
+      settleLazySections(() => {
+        el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+        keepAimed(el);
+      });
+      return;
+    }
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void;
+    };
+    if (w.requestIdleCallback)
+      w.requestIdleCallback(() => settleLazySections(), { timeout: 3000 });
+    else setTimeout(() => settleLazySections(), 1500);
+  }
+
+  setupLazySections();
+  document.addEventListener("astro:after-swap", setupLazySections);
 </script>

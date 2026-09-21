@@ -90,9 +90,11 @@ export const SPONSORS: Sponsor[] = [
 ];
 ```
 
-Tier options, highest first: `"diamond"`, `"platinum"`, `"gold"`, `"silver"`, `"bronze"`, `"family"`
+Tier options, highest first: `"diamond"`, `"platinum"`, `"gold"`, `"silver"`, `"bronze"`, `"family"`, plus `"special"` for the **Special Thanks** block, which is shown last and set apart from the paid tiers (for supporters who are not really a sponsorship level, like an elected official who directed community funds our way).
 
 A tier with no sponsors in it simply doesn't appear on the page, so you never need a placeholder.
+
+**Emcees** can carry a `url` like performers do; it links their name in the "Hosted all day by" strip.
 
 ### 4. Update external URLs
 
@@ -106,10 +108,23 @@ export const SPONSOR_URL = "https://forms.gle/...";
 export const VENDOR_URL = "https://forms.gle/...";
 ```
 
-- `MERCH_URL`: while this is empty (`""`), the "Pre-Order Shirts" button simply isn't on the page. Fill it in when pre-sales open and the button appears.
+- `MERCH_URL`: while this is empty (`""`), the hero's "Pre-Order Merch" button and the pre-sale banner in the Merch section simply aren't on the page. Fill it in when pre-sales open and they appear. Set `MERCH_PRESALE_DEADLINE` (an ISO datetime with the Eastern offset, e.g. `"2026-09-23T12:00:00-04:00"`) and `MERCH_PRESALE_DEADLINE_DISPLAY` (the same moment in words) and the page switches itself to "pre-sales have closed, shop the merch tent" the moment the deadline passes, with no rebuild needed. The items themselves live in `MERCH_ITEMS`: name, a display `price`, an optional one-line `note`, the product shot (`public/pondfest/merch/<slug>.webp`, transparent background, trimmed, about 640px on the long side), and `presale: false` for anything only sold at the fest tent.
+- `FACEBOOK_EVENT_URL`: the year's Facebook event. Adds an RSVP link under the hero buttons and in Plan Your Visit; leave empty to hide both.
 - `PONDFEST_DONATE_URL`: the Donorbox **campaign page**, not an embed. It's used by the hero Donate button, the fundraising section, both funding-goal buttons, and the day-of quick links, so one edit changes all of them.
 
 Note: Performers don't use a form. The "Apply to Perform" buttons open a small popup directing them to email `pondfest@friendsoflumspond.org`.
+
+### 4b. Amenity cards ("What to Expect")
+
+Each entry in `AMENITIES` is one card. Beyond the basics (`title`, `desc`, `area`, an optional `time` and `badge`), a card can carry:
+
+- `url`: the partner's own site, which turns the card title into a link. A `"#pf-..."` value jumps to a section on the page instead.
+- `links`: extra buttons under the card, each `{ label, url }`. Use them for registration pages or a `mailto:` (the pickleball ladder and horseshoes cards are the examples). Keep labels short.
+- `imageUrl` / `imageAlt` / `credit` / `creditUrl`: the photo and who took it. Never guess a credit.
+
+### 4c. Gallery ("Fest Memories")
+
+`GALLERY_PHOTOS` lists the photos; the first `GALLERY_PREVIEW_COUNT` show right away and the rest sit behind a "Show more photos" button and are not downloaded until someone taps it, so the list can grow without slowing the page. Keep new files around 800px on the long side.
 
 ### 5. Update funding goals
 
@@ -118,6 +133,9 @@ Update the `FUNDING_GOALS` array with this year's projects:
 ```ts
 export const FUNDING_GOALS: FundingGoal[] = [
   {
+    // optional: a "learn more" link on the card, e.g. the maker's page
+    // learnMoreUrl: "https://boardsafedocks.com/accessible-kayak-launch/",
+    // learnMoreLabel: "About the BoardSafe launch",
     name: "Youth Scholarships",
     description: "...",
     imageUrl: "/pondfest/field_trip.jpeg",

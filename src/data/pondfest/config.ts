@@ -3,6 +3,7 @@ import type {
   EveryAreaItem,
   FAQItem,
   FundingGoal,
+  MerchItem,
   Performer,
   Sponsor,
 } from "./types";
@@ -46,9 +47,14 @@ export const VENDOR_MAP_IMAGE_URL = "";
 export const PHOTO_BAND_1_URL = "/pondfest/wide-1.jpg";
 export const PHOTO_BAND_1_MOBILE_URL = "/pondfest/wide-1-sm.jpg";
 
-// Gallery grid on the index page. Drop new files in public/pondfest/gallery/ and
-// add paths here. Keep photos already used in AMENITIES out of this list so the
-// same shot does not show up twice on the page.
+// Gallery grid on the index page. Drop new files in public/pondfest/gallery/
+// (about 800px on the long side, JPG quality ~75, so 50–120KB each) and add
+// paths here. Keep photos already used in AMENITIES out of this list so the
+// same shot does not show up twice on the page. The first
+// GALLERY_PREVIEW_COUNT show right away; the rest sit behind a "Show more
+// photos" button and are not downloaded until someone taps it, so this list
+// can grow without making the page heavier.
+export const GALLERY_PREVIEW_COUNT = 8;
 export const GALLERY_PHOTOS: string[] = [
   "/pondfest/gallery/gallery1.jpg",
   "/pondfest/gallery/gallery2.jpg",
@@ -92,9 +98,19 @@ export const HEART_OF_PARKS_CAPTIONS_URL =
 // EXTERNAL URLS — update as they become available
 // ─────────────────────────────────────────────
 
-// Shirt pre-orders. Leave empty until pre-sales launch — the
-// "Pre-Order Shirts" button only appears when this is non-empty.
-export const MERCH_URL = "";
+// Merch pre-orders (the FTF Design Co. store). Leave empty when no pre-sale
+// is running — the hero's "Pre-Order Merch" button and the pre-sale banner in
+// the Merch section only appear while this is non-empty AND the deadline
+// below has not passed.
+export const MERCH_URL =
+  "https://ftfdesignco.printavo.com/merch/friends-of-lums-pond";
+// When the store closes: ISO datetime with the Eastern offset (-04:00 in
+// September and October). After this moment the page swaps its pre-order
+// buttons for "shop at the merch tent" on its own, so nobody has to rebuild
+// the site that day. Leave empty for a pre-sale with no end date.
+export const MERCH_PRESALE_DEADLINE = "2026-09-23T12:00:00-04:00";
+export const MERCH_PRESALE_DEADLINE_DISPLAY =
+  "noon Eastern on Wednesday, September 23";
 
 export const PONDFEST_DONATE_URL =
   "https://donorbox.org/pond-fest-2026-donations";
@@ -112,6 +128,9 @@ export const PRESIDENT_EMAIL = "president@friendsoflumspond.org";
 
 // Social
 export const FACEBOOK_URL = "https://www.facebook.com/FriendsofLumsPond";
+// This year's Facebook event. Leave empty to hide the RSVP links.
+export const FACEBOOK_EVENT_URL =
+  "https://www.facebook.com/events/1433844331863143";
 export const INSTAGRAM_URL = "https://www.instagram.com/friendsoflumspond";
 export const HASHTAGS = ["#DEStateParks", "#LumsPondFest"];
 
@@ -138,6 +157,10 @@ export const BRING_NOTE =
   "Chairs, blankets, cash or card, water. And screenshot this map before you arrive.";
 export const RAIN_DATE_NOTE =
   "Rain date: Sunday, October 11. If anything changes we will post it here and on our socials.";
+export const DOG_NOTE =
+  "Pond Fest is dog-friendly. Leashed dogs are welcome in all three areas, per park rules, " +
+  "and the Academy of Dog Training & Agility runs walk-up agility mini-lessons in Area 2 all " +
+  "day. Bring water and a bowl; it is a long day outdoors for them too.";
 
 export const RAFFLE_LINK = ""; // link to raffle results / info page
 export const AUCTION_LINK = ""; // link to auction results / info page
@@ -287,23 +310,38 @@ export const LINEUP: Performer[] = [
 ];
 
 export const EMCEES: Performer[] = [
-  { name: "Tom the Spokesman" },
+  {
+    name: "Tom the Spokesman",
+    url: "https://www.facebook.com/profile.php?id=61572018387856",
+  },
   { name: "DJ DLyte" },
 ];
 
 // ─────────────────────────────────────────────
 // SPONSORS — add as they are confirmed
+// Tiers: diamond, platinum, gold, silver, bronze, family, and "special" for
+// Special Thanks (supporters outside the paid tiers, listed last). Order
+// within a tier is the order shown. Logos are a separate pass.
 // ─────────────────────────────────────────────
 
 export const SPONSORS: Sponsor[] = [
+  { name: "Masonic Charities of Delaware", tier: "diamond" },
+  { name: "Patterson Schwartz", tier: "platinum" },
+  { name: "Granite-Corinthian Lodge No. 34 A.F. & A.M.", tier: "platinum" },
+  { name: "ChristianaCare", tier: "gold" },
   { name: "Union Park BMW", tier: "gold" },
   { name: "Mr Mulch", tier: "gold" },
+  { name: "T&D Bus Service", tier: "gold" },
+  { name: "Eric Morrison", tier: "silver" },
   { name: "Rainbow Records", tier: "silver" },
   { name: "Premier Paws LLC", tier: "silver" },
   { name: "Little Bear Dog Care", tier: "silver" },
   { name: "Deerfield Golf Club", tier: "silver" },
-  { name: "Eric Morrison", tier: "silver" },
-  { name: "Snarky Bark", tier: "bronze" },
+  { name: "The F.A. Bartlett Tree Expert Company", tier: "silver" },
+  { name: "Guild Mortgage", tier: "silver" },
+  { name: "Snarky Bark Pet Treats", tier: "bronze" },
+  { name: "Councilman David Carter", tier: "special" },
+  { name: "Councilman Kevin Caneco", tier: "special" },
 ];
 
 // ─────────────────────────────────────────────
@@ -324,6 +362,58 @@ export const FUNDING_GOALS: FundingGoal[] = [
       "Complete funding for a BoardSafe Accessible Kayak Launch, opening Lums Pond's waters to visitors of all abilities.",
     imageUrl: "/pondfest/kayak-launch.jpg",
     donorboxUrl: PONDFEST_DONATE_URL,
+    learnMoreUrl: "https://boardsafedocks.com/accessible-kayak-launch/",
+    learnMoreLabel: "About the BoardSafe launch",
+  },
+];
+
+// ─────────────────────────────────────────────
+// MERCH — the dedicated section on the index page
+// Product shots go in public/pondfest/merch/ as WebP with a transparent
+// background, trimmed to the product, about 640px on the long side.
+// Omit `price` for anything not sold online; set `presale: false` for
+// items only sold at the fest tent (they never get a pre-order link).
+// ─────────────────────────────────────────────
+
+export const MERCH_INTRO =
+  "This year's design puts a great blue heron behind the drum kit. Pre-order and it ships " +
+  "to you in about a week, or shop the walk-in merch tent in Area 1 on the day.";
+
+export const MERCH_ITEMS: MerchItem[] = [
+  {
+    name: "Nature Rocks Tee",
+    price: "$25 to $28 adult, $18 youth",
+    note: "The full 2026 lineup on the back",
+    imageUrl: "/pondfest/merch/tee.webp",
+    imageAlt:
+      "Charcoal Pond Fest 2026 T-shirt with a heron on drums on the front and the band lineup on the back",
+  },
+  {
+    name: "Fleece Hoodie",
+    price: "$40 to $43 adult, $40 youth",
+    note: "Limited edition",
+    imageUrl: "/pondfest/merch/hoodie.webp",
+    imageAlt: "Dark Pond Fest fleece hoodie with the heron drummer in white",
+  },
+  {
+    name: "Charcoal Trucker Hat",
+    price: "$25",
+    imageUrl: "/pondfest/merch/hat-charcoal.webp",
+    imageAlt:
+      "Charcoal and white trucker hat with the heron drummer embroidered in white",
+  },
+  {
+    name: "White Rope Hat",
+    price: "$25",
+    imageUrl: "/pondfest/merch/hat-white.webp",
+    imageAlt:
+      "White five-panel hat with a navy rope and the heron drummer in color",
+  },
+  {
+    name: "Fleece Blanket",
+    presale: false,
+    imageUrl: "/pondfest/merch/blanket.webp",
+    imageAlt: "Folded dark fleece blanket with the heron drummer in white",
   },
 ];
 
@@ -337,7 +427,8 @@ export const FUNDING_GOALS: FundingGoal[] = [
 export const AMENITIES_INTRO =
   "One festival, three park areas, and plenty going on in each of them. Here's what you'll " +
   "find. The event map further down shows where the areas sit, and the free shuttle loops " +
-  "between them all day.";
+  "between them all day. Leashed dogs are welcome everywhere, and there is even an agility " +
+  "course for them in Area 2.";
 
 export const AMENITIES: Amenity[] = [
   {
@@ -355,7 +446,6 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-child",
     title: "Junior Jam",
     area: "Area 1",
-    badge: "Price TBD",
     desc: "Our kids' zone, and the reason a lot of families come at all. Duck pond, pumpkin painting, temporary tattoos, and a stage sized for people who are three feet tall. Every kid gets a backstage pass on the way in and a stamp at each activity, and a full pass earns a prize on the way out.",
     imageUrl: "/pondfest/kid-zone.jpg",
     imageAlt: "Kids painting pumpkins at a picnic table in the kids' zone",
@@ -380,12 +470,25 @@ export const AMENITIES: Amenity[] = [
     imageAlt: "A police K9 looking out of a patrol vehicle window",
   },
   {
+    id: "dog-agility",
+    icon: "fa-paw",
+    title: "Dog Agility",
+    area: "Area 2",
+    badge: "New",
+    desc: "Demonstrations from the Academy of Dog Training & Agility, with student dogs of every level and breed running the course. Agility is a numbered obstacle course you walk first and then run together with your dog, and it works for any breed or size. Bring your own dog for a walk-up mini-lesson: they run all day, for a suggested $10 donation to the Pond Fest fundraiser, and everything is taught with fun, positive methods.",
+    url: "https://academyofdogtraining.com/",
+    imageUrl: "/pondfest/dog-agility.jpg",
+    imageAlt: "A long-coated dog leaping through a yellow agility hoop",
+    credit: "Andrea Lightfoot on Unsplash",
+    creditUrl: "https://unsplash.com/photos/IrZ5xXXCsn4",
+  },
+  {
     id: "beer-garden",
     icon: "fa-beer-mug-empty",
     title: "Beer Garden",
     area: "Area 1",
     badge: "21+",
-    desc: "Autumn Arch Beer Project, JAKL Beerworks, Volunteer Brewing Company, and New Belgium pouring all day.",
+    desc: "Autumn Arch Beer Project, Dogfish Head, JAKL Beerworks, Volunteer Brewing Company, and New Belgium pouring all day.",
     imageUrl: "/pondfest/beer.jpg",
     imageAlt: "A volunteer handing a cup of beer across the taps",
   },
@@ -445,22 +548,24 @@ export const AMENITIES: Amenity[] = [
     imageAlt: "Visitors browsing a vendor table under a pop-up tent",
   },
   {
-    id: "story-time",
-    icon: "fa-book-open",
-    title: "Story Time Tent",
-    area: "Area 1",
-    desc: "Local authors take turns reading to kids under the tent through the afternoon, on a posted schedule rather than straight through. Each author keeps a booth nearby, so you can meet them and pick up a copy once the reading is done.",
-    time: "Set times posted closer to the event",
-    imageUrl: "/pondfest/vendor.jpg",
-    imageAlt: "A book table set up under the trees near the pond",
-  },
-  {
     id: "pickleball",
     icon: "fa-table-tennis-paddle-ball",
-    title: "Pickleball Tournament",
+    title: "Pickleball Ladder Tournament",
     area: "Area 2",
-    badge: "Entry TBD",
-    desc: "A ladder tournament run by the Diamond State Pickleball Club. Win your court and you move up a court, lose and you move down, so you spend the day playing people at your own level. Mixed teams, and entry details are still being sorted.",
+    time: "12:00 to 4:30",
+    badge: "$10 entry",
+    url: "https://diamondstatepickleballclub.com/",
+    desc: "Two ladder sessions run by the Diamond State Pickleball Club: beginner and intermediate players from 12 to 2, advanced (3.5+) from 2:30 to 4:30. Win your court and you move up a court, lose and you move down, so you spend the afternoon playing people at your own level. Doubles, with partners assigned on the day, so sign up on your own. $10 per player, donated to Friends of Lums Pond, and prizes for the winners. Twelve spots per session, so register early.",
+    links: [
+      {
+        label: "Register: Beginner & Intermediate, 12 to 2",
+        url: "https://diamondstatepickleballclub.com/content.aspx?page_id=4091&club_id=556482&item_id=3053114",
+      },
+      {
+        label: "Register: Advanced, 2:30 to 4:30",
+        url: "https://diamondstatepickleballclub.com/content.aspx?page_id=4091&club_id=556482&item_id=3053115",
+      },
+    ],
     imageUrl: "/pondfest/pickleball.jpg",
     imageAlt: "A player stretching for a return during a pickleball match",
     credit: "Venti Views on Unsplash",
@@ -471,7 +576,14 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-bullseye",
     title: "Horseshoes",
     area: "Area 2",
-    desc: "Open play with the First State Horseshoe Club. Walk up, pick up a shoe, and someone will show you how it is done. No experience and no equipment needed.",
+    time: "12:00 to 5:00",
+    desc: "Open play with the First State Horseshoe Club. Walk up, pick up a shoe, and a club member will show you how it is done. No experience and no equipment needed, and all ages are welcome. Want to guarantee your turn? Email Patty to reserve a one-hour slot (12, 1, 2, 3, or 4 o'clock); walk-ups are welcome whenever a pitch is free.",
+    links: [
+      {
+        label: "Email to reserve a time slot",
+        url: "mailto:pattyjacob@friendsoflumspond.org?subject=Pond%20Fest%20horseshoe%20time%20slot",
+      },
+    ],
     imageUrl: "/pondfest/horseshoes.jpg",
     imageAlt: "Horseshoes resting in the sand of a pitching box",
     credit: "Taylor Heery on Unsplash",
@@ -500,7 +612,8 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-shirt",
     title: "Pond Fest Merch Store",
     area: "Area 1",
-    desc: "New this year as a walk-in shop. Grab a basket, browse the shirts, and check out at the counter.",
+    url: "#pf-merch", // jumps down to the Merch section on this page
+    desc: "New this year as a walk-in shop: this year's heron-drummer tees, hoodies, hats, and a fleece blanket. Grab a basket, browse, and check out at the counter. Want yours before the fest? The pre-order store ships ahead of the day while it is open. See the Merch section for the full lineup.",
     imageUrl: "/pondfest/gallery/gallery13.jpg",
     imageAlt: "Pond Fest T-shirts hanging on display at the merch tent",
   },
@@ -521,7 +634,8 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-person-swimming",
     title: "Adaptive Kayak Launch Site",
     area: "Area 2",
-    desc: "Come see the spot on the water where the accessible launch is going, and what your donation is buying.",
+    url: "https://boardsafedocks.com/accessible-kayak-launch/",
+    desc: "Come see the spot on the water where the BoardSafe accessible launch is going, and what your donation is buying.",
     imageUrl: "/pondfest/kayak-launch.jpg",
     imageAlt: "An accessible kayak launch with a wheelchair transfer bench",
     credit: "",
@@ -567,6 +681,7 @@ export const EVERY_AREA: EveryAreaItem[] = [
     title: "Free all-day shuttle between the areas and the campground",
   },
   { icon: "fa-square-parking", title: "Free parking at every area" },
+  { icon: "fa-dog", title: "Leashed dogs welcome" },
   { icon: "fa-restroom", title: "Restrooms in all three areas" },
   { icon: "fa-kit-medical", title: "Info, check-in, and first aid in Area 1" },
 ];
@@ -599,7 +714,7 @@ export const FAQ: FAQItem[] = [
   {
     question: "How much does it cost to attend?",
     answer:
-      "Pond Fest is free to attend, and there is no ticket. The only cost to get in is the standard Delaware State Parks vehicle entrance fee at the gate: $5 for Delaware plates, $10 for out-of-state (annual passes accepted; see destateparks.com). Some activities cost extra, like Junior Jam and the pickleball tournament (prices to be announced), plus food, drinks, and the beer garden. Bring cash or card.",
+      "Pond Fest is free to attend, and there is no ticket. The only cost to get in is the standard Delaware State Parks vehicle entrance fee at the gate: $5 for Delaware plates, $10 for out-of-state (annual passes accepted; see destateparks.com). Some activities cost extra, like Junior Jam, the pickleball ladder ($10 per player), and dog agility mini-lessons (suggested $10 donation), plus food, drinks, and the beer garden. Bring cash or card.",
   },
   {
     question: "What if it rains?",
@@ -620,12 +735,12 @@ export const FAQ: FAQItem[] = [
   {
     question: "Is it family friendly?",
     answer:
-      "Completely. Junior Jam, our kids' zone, has pumpkin painting, a duck pond, temporary tattoos, a kid-sized stage, and a backstage pass that kids get stamped at each activity to earn a prize. Area 2 adds pony rides, a petting zoo, face painting, and the Kids Entrepreneur Market with 20+ youth-run booths, and the Story Time Tent in Area 1 has local authors reading to kids all day.",
+      "Completely. Junior Jam, our kids' zone, has pumpkin painting, a duck pond, temporary tattoos, a kid-sized stage, and a backstage pass that kids get stamped at each activity to earn a prize. Area 2 adds pony rides, a petting zoo, face painting, dog agility demos, the playground, and the Kids Entrepreneur Market with 20+ youth-run booths.",
   },
   {
     question: "Can I bring my dog?",
     answer:
-      "Yes, leashed dogs are welcome throughout Pond Fest, in accordance with park rules. It's a full day outdoors, so bring water for them too.",
+      "Yes! Pond Fest is dog-friendly: leashed dogs are welcome throughout all three areas, in accordance with park rules. New this year, the Academy of Dog Training & Agility runs agility demonstrations and walk-up mini-lessons in Area 2 all day, so your dog can try the course too (suggested $10 donation). It's a full day outdoors, so bring water and a bowl for them.",
   },
   {
     question: "Can I bring my own food and drinks?",
@@ -640,7 +755,7 @@ export const FAQ: FAQItem[] = [
   {
     question: "Is Pond Fest stroller and wheelchair accessible?",
     answer:
-      "The event areas are mostly flat and grassy, with paved park roads and parking at all three areas, and the free shuttle runs between areas all day. Delaware State Parks also keeps a free all-terrain Trackchair at Lums Pond. It has motorized treads, a tilting seat, and companion controls so someone can help you drive it. Reserve it at no cost by calling the park office at (302) 368-6989 at least 48 hours ahead; sessions are three hours and start with a short how-to video. Planning a visit and want to know more? Email pondfest@friendsoflumspond.org and we will help however we can.",
+      "Yes. The event areas are mostly flat and grassy, with paved park roads, and the free shuttle runs between all three areas all day. There are marked accessible parking spaces in the park lots, and the welcome team at the area split can point you to the closest ones. Lums Pond also has accessible trails, and Delaware State Parks keeps a free all-terrain Action Trackchair at the park: motorized treads, a tilting seat, and a companion joystick so someone can help you drive it. Reserve it at no cost by calling the park office at (302) 368-6989 at least 48 hours ahead; sessions are three hours and start with a short how-to video and a waiver. Planning a visit and want to know more? Email pondfest@friendsoflumspond.org and we will help however we can.",
   },
   {
     question: "What should I bring?",
@@ -650,7 +765,7 @@ export const FAQ: FAQItem[] = [
   {
     question: "What causes does Pond Fest support?",
     answer:
-      "This year's $30,000 goal funds two things: field trip assistance so students from Title I schools can experience the park, and the adaptive kayak launch that will open Lums Pond's waters to visitors of all abilities. See the fundraising goals above. Since 2024, Pond Fest has raised about $30,000 for park projects.",
+      "This year's $30,000 goal funds two things: field trip assistance so students from Title I schools can experience the park, and the adaptive kayak launch that will open Lums Pond's waters to visitors of all abilities. See the fundraising goals above. Since 2024, Pond Fest has generated about $30,000 for Lums Pond.",
   },
   {
     question: "Can I volunteer?",
