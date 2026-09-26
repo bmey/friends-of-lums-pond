@@ -26,6 +26,20 @@ export interface Sponsor {
   url?: string;
 }
 
+// ── "Special Thanks" — the groups who bring an activity, a crew, or the park
+// itself to the day. Kept apart from SPONSORS on purpose: these partners give
+// us their people and their time rather than a sponsorship cheque, so a paid
+// tier would misdescribe what they do.
+export interface Partner {
+  name: string;
+  group: PartnerGroup;
+  what?: string; // one short line on what they bring. Leave it off where the
+  // group heading already says it (the breweries, for instance).
+  url?: string; // their own site; turns the name into a link
+}
+
+export type PartnerGroup = "activities" | "beer" | "agency";
+
 export interface FAQItem {
   question: string;
   answer: string;

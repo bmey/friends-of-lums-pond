@@ -90,11 +90,51 @@ export const SPONSORS: Sponsor[] = [
 ];
 ```
 
-Tier options, highest first: `"diamond"`, `"platinum"`, `"gold"`, `"silver"`, `"bronze"`, `"family"`, plus `"special"` for the **Special Thanks** block, which is shown last and set apart from the paid tiers (for supporters who are not really a sponsorship level, like an elected official who directed community funds our way).
+Tier options, highest first: `"diamond"`, `"platinum"`, `"gold"`, `"silver"`, `"bronze"`, `"family"`, plus `"special"` for the **Community Support** block, which is shown last and set apart from the paid tiers (for supporters who gave money but are not really a sponsorship level, like an elected official who directed community funds our way). Organizations that bring an activity or a crew rather than money go in `PARTNERS` instead — see "Special Thanks" below.
 
 A tier with no sponsors in it simply doesn't appear on the page, so you never need a placeholder.
 
 **Emcees** can carry a `url` like performers do; it links their name in the "Hosted all day by" strip.
+
+### 3b. Special Thanks (`PARTNERS`)
+
+Separate from sponsors on purpose. `SPONSORS` is for people who wrote a cheque;
+`PARTNERS` is for the organizations who bring an activity, a crew, or the park
+itself and never send us an invoice. They get their own **Special Thanks**
+section under the sponsor list.
+
+```ts
+export const PARTNERS: Partner[] = [
+  {
+    name: "Original Music Association of Delaware",
+    group: "activities", // which heading it lands under
+    what: "Hosting the open mic all day", // one short line
+    url: "https://302omad.com/", // optional; links the name
+  },
+  { name: "Dogfish Head", group: "beer" }, // no `what` needed
+];
+```
+
+`group` picks one of three headings, shown in this order:
+
+| `group`        | Heading                      | Who belongs there                                |
+| -------------- | ---------------------------- | ------------------------------------------------ |
+| `"activities"` | Activities & Attractions     | Anyone running a thing to do at the fest         |
+| `"beer"`       | In the Beer Garden           | The breweries pouring                            |
+| `"agency"`     | Park, Agency & Public Safety | Park staff, DNREC, the rangers, first responders |
+
+A group with nobody in it doesn't appear, so you never need a placeholder.
+
+Two rules:
+
+- `what` is optional. Leave it off when the heading already says it — that is
+  why the breweries are names only, and they render as a row rather than a grid.
+- `url` is optional too, and an entry with no link just shows as plain text.
+  **Never guess a web address.** A missing link is better than a dead one.
+
+Rule of thumb: if an organization appears in `AMENITIES` as the host of a card,
+it should also be in `PARTNERS`. An organization can be in both `PARTNERS` and
+`SPONSORS` if they did both.
 
 ### 4. Update external URLs
 

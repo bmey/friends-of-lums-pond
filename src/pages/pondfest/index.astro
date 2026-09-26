@@ -33,6 +33,8 @@ import {
   LINEUP,
   EMCEES,
   SPONSORS,
+  PARTNERS,
+  PARTNERS_INTRO,
   FUNDING_GOALS,
   AMENITIES,
   AMENITIES_INTRO,
@@ -83,6 +85,20 @@ const sponsorsByTier = {
 };
 
 const hasSponsors = SPONSORS.length > 0;
+
+// Special Thanks: the partner groups, in the order they appear on the page.
+// A heading with nobody under it drops out on its own.
+const partnerGroups = (
+  [
+    { key: "activities", label: "Activities & Attractions" },
+    { key: "beer", label: "In the Beer Garden" },
+    { key: "agency", label: "Park, Agency & Public Safety" },
+  ] as const
+)
+  .map((g) => ({ ...g, members: PARTNERS.filter((pa) => pa.group === g.key) }))
+  .filter((g) => g.members.length > 0);
+
+const hasPartners = PARTNERS.length > 0;
 const hasLineup = LINEUP.length > 0;
 
 // Is the merch pre-sale still open? Decided at build time here, and again in
@@ -192,7 +208,7 @@ const navSections = [
   },
   {
     href: "#pf-sponsors",
-    label: "Sponsors",
+    label: "Sponsors & Thanks",
     icon: "fa-star",
     show: hasSponsors,
   },
@@ -248,7 +264,7 @@ const tierLabels: Record<string, string> = {
   silver: "Silver Sponsors",
   bronze: "Bronze Sponsors",
   family: "Family Sponsors",
-  special: "Special Thanks",
+  special: "Community Support",
 };
 
 // Photo credit for one amenity card. An unset `credit` means the house
@@ -1347,6 +1363,50 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     </div>
   </section>
 
+  <!-- ══ SPECIAL THANKS ════════════════════════════════════════════ -->
+  {
+    hasPartners && (
+      <section
+        class="pf-section pf-section--light pf-section--lazy"
+        id="pf-thanks"
+      >
+        <div class="pf-section-inner pf-section-inner--mid pf-thanks-inner">
+          <span class="pf-eyebrow">With Help From</span>
+          <h2>Special Thanks</h2>
+          <p class="pf-thanks-intro">{PARTNERS_INTRO}</p>
+          <div class="pf-thanks-groups">
+            {partnerGroups.map((g) => (
+              <div class="pf-thanks-group" data-group={g.key}>
+                <h3 class="pf-thanks-group-label">{g.label}</h3>
+                <ul class="pf-thanks-list">
+                  {g.members.map((partner) => (
+                    <li class="pf-thanks-item">
+                      {partner.url ? (
+                        <a
+                          href={partner.url}
+                          target="_blank"
+                          rel="noopener"
+                          class="pf-thanks-name"
+                        >
+                          {partner.name}
+                        </a>
+                      ) : (
+                        <span class="pf-thanks-name">{partner.name}</span>
+                      )}
+                      {partner.what && (
+                        <span class="pf-thanks-what">{partner.what}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   <!-- ══ FAQ — 2-column on desktop ═════════════════════════════════ -->
   <section class="pf-section pf-section--dark-alt pf-section--lazy" id="pf-faq">
     <div class="pf-section-inner pf-faq-layout">
@@ -2013,35 +2073,41 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     line-height: 1.7;
   }
 
+  /* Masonry, via multi-column rather than grid. The cards are wildly
+     different heights — a two-line card next to a ten-line one — and a
+     row-based grid sizes every row to its tallest card, which left a hole
+     under each short one. Columns pack them tight instead.
+     The trade-off: reading order runs down each column, not across. That is
+     fine for a browse-it grid of things to do, but it is why the list order
+     in AMENITIES no longer maps to a left-to-right reading of the page. */
   .pf-amen-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(2rem, 4vw, 3rem);
+    columns: 1;
+    column-gap: clamp(2rem, 4vw, 3rem);
     max-width: 1180px;
     margin: 0 auto;
-    align-items: start;
   }
   @media (min-width: 900px) {
     .pf-amen-grid {
-      grid-template-columns: repeat(2, 1fr);
+      columns: 2;
       column-gap: clamp(2rem, 4vw, 3.5rem);
-      row-gap: clamp(2.5rem, 5vw, 4rem);
-      /* the stagger below is a transform, so the last card in the
-         right-hand column needs room to hang past the grid */
-      padding-bottom: clamp(2.5rem, 5vw, 5rem);
     }
-    /* staggered columns: the right column drops half a card */
-    .pf-amen-card:nth-child(2n) {
-      transform: translateY(clamp(2.5rem, 5vw, 5rem));
+  }
+  @media (min-width: 1280px) {
+    .pf-amen-grid {
+      columns: 3;
     }
   }
 
   .pf-amen-card {
     display: flex;
     flex-direction: column;
+    /* never let a card be split across two columns */
+    break-inside: avoid;
+    /* column-gap only handles the horizontal; this is the vertical one */
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
   .pf-amen-media {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 2;
     border-radius: 14px;
     overflow: hidden;
     background: var(--pf-light-alt);
@@ -2136,7 +2202,7 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     align-self: center;
   }
   .pf-amen-desc {
-    font-size: clamp(0.92rem, 1.6vw, 1rem);
+    font-size: clamp(0.86rem, 1.4vw, 0.94rem);
     line-height: 1.6;
     color: #4a3d6b;
     margin: 0;
@@ -2902,6 +2968,67 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     color: var(--pf-teal);
     text-decoration: underline;
   }
+  /* ── Special Thanks ── */
+  .pf-thanks-inner {
+    text-align: center;
+  }
+  .pf-thanks-intro {
+    max-width: 62ch;
+    margin: 0 auto;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .pf-thanks-groups {
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+    display: grid;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  .pf-thanks-group-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--pf-teal);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+  .pf-thanks-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.1rem 1.5rem;
+  }
+  .pf-thanks-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .pf-thanks-name {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--pf-purple-dark);
+    text-decoration: none;
+  }
+  a.pf-thanks-name:hover {
+    color: var(--pf-teal);
+    text-decoration: underline;
+  }
+  .pf-thanks-what {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: #5a4e7a;
+  }
+  /* The breweries carry no line of their own — the heading already says what
+     they are doing — so they read better as a row of names than as a grid of
+     mostly-empty cells. */
+  .pf-thanks-group[data-group="beer"] .pf-thanks-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+  }
+
   .pf-sponsor-cta {
     margin-top: 1.25rem;
     font-size: 0.95rem;

@@ -4,6 +4,7 @@ import type {
   FAQItem,
   FundingGoal,
   MerchItem,
+  Partner,
   Performer,
   Sponsor,
 } from "./types";
@@ -345,6 +346,109 @@ export const SPONSORS: Sponsor[] = [
 ];
 
 // ─────────────────────────────────────────────
+// SPECIAL THANKS — the groups who bring an activity, a crew, or the park
+// itself to the day. Deliberately separate from SPONSORS: these partners
+// give us their people and their time rather than a sponsorship cheque.
+//
+// `group` sorts an entry under one of three headings, in this order:
+//   "activities" — Activities & Attractions
+//   "beer"       — In the Beer Garden
+//   "agency"     — Park, Agency & Public Safety
+// A group with nobody in it does not appear on the page.
+//
+// `what` is one short line on what they bring; leave it off where the
+// heading already says it (the breweries). `url` is optional, and an entry
+// with no link just shows as plain text — better than a guessed address.
+// ─────────────────────────────────────────────
+
+export const PARTNERS: Partner[] = [
+  {
+    name: "Original Music Association of Delaware",
+    group: "activities",
+    what: "Hosting the open mic all day",
+    url: "https://302omad.com/",
+  },
+  {
+    name: "Kids Markets",
+    group: "activities",
+    what: "Running the Kids Entrepreneur Market",
+    url: "https://kidsmarkets.com/markets/bear",
+  },
+  {
+    name: "The Little Farm DE",
+    group: "activities",
+    what: "Pony rides, the petting zoo, and face painting",
+    url: "https://thelittlefarmde.com",
+  },
+  {
+    name: "Academy of Dog Training & Agility",
+    group: "activities",
+    what: "The agility course and walk-up mini-lessons",
+    url: "https://academyofdogtraining.com/",
+  },
+  {
+    name: "Diamond State Pickleball Club",
+    group: "activities",
+    what: "Running the ladder tournament",
+    url: "https://diamondstatepickleballclub.com/",
+  },
+  {
+    name: "First State Horseshoe Club",
+    group: "activities",
+    what: "Open horseshoe play and coaching",
+  },
+  {
+    name: "Delaware R/C Club",
+    group: "activities",
+    what: "The RC aircraft display, with pilots on hand",
+  },
+  {
+    name: "Rainbow Records",
+    group: "activities",
+    what: "Bringing the Rainbow Record Bus",
+    url: "https://rainbowrecordsde.com/",
+  },
+
+  { name: "Autumn Arch Beer Project", group: "beer" },
+  { name: "Dogfish Head", group: "beer" },
+  { name: "JAKL Beerworks", group: "beer" },
+  { name: "Volunteer Brewing Company", group: "beer" },
+  { name: "New Belgium", group: "beer" },
+
+  {
+    name: "Lums Pond State Park Staff",
+    group: "agency",
+    what: "Our home park, and a year of planning behind every Pond Fest",
+  },
+  {
+    name: "Delaware State Parks & DNREC",
+    group: "agency",
+    what: "Permits, logistics, and the DelaWanderer on the field",
+    url: "https://www.destateparks.com/",
+  },
+  {
+    name: "Delaware Natural Resources Police",
+    group: "agency",
+    what: "Keeping the park and the festival safe all day",
+  },
+  {
+    name: "Delaware First Responders",
+    group: "agency",
+    what: "The fire, police, and EMS crews of the Block Party in Area 3",
+  },
+  {
+    name: "Wilmington Police Department K9 Unit",
+    group: "agency",
+    what: "K9 demonstrations throughout the day",
+  },
+];
+
+export const PARTNERS_INTRO =
+  "Pond Fest is put on by volunteers, and a lot of it simply would not happen " +
+  "without the organizations below. They bring an activity, a crew, or the " +
+  "park itself, and none of them send us an invoice for it.";
+
+// ─────────────────────────────────────────────
 // FUNDING GOALS for this year
 // ─────────────────────────────────────────────
 
@@ -452,6 +556,30 @@ export const AMENITIES: Amenity[] = [
     desc: "Eleven acts on three stages: Wingspan and Monarch in Area 1, the Nest Box pavilion in Area 2. Every performer is donating the day.",
     imageUrl: "/pondfest/live-music.jpg",
     imageAlt: "Two singers performing on a Pond Fest stage",
+  },
+  {
+    id: "open-mic",
+    icon: "fa-microphone-lines",
+    title: "Open Mic",
+    area: "Area 1",
+    badge: "New",
+    desc:
+      "A stage for anyone who wants it, hosted all day by the Original Music " +
+      "Association of Delaware. OMAD is a Delaware nonprofit built on the idea " +
+      "that every artist deserves a chance to be heard: they run events and " +
+      "concerts across the state all year, and the proceeds go back to local " +
+      "artists and the community. Sign up ahead of time to claim a slot, or " +
+      "just turn up \u2014 walk-ups get whatever spots are still open.",
+    url: "https://302omad.com/",
+    links: [
+      {
+        label: "Sign up for a slot",
+        url: "https://form.jotform.com/262678354076063",
+      },
+    ],
+    imageUrl: "/pondfest/open-mic.jpg",
+    imageAlt:
+      "Two musicians singing and playing guitar at an OMAD open mic on the grass",
   },
   {
     id: "junior-jam",
