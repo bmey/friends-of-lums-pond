@@ -62,7 +62,8 @@ export interface Amenity {
   desc: string; // caption; a few sentences is fine where there is more to say
   area: string; // where to find it: "Area 1", "Areas 1 & 2", "All three areas"
   time?: string; // only when it does NOT run all day, e.g. "12:00 to 4:00"
-  badge?: string; // small chip: "New", "21+", "Price TBD"
+  badge?: string | string[]; // small chip: "New", "21+", "Price TBD". Pass an
+  // array for a card that needs two, e.g. ["New", "$10 entry"]
   url?: string; // partner's own site; turns the card title into a link
   links?: AmenityLink[]; // extra buttons under the card: sign-up forms,
   // registration pages, a mailto. Keep labels short.

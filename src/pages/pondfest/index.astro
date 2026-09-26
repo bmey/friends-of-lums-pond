@@ -748,7 +748,9 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
                   ) : (
                     <span>{a.title}</span>
                   )}
-                  {a.badge && <span class="pf-amen-badge">{a.badge}</span>}
+                  {[a.badge ?? []].flat().map((b) => (
+                    <span class="pf-amen-badge">{b}</span>
+                  ))}
                 </h3>
                 <p class="pf-amen-desc">{a.desc}</p>
                 <div class="pf-amen-meta">
@@ -2175,10 +2177,11 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     gap: 0.45rem;
   }
   .pf-amen-title {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.55rem;
+    /* Block flow, not flex. As a flex container every child wrapped on its
+       own line, and in a narrow column that stranded the icon on a line by
+       itself above the title. Inline flow keeps the icon glued to the first
+       word and lets a badge trail the last one. */
+    display: block;
     font-size: clamp(1.15rem, 2.2vw, 1.5rem) !important;
     color: var(--pf-purple-dark) !important;
     margin: 0 !important;
@@ -2187,7 +2190,7 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
   .pf-amen-title-icon {
     color: var(--pf-teal);
     font-size: 0.8em;
-    flex-shrink: 0;
+    margin-right: 0.45em;
   }
   .pf-amen-badge {
     padding: 0.15em 0.6em;
@@ -2199,7 +2202,9 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     text-transform: uppercase;
     letter-spacing: 0.09em;
     white-space: nowrap;
-    align-self: center;
+    display: inline-block;
+    margin-left: 0.45em;
+    vertical-align: middle;
   }
   .pf-amen-desc {
     font-size: clamp(0.86rem, 1.4vw, 0.94rem);

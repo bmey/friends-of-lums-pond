@@ -562,7 +562,6 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-microphone-lines",
     title: "Open Mic",
     area: "Area 1",
-    badge: "New",
     desc:
       "A stage for anyone who wants it, hosted all day by the Original Music " +
       "Association of Delaware. OMAD is a Delaware nonprofit built on the idea " +
@@ -661,6 +660,7 @@ export const AMENITIES: Amenity[] = [
     icon: "fa-horse",
     title: "Pony Rides & Petting Zoo",
     area: "Area 2",
+    badge: "New",
     desc: "The Little Farm DE brings a trailer of animals down for the day. Ponies to ride, and a petting area with the smaller ones for kids who would rather keep both feet on the ground.",
     url: "https://thelittlefarmde.com",
     imageUrl: "/pondfest/little-farm.jpg",
@@ -693,7 +693,7 @@ export const AMENITIES: Amenity[] = [
     title: "Pickleball Ladder Tournament",
     area: "Area 2",
     time: "12:00 to 4:30",
-    badge: "$10 entry",
+    badge: ["New", "$10 entry"],
     url: "https://diamondstatepickleballclub.com/",
     desc: "Two ladder sessions run by the Diamond State Pickleball Club: beginner and intermediate players from 12 to 2, advanced (3.5+) from 2:30 to 4:30. Win your court and you move up a court, lose and you move down, so you spend the afternoon playing people at your own level. Doubles, with partners assigned on the day, so sign up on your own. $10 per player, donated to Friends of Lums Pond, and prizes for the winners. Twelve spots per session, so register early.",
     links: [
@@ -717,6 +717,7 @@ export const AMENITIES: Amenity[] = [
     title: "Horseshoes",
     area: "Area 2",
     time: "12:00 to 5:00",
+    badge: "New",
     desc: "Open play with the First State Horseshoe Club. Walk up, pick up a shoe, and a club member will show you how it is done. No experience and no equipment needed, and all ages are welcome. Want to guarantee your turn? Email Patty to reserve a one-hour slot (12, 1, 2, 3, or 4 o'clock); walk-ups are welcome whenever a pitch is free.",
     links: [
       {

@@ -200,6 +200,7 @@ export const AMENITIES: Amenity[] = [
     title: "Junior Jam",
     area: "Area 1", // or "Areas 1 & 2", "All three areas"
     badge: "Price TBD", // optional chip: "New", "Expanded", "21+", "Entry TBD"
+    // a card needing two chips passes an array: ["New", "$10 entry"]
     desc: "Our kids' zone: duck pond, pumpkin painting, temporary tattoos...",
     imageUrl: "/pondfest/kid-zone.jpg", // optional
     imageAlt: "Kids painting pumpkins at a picnic table",
@@ -243,6 +244,9 @@ Two rules on wording, learned the hard way:
 - Describe the **scale** of the vendor village ("40+ local artisans"), never the
   **state of the sign-up sheet**. No "spots remaining", "filling fast", or counts
   of what's left.
+- `"New"` means new to Pond Fest this year, not new to the world. Take it off
+  the following year. An activity that has run before but is bigger this time
+  gets `"Expanded"` instead.
 - Prices that aren't final get the `"Price TBD"` or `"Entry TBD"` badge. Never
   invent a number and never quietly drop the activity.
 
