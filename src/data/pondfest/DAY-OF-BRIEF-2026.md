@@ -39,11 +39,11 @@ need to re-read the original request or come back for more instructions.
 > own hands and fan out only genuinely separable work.
 >
 > This page is read by a small community who know each other, and they are quick
-> to spot work that reads as machine-written. §10 covers what that means for the
+> to spot work that reads as machine-written. §11 covers what that means for the
 > copy, the styling, the commits and the assets. Treat it as a requirement, not a
 > style note.
 >
-> §11 is the exit condition. Write its verification script early, run it as you
+> §12 is the exit condition. Write its verification script early, run it as you
 > go, and do not tell me the work is done until it exits clean on a fresh build.
 > A subagent reporting success is a claim; re-run the check yourself before you
 > believe it.
@@ -99,7 +99,7 @@ use it so images reserve their space and the page does not jump under a thumb.
 | Mobile navigation | **Convert the existing sticky top bar into a bottom tab bar on phones.** Do not add a second bar. The page already has a fixed top bar, a "Jump to" bottom sheet and a back-to-top button; a new bottom bar collides with all three. Desktop unchanged. |
 | Sponsor ads | **Swipeable thumbnail rail that opens full size on tap**, plus a link to the Out & About feature. Not a separate page, not links-only. |
 | Deploying | **Commit freely, push once at the very end.** Bryan reviews first. |
-| Food trucks | List supplied, by area. It is in §6 below. |
+| Food trucks | List supplied, by area. It is in §7 below. |
 
 ## 4. What is already done
 
@@ -122,7 +122,7 @@ compiles.** Salvage from it freely; it is there to be mined, not merged as-is.
 |---|---|---|
 | `src/data/pondfest/winners.ts` — self-contained, see §5 | The schedule / map / vendor section markup and CSS | Mobile bottom tab bar |
 | The day-of type definitions in `types.ts` | Section placement and ordering | The "on right now" clock script |
-| All the config data in §6, already keyed and formatted | | Map tab switching script |
+| All the config data in §7, already keyed and formatted | | Map tab switching script |
 | The build-time set-time parser (`"12:45 – 2:00 PM"` → `12:45`/`14:00`, verified correct on all 11 sets) | | Ad lightbox script |
 
 The gap is the obvious one: that attempt wrote all the markup and none of the
@@ -161,7 +161,108 @@ announcement rather than at it. Build the simple commit-and-rebuild version. Do
 not reach for a client-fetched JSON file or a published Google Sheet to shave
 minutes off; it is more moving parts for no benefit he needs.
 
-## 6. Source data — all transcribed and verified
+## 6. Phases: what shows when, and nothing gets deleted
+
+The page serves three different jobs across the year and currently only knows
+about two of them. Today's switch is a one-way `pre` to `day` flip that turns the
+day-of panel on and never turns anything off. It needs to become three states,
+and the pre-event calls to action need to retire on the day without being
+deleted, because they all come back for 2027.
+
+| Phase | When | What it is for |
+|---|---|---|
+| `prep` | More than 7 days out | Recruiting: volunteer, perform, vend, sponsor, pre-order merch |
+| `event` | The week of, and event day | Finding things: map, schedule, food, winners. Nothing to sign up for. |
+| `afterglow` | After the festival ends | Thanks, feedback, and a date for next year. No asks. |
+
+### How to switch, and how to switch back
+
+Resolve the phase from `EVENT_DATE`, with an explicit override in config for when
+Bryan wants to force one:
+
+```ts
+// Leave empty and the phase follows EVENT_DATE on its own.
+export const PHASE_OVERRIDE: "" | "prep" | "event" | "afterglow" = "";
+```
+
+Follow the pattern the merch deadline already uses in this repo: decide at build
+time so there is no flash of the wrong state and so it is right without
+JavaScript, then re-check in the browser so the page flips itself overnight
+without anyone pushing a commit. That matters on event morning, when nobody is
+going to be deploying at midnight.
+
+**Restoring everything for 2027 is already a step Bryan takes.** When he updates
+`EVENT_DATE` to the 2027 date, the resolver returns `prep` on its own and every
+sign-up link comes back. He does not need to remember a second switch, and
+`UPDATING.md` already tells him to change that date. Say so in `UPDATING.md`
+explicitly so it is not a surprise.
+
+### Hide by attribute, never by deletion
+
+Mark an element with the phases it belongs to and let CSS do the work:
+
+```html
+<section data-phase="prep">...</section>
+<a data-phase="prep afterglow">...</a>
+```
+
+No attribute means always visible. One CSS rule per phase hides the rest. The
+markup stays in the file, greppable and obvious, and turning it back on is a
+config change rather than a git archaeology exercise.
+
+### What retires in `event`
+
+Everything that asks somebody to sign up for a thing that has already started or
+already closed:
+
+- The whole **Get Involved** section: Volunteer, Perform, Vend, Sponsor
+- **"Become a sponsor"** under the sponsor list. The sponsor list itself stays —
+  that is a thank-you, and event day is exactly when it should be visible.
+- **"Sign up for a slot"** on the open mic card. The slots are full; walk-ups are
+  handled in person at the stage.
+- The **pickleball registration** links and the **horseshoes** reserve-by-email
+  link. Both sign-up windows are closed by then.
+- **"Apply to Perform"** and its modal
+- The **countdown**, which by then is counting down to something already happening
+- **Pre-order merch**, which the existing deadline logic already handles. Leave
+  that logic alone; just make sure the two mechanisms do not fight.
+
+### What `afterglow` looks like
+
+This is the state the page sits in for weeks, so it should feel finished rather
+than abandoned. Lead with thanks and the headline number once Bryan has it, keep
+the winners up for a few days so people can still check, drop the live "on right
+now" panel and the day-of banner, and keep the 2027 save-the-date with its
+calendar links.
+
+**On whether this needs a Google Form: my recommendation is no, and the reason is
+that a second form would compete with the one that matters.** The feedback survey
+is the highest-value thing on the page in that window and its value decays fast,
+while memories are fresh. Pointing at two forms splits the responses and gets
+fewer of both. Bryan also said he is deliberately not collecting 2027 interest
+yet, so a new form has nothing to collect.
+
+What the state should carry instead, all of which already exists:
+
+1. Thank you, with the amount raised and the attendance when known
+2. The **feedback survey** as the single primary call to action
+3. **Membership** at $10 a year as the quieter secondary one. It is a better ask
+   than an email capture because it is an actual relationship, and the page
+   already has the link.
+4. **Save the date for 2027** with the Google Calendar and `.ics` links
+
+One thing worth adding that costs nothing: a single line saying that anyone who
+wants in on 2027 should email `pondfest@friendsoflumspond.org` and we will find
+them a job in the spring. Enthusiasm peaks in the week after the festival and is
+otherwise lost. A `mailto:` needs no new infrastructure and the volume at this
+scale is a handful of replies. If it ever outgrows that, it becomes a form next
+year.
+
+`DAY_OF_ALERT` already handles the time decay here, and `UPDATING.md` documents
+exactly this: put the thank-you and the survey link in the banner for about a
+week, then clear it. No new mechanism needed for that part.
+
+## 7. Source data — all transcribed and verified
 
 Everything below was read off the supplied graphics and is in the branch's
 `config.ts` already formatted. The graphics themselves are in `to-process/`.
@@ -281,7 +382,7 @@ Offer Bryan a shorter alternative; he may want his own words.
 - 2027 save-the-date — Saturday 9 October 2027 (confirmed a Saturday), 11–6. `.ics`
   is already committed; a Google Calendar template URL is in the branch config.
 
-## 7. Things to flag to Bryan — do not silently decide these
+## 8. Things to flag to Bryan — do not silently decide these
 
 **Already settled, do not reopen:** the first-responder list reads **"Marshalls"**
 because that is the name Bryan was given for the agency. It is not a typo for
@@ -304,7 +405,7 @@ U.S. Marshals. Leave it exactly as it is.
    Delaware". Transposing it to HTML fixes it silently, which is correct, but worth
    telling OMAD.
 
-## 8. Deploying
+## 9. Deploying
 
 **`git push` over SSH currently fails** — `ssh-add -l` reports no identities. The
 `gh` CLI is authenticated over HTTPS with `repo` scope, so this works without
@@ -323,9 +424,9 @@ tomorrow carries those along with it. Worth telling him before he pushes.
 
 GitHub Actions rebuilds and deploys on push to `main`, taking roughly 3 minutes.
 
-## 9. Driving a browser in this repo
+## 10. Driving a browser in this repo
 
-The mechanics. **What** to check is §11, which is the exit condition for the job.
+The mechanics. **What** to check is §12, which is the exit condition for the job.
 
 Do not trust the built HTML alone — Bryan reviews rendered output closely and has
 previously caught things that only show up in a real browser (a `mailto:` opening
@@ -353,7 +454,7 @@ the clock script shows the right set when you override `Date.now` via
 `page.evaluateOnNewDocument`; and the winners section and banner appear when
 `WINNERS_LIVE` is flipped and vanish when it is not.
 
-## 10. Don't let it read as machine-made
+## 11. Don't let it read as machine-made
 
 Pond Fest's audience is a few thousand neighbors in one corner of Delaware. Many
 of them know the board personally. This is also a public repo for a volunteer
@@ -450,20 +551,20 @@ pages. Hand a subagent the sweep of everything **outside** `src/pages/pondfest/`
 and `src/data/pondfest/`, and keep those two directories yourself, since that is
 where you are already editing and a second writer there will collide with you.
 
-Give the subagent the §10 rules and the em-dash replacement guidance, and tell it
+Give the subagent the §11 rules and the em-dash replacement guidance, and tell it
 to leave band blurbs alone: those are the artists' own words about themselves,
 supplied by them, and are not ours to rewrite. Same for the sponsor disclosure
 text, which the board approved as written.
 
 When it reports back, **re-run the grep yourself** before believing it. That is
-checks 6 through 9 in §11.
+checks 6 through 9 in §12.
 
 Scale, as of this writing: about 175 em-dashes across the repo, the largest
 concentrations being this brief (71), `src/pages/about/history.astro` (35),
 `src/pages/pondfest/index.astro` (20) and `src/data/pondfest/config.ts` (19).
 Thirteen en-dashes exist and all of them are time ranges; they stay.
 
-## 11. Validation: the session does not end until this passes
+## 12. Validation: the session does not end until this passes
 
 The first attempt produced a page that built cleanly and did not work. A green
 build proves the markup parses. It proves nothing about whether a tab switches,
@@ -498,15 +599,15 @@ summary is a starting point for a check, never a substitute for one.
 ### Tier 2 — copy and style gates (grep, binary, no judgment)
 
 6. Zero em-dashes in reader-facing built output.
-7. Zero British spellings, from the list in §10.
+7. Zero British spellings, from the list in §11.
 8. Zero kicker labels: `pf-eyebrow` must not exist anywhere.
-9. Zero banned vocabulary from the §10 list in reader-facing copy.
+9. Zero banned vocabulary from the §11 list in reader-facing copy.
 10. En-dashes are still allowed, but only inside time strings. Assert that
     rather than banning them.
 
 ### Tier 3 — behavior in a real browser (the part that was missing)
 
-Use the puppeteer setup in §9. These are the checks that actually matter.
+Use the puppeteer setup in §10. These are the checks that actually matter.
 
 11. **Map tabs work.** Click each tab in turn; assert its panel becomes visible,
     its `img` gains a real `src`, and the image truly decodes
@@ -556,7 +657,7 @@ building any of it** and have it re-run the script and independently spot-check
 five claims against the live DOM. A verifier that did not write the code catches
 what self-review does not. Only then report the work done.
 
-## 12. Lessons from the first attempt
+## 13. Lessons from the first attempt
 
 Recorded because they are the reason this document exists.
 
