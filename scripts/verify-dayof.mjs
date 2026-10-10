@@ -1095,9 +1095,17 @@ const showLazy = (page) =>
 // item 6: an area chip opens its map tab, the map decodes, the viewer lands
 // at the 60px scroll margin, and the back gesture returns to the card
 const chipSel = (id) => `a.pf-area-chip[data-pf-map="${id}"]`;
+// the first chip in the page may sit in the schedule view that is hidden
+// for the current phase, so take the first one that is actually shown
+const visibleChip = async (page, id) => {
+  for (const c of await page.$$(chipSel(id))) {
+    if (await page.evaluate((el) => el.offsetParent !== null, c)) return c;
+  }
+  return null;
+};
 {
   const page = await openPage({ now: EVENT_NOW, fresh: true });
-  const chip = await page.$(chipSel("area-2"));
+  const chip = await visibleChip(page, "area-2");
   if (!chip) {
     report(false, "area chip opens its map tab", `no ${chipSel("area-2")}`);
     report(
@@ -1152,7 +1160,7 @@ const chipSel = (id) => `a.pf-area-chip[data-pf-map="${id}"]`;
       (imgs) => imgs.filter((i) => i.getAttribute("src")).length,
     );
   const tapChip = async (id) => {
-    const c = await p2.$(chipSel(id));
+    const c = await visibleChip(p2, id);
     if (!c) return false;
     await p2.evaluate((el) => el.scrollIntoView({ block: "center" }), c);
     await sleep(200);
