@@ -682,6 +682,62 @@ report(
     : "no FAQ question mentions wheelchair",
 );
 
+// second pass, 10 Oct: three section colors, no smooth scroll, every ad
+// carries a shape, a canceled act is marked everywhere and never "on", and
+// every FAQ question from the config is on the page
+{
+  const sectionClasses = [
+    ...html.matchAll(/<section\b[^>]*class="([^"]*)"/g),
+  ].flatMap((m) => m[1].split(/\s+/).filter((c) => /^pf-section--/.test(c)));
+  const colors = new Set(
+    sectionClasses.filter((c) =>
+      /^pf-section--(dark|purple|light)(-alt)?$|^pf-section--warm$/.test(c),
+    ),
+  );
+  report(
+    colors.size <= 3 && [...colors].every((c) => /^pf-section--(dark|purple|light)$/.test(c)),
+    "three section colors in the page: dark, purple, light",
+    [...colors].join(", ") || "none",
+  );
+  report(
+    !/scroll-behavior:\s*smooth/.test(html),
+    "no smooth scroll-behavior in the page",
+  );
+  const shapes = adLis.map((li) => attr(li, "data-shape"));
+  report(
+    shapes.length === cfg.SPONSOR_ADS.length &&
+      shapes.every((x) => x === "tall" || x === "wide") &&
+      shapes.includes("tall"),
+    "every sponsor ad carries a shape, and at least one is tall",
+    shapes.join(" ") || "none",
+  );
+  const canceled = cfg.LINEUP.filter((a) => a.canceled);
+  const sched = html.match(/data-pf-sched[^>]*>([\s\S]*?)<\/script>/);
+  let setNames = [];
+  try {
+    setNames = JSON.parse(sched ? sched[1] : "{}").sets.map((x) => x.name);
+  } catch {}
+  const canceledPanels = (html.match(/pf-act--canceled/g) || []).length;
+  const canceledRows = (html.match(/\sdata-pf-canceled(?=[\s>])/g) || []).length;
+  report(
+    canceledPanels === canceled.length &&
+      canceledRows === canceled.length * 2 &&
+      canceled.every((a) => !setNames.includes(a.name)) &&
+      canceled.every((a) => text.includes(a.canceled)),
+    `${canceled.length} canceled act(s): marked on the panel and in both schedule views, not in the clock's sets`,
+    `panels ${canceledPanels}, rows ${canceledRows}, clock sets naming one: ${canceled
+      .filter((a) => setNames.includes(a.name))
+      .map((a) => a.name)
+      .join(", ") || "none"}`,
+  );
+  const missingFaq = cfg.FAQ.filter((f) => !text.includes(f.question));
+  report(
+    cfg.FAQ.length >= 19 && missingFaq.length === 0,
+    `all ${cfg.FAQ.length} FAQ questions are on the page`,
+    missingFaq.length ? `missing: ${missingFaq.map((f) => f.question).join(" | ")}` : "",
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════════
 // Tier 1b / 3: the winners flow, end to end (rebuilds twice)
 // ═══════════════════════════════════════════════════════════════════════
@@ -1402,6 +1458,86 @@ const visibleChip = async (page, id) => {
     `${plain.total} cards, ${plain.clamped} clamped, ${plain.cut} cut off`,
   );
   await nojs.close();
+}
+
+// second pass, 10 Oct: the map tabs wrap on a phone, jumps are instant,
+// no more than three section backgrounds are painted in either phase, and
+// at 4:30 the canceled set is not live anywhere
+{
+  for (const [label, now] of [
+    ["event", EVENT_NOW],
+    ["prep", PREP_NOW],
+  ]) {
+    const page = await openPage({ now });
+    const r = await page.evaluate(() => {
+      document.documentElement.classList.add("pf-render-all");
+      const bgs = new Set();
+      document.querySelectorAll("section.pf-section").forEach((el) => {
+        const cs = getComputedStyle(el);
+        if (cs.display === "none") return;
+        if (cs.backgroundImage !== "none") return; // the history photo
+        bgs.add(cs.backgroundColor);
+      });
+      const tabs = document.querySelector(".pf-mapview-tabs");
+      return {
+        bgs: [...bgs],
+        tabsFit: tabs ? tabs.scrollWidth <= tabs.clientWidth + 1 : null,
+        tabRows: tabs
+          ? new Set(
+              [...tabs.children].map((t) => Math.round(t.getBoundingClientRect().top)),
+            ).size
+          : 0,
+        scroll: getComputedStyle(document.documentElement).scrollBehavior,
+      };
+    });
+    report(
+      r.bgs.length <= 3,
+      `${label}: at most three section background colors on the page`,
+      r.bgs.join(" "),
+    );
+    if (label === "event") {
+      report(
+        r.tabsFit === true && r.tabRows >= 2,
+        "map tabs wrap at 390px instead of running off the edge",
+        `fits ${r.tabsFit}, rows ${r.tabRows}`,
+      );
+      report(
+        r.scroll === "auto",
+        "in-page jumps are instant",
+        `scroll-behavior ${r.scroll}`,
+      );
+    }
+    await page.close();
+  }
+  const canceled = cfg.LINEUP.find((a) => a.canceled);
+  if (canceled) {
+    const at = canceled.time.match(/^(\d+):(\d+)/);
+    const h = at ? Number(at[1]) + (Number(at[1]) < 11 ? 12 : 0) : 16;
+    const when = `${String(h).padStart(2, "0")}:${at ? at[2] : "30"}`;
+    const page = await openPage({
+      now: T(`2026-10-10T${when}:00-04:00`),
+      hash: "#pf-schedule",
+    });
+    await sleep(400);
+    const r = await page.evaluate((name) => {
+      const now = [...document.querySelectorAll("#pf-now [data-pf-act]")].map(
+        (x) => x.dataset.pfAct,
+      );
+      const liveRows = [
+        ...document.querySelectorAll("[data-pf-canceled][data-pf-live]"),
+      ].length;
+      const tagged = [
+        ...document.querySelectorAll("[data-pf-canceled] .pf-cancel-tag"),
+      ].length;
+      return { inNow: now.includes(name), liveRows, tagged, now };
+    }, canceled.name);
+    report(
+      !r.inNow && r.liveRows === 0 && r.tagged === 2,
+      `clock at ${when}: ${canceled.name} is tagged canceled and not on anywhere`,
+      `in "on right now" ${r.inNow} (${r.now.join(", ") || "empty"}), live canceled rows ${r.liveRows}, tags ${r.tagged}`,
+    );
+    await page.close();
+  }
 }
 
 // item 10: Share and Copy caption, with the share sheet and the clipboard
