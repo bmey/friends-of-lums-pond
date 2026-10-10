@@ -1478,11 +1478,17 @@ const visibleChip = async (page, id) => {
         if (cs.display === "none") return;
         if (cs.backgroundImage !== "none") return; // the history photo
         bgs.add(cs.backgroundColor);
-        order.push({ id: el.id || el.className.split(" ").pop(), bg: cs.backgroundColor });
+        order.push({
+          id: el.id || el.className.split(" ").pop(),
+          bg: cs.backgroundColor,
+          rule: cs.borderTopWidth !== "0px" && cs.borderTopStyle !== "none",
+        });
       });
+      // two sections of the same color in a row are allowed, but only with
+      // the hairline between them
       const repeats = order
         .filter((x, i) => i > 0 && x.bg === order[i - 1].bg)
-        .map((x, i, arr) => x.id);
+        .map((x) => `${x.id}${x.rule ? "" : " (no hairline)"}`);
       const tabs = document.querySelector(".pf-mapview-tabs");
       return {
         bgs: [...bgs],
@@ -1501,13 +1507,11 @@ const visibleChip = async (page, id) => {
       `${label}: at most three section background colors on the page`,
       r.bgs.join(" "),
     );
-    // the winners section is purple and sits between two purple neighbors
-    // while it is live; everywhere else the colors alternate
-    const unexpected = r.repeats.filter((id) => id !== "pf-schedule" || !cfg.WINNERS_LIVE);
+    const unseparated = r.repeats.filter((x) => /no hairline/.test(x));
     report(
-      unexpected.length === 0,
-      `${label}: no two neighboring sections share a color`,
-      r.repeats.length ? `repeats before: ${r.repeats.join(", ")}` : "",
+      unseparated.length === 0,
+      `${label}: two sections of the same color in a row are separated by the hairline`,
+      r.repeats.length ? `same-color neighbors: ${r.repeats.join(", ")}` : "none",
     );
     if (label === "event") {
       report(
