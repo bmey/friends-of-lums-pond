@@ -91,7 +91,12 @@ Basket #46 | 32575-277
 // ── STEP 4 ────────────────────────────────────────────────────────
 // Silent auction. One per line: Item | Winner
 export const AUCTION_WINNERS = `
-coming soon
+Deerfield Foursome of Golf with Cart | Clara Robbs
+Delaware State Park Surf Jeep | Jeff Mey
+Delaware State Park Camping Voucher | Jeff Mey
+Beads by Carol - Necklace & Earrings | Jeff Mey
+Beads by Carol - Faceted Amethyst Necklacs | Jeff Mey
+Blackstone 17" Propane Gas Griddle | Jeff Mey
 `;
 
 // ── STEP 5 (optional) ─────────────────────────────────────────────
