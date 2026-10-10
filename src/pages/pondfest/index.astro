@@ -260,6 +260,67 @@ const scheduleData = {
 };
 const hasSchedule = hasLineup || keyTimes.length > 0;
 
+// One chronological spine for the "By time" view: the sets, the open mic
+// slots and the key times interleaved, each saying where it is. Rows that
+// start together go key time, then sets, then the open mic, so "gates
+// open" reads before the first set.
+const prettyTime = (hm: string) => {
+  const [h, m] = hm.split(":").map(Number);
+  const ap = h >= 12 ? "PM" : "AM";
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${ap}`;
+};
+type TimelineKind = "set" | "openmic" | "keytime";
+const kindOrder: Record<TimelineKind, number> = {
+  keytime: 0,
+  set: 1,
+  openmic: 2,
+};
+const timeline = [
+  ...LINEUP.flatMap((act) => {
+    const t = parseSetTime(act.time);
+    if (!t) return [];
+    const st = splitStage(act.stage || "");
+    return [
+      {
+        kind: "set" as TimelineKind,
+        start: t.start,
+        end: t.end,
+        title: act.name,
+        where: st.name,
+        area: st.area,
+        icon: "fa-music",
+        href: `#${actSlug(act.name)}`,
+        detail: "",
+      },
+    ];
+  }),
+  ...openMicSlots.map((slot) => ({
+    kind: "openmic" as TimelineKind,
+    start: slot.start,
+    end: slot.end,
+    title: slot.name,
+    where: "Open Mic",
+    area: openMicArea,
+    icon: "fa-microphone-lines",
+    href: "#pf-openmic",
+    detail: "",
+  })),
+  ...keyTimes.map((k) => ({
+    kind: "keytime" as TimelineKind,
+    start: k.start,
+    end: "",
+    title: k.title,
+    where: "",
+    area: k.area || "",
+    icon: k.icon,
+    href: "",
+    detail: k.detail || "",
+  })),
+].sort(
+  (a, b) =>
+    a.start.localeCompare(b.start) || kindOrder[a.kind] - kindOrder[b.kind],
+);
+
 // Food trucks, grouped by the area you would walk to.
 const foodByArea = ([1, 2, 3] as const)
   .map((area) => ({
@@ -997,99 +1058,198 @@ const sponsorAds = await Promise.all(
             <p class="pf-now-next" data-pf-now-next hidden />
           </div>
 
-          {hasLineup && (
-            <div class="pf-sched-stages">
-              {stageColumns.map((col) => {
-                const stage = splitStage(col.name);
-                return (
-                  <div class="pf-sched-stage">
-                    <div class="pf-sched-stage-head">
-                      <h3>{stage.name}</h3>
-                      {stage.area && (
-                        <span class="pf-sched-stage-area">{stage.area}</span>
-                      )}
-                    </div>
-                    <ol class="pf-sched-sets">
-                      {col.acts.map((act) => (
-                        <li>
-                          <a
-                            class="pf-sched-set"
-                            href={`#${actSlug(act.name)}`}
-                            data-pf-set={actSlug(act.name)}
-                          >
-                            <span class="pf-sched-time">{act.time}</span>
-                            <span class="pf-sched-name">{act.name}</span>
-                            <i
-                              class="fa-solid fa-chevron-right pf-sched-chev"
-                              aria-hidden="true"
-                            />
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {OPEN_MIC_SLOTS.length > 0 && (
-            <div class="pf-openmic" id="pf-openmic">
-              <div class="pf-openmic-head">
-                <h3>
-                  <i class="fa-solid fa-microphone-lines" aria-hidden="true" />{" "}
-                  Open Mic
-                </h3>
-                <p>
-                  Area 1, all day, hosted by the{" "}
-                  <a href="https://302omad.com/" target="_blank" rel="noopener">
-                    Original Music Association of Delaware
-                  </a>
-                  . Walk-ups get whatever slots are still open.
-                </p>
+          <div class="pf-sched-views">
+            {timeline.length > 0 && (
+              <div
+                class="pf-sched-toggle"
+                role="group"
+                aria-label="How to read the schedule"
+              >
+                <button
+                  type="button"
+                  data-pf-view-for="time"
+                  aria-pressed="false"
+                >
+                  <i class="fa-regular fa-clock" aria-hidden="true" /> By time
+                </button>
+                <button
+                  type="button"
+                  data-pf-view-for="stage"
+                  aria-pressed="false"
+                >
+                  <i class="fa-solid fa-music" aria-hidden="true" /> By stage
+                </button>
               </div>
-              <ol class="pf-openmic-list">
-                {OPEN_MIC_SLOTS.map((slot) => (
-                  <li data-pf-openmic>
-                    <span class="pf-openmic-time">{slot.time}</span>
-                    <span class="pf-openmic-name">{slot.name}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
+            )}
 
-          {keyTimes.length > 0 && (
-            <div class="pf-keytimes" id="pf-keytimes">
-              <h3 class="pf-keytimes-title">Key times</h3>
-              <ol class="pf-keytimes-list">
-                {keyTimes.map((k) => (
-                  <li class="pf-keytime" data-pf-moment={k.start}>
-                    <span class="pf-keytime-when">{k.time}</span>
-                    <span class="pf-keytime-dot" aria-hidden="true">
-                      <i class={`fa-solid ${k.icon}`} />
-                    </span>
-                    <div class="pf-keytime-body">
-                      <strong class="pf-keytime-title">{k.title}</strong>
-                      {k.area &&
-                        (hasMapView ? (
+            <div data-pf-view="stage">
+              {hasLineup && (
+                <div class="pf-sched-stages">
+                  {stageColumns.map((col) => {
+                    const stage = splitStage(col.name);
+                    return (
+                      <div class="pf-sched-stage">
+                        <div class="pf-sched-stage-head">
+                          <h3>{stage.name}</h3>
+                          {stage.area && (
+                            <span class="pf-sched-stage-area">
+                              {stage.area}
+                            </span>
+                          )}
+                        </div>
+                        <ol class="pf-sched-sets">
+                          {col.acts.map((act) => (
+                            <li>
+                              <a
+                                class="pf-sched-set"
+                                href={`#${actSlug(act.name)}`}
+                                data-pf-set={actSlug(act.name)}
+                              >
+                                <span class="pf-sched-time">{act.time}</span>
+                                <span class="pf-sched-name">{act.name}</span>
+                                <i
+                                  class="fa-solid fa-chevron-right pf-sched-chev"
+                                  aria-hidden="true"
+                                />
+                              </a>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {OPEN_MIC_SLOTS.length > 0 && (
+                <div class="pf-openmic" id="pf-openmic">
+                  <div class="pf-openmic-head">
+                    <h3>
+                      <i
+                        class="fa-solid fa-microphone-lines"
+                        aria-hidden="true"
+                      />{" "}
+                      Open Mic
+                    </h3>
+                    <p>
+                      Area 1, all day, hosted by the{" "}
+                      <a
+                        href="https://302omad.com/"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        Original Music Association of Delaware
+                      </a>
+                      . Walk-ups get whatever slots are still open.
+                    </p>
+                  </div>
+                  <ol class="pf-openmic-list">
+                    {OPEN_MIC_SLOTS.map((slot) => (
+                      <li data-pf-openmic>
+                        <span class="pf-openmic-time">{slot.time}</span>
+                        <span class="pf-openmic-name">{slot.name}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {keyTimes.length > 0 && (
+                <div class="pf-keytimes" id="pf-keytimes">
+                  <h3 class="pf-keytimes-title">Key times</h3>
+                  <ol class="pf-keytimes-list">
+                    {keyTimes.map((k) => (
+                      <li class="pf-keytime" data-pf-moment={k.start}>
+                        <span class="pf-keytime-when">{k.time}</span>
+                        <span class="pf-keytime-dot" aria-hidden="true">
+                          <i class={`fa-solid ${k.icon}`} />
+                        </span>
+                        <div class="pf-keytime-body">
+                          <strong class="pf-keytime-title">{k.title}</strong>
+                          {k.area &&
+                            (hasMapView ? (
+                              <a
+                                class="pf-keytime-area pf-area-chip"
+                                href={`#pf-maptab-${mapForArea(k.area)}`}
+                                data-pf-map={mapForArea(k.area)}
+                              >
+                                {k.area}
+                              </a>
+                            ) : (
+                              <span class="pf-keytime-area">{k.area}</span>
+                            ))}
+                          {k.detail && <p>{k.detail}</p>}
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+            </div>
+
+            {timeline.length > 0 && (
+              <div class="pf-timeline" data-pf-view="time">
+                <h3 class="pf-keytimes-title pf-timeline-title">
+                  The whole day, by time
+                </h3>
+                <ol class="pf-keytimes-list">
+                  {timeline.map((row, i) => (
+                    <li
+                      class="pf-keytime pf-tl"
+                      data-pf-tl={row.kind}
+                      data-pf-tl-start={row.start}
+                      data-pf-tl-end={row.end || undefined}
+                      data-pf-tl-same={
+                        i > 0 && timeline[i - 1].start === row.start
+                          ? ""
+                          : undefined
+                      }
+                    >
+                      <span class="pf-keytime-when">
+                        {prettyTime(row.start)}
+                      </span>
+                      <span class="pf-keytime-dot" aria-hidden="true">
+                        <i class={`fa-solid ${row.icon}`} />
+                      </span>
+                      <div class="pf-keytime-body">
+                        {row.href ? (
                           <a
-                            class="pf-keytime-area pf-area-chip"
-                            href={`#pf-maptab-${mapForArea(k.area)}`}
-                            data-pf-map={mapForArea(k.area)}
+                            class="pf-keytime-title pf-tl-link"
+                            href={row.href}
                           >
-                            {k.area}
+                            {row.title}
                           </a>
                         ) : (
-                          <span class="pf-keytime-area">{k.area}</span>
-                        ))}
-                      {k.detail && <p>{k.detail}</p>}
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
+                          <strong class="pf-keytime-title">{row.title}</strong>
+                        )}
+                        <span class="pf-tl-meta">
+                          {row.where && (
+                            <span class="pf-tl-where">
+                              {row.where}
+                              {row.end && ` · until ${prettyTime(row.end)}`}
+                            </span>
+                          )}
+                          {row.area &&
+                            (hasMapView ? (
+                              <a
+                                class="pf-keytime-area pf-area-chip"
+                                href={`#pf-maptab-${mapForArea(row.area)}`}
+                                data-pf-map={mapForArea(row.area)}
+                              >
+                                {row.area}
+                              </a>
+                            ) : (
+                              <span class="pf-keytime-area">{row.area}</span>
+                            ))}
+                        </span>
+                        {row.detail && <p>{row.detail}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </div>
 
           <p class="pf-sched-foot" data-phase="event">
             <i class="fa-regular fa-calendar" aria-hidden="true" />{" "}
@@ -4761,6 +4921,85 @@ const sponsorAds = await Promise.all(
     color: #06201d;
     border-color: var(--pf-teal);
   }
+  /* ── Two readings of the same schedule ──
+     By stage for planning, by time for standing in the field. The script
+     picks one by phase and stamps data-pf-sched-view; until it does, both
+     lists show and the toggle stays hidden, so nothing is stranded. */
+  .pf-sched-toggle {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .pf-sched-toggle button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    min-height: 40px;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .pf-sched-toggle button[aria-pressed="true"] {
+    background: var(--pf-teal);
+    border-color: var(--pf-teal);
+    color: #06201d;
+    font-weight: 700;
+  }
+  .pf-sched-views:not([data-pf-sched-view]) .pf-sched-toggle {
+    display: none;
+  }
+  .pf-sched-views[data-pf-sched-view] .pf-timeline-title {
+    display: none;
+  }
+  .pf-sched-views[data-pf-sched-view="time"] [data-pf-view="stage"],
+  .pf-sched-views[data-pf-sched-view="stage"] [data-pf-view="time"] {
+    display: none;
+  }
+  .pf-sched-views:not([data-pf-sched-view]) .pf-timeline {
+    margin-top: 2.25rem;
+  }
+  /* rows that start together share one time label */
+  .pf-tl[data-pf-tl-same] .pf-keytime-when {
+    visibility: hidden;
+  }
+  .pf-tl-link {
+    text-decoration: none;
+  }
+  .pf-tl-link:hover,
+  .pf-tl-link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .pf-tl-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.6rem;
+  }
+  .pf-tl-where {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .pf-tl[data-pf-live] .pf-keytime-dot {
+    background: var(--pf-teal);
+    color: #06201d;
+    border-color: var(--pf-teal);
+  }
+  .pf-tl[data-pf-live] .pf-keytime-when::after {
+    content: " now";
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fff;
+  }
   .pf-sched-foot {
     margin: 1.75rem 0 0;
     text-align: center;
@@ -5425,6 +5664,36 @@ const sponsorAds = await Promise.all(
   applyPhase();
   document.addEventListener("astro:after-swap", applyPhase);
 
+  // ── Schedule views ────────────────────────────────────────────────
+  // By stage is the planning question; by time is the one you ask in a
+  // field. Event day opens by time. Without script both lists show.
+  function setupScheduleViews() {
+    const views = document.querySelector<HTMLElement>(".pf-sched-views");
+    if (!views) return;
+    const buttons = Array.from(
+      views.querySelectorAll<HTMLButtonElement>("[data-pf-view-for]"),
+    );
+    if (!buttons.length) return;
+    const show = (v: string) => {
+      views.dataset.pfSchedView = v;
+      buttons.forEach((b) =>
+        b.setAttribute(
+          "aria-pressed",
+          b.dataset.pfViewFor === v ? "true" : "false",
+        ),
+      );
+    };
+    buttons.forEach((b) =>
+      b.addEventListener("click", () => show(b.dataset.pfViewFor || "stage")),
+    );
+    show(
+      document.documentElement.dataset.pfPhase === "event" ? "time" : "stage",
+    );
+  }
+
+  setupScheduleViews();
+  document.addEventListener("astro:after-swap", setupScheduleViews);
+
   // ── "On right now" ─────────────────────────────────────────────────
   // Reads the small JSON block the build left in the schedule section and
   // works out, in Eastern time, what is playing on each stage and which
@@ -5489,6 +5758,13 @@ const sponsorAds = await Promise.all(
       const ap = h >= 12 ? "PM" : "AM";
       return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${ap}`;
     };
+    const plusMinutes = (hm: string, mins: number) => {
+      const [h, m] = hm.split(":").map(Number);
+      const t = h * 60 + m + mins;
+      return `${String(Math.floor(t / 60) % 24).padStart(2, "0")}:${String(
+        t % 60,
+      ).padStart(2, "0")}`;
+    };
     const el = (tag: string, cls: string, text?: string) => {
       const e = document.createElement(tag);
       e.className = cls;
@@ -5530,6 +5806,19 @@ const sponsorAds = await Promise.all(
         if (live) row.setAttribute("data-pf-live", "");
         else row.removeAttribute("data-pf-live");
       });
+      // the by-time rows: a set or slot is live until it ends, a key time
+      // for the half hour after it starts, and past after that
+      document
+        .querySelectorAll<HTMLElement>("[data-pf-tl-start]")
+        .forEach((li) => {
+          const start = li.dataset.pfTlStart || "";
+          const end = li.dataset.pfTlEnd || plusMinutes(start, 30);
+          const live = start <= now.hm && now.hm < end;
+          if (live) li.setAttribute("data-pf-live", "");
+          else li.removeAttribute("data-pf-live");
+          if (end <= now.hm) li.setAttribute("data-pf-past", "");
+          else li.removeAttribute("data-pf-past");
+        });
       let soonMarked = false;
       document
         .querySelectorAll<HTMLElement>("[data-pf-moment]")
