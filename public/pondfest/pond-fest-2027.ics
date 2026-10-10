@@ -1,0 +1,41 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Friends of Lums Pond State Park//Pond Fest//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VTIMEZONE
+TZID:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:pond-fest-2027@friendsoflumspond.org
+DTSTAMP:20261010T000000Z
+DTSTART;TZID=America/New_York:20271009T110000
+DTEND;TZID=America/New_York:20271009T180000
+SUMMARY:Pond Fest 2027
+LOCATION:Lums Pond State Park\, 1068 Howell School Rd\, Bear\, DE 19701
+DESCRIPTION:The fourth annual Pond Fest at Lums Pond State Park. Live music
+ \, food trucks\, local vendors\, a beer garden and family activities\, rai
+ sing money for the park. Free to attend; the standard park entrance fee ap
+ plies at the gate.\n\nDetails: https://friendsoflumspond.org/pondfest
+URL:https://friendsoflumspond.org/pondfest
+BEGIN:VALARM
+TRIGGER:-P7D
+ACTION:DISPLAY
+DESCRIPTION:Pond Fest 2027 is a week away
+END:VALARM
+END:VEVENT
+END:VCALENDAR
