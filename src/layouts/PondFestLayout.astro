@@ -140,12 +140,12 @@ const { title, description, ogImage, phase } = Astro.props;
         padding-right: 0;
       }
 
-      /* ── Section color variants ── */
+      /* ── Section color variants ──
+         Three, and only three: dark, purple, light. Two sections of the
+         same color in a row get a hairline between them instead of a
+         fourth and fifth shade. */
       .pf-section--dark {
         background-color: var(--pf-dark);
-      }
-      .pf-section--dark-alt {
-        background-color: var(--pf-dark-alt);
       }
       .pf-section--purple {
         background-color: var(--pf-purple);
@@ -153,13 +153,20 @@ const { title, description, ogImage, phase } = Astro.props;
       .pf-section--light {
         background-color: var(--pf-light);
       }
-      .pf-section--light-alt {
-        background-color: var(--pf-light-alt);
+      .pf-section--dark + .pf-section--dark {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .pf-section--light + .pf-section--light {
+        border-top: 1px solid rgba(61, 47, 122, 0.14);
       }
 
-      /* Legacy — map old class names to new ones */
+      /* Legacy — the old alternates are the base colors now */
+      .pf-section--dark-alt,
       .pf-section--warm {
-        background-color: var(--pf-dark-alt);
+        background-color: var(--pf-dark);
+      }
+      .pf-section--light-alt {
+        background-color: var(--pf-light);
       }
 
       /* ── Section inner widths ── */
@@ -192,17 +199,14 @@ const { title, description, ogImage, phase } = Astro.props;
 
       /* Dark section text */
       .pf-section--dark h2,
-      .pf-section--dark-alt h2,
       .pf-section--warm h2 {
         color: var(--pf-teal-light);
       }
       .pf-section--dark p,
-      .pf-section--dark-alt p,
       .pf-section--warm p {
         color: rgba(255, 255, 255, 0.78);
       }
       .pf-section--dark h3,
-      .pf-section--dark-alt h3,
       .pf-section--warm h3 {
         color: #fff;
       }
@@ -219,16 +223,13 @@ const { title, description, ogImage, phase } = Astro.props;
       }
 
       /* Light section text */
-      .pf-section--light h2,
-      .pf-section--light-alt h2 {
+      .pf-section--light h2 {
         color: var(--pf-purple-dark);
       }
-      .pf-section--light p,
-      .pf-section--light-alt p {
+      .pf-section--light p {
         color: #3a2e5a;
       }
-      .pf-section--light h3,
-      .pf-section--light-alt h3 {
+      .pf-section--light h3 {
         color: var(--pf-purple);
       }
 
