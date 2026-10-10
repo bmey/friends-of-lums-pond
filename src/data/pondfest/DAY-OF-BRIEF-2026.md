@@ -374,15 +374,130 @@ Offer Bryan a shorter alternative; he may want his own words.
 
 ### Thank-yous
 
-- **Volunteers** — around 100 people. Bryan will supply the full list later, so
-  render the group with its thank-you text and an empty name list that fills in
-  when the array is populated. Keep the footprint small.
+- **Volunteers** — the list arrived on 9 Oct 2026 and is below: **87 people**,
+  deduplicated from the 89 Bryan supplied. Keep the footprint small, as he asked:
+  a name list, not cards. Alphabetical by last name.
+- **Delaware State Parks staff** — a new group, and a people group rather than
+  the organizations already in `PARTNERS`. Bryan named Alex Hannah, Arden Locker,
+  Lisa McHugh, Beth Daliessio and Sam Bosserman, "and so many more that have been
+  extremely helpful, supportive, and great partners to work with". The names go
+  in; the wording has to make clear the list is partial without sounding like it
+  was trimmed for space. Suggested:
+
+  > Alex Hannah, Arden Locker, Lisa McHugh, Beth Daliessio, Sam Bosserman, and a
+  > long list of others who answered the phone, moved the picnic tables, and said
+  > yes to things that made more work for them. Pond Fest happens in their park,
+  > with their help, all year.
+
+  Keep this separate from the `PARTNERS` entries for "Lums Pond State Park Staff"
+  and "Delaware State Parks & DNREC". Those credit the agencies. This credits
+  people by name, which is the point.
 - **Sound engineers** — Dave Muddiman (Starground Audio), Ernie Bouey (PawPrint
   Productions), Keith Thompson (Vice Squad)
 - **Emcees and DJs** — DJ DLyte, Tom the Spokesman
 - **Partner organizations, Delaware State Parks staff, Natural Resources Police** —
   already in `PARTNERS` in `config.ts` under the `agency` group. Do not duplicate
   them; check before adding.
+
+### The volunteer list (87, deduplicated)
+
+Source was `to-process/volunteers.md`, which is **not in git**, so this is the
+copy of record. Two exact duplicates were removed, Diane Gearhart and Mike
+Cathell. `John Jacob` and `John Jacob III` are two different people and both
+stay.
+
+Two entries need Bryan's eye before they go on a public page: **`Jessica
+Bell/Dtr.`** is a shorthand, not a name, and needs the daughter's actual name or
+rewording; **`Thabisile`** has no surname, which may be correct but is worth one
+question.
+
+- Sarah Anderson
+- Michaela Anthony
+- Lukemon Arzoi
+- Lois Baker
+- Judah Baronskowski
+- Samantha Baronskowski
+- Caroline Bass
+- Dave Becker
+- Jessica Bell/Dtr.
+- Deanna Buckson
+- Tyler Buzby
+- Ann Carpenter
+- Marjorie Carter
+- Mike Cathell
+- Valerie Cheyney
+- Giovanni Ciranni
+- Bob Conley, Sr
+- Linda Conley
+- John Deakins
+- Theresa Deakins
+- Claire Denney
+- Stephanie Doodigan
+- Lea Eshaghoff
+- Victoria Esposito
+- Grace Ezell
+- Grace Farrell
+- Fabian Fernandez
+- Chris Funcheon
+- Diane Gearhart
+- Amaresh Gopalaswamy
+- Chris Grady
+- Nicole Habbe
+- Jodi Hartlep
+- Logan Hayden
+- Shanee Haymon
+- Kaci Ieppert
+- John Jacob
+- John Jacob III
+- Patty Jacob
+- Kayla Johnson
+- Maddie Johnson
+- Erica Keibel
+- Kaitlin Knox
+- Laural Kretzer
+- Jacque Lukaszewicz
+- Ellen Lyons
+- John Lyons
+- Soufian Mankour
+- Laurie Maragas
+- Kathy Maslar
+- Quinn Masset
+- Karen McCloskey
+- Aaron McGraw
+- Candace McGraw
+- Emily McMichael
+- Bob Mercer
+- Bryan Mey
+- Jessie Mey
+- Austen Morgan
+- Edan Mowles
+- Justin Mowles
+- Lauren Mowles
+- Jean Mullin
+- Michael Newell
+- Celeste Rivera
+- Isabella Rivera
+- Brian Roache
+- Clara Robbs
+- Candace Rodriguez
+- Vicky Roland
+- Julia Santini
+- Brianna Schetzler
+- Margot Shea
+- Nancy Sheehan-Becker
+- Emma Shubrook
+- Matthew Silva
+- Isabel Smith
+- Thabisile
+- Aaliyah Townsend
+- Fran Travis
+- Sophia Travlos
+- Kobo Valladares-Aguilar
+- Brenna Vendrick
+- Samantha White
+- Alyssa Winner
+- Atlee Yetter
+- Jennifer Zakrzewski
 
 ### Links
 
