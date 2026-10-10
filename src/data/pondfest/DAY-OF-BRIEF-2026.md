@@ -262,6 +262,25 @@ year.
 exactly this: put the thank-you and the survey link in the banner for about a
 week, then clear it. No new mechanism needed for that part.
 
+### The second-Saturday promise (new this year, say it everywhere)
+
+2024 was October 12 and 2025 was October 4. 2026 is the first year Friends of
+Lums Pond is committing to a fixed weekend, and Bryan wants that promise made
+plainly so people learn what to expect. `ANNUAL_PROMISE` and
+`ANNUAL_PROMISE_SHORT` in `config.ts` carry the wording.
+
+Surface it in all three phases, not just one:
+
+- **prep** — near the date in the hero or Plan Your Visit, and in the FAQ as its
+  own question ("When is Pond Fest each year?")
+- **event** — in the footer of the day's schedule, where people are already
+  looking at times
+- **afterglow** — alongside the 2027 save-the-date, which is the moment it
+  actually lands
+
+Never describe past years as having followed the rule. They did not, and the
+archive page said so until tonight.
+
 ## 7. Source data — all transcribed and verified
 
 Everything below was read off the supplied graphics and is in the branch's
@@ -618,10 +637,10 @@ quietly drop it — that is a disclosure decision and it is his to make.
 process anywhere in the output, and nothing on the live site that describes how it
 was built.
 
-### Delegate this part
+### Delegating the copy pass
 
-The copy pass is the one piece of this job that fans out cleanly, because it
-touches files nothing else in this build needs: `src/pages/about/`,
+This is material for you to delegate as you see fit, not a prescription. What
+makes it separable is that it touches files nothing else in this build needs: `src/pages/about/`,
 `src/pages/resources/`, `src/content/blog/`, and the older `/resources/pondfest*`
 pages. Hand a subagent the sweep of everything **outside** `src/pages/pondfest/`
 and `src/data/pondfest/`, and keep those two directories yourself, since that is
@@ -635,10 +654,17 @@ text, which the board approved as written.
 When it reports back, **re-run the grep yourself** before believing it. That is
 checks 6 through 9 in §12.
 
-Scale, as of this writing: about 175 em-dashes across the repo, the largest
-concentrations being this brief (71), `src/pages/about/history.astro` (35),
-`src/pages/pondfest/index.astro` (20) and `src/data/pondfest/config.ts` (19).
-Thirteen en-dashes exist and all of them are time ranges; they stay.
+Scale: about 181 em-dashes were counted across `src/`, of which **43 were in
+reader-facing copy**. `src/pages/about/history.astro` held 35 of those and was
+cleared on 9 Oct 2026 along with its placeholder text, so the reader-facing
+remainder is small: `config.ts:571`, two in `resources/pondfest2025.astro`, four
+date labels in `blog/23-02-21-newsletter.mdx`, one in `blog/26-02-26-do-more-24.mdx`
+and one in `data/pf2025/auctions.ts`. The rest are code comments and this brief.
+En-dashes are all time ranges and stay.
+
+Two provenance rules for whoever does this: **band blurbs are the artists' own
+words** about themselves and are not ours to rewrite, and `SUPPORT_DISCLOSURE`
+was approved by the board as written. Leave both.
 
 ## 12. Validation: the session does not end until this passes
 
