@@ -2337,7 +2337,15 @@ const sponsorAds = (
                 </p>
                 <ul class="pf-ads-rail">
                   {sponsorAds.map((ad) => (
-                    <li class={`pf-ad--${ad.size}`} data-tier={ad.tier}>
+                    <li
+                      class={`pf-ad--${ad.size}`}
+                      data-tier={ad.tier}
+                      data-shape={
+                        ad.width && ad.height && ad.height > ad.width
+                          ? "tall"
+                          : "wide"
+                      }
+                    >
                       <a
                         class="pf-ad"
                         href={ad.fullSrc}
@@ -5384,7 +5392,10 @@ const sponsorAds = (
     .pf-ads-rail {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      /* the ads are every shape, so cards size to their own ad */
+      /* the ads are every shape: a tall half-width ad takes two rows and
+         the wide ones stack beside it, so the gold row has no hole in it.
+         Dense packing is what lets the stacking happen. */
+      grid-auto-flow: dense;
       align-items: start;
       overflow: visible;
       padding-bottom: 0;
@@ -5400,8 +5411,26 @@ const sponsorAds = (
     .pf-ads-rail > .pf-ad--half {
       grid-column: span 2;
     }
+    .pf-ads-rail > .pf-ad--half[data-shape="tall"] {
+      grid-row: span 2;
+      align-self: stretch;
+    }
+    .pf-ads-rail > .pf-ad--half[data-shape="tall"] .pf-ad {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .pf-ads-rail > .pf-ad--half[data-shape="tall"] .pf-ad img {
+      flex: 1 1 auto;
+      min-height: 0;
+      object-fit: contain;
+    }
     .pf-ads-rail > .pf-ad--full {
       grid-column: 1 / -1;
+    }
+    /* the small ads sit in one row, centered on each other's middles */
+    .pf-ads-rail > .pf-ad--quarter {
+      align-self: center;
     }
   }
 
