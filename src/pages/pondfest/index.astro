@@ -198,8 +198,39 @@ const parseSetTime = (label?: string) => {
   return start && end ? { start, end } : null;
 };
 
+// An open mic slot is written as "11:30 AM". Same 24-hour form as the sets.
+const parseClockTime = (label: string) => {
+  const m = label.match(/(\d{1,2}):(\d{2})\s*([ap])\.?m/i);
+  if (!m) return null;
+  let h = Number(m[1]);
+  const ap = m[3].toLowerCase();
+  if (ap === "p" && h !== 12) h += 12;
+  if (ap === "a" && h === 12) h = 0;
+  return `${String(h).padStart(2, "0")}:${m[2]}`;
+};
+const plusMinutes = (hm: string, mins: number) => {
+  const [h, m] = hm.split(":").map(Number);
+  const t = h * 60 + m + mins;
+  return `${String(Math.floor(t / 60) % 24).padStart(2, "0")}:${String(
+    t % 60,
+  ).padStart(2, "0")}`;
+};
+// A slot runs until the next one starts; the last one gets the same half
+// hour as the rest.
+const openMicSlots = OPEN_MIC_SLOTS.flatMap((slot, i, all) => {
+  const start = parseClockTime(slot.time);
+  if (!start) return [];
+  const following = all
+    .slice(i + 1)
+    .map((x) => parseClockTime(x.time))
+    .find((x) => x && x > start);
+  return [{ name: slot.name, start, end: following || plusMinutes(start, 30) }];
+});
+const openMicArea = AMENITIES.find((a) => a.id === "open-mic")?.area || "";
+
 // What the browser needs to answer "what is on right now" without shipping
-// the whole page's data: the sets in 24-hour time, and the fixed moments.
+// the whole page's data: the sets in 24-hour time, the open mic slots, and
+// the fixed moments.
 const scheduleData = {
   date: EVENT_DATE.slice(0, 10),
   stages: stageColumns.map((c) => ({
@@ -218,6 +249,7 @@ const scheduleData = {
       },
     ];
   }),
+  openMic: { area: openMicArea, slots: openMicSlots },
   moments: keyTimes.map((k) => ({
     start: k.start,
     time: k.time,
@@ -652,21 +684,30 @@ const sponsorAds = await Promise.all(
   </script>
   <!-- The hero is a CSS background, which the browser only discovers after
        it has parsed the stylesheet. Preloading starts the download alongside
-       the HTML instead, one file per screen size. -->
-  <link
-    slot="head"
-    rel="preload"
-    as="image"
-    href={HERO_IMAGE_MOBILE_URL || HERO_IMAGE_URL}
-    media="(max-width: 768px)"
-  />
-  <link
-    slot="head"
-    rel="preload"
-    as="image"
-    href={HERO_IMAGE_URL}
-    media="(min-width: 769px)"
-  />
+       the HTML instead, one file per screen size. Not on event day, when the
+       hero is a band with no photo behind it. -->
+  {
+    phase !== "event" && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        href={HERO_IMAGE_MOBILE_URL || HERO_IMAGE_URL}
+        media="(max-width: 768px)"
+      />
+    )
+  }
+  {
+    phase !== "event" && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        href={HERO_IMAGE_URL}
+        media="(min-width: 769px)"
+      />
+    )
+  }
   <!-- ══ WINNERS BANNER — the loudest thing on the page once the draws
        are posted, and gone again the moment WINNERS_LIVE is false ═══ -->
   {
@@ -982,7 +1023,7 @@ const sponsorAds = await Promise.all(
           )}
 
           {OPEN_MIC_SLOTS.length > 0 && (
-            <div class="pf-openmic">
+            <div class="pf-openmic" id="pf-openmic">
               <div class="pf-openmic-head">
                 <h3>
                   <i class="fa-solid fa-microphone-lines" aria-hidden="true" />{" "}
@@ -1008,7 +1049,7 @@ const sponsorAds = await Promise.all(
           )}
 
           {keyTimes.length > 0 && (
-            <div class="pf-keytimes">
+            <div class="pf-keytimes" id="pf-keytimes">
               <h3 class="pf-keytimes-title">Key times</h3>
               <ol class="pf-keytimes-list">
                 {keyTimes.map((k) => (
@@ -5241,10 +5282,12 @@ const sponsorAds = await Promise.all(
       end: string;
     };
     type Moment = { start: string; time: string; title: string; area: string };
+    type Slot = { name: string; start: string; end: string };
     type Data = {
       date: string;
       stages: { name: string; area: string }[];
       sets: Set[];
+      openMic?: { area: string; slots: Slot[] };
       moments: Moment[];
     };
     let data: Data;
@@ -5383,6 +5426,7 @@ const sponsorAds = await Promise.all(
         if (live) {
           const row = el("a", "pf-now-row") as HTMLAnchorElement;
           row.href = `#${live.slug}`;
+          row.dataset.pfKind = "set";
           row.dataset.pfState = "live";
           row.dataset.pfAct = live.name;
           row.dataset.pfStage = st.name;
@@ -5395,6 +5439,7 @@ const sponsorAds = await Promise.all(
         } else if (next) {
           const row = el("a", "pf-now-row") as HTMLAnchorElement;
           row.href = `#${next.slug}`;
+          row.dataset.pfKind = "set";
           row.dataset.pfState = "next";
           row.dataset.pfAct = next.name;
           row.dataset.pfStage = st.name;
@@ -5406,6 +5451,7 @@ const sponsorAds = await Promise.all(
           grid.append(row);
         } else {
           const row = el("div", "pf-now-row");
+          row.dataset.pfKind = "set";
           row.dataset.pfState = "done";
           row.dataset.pfStage = st.name;
           row.append(
@@ -5416,7 +5462,76 @@ const sponsorAds = await Promise.all(
         }
       });
 
-      const moment = data.moments.find((m) => m.start >= now.hm);
+      // The open mic reads like a fourth stage: who is up, or who is next.
+      const slots = (data.openMic?.slots || [])
+        .slice()
+        .sort((a, b) => a.start.localeCompare(b.start));
+      if (slots.length) {
+        const micLabel = data.openMic?.area
+          ? `Open Mic · ${data.openMic.area}`
+          : "Open Mic";
+        const live = slots.find((x) => x.start <= now.hm && now.hm < x.end);
+        const next = slots.find((x) => x.start > now.hm);
+        if (live || next) {
+          const row = el("a", "pf-now-row") as HTMLAnchorElement;
+          row.href = "#pf-openmic";
+          row.dataset.pfKind = "openmic";
+          row.dataset.pfStage = "Open Mic";
+          if (live) {
+            row.dataset.pfState = "live";
+            row.dataset.pfAct = live.name;
+            row.append(
+              el("span", "pf-now-stage", micLabel),
+              el("span", "pf-now-act", live.name),
+              el("span", "pf-now-when", `until ${pretty(live.end)}`),
+            );
+          } else if (next) {
+            row.dataset.pfState = "next";
+            row.dataset.pfAct = next.name;
+            row.append(
+              el("span", "pf-now-stage", micLabel),
+              el("span", "pf-now-act", `Next: ${next.name}`),
+              el("span", "pf-now-when", `at ${pretty(next.start)}`),
+            );
+          }
+          grid.append(row);
+        }
+      }
+
+      // A key time has no end, so one that started in the last half hour
+      // counts as happening: a demo, a market opening, a last call.
+      const RECENT = 30;
+      const sinceStart = (start: string) => {
+        const mins = (hm: string) => {
+          const [h, m] = hm.split(":").map(Number);
+          return h * 60 + m;
+        };
+        return mins(now.hm) - mins(start);
+      };
+      data.moments
+        .filter((m) => {
+          const ago = sinceStart(m.start);
+          return ago >= 0 && ago < RECENT;
+        })
+        .forEach((m) => {
+          const row = el("a", "pf-now-row") as HTMLAnchorElement;
+          row.href = "#pf-keytimes";
+          row.dataset.pfKind = "keytime";
+          row.dataset.pfState = "live";
+          row.dataset.pfAct = m.title;
+          row.append(
+            el(
+              "span",
+              "pf-now-stage",
+              m.area ? `Key time · ${m.area}` : "Key time",
+            ),
+            el("span", "pf-now-act", m.title),
+            el("span", "pf-now-when", `at ${m.time}`),
+          );
+          grid.append(row);
+        });
+
+      const moment = data.moments.find((m) => m.start > now.hm);
       if (moment) {
         nextEl.hidden = false;
         const strong = el("strong", "", `${moment.time}: ${moment.title}`);
