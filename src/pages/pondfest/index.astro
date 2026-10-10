@@ -1060,7 +1060,7 @@ const sponsorAds = (
   {
     hasSchedule && (
       <section
-        class="pf-section pf-section--dark pf-section--lazy"
+        class="pf-section pf-section--purple pf-section--lazy"
         id="pf-schedule"
         data-phase="prep event"
       >
@@ -1739,7 +1739,7 @@ const sponsorAds = (
   {
     hasWhosHere && (
       <section
-        class="pf-section pf-section--light pf-section--lazy"
+        class="pf-section pf-section--purple pf-section--lazy"
         id="pf-whos-here"
         data-phase="prep event"
       >
@@ -2197,7 +2197,7 @@ const sponsorAds = (
 
   <!-- ══ 75 YEARS OF DELAWARE STATE PARKS ══════════════════════════ -->
   <section
-    class="pf-section pf-section--flush pf-section--dark pf-section--lazy pf-75th"
+    class="pf-section pf-section--flush pf-section--purple pf-section--lazy pf-75th"
     id="pf-75th"
   >
     <div class="pf-split pf-split--reverse">
@@ -2451,7 +2451,7 @@ const sponsorAds = (
   {
     (hasPartners || hasThanksGroups || EAGLE_SCOUT_NOTE) && (
       <section
-        class="pf-section pf-section--light pf-section--lazy"
+        class="pf-section pf-section--purple pf-section--lazy"
         id="pf-thanks"
       >
         <div class="pf-section-inner pf-section-inner--mid pf-thanks-inner">
@@ -2593,7 +2593,7 @@ const sponsorAds = (
 
   <!-- ══ FEST MEMORIES ════════════════════════════════════════════ -->
   <section
-    class="pf-section pf-section--dark pf-section--lazy pf-memories-section"
+    class="pf-section pf-section--purple pf-section--lazy pf-memories-section"
     id="pf-memories"
   >
     <div class="pf-section-inner pf-memories-header">
@@ -2771,7 +2771,7 @@ const sponsorAds = (
   </section>
 
   <section
-    class="pf-section pf-section--dark pf-section--lazy pf-disclosure"
+    class="pf-section pf-section--purple pf-section--lazy pf-disclosure"
   >
     <div class="pf-section-inner pf-section-inner--mid">
       <h2 class="pf-disclosure-title">{SUPPORT_DISCLOSURE_TITLE}</h2>
@@ -4424,17 +4424,17 @@ const sponsorAds = (
   .pf-thanks-name {
     font-size: 1.02rem;
     font-weight: 600;
-    color: var(--pf-purple-dark);
+    color: #fff;
     text-decoration: none;
   }
   a.pf-thanks-name:hover {
-    color: var(--pf-teal);
+    color: var(--pf-teal-light);
     text-decoration: underline;
   }
   .pf-thanks-what {
     font-size: 0.88rem;
     line-height: 1.45;
-    color: #5a4e7a;
+    color: rgba(255, 255, 255, 0.72);
   }
   /* The breweries carry no line of their own — the heading already says what
      they are doing — so they read better as a row of names than as a grid of
@@ -4816,7 +4816,7 @@ const sponsorAds = (
   }
   .pf-sched-stage-head {
     padding: 0.85rem 1rem;
-    background: rgba(61, 47, 122, 0.55);
+    background: rgba(0, 0, 0, 0.25);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
   .pf-sched-stage-head h3 {
@@ -5010,7 +5010,7 @@ const sponsorAds = (
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background: rgba(61, 47, 122, 0.8);
+    background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.18);
     display: grid;
     place-items: center;
@@ -5264,7 +5264,7 @@ const sponsorAds = (
   .pf-here-block + .pf-here-block {
     margin-top: 2.25rem;
     padding-top: 2.25rem;
-    border-top: 1px solid rgba(61, 47, 122, 0.14);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
   .pf-here-title {
     font-size: 1.2rem;
@@ -5289,7 +5289,7 @@ const sponsorAds = (
     font-size: 0.74rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--pf-purple);
+    color: var(--pf-teal-light);
   }
   .pf-food-area ul {
     list-style: none;
@@ -5298,9 +5298,9 @@ const sponsorAds = (
   }
   .pf-food-area li {
     padding: 0.42rem 0;
-    border-bottom: 1px solid rgba(61, 47, 122, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     font-weight: 600;
-    color: #3a2e5a;
+    color: rgba(255, 255, 255, 0.9);
   }
   .pf-chiplist {
     list-style: none;
@@ -5311,12 +5311,12 @@ const sponsorAds = (
     gap: 0.45rem;
   }
   .pf-chiplist li {
-    background: #fff;
-    border: 1px solid rgba(61, 47, 122, 0.18);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 999px;
     padding: 0.35rem 0.8rem;
     font-size: 0.88rem;
-    color: #3a2e5a;
+    color: #fff;
   }
   .pf-chiplist--agency li {
     background: rgba(42, 196, 179, 0.12);
@@ -5328,11 +5328,11 @@ const sponsorAds = (
     gap: 0.35em;
     font-size: 0.86em;
     font-weight: 700;
-    color: var(--pf-purple);
-    border: 1px solid rgba(61, 47, 122, 0.3);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 999px;
     padding: 0.1em 0.6em;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.1);
     white-space: nowrap;
     transition:
       background 0.15s,
@@ -5347,19 +5347,19 @@ const sponsorAds = (
   }
   .pf-here-area:hover,
   .pf-here-area:focus-visible {
-    background: var(--pf-purple);
-    border-color: var(--pf-purple);
-    color: #fff;
+    background: var(--pf-teal);
+    border-color: var(--pf-teal);
+    color: #06201d;
   }
   .pf-here-area:hover i,
   .pf-here-area:focus-visible i {
-    color: #fff;
+    color: #06201d;
   }
   .pf-tap-brewery {
     display: block;
     font-weight: 400;
     font-size: 0.82rem;
-    color: var(--pf-purple-light);
+    color: rgba(255, 255, 255, 0.7);
   }
   @media (min-width: 620px) {
     .pf-food-areas {
@@ -5619,7 +5619,7 @@ const sponsorAds = (
   .pf-people {
     margin-top: 2.5rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(61, 47, 122, 0.14);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
     text-align: left;
   }
   .pf-people-heading {
@@ -5654,7 +5654,7 @@ const sponsorAds = (
   .pf-people-list li {
     padding: 0.2rem 0;
     font-weight: 600;
-    color: #3a2e5a;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.92rem;
   }
   /* the volunteer roll: small type in columns, a list and not a wall */
@@ -5704,6 +5704,7 @@ const sponsorAds = (
     color: var(--pf-purple-dark);
   }
   .pf-eagle p {
+    color: #3a2e5a; /* the card is white, whatever the section is */
     margin: 0;
     font-size: 0.94rem;
     line-height: 1.55;

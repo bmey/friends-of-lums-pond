@@ -1472,15 +1472,21 @@ const visibleChip = async (page, id) => {
     const r = await page.evaluate(() => {
       document.documentElement.classList.add("pf-render-all");
       const bgs = new Set();
+      const order = [];
       document.querySelectorAll("section.pf-section").forEach((el) => {
         const cs = getComputedStyle(el);
         if (cs.display === "none") return;
         if (cs.backgroundImage !== "none") return; // the history photo
         bgs.add(cs.backgroundColor);
+        order.push({ id: el.id || el.className.split(" ").pop(), bg: cs.backgroundColor });
       });
+      const repeats = order
+        .filter((x, i) => i > 0 && x.bg === order[i - 1].bg)
+        .map((x, i, arr) => x.id);
       const tabs = document.querySelector(".pf-mapview-tabs");
       return {
         bgs: [...bgs],
+        repeats,
         tabsFit: tabs ? tabs.scrollWidth <= tabs.clientWidth + 1 : null,
         tabRows: tabs
           ? new Set(
@@ -1494,6 +1500,14 @@ const visibleChip = async (page, id) => {
       r.bgs.length <= 3,
       `${label}: at most three section background colors on the page`,
       r.bgs.join(" "),
+    );
+    // the winners section is purple and sits between two purple neighbors
+    // while it is live; everywhere else the colors alternate
+    const unexpected = r.repeats.filter((id) => id !== "pf-schedule" || !cfg.WINNERS_LIVE);
+    report(
+      unexpected.length === 0,
+      `${label}: no two neighboring sections share a color`,
+      r.repeats.length ? `repeats before: ${r.repeats.join(", ")}` : "",
     );
     if (label === "event") {
       report(
