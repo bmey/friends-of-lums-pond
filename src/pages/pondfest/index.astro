@@ -28,6 +28,7 @@ import {
   VENDOR_URL,
   PONDFEST_EMAIL,
   FACEBOOK_URL,
+  INSTAGRAM_URL,
   FACEBOOK_EVENT_URL,
   HASHTAGS,
   LINEUP,
@@ -452,6 +453,7 @@ const navSections: NavSection[] = (
       icon: "fa-comment-dots",
       phases: ["event"],
     },
+    { href: "#pf-follow", label: "Follow & share", icon: "fa-share-nodes" },
     { href: "#pf-faq", label: "FAQ", icon: "fa-circle-question" },
     {
       href: RAFFLE_LINK,
@@ -574,6 +576,15 @@ const monogram = (name: string) =>
 
 // Amenity links that point elsewhere on this page open in the same tab
 const isOnPageLink = (url: string) => url.startsWith("#");
+
+// The page's own address, for the Facebook share link and the caption
+// people copy. The hashtags ride along in the caption, since that is the
+// only way they reach an Instagram post from here.
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const shareBlurb = `Pond Fest ${CURRENT_YEAR} at Lums Pond State Park. ${HASHTAGS.join(
+  " ",
+)}`;
+const shareCaption = `${shareBlurb} ${pageUrl}`;
 
 // Every area tag on the page opens that area's map. "Area 2" opens the
 // Area 2 map; anything spanning more than one ("Areas 1 & 2", "All three
@@ -1269,7 +1280,6 @@ const sponsorAds = await Promise.all(
             </a>
           )
         }
-        <p class="pf-plan-hashtags">Share your day: {HASHTAGS.join(" ")}</p>
       </div>
     </div>
   </section>
@@ -2455,6 +2465,60 @@ const sponsorAds = await Promise.all(
   <!-- ══ BEFORE YOU GO — survey, membership, next year's date ═══════ -->
   <PondFestNext id="pf-next" phases={["event"]} variant="event" />
 
+  <!-- ══ FOLLOW & SHARE — the hashtags, the phone's share sheet, and where
+       to find us the rest of the year. Neither Facebook nor Instagram will
+       take a caption from a link, so the caption is copied, not sent. ═══ -->
+  <section
+    class="pf-section pf-section--light pf-section--lazy"
+    id="pf-follow"
+    data-pf-blurb={shareBlurb}
+    data-pf-caption={shareCaption}
+  >
+    <div class="pf-section-inner pf-section-inner--narrow pf-follow-inner">
+      <h2>Follow &amp; share</h2>
+      <p class="pf-follow-lead">
+        Tag your photos so we can find them. Facebook and Instagram will not
+        take a caption from a web page, so copy it here and paste it there.
+      </p>
+      <p class="pf-follow-tags">{HASHTAGS.join(" ")}</p>
+      <div class="pf-follow-actions">
+        <button
+          type="button"
+          class="pf-btn pf-btn--purple"
+          data-pf-share
+          hidden
+        >
+          <i class="fa-solid fa-share-nodes" aria-hidden="true"></i> Share this
+          page
+        </button>
+        <button type="button" class="pf-btn pf-btn--outline-dark" data-pf-copy>
+          <i class="fa-solid fa-copy" aria-hidden="true"></i>
+          <span data-pf-copy-label>Copy caption</span>
+        </button>
+        <a
+          class="pf-btn pf-btn--outline-dark"
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+            pageUrl,
+          )}`}
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fa-brands fa-facebook" aria-hidden="true"></i> Share on
+          Facebook
+        </a>
+      </div>
+      <p class="pf-follow-also">Follow along the rest of the year:</p>
+      <div class="pf-follow-links">
+        <a href={FACEBOOK_URL} target="_blank" rel="noopener">
+          <i class="fa-brands fa-facebook" aria-hidden="true"></i> Facebook
+        </a>
+        <a href={INSTAGRAM_URL} target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ HISTORY TEASER ═════════════════════════════════════════════ -->
   <section
     class="pf-section pf-section--dark pf-section--lazy pf-history-section"
@@ -2920,12 +2984,57 @@ const sponsorAds = await Promise.all(
     gap: 1rem;
     margin-top: 1.75rem;
   }
-  .pf-plan-hashtags {
+
+  /* ── Follow & share ── */
+  .pf-follow-inner {
     text-align: center;
-    margin: 0;
+  }
+  .pf-follow-lead {
+    max-width: 52ch;
+    margin: 0 auto 0.9rem;
+    font-size: clamp(0.98rem, 1.9vw, 1.1rem);
+    line-height: 1.6;
+  }
+  .pf-follow-tags {
+    margin: 0 0 1.4rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: var(--pf-teal-light) !important;
+    color: var(--pf-purple);
+    font-size: 1.05rem;
+  }
+  .pf-follow-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  .pf-follow-actions [hidden] {
+    display: none;
+  }
+  .pf-follow-also {
+    margin: 1.75rem 0 0.6rem;
+    font-size: 0.95rem;
+  }
+  .pf-follow-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.75rem;
+  }
+  .pf-follow-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-weight: 700;
+    color: var(--pf-purple);
+    text-decoration: none;
+  }
+  .pf-follow-links a i {
+    font-size: 1.5rem;
+  }
+  .pf-follow-links a:hover,
+  .pf-follow-links a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* ── Fundraising Goals ── */
@@ -5764,6 +5873,48 @@ const sponsorAds = await Promise.all(
 
   setupGalleryMore();
   document.addEventListener("astro:after-swap", setupGalleryMore);
+
+  // ── Follow & share ────────────────────────────────────────────────
+  // The phone's share sheet is the one route that carries the hashtags
+  // into Instagram or Messages, so the share button appears only where
+  // navigator.share exists. The caption can be copied anywhere.
+  function setupShare() {
+    const sec = document.getElementById("pf-follow");
+    if (!sec) return;
+    // the share sheet gets the address as its own field, so the blurb
+    // leaves it out; the copied caption has to carry it in the text
+    const blurb = sec.dataset.pfBlurb || "";
+    const caption = sec.dataset.pfCaption || "";
+    const url = location.origin + location.pathname;
+    const share = sec.querySelector<HTMLButtonElement>("[data-pf-share]");
+    if (share && typeof navigator.share === "function") {
+      share.hidden = false;
+      share.addEventListener("click", () => {
+        navigator
+          .share({ title: document.title, text: blurb, url })
+          .catch(() => {});
+      });
+    }
+    const copy = sec.querySelector<HTMLButtonElement>("[data-pf-copy]");
+    const label = copy?.querySelector<HTMLElement>("[data-pf-copy-label]");
+    if (!copy || !label) return;
+    if (!navigator.clipboard?.writeText) {
+      copy.hidden = true;
+      return;
+    }
+    copy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(caption);
+        label.textContent = "Copied";
+      } catch {
+        label.textContent = "Could not copy";
+      }
+      window.setTimeout(() => (label.textContent = "Copy caption"), 2000);
+    });
+  }
+
+  setupShare();
+  document.addEventListener("astro:after-swap", setupShare);
 
   // ── "Show more" on the amenity cards ──────────────────────────────
   // Descriptions clamp to two lines, but only from here, so with nothing

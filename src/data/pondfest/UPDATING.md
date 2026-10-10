@@ -184,6 +184,16 @@ Each entry in `AMENITIES` is one card. Beyond the basics (`title`, `desc`, `area
 
 `GALLERY_PHOTOS` lists the photos; the first `GALLERY_PREVIEW_COUNT` show right away and the rest sit behind a "Show more photos" button and are not downloaded until someone taps it, so the list can grow without slowing the page. Keep new files around 800px on the long side.
 
+### 4d. Follow & share
+
+The "Follow & share" section near the bottom of the page is built from three fields that sit near the top of `config.ts`: `FACEBOOK_URL` and `INSTAGRAM_URL` for the two Follow buttons (the site footer uses the same two), and `HASHTAGS` for everything else.
+
+```ts
+export const HASHTAGS = ["#DEStateParks", "#LumsPondFest"];
+```
+
+Changing the hashtags is that one edit. It flows to the line on the page, the text the Share button hands to the phone's share sheet, and the caption the "Copy caption" button puts on the clipboard. Neither Facebook nor Instagram lets a web page prefill a post with hashtags, which is why the page offers a copy button rather than promising to tag the post for you; do not write anywhere that it can. The section has its own entry in the quick links and the phone's "More" sheet, but it is not one of the four tabs along the bottom.
+
 ### 5. Update funding goals
 
 Update the `FUNDING_GOALS` array with this year's projects:
@@ -286,7 +296,7 @@ This will automatically appear on the `/pondfest/archive` page.
 | `VENDOR_MAP_IMAGE_URL`                     | Optional third map; same                                                            |
 | `PARKING_NOTES`, `SHUTTLE_INFO`            | The parking and shuttle notes in "Plan Your Visit"                                  |
 | `FEE_NOTE`, `BRING_NOTE`, `RAIN_DATE_NOTE` | The other three notes in the same section                                           |
-| `HASHTAGS`                                 | The hashtags shown at the bottom of "Plan Your Visit" and in the press kit          |
+| `HASHTAGS`                                 | The hashtags in "Follow & share" and the press kit; see 4d above                    |
 | `PHOTO_CREDIT_NAME` / `_URL`               | The credit line under the photo gallery                                             |
 | `SEVENTY_FIFTH_URL`                        | DNREC's 75th anniversary hub. Clear it and the link disappears cleanly              |
 | `HEART_OF_PARKS_VIDEO_URL`                 | The video in the 75th section. Clear it and the section shows a placeholder instead |
@@ -344,14 +354,25 @@ All of these sit at the bottom of `config.ts`. Every one of them is a plain list
 | `KEY_TIMES`        | The fixed moments: a demo, a deadline, a dedication. `start` is 24-hour (`"16:00"`) and sorts the list; `time` is what people see (`"4:00 PM"`). Things that run all day belong on their amenity card, not here. |
 | `OPEN_MIC_SLOTS`   | The booked open mic list, time and name.                                                                                                                                                                        |
 | `FOOD_TRUCKS`      | Name and area number. The page groups them by area.                                                                                                                                                             |
+| `TAP_LIST`         | What is pouring at the beer tent, one line per tap: brewery, beer, and a `group` of `"ale"`, `"ipa"`, `"lager"` or `"other"`, the four headings on the handwritten board at the tent. The page groups them under those headings as an "On Tap" block in the food section. No ABVs; see below.      |
 | `CRAFT_VENDORS`    | Names, alphabetical, exactly as the vendors gave them to us.                                                                                                                                                    |
 | `FIRST_RESPONDERS` | The agencies at the Block Party.                                                                                                                                                                                |
 | `SPONSOR_ADS`      | The sponsor ad rail under the sponsor list. Each entry names `public/pondfest/ads/<slug>-thumb.webp` (about 600px) and `<slug>.webp` (about 1400px). Write `alt` as a sentence saying what the ad shows. Only add `url` when the ad itself prints a web address; never guess one. |
 | `OUT_AND_ABOUT_URL`| A press feature to link under the ads. Leave empty to hide the link.                                                                                                                                           |
-| `THANKS_GROUPS`    | The people thank-yous: volunteers, parks staff, sound engineers, emcees. A group is a title, an optional line of context, and a list of names. The volunteer list is long on purpose and renders in columns.    |
+| `THANKS_GROUPS`    | The people thank-yous: planning committee, volunteers, parks staff, sound engineers, emcees. A group is a title, an optional line of context, and a list of names. The volunteer list is long on purpose and renders in columns. See the note on the committee below. |
 | `EAGLE_SCOUT_NOTE` | The bench acknowledgement. Clear it when it no longer applies.                                                                                                                                                  |
 
-Four things on this page are **decided from the lists above**, so you never edit them directly: the Schedule section (from `LINEUP` set times, `OPEN_MIC_SLOTS` and `KEY_TIMES`), the "On right now" box (from `LINEUP` and the phone's clock, event day only), the Food, Vendors & First Responders section, and the sponsor ad rail.
+**No ABVs in `TAP_LIST`.** The board at the tent prints one for every tap and the page leaves them all off, on purpose. People read the number when they walk up, and a number that is right on a chalkboard goes stale on a web page the moment a keg changes. Adding a tap is one line:
+
+```ts
+{ brewery: "Dogfish Head", beer: "60 Minute IPA", group: "ipa" },
+```
+
+Write the brewery name out in full even where the board shortens it ("Dogfish", "JAKL"), and keep the beer name the way the board has it.
+
+**Planning committee and volunteers.** The first two groups in `THANKS_GROUPS` are "Planning committee" and "Volunteers", in that order, both alphabetical by last name. Everyone on the committee is in the volunteer list too, and the committee's intro says so, so when someone joins the committee, add the name to both. The volunteer names live in their own array, `VOLUNTEER_NAMES`, and the Volunteers intro takes its count from `VOLUNTEER_NAMES.length`. Do not type a number into that sentence. It was wrong twice in two days when it was typed by hand, and now it cannot be.
+
+Four things on this page are **decided from the lists above**, so you never edit them directly: the Schedule section (from `LINEUP` set times, `OPEN_MIC_SLOTS` and `KEY_TIMES`), the "On right now" box (from `LINEUP` and the phone's clock, event day only), the Food, Drink, Vendors & First Responders section, and the sponsor ad rail.
 
 ### After the festival
 
