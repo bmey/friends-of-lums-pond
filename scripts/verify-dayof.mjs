@@ -1092,8 +1092,8 @@ const showLazy = (page) =>
   await prep.browserContext().close();
 }
 
-// item 6: an area chip opens its map tab, the map decodes, the viewer lands
-// at the 60px scroll margin, and the back gesture returns to the card
+// item 6: an area chip opens its map in the quick view over the page,
+// the map decodes, the page does not move, and the back gesture closes it
 const chipSel = (id) => `a.pf-area-chip[data-pf-map="${id}"]`;
 // the first chip in the page may sit in the schedule view that is hidden
 // for the current phase, so take the first one that is actually shown
@@ -1107,12 +1107,8 @@ const visibleChip = async (page, id) => {
   const page = await openPage({ now: EVENT_NOW, fresh: true });
   const chip = await visibleChip(page, "area-2");
   if (!chip) {
-    report(false, "area chip opens its map tab", `no ${chipSel("area-2")}`);
-    report(
-      false,
-      "browser back after a chip tap returns to the card",
-      "no chip",
-    );
+    report(false, "area chip opens its map quick view", `no ${chipSel("area-2")}`);
+    report(false, "browser back closes the quick view in place", "no chip");
   } else {
     await page.evaluate((el) => el.scrollIntoView({ block: "center" }), chip);
     await sleep(300);
@@ -1120,33 +1116,47 @@ const visibleChip = async (page, id) => {
     await chip.click();
     await sleep(600);
     const r = await page.evaluate(async () => {
-      const tab = document.getElementById("pf-maptab-area-2");
-      const panel = document.getElementById("pf-mappanel-area-2");
-      const img = panel && panel.querySelector("img");
+      const box = document.getElementById("pf-mapbox");
+      const img = box && box.querySelector("img");
       let width = 0;
       // the map is fetched on demand, so give it up to 3s to decode
       for (let i = 0; i < 30 && !(width = img ? img.naturalWidth : 0); i++)
         await new Promise((r) => setTimeout(r, 100));
-      const view = document.getElementById("pf-mapview");
+      const tab = document.getElementById("pf-maptab-area-2");
       return {
-        selected: !!tab && tab.getAttribute("aria-selected") === "true",
-        shown: !!panel && !panel.hidden,
+        open: !!box && !box.hidden,
+        src: img ? img.getAttribute("src") || "" : "",
+        title: box
+          ? (box.querySelector("[data-pf-mapbox-title]") || {}).textContent ||
+            ""
+          : "",
         width,
-        top: view ? Math.round(view.getBoundingClientRect().top) : null,
+        selected: !!tab && tab.getAttribute("aria-selected") === "true",
+        scrollY: window.scrollY,
       };
     });
+    const area2 = cfg.EVENT_MAPS.find((m) => m.id === "area-2");
     report(
-      r.selected && r.shown && r.width > 0 && Math.abs(r.top - 60) <= 2,
-      "area chip opens its map tab, the map decodes, and the viewer lands at 60px",
-      `selected ${r.selected}, shown ${r.shown}, width ${r.width}, top ${r.top}`,
+      r.open &&
+        r.width > 0 &&
+        !!area2 && r.src.endsWith(area2.src) &&
+        r.title === (area2 && area2.title) &&
+        r.selected &&
+        Math.abs(r.scrollY - before) <= 2,
+      "area chip opens its map in the quick view, decoded, with the page where it was",
+      `open ${r.open}, src ${r.src}, title "${r.title}", width ${r.width}, tab selected ${r.selected}, scrollY ${before} → ${r.scrollY}`,
     );
     await page.evaluate(() => history.back());
     await sleep(600);
-    const after = await page.evaluate(() => window.scrollY);
+    const after = await page.evaluate(() => ({
+      y: window.scrollY,
+      open: !document.getElementById("pf-mapbox").hidden,
+      overflow: document.body.style.overflow,
+    }));
     report(
-      Math.abs(after - before) <= 100,
-      "browser back after a chip tap returns to the card",
-      `scrollY ${before} → ${after}`,
+      !after.open && after.overflow === "" && Math.abs(after.y - before) <= 2,
+      "browser back closes the quick view and leaves the page where it was",
+      `open ${after.open}, body overflow "${after.overflow}", scrollY ${before} → ${after.y}`,
     );
   }
   await page.browserContext().close();
@@ -1166,6 +1176,9 @@ const visibleChip = async (page, id) => {
     await sleep(200);
     await c.click();
     await sleep(400);
+    // the quick view covers the page; close it before the next chip
+    await p2.keyboard.press("Escape");
+    await sleep(300);
     return true;
   };
   const firstMap = cfg.EVENT_MAPS[0].id;

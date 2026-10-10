@@ -2782,6 +2782,53 @@ const sponsorAds = (
     </div>
   </div>
 
+  <!-- Map quick view, opened from any area tag on the page -->
+  {
+    hasMapViewer && (
+      <div
+        class="pf-lightbox pf-mapbox"
+        id="pf-mapbox"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Map"
+        hidden
+      >
+        <div class="pf-lightbox-bar">
+          <span class="pf-lightbox-caption" data-pf-mapbox-title />
+          <button
+            type="button"
+            class="pf-lightbox-close"
+            data-pf-mapbox-close
+            aria-label="Close"
+          >
+            <i class="fa-solid fa-xmark" aria-hidden="true" />
+          </button>
+        </div>
+        <div class="pf-lightbox-body">
+          <img alt="" decoding="async" />
+        </div>
+        <div class="pf-mapbox-foot">
+          <p class="pf-mapbox-note" data-pf-mapbox-note />
+          <div class="pf-mapbox-links">
+            <a
+              class="pf-mapbox-link"
+              data-pf-mapbox-full
+              href="#pf-mapview"
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true" />{" "}
+              Open the full-size map
+            </a>
+            <a class="pf-mapbox-link" data-pf-mapbox-all href="#pf-mapview">
+              <i class="fa-solid fa-map" aria-hidden="true" /> All the maps
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   <PondFestSectionNav
     sections={navSections}
     tabs={tabBar}
@@ -5441,6 +5488,43 @@ const sponsorAds = (
     background: #fff;
   }
 
+  /* The map quick view is the lightbox with a footer: the map's note, the
+     full-size file, and the way to the viewer with all six */
+  .pf-mapbox {
+    grid-template-rows: auto 1fr auto;
+  }
+  .pf-mapbox-foot {
+    padding: 0.5rem 1rem 0.75rem;
+    color: #fff;
+  }
+  .pf-mapbox-note {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .pf-mapbox-note:empty {
+    display: none;
+  }
+  .pf-mapbox-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+  .pf-mapbox-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--pf-teal-light);
+    text-decoration: none;
+  }
+  .pf-mapbox-link:hover,
+  .pf-mapbox-link:focus-visible {
+    text-decoration: underline;
+  }
+
   /* ── The people thanks, and the Eagle Scout benches ───────── */
   .pf-people {
     margin-top: 2.5rem;
@@ -6109,33 +6193,90 @@ const sponsorAds = (
   setupMapTabs();
   document.addEventListener("astro:after-swap", setupMapTabs);
 
-  // ── Area chips ─────────────────────────────────────────────────────
+  // ── Map quick view ─────────────────────────────────────────────────
   // Every area tag is a link to its map's tab button, which is where the
-  // reader lands without script. With script the chip opens that tab,
-  // brings the viewer up under the nav, and pushes a history entry so the
-  // phone's back gesture returns to the card they were reading.
-  function setupAreaChips() {
+  // reader lands without script. With script the chip opens that map over
+  // the page instead, so nobody is thrown up to Plan Your Visit and has
+  // to find their way back to the card they were reading. The phone's
+  // back gesture closes it. The tab is selected as well, so the viewer
+  // shows the same map when the reader gets there, and the deferred file
+  // is fetched once, whichever way it was asked for.
+  function setupMapQuickView() {
+    const box = document.getElementById("pf-mapbox");
+    if (!box) return;
+    const img = box.querySelector("img");
+    const title = box.querySelector<HTMLElement>("[data-pf-mapbox-title]");
+    const note = box.querySelector<HTMLElement>("[data-pf-mapbox-note]");
+    const full = box.querySelector<HTMLAnchorElement>("[data-pf-mapbox-full]");
+    const all = box.querySelector<HTMLAnchorElement>("[data-pf-mapbox-all]");
+    const closeBtn = box.querySelector<HTMLButtonElement>(
+      "[data-pf-mapbox-close]",
+    );
+    if (!img || !title || !note || !full || !all || !closeBtn) return;
+    let last: HTMLElement | null = null;
+
+    const hide = () => {
+      if (box.hidden) return;
+      box.hidden = true;
+      document.body.style.overflow = "";
+      last?.focus({ preventScroll: true });
+      last = null;
+    };
+    // Opening pushed a history entry, so closing is going back; the
+    // popstate handler does the hiding either way.
+    const close = () => {
+      if (box.hidden) return;
+      const st = history.state as { pfMapbox?: string } | null;
+      if (st?.pfMapbox) history.back();
+      else hide();
+    };
+    const show = (id: string, from: HTMLElement) => {
+      const panel = document.getElementById(`pf-mappanel-${id}`);
+      const map = panel?.querySelector<HTMLImageElement>("img");
+      if (!panel || !map || !openMap || !openMap(id)) return false;
+      img.src = map.src || map.dataset.src || "";
+      img.alt = map.alt;
+      title.textContent =
+        panel.querySelector(".pf-mapview-title")?.textContent?.trim() || "";
+      note.textContent =
+        panel.querySelector(".pf-mapview-note")?.textContent?.trim() || "";
+      const fullHref = panel.querySelector<HTMLAnchorElement>(".pf-mapview-full");
+      full.hidden = !fullHref;
+      if (fullHref) full.href = fullHref.href;
+      last = from;
+      if (box.hidden) history.pushState({ pfMapbox: id }, "", "");
+      else history.replaceState({ pfMapbox: id }, "", "");
+      box.hidden = false;
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+      return true;
+    };
+
     document.addEventListener("click", (e) => {
       const chip = (e.target as Element | null)?.closest?.<HTMLAnchorElement>(
         "a[data-pf-map]",
       );
       if (!chip) return;
-      const id = chip.dataset.pfMap || "";
-      const view = document.getElementById("pf-mapview");
-      if (!view || !openMap || !openMap(id)) return;
-      e.preventDefault();
-      history.pushState(null, "", chip.getAttribute("href") || "");
-      settleLazySections(() => {
-        view.scrollIntoView({ behavior: "auto" });
-        keepAimed(view);
-        document
-          .getElementById(`pf-mappanel-${id}`)
-          ?.focus({ preventScroll: true });
-      });
+      if (show(chip.dataset.pfMap || "", chip)) e.preventDefault();
     });
+    closeBtn.addEventListener("click", close);
+    box.addEventListener("click", (e) => {
+      if (
+        e.target === box ||
+        e.target === box.querySelector(".pf-lightbox-body")
+      )
+        close();
+    });
+    // "All the maps" is an ordinary jump to the viewer; just get out of
+    // its way first
+    all.addEventListener("click", hide);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+    window.addEventListener("popstate", hide);
   }
 
-  setupAreaChips();
+  setupMapQuickView();
 
   // ── Sponsor ad lightbox ────────────────────────────────────────────
   // The rail links straight to the full-size file, so without JavaScript a
