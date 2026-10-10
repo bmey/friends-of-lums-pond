@@ -29,24 +29,69 @@
 // when you are ready for the world to see the winners. Flipping it
 // also puts the announcement banner at the top of the page and adds
 // "Winners" to the day-of menu.
-export const WINNERS_LIVE = false;
+export const WINNERS_LIVE = true;
 
 // ── STEP 2 ────────────────────────────────────────────────────────
 // The 50/50. Ticket number, and the amount if you want to show it.
 // Leave both empty and the 50/50 block does not appear at all.
-export const FIFTY_FIFTY_TICKET = "";
-export const FIFTY_FIFTY_AMOUNT = ""; // e.g. "$1,240"
+export const FIFTY_FIFTY_TICKET = "332252";
+export const FIFTY_FIFTY_AMOUNT = "$383"; // e.g. "$1,240"
 
 // ── STEP 3 ────────────────────────────────────────────────────────
 // Raffle baskets. One per line: Prize | Winner
 export const RAFFLE_WINNERS = `
-# Example, delete these two lines and type your own:
-# Dogfish Head gift basket | 124578
+Basket #1 | 32575-135
+Basket #2 | 22689-686
+Basket #3 | 32575-349
+Basket #4 | 14153-009
+Basket #5 | 24325-864
+Basket #6 | 32575-178
+Basket #7 | 32575-173
+Basket #8 | 32575-293
+Basket #9 | 32575-474
+Basket #10 | 32575-222
+Basket #11 | 24325-970
+Basket #12 | 32575-163
+Basket #13 | 32575-562
+Basket #14 | 32575-384
+Basket #15 | 32575-322
+Basket #16 | 32575-144
+Basket #17 | 32575-478
+Basket #18 | 32575-494
+Basket #19 | 24325-867
+Basket #20 | 32575-284
+Basket #21 | 24325-948
+Basket #22 | 24325-846
+Basket #23 | 32575-517
+Basket #24 | 24325-990
+Basket #25 | 32575-564
+Basket #26 | 32575-522
+Basket #27 | 32575-306
+Basket #28 | 24325-896
+Basket #29 | 32575-433
+Basket #30 | 24325-968
+Basket #31 | 22689-677
+Basket #32 | 24325-955
+Basket #33 | 32575-125
+Basket #34 | 32575-460
+Basket #35 | 32575-123
+Basket #36 | 24325-940
+Basket #37 | 22689-694
+Basket #38 | 22689-696
+Basket #39 | 32575-187
+Basket #40 | 32575-454
+Basket #41 | 32575-198
+Basket #42 | 32575-466
+Basket #43 | 22689-712
+Basket #44 | 32575-251
+Basket #45 | 32575-492
+Basket #46 | 32575-277
 `;
 
 // ── STEP 4 ────────────────────────────────────────────────────────
 // Silent auction. One per line: Item | Winner
 export const AUCTION_WINNERS = `
+coming soon
 `;
 
 // ── STEP 5 (optional) ─────────────────────────────────────────────
