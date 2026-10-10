@@ -691,7 +691,9 @@ const sponsorAds = await Promise.all(
   >
     <div class="pf-hero-overlay">
       <div class="pf-hero-content">
-        <div class="pf-hero-eyebrow">Friends of Lums Pond presents</div>
+        <div class="pf-hero-eyebrow" data-phase="prep afterglow">
+          Friends of Lums Pond presents
+        </div>
         <h1 class="pf-hero-title">
           Pond Fest <span class="pf-hero-year">{CURRENT_YEAR}</span>
         </h1>
@@ -711,12 +713,14 @@ const sponsorAds = await Promise.all(
             {EVENT_LOCATION}
           </span>
         </p>
-        <p class="pf-hero-tagline">{EVENT_TAGLINE}</p>
-        <p class="pf-hero-free">
+        <p class="pf-hero-tagline" data-phase="prep afterglow">
+          {EVENT_TAGLINE}
+        </p>
+        <p class="pf-hero-free" data-phase="prep afterglow">
           Free to attend &middot; standard park entrance fee applies
         </p>
         <PondFestCountdown startDate={EVENT_DATE} year={CURRENT_YEAR} />
-        <div class="pf-hero-ctas">
+        <div class="pf-hero-ctas" data-phase="prep afterglow">
           {
             ctaLinks.map((cta) => (
               <a
@@ -739,6 +743,7 @@ const sponsorAds = await Promise.all(
               href={FACEBOOK_EVENT_URL}
               target="_blank"
               rel="noopener"
+              data-phase="prep afterglow"
             >
               <i class="fa-brands fa-facebook" aria-hidden="true" />
               RSVP on the Facebook event
@@ -1194,6 +1199,7 @@ const sponsorAds = await Promise.all(
               class="pf-btn pf-btn--outline-light"
               target="_blank"
               rel="noopener"
+              data-phase="prep afterglow"
             >
               <i class="fa-brands fa-facebook" /> RSVP on the Facebook event
             </a>
@@ -2409,6 +2415,24 @@ const sponsorAds = await Promise.all(
     .pf-hero {
       background-image: var(--pf-hero-img-sm, var(--pf-hero-img));
     }
+  }
+  /* On event day the hero is a band, not a billboard: the name, the date
+     and the place, enough to confirm you scanned the right sign, with the
+     quick links right under it. No photo either; a short band does not
+     need 285 KB on the critical path. */
+  :global([data-pf-phase="event"]) .pf-hero {
+    min-height: 0;
+    background-image: linear-gradient(
+      160deg,
+      var(--pf-purple-dark),
+      var(--pf-purple)
+    );
+  }
+  :global([data-pf-phase="event"]) .pf-hero::before {
+    display: none;
+  }
+  :global([data-pf-phase="event"]) .pf-hero-overlay {
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 5vw, 5rem);
   }
   .pf-hero::before {
     content: "";
