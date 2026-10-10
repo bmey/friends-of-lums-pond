@@ -461,12 +461,33 @@ export const PARTNERS: Partner[] = [
     what: "Bringing the Rainbow Record Bus",
     url: "https://rainbowrecordsde.com/",
   },
+  // The pumpkins the kids decorate in the Junior Jam came from these three.
+  // Mr. Mulch is also a gold sponsor; that is two different things they did.
+  {
+    name: "Mr. Mulch",
+    group: "activities",
+    what: "Pumpkins for the Junior Jam",
+    url: "https://www.mrmulchdelaware.com/",
+  },
+  {
+    name: "Filasky's Produce",
+    group: "activities",
+    what: "Pumpkins for the Junior Jam",
+    url: "https://www.filaskyspumpkinpatch.com/",
+  },
+  {
+    name: "The Local Buzz",
+    group: "activities",
+    what: "Pumpkins for the Junior Jam",
+    url: "https://www.thelocalbuzzde.com/",
+  },
 
   { name: "Autumn Arch Beer Project", group: "beer" },
+  { name: "Bell's Brewery", group: "beer" },
   { name: "Dogfish Head", group: "beer" },
-  { name: "JAKL Beerworks", group: "beer" },
+  { name: "JAKL Beer Works", group: "beer" },
   { name: "Volunteer Brewing Company", group: "beer" },
-  { name: "New Belgium", group: "beer" },
+  { name: "New Belgium Brewing Company", group: "beer" },
 
   {
     name: "Lums Pond State Park Staff",
@@ -682,7 +703,7 @@ export const AMENITIES: Amenity[] = [
     title: "Beer Garden",
     area: "Area 1",
     badge: "21+",
-    desc: "Autumn Arch Beer Project, Dogfish Head, JAKL Beerworks, Volunteer Brewing Company, and New Belgium pouring all day.",
+    desc: "Autumn Arch Beer Project, Bell's Brewery, Dogfish Head, JAKL Beer Works, Volunteer Brewing Company, and New Belgium pouring all day.",
     imageUrl: "/pondfest/beer.jpg",
     imageAlt: "A volunteer handing a cup of beer across the taps",
   },
@@ -1449,6 +1470,13 @@ export const THANKS_GROUPS: ThanksGroup[] = [
     icon: "fa-microphone",
     intro: "Keeping the day moving between the sets.",
     names: ["DJ DLyte", "Tom the Spokesman"],
+  },
+  {
+    title: "WSFS",
+    icon: "fa-paintbrush",
+    intro:
+      "WSFS sent a crew for their We Stand For Service day. They made signs, cleaned up, and had the horseshoe pits ready before the rest of us showed up.",
+    names: [],
   },
 ];
 
