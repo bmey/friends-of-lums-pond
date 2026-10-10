@@ -1,30 +1,36 @@
 ---
 // Sticky section nav for the (very long) Pond Fest page.
 //
-// Three pieces that share one script and one set of observers:
-//   1. a slim bar that pins once #pf-quicklinks has scrolled away, whose
-//      label rolls over to whichever section you are currently in
-//   2. a bottom sheet listing every destination, opened from that bar
-//   3. a back-to-top button
+// Four pieces that share one script and one set of observers:
+//   1. on a wide screen, a slim bar that pins to the top once #pf-quicklinks
+//      has scrolled away, whose label rolls over to whichever section you
+//      are currently in
+//   2. on a phone, a tab bar pinned to the bottom instead: the three or four
+//      things people look up most, plus "More"
+//   3. a sheet listing every destination, opened from either of those
+//   4. a back-to-top button
 //
-// Both nav lists are rendered here. The page's applyEventMode() flips
-// data-mode between "pre" and "day" the same week it reveals the day-of
-// panel, so event day gets an action list instead of a tour of the page.
+// Every entry can carry the phases it belongs to (see phase.ts), rendered
+// as data-phase so the layout's CSS shows the right set for the time of
+// year. In the event phase the page sets data-mode="day" and the bars are
+// shown from the moment the page loads rather than waiting for the hero to
+// scroll by: standing at the gate, nobody should have to hunt for the map.
 import type { NavSection } from "../../data/pondfest/types";
 
 interface Props {
-  sections: NavSection[];
-  dayOfLinks: NavSection[];
+  sections: NavSection[]; // the jump sheet, in page order
+  tabs: NavSection[]; // the phone tab bar; at most four visible per phase
   donateUrl?: string;
 }
 
-const { sections, dayOfLinks, donateUrl } = Astro.props;
+const { sections, tabs, donateUrl } = Astro.props;
 
 const isOnPage = (href: string) => href.startsWith("#");
+const phaseAttr = (s: NavSection) => s.phases?.join(" ") || undefined;
 ---
 
 <div id="pf-sectionnav" class="pf-sectionnav" data-mode="pre">
-  <!-- ── The sticky bar ── -->
+  <!-- ── The sticky bar (wide screens) ── -->
   <nav class="pf-navbar" aria-label="Page sections">
     <span class="pf-navbar-current">
       <i class="fa-solid fa-location-arrow" aria-hidden="true"></i>
@@ -40,6 +46,36 @@ const isOnPage = (href: string) => href.startsWith("#");
     >
       Jump to
       <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+    </button>
+  </nav>
+
+  <!-- ── The tab bar (phones) ── -->
+  <nav id="pf-tabbar" class="pf-tabbar" aria-label="Pond Fest sections">
+    {
+      tabs.map((t) => (
+        <a
+          href={t.href}
+          class="pf-tab"
+          data-pf-target={isOnPage(t.href) ? t.href.slice(1) : undefined}
+          data-phase={phaseAttr(t)}
+          target={isOnPage(t.href) ? undefined : "_blank"}
+          rel={isOnPage(t.href) ? undefined : "noopener"}
+        >
+          <i class={`fa-solid ${t.icon}`} aria-hidden="true" />
+          <span class="pf-tab-label">{t.label}</span>
+        </a>
+      ))
+    }
+    <button
+      type="button"
+      class="pf-tab pf-tab--more"
+      data-pf-jump-open
+      aria-expanded="false"
+      aria-haspopup="dialog"
+      aria-controls="pf-jump-sheet"
+    >
+      <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+      <span class="pf-tab-label">More</span>
     </button>
   </nav>
 
@@ -75,34 +111,10 @@ const isOnPage = (href: string) => href.startsWith("#");
       )
     }
 
-    <ul class="pf-sheet-list" data-pf-list="pre">
+    <ul class="pf-sheet-list">
       {
         sections.map((s) => (
-          <li>
-            <a
-              href={s.href}
-              class="pf-sheet-row"
-              data-pf-target={isOnPage(s.href) ? s.href.slice(1) : undefined}
-            >
-              <i
-                class={`fa-solid ${s.icon} pf-sheet-icon`}
-                aria-hidden="true"
-              />
-              <span class="pf-sheet-row-label">{s.label}</span>
-              <i
-                class="fa-solid fa-chevron-right pf-sheet-chevron"
-                aria-hidden="true"
-              />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-
-    <ul class="pf-sheet-list" data-pf-list="day" hidden>
-      {
-        dayOfLinks.map((s) => (
-          <li>
+          <li data-phase={phaseAttr(s)}>
             <a
               href={s.href}
               class="pf-sheet-row"
@@ -137,11 +149,8 @@ const isOnPage = (href: string) => href.startsWith("#");
   </button>
 </div>
 
-<!-- Two viewports down. Once this is passed, back-to-top is worth offering. -->
-<div id="pf-top-sentinel" aria-hidden="true"></div>
-
 <style>
-  /* ══ Sticky bar ══════════════════════════════════════════════════ */
+  /* ══ Sticky bar (wide screens) ═══════════════════════════════════ */
   .pf-navbar {
     position: fixed;
     top: 0;
@@ -226,6 +235,91 @@ const isOnPage = (href: string) => href.startsWith("#");
   }
   .pf-navbar-jump[aria-expanded="true"] i {
     transform: rotate(180deg);
+  }
+
+  /* ══ Tab bar (phones) ════════════════════════════════════════════ */
+  /* The same job as the bar above, at the other end of the screen, where a
+     thumb already is. One bar or the other, never both. */
+  .pf-tabbar {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    /* exactly the height the page reserves for it, border included */
+    height: calc(var(--pf-tabbar-h) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(11, 9, 23, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    box-sizing: border-box;
+    transform: translateY(100%);
+    visibility: hidden;
+    transition:
+      transform 0.25s ease,
+      visibility 0.25s ease;
+  }
+  .pf-sectionnav.is-pinned .pf-tabbar,
+  .pf-sectionnav[data-mode="day"] .pf-tabbar {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  .pf-tab {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 0;
+    align-self: stretch;
+    padding: 6px 2px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .pf-tab i {
+    font-size: 1.15rem;
+  }
+  .pf-tab-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pf-tab[aria-current="true"] {
+    color: var(--pf-teal-light);
+  }
+  .pf-tab:hover,
+  .pf-tab:focus-visible {
+    color: #fff;
+  }
+  .pf-tab--more[aria-expanded="true"] {
+    color: var(--pf-teal-light);
+  }
+
+  @media (max-width: 719px) {
+    .pf-navbar {
+      display: none;
+    }
+    .pf-tabbar {
+      display: flex;
+    }
+    /* the bar is fixed, so the end of the page has to make room for it */
+    :global(body) {
+      padding-bottom: calc(var(--pf-tabbar-h) + env(safe-area-inset-bottom));
+    }
   }
 
   /* ══ Jump sheet ══════════════════════════════════════════════════ */
@@ -421,6 +515,12 @@ const isOnPage = (href: string) => href.startsWith("#");
       visibility 0.25s ease,
       background 0.15s ease;
   }
+  /* on a phone it rides above the tab bar */
+  @media (max-width: 719px) {
+    .pf-backtotop {
+      bottom: calc(var(--pf-tabbar-h) + 0.85rem + env(safe-area-inset-bottom));
+    }
+  }
   .pf-sectionnav.is-deep .pf-backtotop {
     opacity: 1;
     visibility: visible;
@@ -430,15 +530,6 @@ const isOnPage = (href: string) => href.startsWith("#");
   .pf-backtotop:focus-visible {
     background: var(--pf-teal);
     border-color: var(--pf-teal-light);
-  }
-
-  #pf-top-sentinel {
-    position: absolute;
-    top: 200vh;
-    left: 0;
-    width: 1px;
-    height: 1px;
-    pointer-events: none;
   }
 
   /* ══ Day-of mode ═════════════════════════════════════════════════ */
@@ -451,6 +542,7 @@ const isOnPage = (href: string) => href.startsWith("#");
 
   @media (prefers-reduced-motion: reduce) {
     .pf-navbar,
+    .pf-tabbar,
     .pf-sheet,
     .pf-sheet-backdrop,
     .pf-backtotop,
@@ -464,6 +556,9 @@ const isOnPage = (href: string) => href.startsWith("#");
     .pf-sectionnav {
       display: none;
     }
+    :global(body) {
+      padding-bottom: 0;
+    }
   }
 </style>
 
@@ -474,15 +569,16 @@ const isOnPage = (href: string) => href.startsWith("#");
 
     const bar = root.querySelector(".pf-navbar") as HTMLElement | null;
     const label = root.querySelector("[data-pf-current]") as HTMLElement | null;
-    const openBtn = root.querySelector(
-      "[data-pf-jump-open]",
-    ) as HTMLButtonElement | null;
+    const openBtns = Array.from(
+      root.querySelectorAll("[data-pf-jump-open]"),
+    ) as HTMLButtonElement[];
     const sheet = document.getElementById("pf-jump-sheet");
     const backdrop = root.querySelector(
       ".pf-sheet-backdrop",
     ) as HTMLElement | null;
     const topBtn = root.querySelector("[data-pf-top]") as HTMLElement | null;
-    if (!bar || !label || !openBtn || !sheet || !backdrop || !topBtn) return;
+    if (!bar || !label || !openBtns.length || !sheet || !backdrop || !topBtn)
+      return;
 
     const observers: IntersectionObserver[] = [];
     const reduceMotion = window.matchMedia(
@@ -504,14 +600,14 @@ const isOnPage = (href: string) => href.startsWith("#");
       const pinObserver = new IntersectionObserver(
         ([entry]) => {
           // Not intersecting means one of two very different things: the row
-          // is above us (scrolled past — pin) or still below us under the
-          // hero (page load — leave the site header alone). Only the first
+          // is above us (scrolled past, so pin) or still below us under the
+          // hero (page load, so leave the site header alone). Only the first
           // puts the row's top above the viewport.
           const scrolledPast =
             !entry.isIntersecting && entry.boundingClientRect.top < 0;
           root.classList.toggle("is-pinned", scrolledPast);
           // A sheet left open while the bar slides away would float free
-          if (!scrolledPast) closeSheet();
+          if (!scrolledPast && root.dataset.mode !== "day") closeSheet();
         },
         { threshold: 0, rootMargin: `-${navH}px 0px 0px 0px` },
       );
@@ -520,33 +616,36 @@ const isOnPage = (href: string) => href.startsWith("#");
     }
 
     // ── Back-to-top, once we are two viewports down ──
-    const deepSentinel = document.getElementById("pf-top-sentinel");
-    if (deepSentinel) {
-      const deepObserver = new IntersectionObserver(
-        ([entry]) => {
-          // boundingClientRect.top < 0 means the sentinel is above us
-          root.classList.toggle(
-            "is-deep",
-            !entry.isIntersecting && entry.boundingClientRect.top < 0,
-          );
-        },
-        { threshold: 0 },
-      );
-      deepObserver.observe(deepSentinel);
-      observers.push(deepObserver);
-    }
+    // Read from the scroll position rather than a sentinel: an instant jump
+    // (a tab, a #hash load, reduced motion) can skip straight past a
+    // sentinel without ever intersecting it, and the button would never show.
+    let deepTick = false;
+    const checkDeep = () => {
+      deepTick = false;
+      root.classList.toggle("is-deep", window.scrollY > 2 * window.innerHeight);
+    };
+    const onScroll = () => {
+      if (deepTick) return;
+      deepTick = true;
+      requestAnimationFrame(checkDeep);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    checkDeep();
 
     // ── Roll the label over to the section we are currently in ──
-    const rows = Array.from(
-      sheet.querySelectorAll("[data-pf-target]"),
-    ) as HTMLAnchorElement[];
+    // The sheet rows and the tab bar both point at sections; keep every
+    // link to a section in sync, whichever list it sits in.
+    const rows = [
+      ...Array.from(sheet.querySelectorAll("[data-pf-target]")),
+      ...Array.from(root.querySelectorAll(".pf-tabbar [data-pf-target]")),
+    ] as HTMLAnchorElement[];
 
-    // A section can appear in both nav lists, so map id -> label once and
-    // keep every row pointing at it in sync.
     const targets = new Map<string, string>();
     rows.forEach((row) => {
       const id = row.dataset.pfTarget;
-      const text = row.querySelector(".pf-sheet-row-label")?.textContent;
+      const text = row.querySelector(
+        ".pf-sheet-row-label, .pf-tab-label",
+      )?.textContent;
       if (id && text && !targets.has(id)) targets.set(id, text.trim());
     });
 
@@ -604,9 +703,14 @@ const isOnPage = (href: string) => href.startsWith("#");
 
     // ── The sheet ──
     let lastFocused: HTMLElement | null = null;
+    const setExpanded = (open: boolean) =>
+      openBtns.forEach((b) =>
+        b.setAttribute("aria-expanded", open ? "true" : "false"),
+      );
+    const isShown = (el: Element) => (el as HTMLElement).offsetParent !== null;
 
     function openSheet() {
-      if (!sheet || !backdrop || !openBtn) return;
+      if (!sheet || !backdrop) return;
       lastFocused = document.activeElement as HTMLElement;
       backdrop.hidden = false;
       sheet.hidden = false;
@@ -615,20 +719,20 @@ const isOnPage = (href: string) => href.startsWith("#");
         backdrop.classList.add("is-open");
         sheet.classList.add("is-open");
       });
-      openBtn.setAttribute("aria-expanded", "true");
-      const first = sheet.querySelector(
-        "a:not([hidden]), button",
-      ) as HTMLElement | null;
+      setExpanded(true);
+      const first = (
+        Array.from(sheet.querySelectorAll("a, button")) as HTMLElement[]
+      ).find(isShown);
       first?.focus();
       document.addEventListener("keydown", onKeydown);
     }
 
     function closeSheet() {
-      if (!sheet || !backdrop || !openBtn) return;
+      if (!sheet || !backdrop) return;
       if (sheet.hidden) return;
       backdrop.classList.remove("is-open");
       sheet.classList.remove("is-open");
-      openBtn.setAttribute("aria-expanded", "false");
+      setExpanded(false);
       document.removeEventListener("keydown", onKeydown);
       const hide = () => {
         sheet.hidden = true;
@@ -648,11 +752,11 @@ const isOnPage = (href: string) => href.startsWith("#");
       }
       if (e.key !== "Tab" || !sheet) return;
       // Keep tabbing inside the sheet while it is modal
-      const focusables = Array.from(
-        sheet.querySelectorAll("a[href], button:not([disabled])"),
-      ).filter(
-        (el) => (el as HTMLElement).offsetParent !== null,
-      ) as HTMLElement[];
+      const focusables = (
+        Array.from(
+          sheet.querySelectorAll("a[href], button:not([disabled])"),
+        ) as HTMLElement[]
+      ).filter(isShown);
       if (!focusables.length) return;
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
@@ -665,10 +769,12 @@ const isOnPage = (href: string) => href.startsWith("#");
       }
     }
 
-    openBtn.addEventListener("click", () => {
-      if (sheet.hidden) openSheet();
-      else closeSheet();
-    });
+    openBtns.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        if (sheet.hidden) openSheet();
+        else closeSheet();
+      }),
+    );
     root
       .querySelectorAll("[data-pf-jump-close]")
       .forEach((el) => el.addEventListener("click", () => closeSheet()));
@@ -694,6 +800,7 @@ const isOnPage = (href: string) => href.startsWith("#");
       "astro:before-swap",
       () => {
         observers.forEach((o) => o.disconnect());
+        window.removeEventListener("scroll", onScroll);
         document.removeEventListener("keydown", onKeydown);
       },
       { once: true },

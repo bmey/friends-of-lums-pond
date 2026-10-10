@@ -4,16 +4,22 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_DESCRIPTION } from "../consts";
 
+import type { Phase } from "../data/pondfest/types";
+
 interface Props {
   title: string;
   description?: string;
   ogImage?: string; // absolute path to a social card, e.g. "/pondfest/og.jpg"
+  // Which job the page is doing (see src/data/pondfest/phase.ts). Elements
+  // marked data-phase="..." show only in the phases they list. Pages that do
+  // not pass it hide nothing.
+  phase?: Phase;
 }
 
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, phase } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" data-pf-phase={phase}>
   <head>
     <BaseHead
       title={title}
@@ -48,6 +54,8 @@ const { title, description, ogImage } = Astro.props;
 
         /* Height of the sticky section nav. Anchor targets offset by it. */
         --pf-nav-h: 48px;
+        /* Height of the phone tab bar, not counting the safe-area inset */
+        --pf-tabbar-h: 56px;
       }
 
       body {
@@ -55,11 +63,27 @@ const { title, description, ogImage } = Astro.props;
         color: #e8e4f0;
       }
 
+      /* ── Phases ──
+         The page does three jobs across the year (prep, event, afterglow).
+         An element marked with the phases it belongs to is hidden in the
+         others; no attribute means always visible. Nothing is deleted
+         between years: a sign-up link marked data-phase="prep" comes back
+         on its own when EVENT_DATE moves to the next festival. */
+      [data-pf-phase="prep"] [data-phase]:not([data-phase~="prep"]),
+      [data-pf-phase="event"] [data-phase]:not([data-phase~="event"]),
+      [data-pf-phase="afterglow"] [data-phase]:not([data-phase~="afterglow"]) {
+        display: none !important;
+      }
+
       /* On event day the section nav is pinned from the very top rather than
          waiting for the hero to scroll by. It is fixed, so the page has to
-         give up the space or the bar sits on top of the site header. */
-      body.pf-dayof {
-        padding-top: var(--pf-nav-h);
+         give up the space or the bar sits on top of the site header. On a
+         phone the bar lives at the bottom instead (see PondFestSectionNav),
+         so the space is given up down there. */
+      @media (min-width: 720px) {
+        body.pf-dayof {
+          padding-top: var(--pf-nav-h);
+        }
       }
 
       /* ── Anchor jumps ──

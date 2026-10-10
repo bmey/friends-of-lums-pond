@@ -8,8 +8,9 @@ const { startDate, year } = Astro.props;
 ---
 
 <div class="pf-countdown-wrapper" data-start-date={startDate} data-year={year}>
-  <!-- Pre-event: countdown -->
-  <div id="pf-countdown-display" class="pf-countdown">
+  <!-- Pre-event: countdown. Hidden by the layout's phase CSS from the week
+       of the event on; the script below swaps in the messages on the day. -->
+  <div id="pf-countdown-display" class="pf-countdown" data-phase="prep">
     <div class="pf-countdown-label">starts in</div>
     <div class="pf-countdown-units">
       <div class="pf-time-unit">
@@ -143,6 +144,11 @@ const { startDate, year } = Astro.props;
       return n < 10 ? "0" + n : String(n);
     }
 
+    // Declared before the first tick: on event day that first tick already
+    // wants to stop the timer, and a const declared after it would not
+    // exist yet.
+    let interval: number | undefined;
+
     function tick() {
       const now = Date.now();
       const diff = targetMs - now;
@@ -162,17 +168,19 @@ const { startDate, year } = Astro.props;
         // Event is today
         if (countdownEl) countdownEl.style.display = "none";
         if (todayEl) todayEl.style.display = "";
-        clearInterval(interval);
+        if (interval) clearInterval(interval);
+        interval = undefined;
       } else {
         // Event is over
         if (countdownEl) countdownEl.style.display = "none";
         if (overEl) overEl.style.display = "";
-        clearInterval(interval);
+        if (interval) clearInterval(interval);
+        interval = undefined;
       }
     }
 
     tick();
-    const interval = setInterval(tick, 1000);
+    if (targetMs - Date.now() > 0) interval = window.setInterval(tick, 1000);
   }
 
   initCountdown();

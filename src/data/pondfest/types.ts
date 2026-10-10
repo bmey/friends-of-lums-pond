@@ -43,6 +43,7 @@ export type PartnerGroup = "activities" | "beer" | "agency";
 export interface FAQItem {
   question: string;
   answer: string;
+  phases?: Phase[]; // when to show it; leave off for always
 }
 
 export interface FundingGoal {
@@ -77,6 +78,9 @@ export interface Amenity {
 export interface AmenityLink {
   label: string;
   url: string; // "mailto:" and "#on-page" links work too
+  phases?: Phase[]; // when to show it; leave off for always. A sign-up link
+  // is ["prep"]: it hides itself the week of the event, and comes back
+  // when EVENT_DATE moves to next year.
 }
 
 // ── Merch section ──
@@ -109,6 +113,7 @@ export interface NavSection {
   href: string;
   label: string;
   icon: string; // Font Awesome name, e.g. "fa-map"
+  phases?: Phase[]; // when to show it; leave off for always
 }
 
 export interface ArchiveYear {
@@ -123,4 +128,71 @@ export interface ArchiveYear {
   featuredPhotoUrl?: string; // hero photo shown at top of year card in archive
   photoGalleryUrl?: string;
   detailPageUrl?: string; // internal path, e.g. "/resources/pondfest2025"
+}
+
+// ── Phases ──
+// The page does three jobs across the year. Mark an element with the phases
+// it belongs to and the layout's CSS hides it in the others; no attribute
+// means always visible. See phase.ts for how the current phase is decided.
+export type Phase = "prep" | "event" | "afterglow";
+
+// ─────────────────────────────────────────────
+// DAY-OF DATA: the things people look up while standing in the park.
+// All of it is optional: an empty array means the matching section
+// simply does not render, so these can be filled in as they firm up.
+// ─────────────────────────────────────────────
+
+// One slot on the open mic stage, run by OMAD.
+export interface OpenMicSlot {
+  time: string; // display form, e.g. "11:30 AM"
+  name: string; // the performer
+}
+
+// One map in the tabbed map viewer. Only the first map's display image is
+// downloaded with the page; the rest load when their tab is opened, which is
+// why `src` and `full` are separate files.
+export interface EventMap {
+  id: string; // anchor-safe id, e.g. "area-1"
+  label: string; // tab label; keep it to a word or two, it has to fit a phone
+  title: string; // heading shown above the map
+  src: string; // display rendition, /pondfest/maps/<id>.webp
+  full: string; // larger rendition opened by "open full size"
+  alt: string; // what the map actually shows
+  note?: string; // one short line under the map
+}
+
+// A fixed moment in the day: a demo, a deadline, a dedication. Separate from
+// AMENITIES (which describes things that run for hours) because these are
+// the ones you miss if you do not know when they are.
+export interface KeyTime {
+  start: string; // 24-hour "HH:MM"; sorts the list and drives "up next"
+  time: string; // display form, e.g. "12:00 PM"
+  title: string;
+  icon: string; // Font Awesome name, free set only
+  area?: string; // "Area 2", where it matters
+  detail?: string; // one or two sentences
+}
+
+// Food trucks are grouped by area on the page, because "which truck" matters
+// far less than "is it worth the walk".
+export interface FoodTruck {
+  name: string;
+  area: 1 | 2 | 3;
+}
+
+// A sponsor's own advertisement, shown as a thumbnail that opens full size.
+export interface SponsorAd {
+  slug: string; // /pondfest/ads/<slug>.webp and <slug>-thumb.webp
+  sponsor: string; // whose ad it is
+  alt: string; // what the ad shows, in a sentence
+  url?: string; // the sponsor's site, if we know it
+}
+
+// One heading in the people thank-you: a title, an optional line of context,
+// and a list of names. A group with an intro and no names still renders.
+export interface ThanksGroup {
+  title: string;
+  icon: string;
+  intro?: string;
+  names: string[];
 }

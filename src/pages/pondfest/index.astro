@@ -68,8 +68,42 @@ import {
   HEART_OF_PARKS_VIDEO_URL,
   HEART_OF_PARKS_POSTER_URL,
   HEART_OF_PARKS_CAPTIONS_URL,
+  ANNUAL_PROMISE,
+  ANNUAL_PROMISE_SHORT,
+  PHASE_OVERRIDE,
+  EVENT_MAPS,
+  KEY_TIMES,
+  OPEN_MIC_SLOTS,
+  FOOD_TRUCKS,
+  CRAFT_VENDORS,
+  FIRST_RESPONDERS,
+  SPONSOR_ADS,
+  OUT_AND_ABOUT_URL,
+  OUT_AND_ABOUT_LABEL,
+  THANKS_GROUPS,
+  EAGLE_SCOUT_NOTE,
+  NEXT_EVENT_DATE_DISPLAY,
 } from "../../data/pondfest/config";
+import {
+  WINNERS_LIVE,
+  FIFTY_FIFTY_TICKET,
+  FIFTY_FIFTY_AMOUNT,
+  RAFFLE_WINNERS,
+  AUCTION_WINNERS,
+  WINNERS_NOTE,
+  WINNERS_CLAIM_NOTE,
+  WINNERS_WHERE,
+  parseWinners,
+} from "../../data/pondfest/winners";
+import { resolvePhase } from "../../data/pondfest/phase";
+import type { NavSection, Phase } from "../../data/pondfest/types";
 import { publicImageSize } from "../../data/pondfest/imageSize";
+import PondFestNext from "../../components/pondfest/PondFestNext.astro";
+
+// Which job the page is doing today. Decided here so the HTML is right
+// without JavaScript, and again by the inline script in the head so the
+// page flips itself overnight without a deploy.
+const phase: Phase = resolvePhase(EVENT_DATE, Date.now(), PHASE_OVERRIDE);
 
 const hasMaps =
   EVENT_MAP_IMAGE_URL || PARKING_MAP_IMAGE_URL || VENDOR_MAP_IMAGE_URL;
@@ -100,6 +134,124 @@ const partnerGroups = (
 
 const hasPartners = PARTNERS.length > 0;
 const hasLineup = LINEUP.length > 0;
+
+// ── Day-of derived values ──
+// An anchor per act, so a row in the schedule grid can jump to that band's
+// card further down the page.
+const actSlug = (name: string) =>
+  "act-" +
+  name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+// "Wingspan Stage · Area 1" splits into a heading and a sub-heading.
+const splitStage = (label: string) => {
+  const [name, area] = label.split("\u00b7").map((x) => x.trim());
+  return { name: name || label, area: area || "" };
+};
+// "Wingspan Stage" reads as "Wingspan" where space is tight
+const shortStage = (label: string) =>
+  splitStage(label).name.replace(/\s+stage$/i, "");
+
+// The schedule grid is one column per stage, in the order the stages first
+// appear in LINEUP (which is in set-time order), so the column order
+// follows the printed schedule without being hard-coded.
+const stageColumns = LINEUP.reduce<{ name: string; acts: typeof LINEUP }[]>(
+  (cols, act) => {
+    const stage = act.stage || "Stage TBA";
+    const col = cols.find((c) => c.name === stage);
+    if (col) col.acts.push(act);
+    else cols.push({ name: stage, acts: [act] });
+    return cols;
+  },
+  [],
+);
+
+const keyTimes = [...KEY_TIMES].sort((a, b) => a.start.localeCompare(b.start));
+
+// Turn a set time as it is written for people ("12:45 – 2:00 PM") into
+// 24-hour start and end, so the browser can work out what is playing right
+// now. A side with no AM/PM borrows it from the other side, which is how
+// every set on this schedule is written.
+const parseSetTime = (label?: string) => {
+  if (!label) return null;
+  const halves = label.split(/\s*[\u2013\u2014-]\s*/);
+  if (halves.length !== 2) return null;
+  const meridiem = (t: string) =>
+    (t.match(/([ap])\.?m/i) || [])[1]?.toLowerCase();
+  const fallback = meridiem(halves[1]) || meridiem(halves[0]);
+  const to24 = (t: string) => {
+    const m = t.match(/(\d{1,2}):(\d{2})/);
+    if (!m) return null;
+    let h = Number(m[1]);
+    const mins = m[2];
+    const ap = meridiem(t) || fallback;
+    if (ap === "p" && h !== 12) h += 12;
+    if (ap === "a" && h === 12) h = 0;
+    return `${String(h).padStart(2, "0")}:${mins}`;
+  };
+  const start = to24(halves[0]);
+  const end = to24(halves[1]);
+  return start && end ? { start, end } : null;
+};
+
+// What the browser needs to answer "what is on right now" without shipping
+// the whole page's data: the sets in 24-hour time, and the fixed moments.
+const scheduleData = {
+  date: EVENT_DATE.slice(0, 10),
+  stages: stageColumns.map((c) => ({
+    name: shortStage(c.name),
+    area: splitStage(c.name).area,
+  })),
+  sets: LINEUP.flatMap((act) => {
+    const t = parseSetTime(act.time);
+    if (!t) return [];
+    return [
+      {
+        name: act.name,
+        stage: shortStage(act.stage || ""),
+        slug: actSlug(act.name),
+        ...t,
+      },
+    ];
+  }),
+  moments: keyTimes.map((k) => ({
+    start: k.start,
+    time: k.time,
+    title: k.title,
+    area: k.area || "",
+  })),
+};
+const hasSchedule = hasLineup || keyTimes.length > 0;
+
+// Food trucks, grouped by the area you would walk to.
+const foodByArea = ([1, 2, 3] as const)
+  .map((area) => ({
+    area,
+    trucks: FOOD_TRUCKS.filter((t) => t.area === area),
+  }))
+  .filter((g) => g.trucks.length > 0);
+
+const hasWhosHere =
+  FOOD_TRUCKS.length > 0 ||
+  CRAFT_VENDORS.length > 0 ||
+  FIRST_RESPONDERS.length > 0;
+
+// ── Winners ──
+// Everything comes out of src/data/pondfest/winners.ts, the one file
+// edited on event day. Nothing here can throw on a malformed line.
+const raffleWinners = parseWinners(RAFFLE_WINNERS);
+const auctionWinners = parseWinners(AUCTION_WINNERS);
+const hasFiftyFifty = !!FIFTY_FIFTY_TICKET;
+const hasWinners =
+  WINNERS_LIVE &&
+  (hasFiftyFifty || raffleWinners.length > 0 || auctionWinners.length > 0);
+
+const hasMapViewer = EVENT_MAPS.length > 0;
+const hasThanksGroups = THANKS_GROUPS.length > 0;
+const phaseAttr = (phases?: Phase[]) => phases?.join(" ") || undefined;
 
 // Is the merch pre-sale still open? Decided at build time here, and again in
 // the browser (see applyPresaleDeadline below) so the buttons disappear on
@@ -173,89 +325,175 @@ const involvedPaths = [
 ];
 
 // ── Page navigation ──
-// Feeds the quick-links row under the hero and the jump sheet in the sticky
-// bar. A section whose content is empty drops out of both on its own, so an
-// early-in-the-year page with no lineup yet never offers a dead link.
-const navSections = [
-  {
-    href: "#pf-fundraising",
-    label: "Fundraising",
-    icon: "fa-bullseye",
-    show: FUNDING_GOALS.length > 0,
-  },
-  {
-    href: "#pf-expect",
-    label: "What to Expect",
-    icon: "fa-tent-arrow-turn-left",
-  },
-  {
-    href: "#pf-merch",
-    label: "Merch",
-    icon: "fa-shirt",
-    show: MERCH_ITEMS.length > 0,
-  },
-  { href: "#pf-plan", label: "Plan Your Visit", icon: "fa-map" },
-  {
-    href: "#pf-lineup",
-    label: "Music Lineup",
-    icon: "fa-music",
-    show: hasLineup,
-  },
-  {
-    href: "#pf-involved",
-    label: "Get Involved",
-    icon: "fa-hand-holding-heart",
-  },
-  {
-    href: "#pf-sponsors",
-    label: "Sponsors & Thanks",
-    icon: "fa-star",
-    show: hasSponsors,
-  },
-  { href: "#pf-faq", label: "FAQ", icon: "fa-circle-question" },
-].filter((s) => s.show !== false);
+// One list feeds the quick-links row under the hero and the jump sheet. A
+// section whose content is empty drops out on its own, so an early-in-the-
+// year page with no lineup yet never offers a dead link. `phases` says when
+// an entry is shown; the week of the event the recruiting rows give way to
+// the schedule, the map and the food, which is what people are looking for.
+const navSections: NavSection[] = (
+  [
+    {
+      href: "#pf-thankyou",
+      label: "Thank you",
+      icon: "fa-heart",
+      phases: ["afterglow"],
+    },
+    {
+      href: "#pf-winners",
+      label: "Winners",
+      icon: "fa-trophy",
+      phases: ["event", "afterglow"],
+      show: hasWinners,
+    },
+    {
+      href: "#pf-schedule",
+      label: "Schedule",
+      icon: "fa-clock",
+      phases: ["prep", "event"],
+      show: hasSchedule,
+    },
+    { href: "#pf-plan", label: "Plan Your Visit", icon: "fa-map" },
+    {
+      href: "#pf-fundraising",
+      label: "Fundraising",
+      icon: "fa-bullseye",
+      phases: ["prep", "afterglow"],
+      show: FUNDING_GOALS.length > 0,
+    },
+    {
+      href: "#pf-expect",
+      label: "What to Expect",
+      icon: "fa-tent-arrow-turn-left",
+    },
+    {
+      href: "#pf-whos-here",
+      label: "Food & Vendors",
+      icon: "fa-utensils",
+      phases: ["prep", "event"],
+      show: hasWhosHere,
+    },
+    {
+      href: "#pf-merch",
+      label: "Merch",
+      icon: "fa-shirt",
+      show: MERCH_ITEMS.length > 0,
+    },
+    {
+      href: "#pf-lineup",
+      label: hasSchedule ? "Meet the Bands" : "Music Lineup",
+      icon: "fa-music",
+      show: hasLineup,
+    },
+    {
+      href: "#pf-involved",
+      label: "Get Involved",
+      icon: "fa-hand-holding-heart",
+      phases: ["prep"],
+    },
+    {
+      href: "#pf-sponsors",
+      label: "Sponsors & Thanks",
+      icon: "fa-star",
+      show: hasSponsors,
+    },
+    {
+      href: "#pf-next",
+      label: "Before you go",
+      icon: "fa-comment-dots",
+      phases: ["event"],
+    },
+    { href: "#pf-faq", label: "FAQ", icon: "fa-circle-question" },
+    {
+      href: RAFFLE_LINK,
+      label: "Raffle",
+      icon: "fa-ticket",
+      phases: ["event"],
+      show: !!RAFFLE_LINK,
+    },
+    {
+      href: AUCTION_LINK,
+      label: "Silent Auction",
+      icon: "fa-gavel",
+      phases: ["event"],
+      show: !!AUCTION_LINK,
+    },
+    {
+      href: FEEDBACK_LINK,
+      label: "Take the survey",
+      icon: "fa-square-poll-horizontal",
+      phases: ["afterglow"],
+      show: !!FEEDBACK_LINK,
+    },
+  ] as (NavSection & { show?: boolean })[]
+).filter((s) => s.show !== false);
 
-// Event day asks different questions: where do I park, who is playing, how
-// do I bid. The same client-side EVENT_DATE gate that reveals the day-of
-// panel swaps the nav over to this list.
-const dayOfNavLinks = [
-  { href: "#pf-plan", label: "Map & Parking", icon: "fa-map-location-dot" },
-  {
-    href: "#pf-lineup",
-    label: "Music Lineup",
-    icon: "fa-music",
-    show: hasLineup,
-  },
-  {
-    href: "#pf-expect",
-    label: "What to Expect",
-    icon: "fa-tent-arrow-turn-left",
-  },
-  {
-    href: RAFFLE_LINK,
-    label: "Raffle",
-    icon: "fa-ticket",
-    show: !!RAFFLE_LINK,
-  },
-  {
-    href: AUCTION_LINK,
-    label: "Silent Auction",
-    icon: "fa-gavel",
-    show: !!AUCTION_LINK,
-  },
-  {
-    href: PONDFEST_DONATE_URL,
-    label: "Donate",
-    icon: "fa-circle-dollar-to-slot",
-    show: !!PONDFEST_DONATE_URL,
-  },
-  {
-    href: FEEDBACK_LINK,
-    label: "Share Feedback",
-    icon: "fa-comment-dots",
-    show: !!FEEDBACK_LINK,
-  },
-].filter((s) => s.show !== false);
+// The phone tab bar: the three or four things people look up most in each
+// phase, plus a "More" button that opens the full list above.
+const tabBar: NavSection[] = (
+  [
+    {
+      href: "#pf-expect",
+      label: "Expect",
+      icon: "fa-tent-arrow-turn-left",
+      phases: ["prep"],
+    },
+    { href: "#pf-plan", label: "Plan", icon: "fa-map", phases: ["prep"] },
+    {
+      href: "#pf-lineup",
+      label: "Lineup",
+      icon: "fa-music",
+      phases: ["prep"],
+      show: hasLineup,
+    },
+    {
+      href: "#pf-involved",
+      label: "Join in",
+      icon: "fa-hand-holding-heart",
+      phases: ["prep"],
+    },
+    {
+      href: "#pf-winners",
+      label: "Winners",
+      icon: "fa-trophy",
+      phases: ["event", "afterglow"],
+      show: hasWinners,
+    },
+    {
+      href: "#pf-schedule",
+      label: "Schedule",
+      icon: "fa-clock",
+      phases: ["event"],
+      show: hasSchedule,
+    },
+    { href: "#pf-plan", label: "Map", icon: "fa-map", phases: ["event"] },
+    {
+      href: "#pf-whos-here",
+      label: "Food",
+      icon: "fa-utensils",
+      phases: ["event"],
+      show: hasWhosHere,
+    },
+    {
+      href: "#pf-thankyou",
+      label: "Thanks",
+      icon: "fa-heart",
+      phases: ["afterglow"],
+    },
+    {
+      href: "#pf-memories",
+      label: "Photos",
+      icon: "fa-images",
+      phases: ["afterglow"],
+    },
+    {
+      href: "#pf-sponsors",
+      label: "Sponsors",
+      icon: "fa-star",
+      phases: ["afterglow"],
+      show: hasSponsors,
+    },
+  ] as (NavSection & { show?: boolean })[]
+).filter((s) => s.show !== false);
 
 const tierLabels: Record<string, string> = {
   diamond: "Diamond Sponsors",
@@ -330,13 +568,59 @@ const eventMapSize = EVENT_MAP_IMAGE_URL
 // The 75th strip sits above every section, so its logo must reserve its
 // height too or the whole page shifts down when the logo arrives.
 const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
+
+// The maps and the sponsor ads are all different shapes, so each one needs
+// its real pixel size to hold its space. Without it the program jumps around
+// under the reader's thumb while the images stream in on park cell data.
+const eventMaps = await Promise.all(
+  EVENT_MAPS.map(async (m) => ({ ...m, ...(await publicImageSize(m.src)) })),
+);
+const sponsorAds = await Promise.all(
+  SPONSOR_ADS.map(async (ad) => ({
+    ...ad,
+    thumb: `/pondfest/ads/${ad.slug}-thumb.webp`,
+    fullSrc: `/pondfest/ads/${ad.slug}.webp`,
+    ...(await publicImageSize(`/pondfest/ads/${ad.slug}-thumb.webp`)),
+  })),
+);
 ---
 
 <Layout
   title={`Pond Fest ${CURRENT_YEAR} | Friends of Lums Pond`}
   description={`Pond Fest ${CURRENT_YEAR}. ${EVENT_DATE_DISPLAY}, Lums Pond State Park. Free, dog-friendly community festival: live music on three stages, beer garden, food trucks, kids' activities, and more. Standard park entrance fee applies.`}
   ogImage={OG_IMAGE_URL}
+  phase={phase}
 >
+  <!-- Re-decide the phase in the browser, before anything paints, so the
+       page flips from "event" to "afterglow" overnight on its own. Keep the
+       rules in step with src/data/pondfest/phase.ts. -->
+  <script
+    is:inline
+    slot="head"
+    define:vars={{ pfEventDate: EVENT_DATE, pfPhaseOverride: PHASE_OVERRIDE }}
+  >
+    (function () {
+      var root = document.documentElement;
+      if (pfPhaseOverride) {
+        root.dataset.pfPhase = pfPhaseOverride;
+        return;
+      }
+      var zoned = function (iso) {
+        return /(Z|[+-]\d\d:\d\d)$/i.test(iso) ? iso : iso + "-04:00";
+      };
+      var start = new Date(zoned(pfEventDate)).getTime();
+      var dayEnd = new Date(
+        zoned(pfEventDate.slice(0, 10) + "T23:59:59"),
+      ).getTime();
+      var now = Date.now();
+      root.dataset.pfPhase =
+        now > dayEnd
+          ? "afterglow"
+          : now >= start - 7 * 24 * 60 * 60 * 1000
+          ? "event"
+          : "prep";
+    })();
+  </script>
   <!-- The hero is a CSS background, which the browser only discovers after
        it has parsed the stylesheet. Preloading starts the download alongside
        the HTML instead, one file per screen size. -->
@@ -354,6 +638,21 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     href={HERO_IMAGE_URL}
     media="(min-width: 769px)"
   />
+  <!-- ══ WINNERS BANNER — the loudest thing on the page once the draws
+       are posted, and gone again the moment WINNERS_LIVE is false ═══ -->
+  {
+    hasWinners && (
+      <a class="pf-winners-banner" href="#pf-winners" data-phase="event">
+        <i class="fa-solid fa-trophy" aria-hidden="true" />
+        <span>
+          <strong>Raffle, 50/50 and auction winners are posted.</strong> Tap to
+          see if that is you.
+        </span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+      </a>
+    )
+  }
+
   <!-- ══ ALERT BANNER ════════════════════════════════════════════════ -->
   {
     DAY_OF_ALERT && (
@@ -448,134 +747,444 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     <span>Celebrating 75 Years of Delaware State Parks</span>
   </a>
 
-  <!-- ══ DAY-OF PANEL — thin toolbar, shown the week of the event ════ -->
-  <div
-    id="pf-day-of-panel"
-    data-event-date={EVENT_DATE}
-    style="display:none"
-    class="pf-day-of-panel"
-  >
-    <!-- Quick navigation -->
-    <section class="pf-section pf-section--purple">
-      <div class="pf-section-inner pf-section-inner--mid">
-        <h2>Day-of Quick Links</h2>
-        <div class="pf-dayof-quicknav">
-          <a href="#pf-plan" class="pf-quicknav-btn">
-            <i class="fa-solid fa-map"></i> Plan Your Visit
-          </a>
-          {
-            RAFFLE_LINK && (
+  <!-- ══ RAFFLE / AUCTION LINKS — only when those links are filled in ═ -->
+  {
+    (RAFFLE_LINK || AUCTION_LINK) && (
+      <section class="pf-section pf-section--dark" data-phase="event">
+        <div class="pf-section-inner pf-section-inner--mid">
+          <h2>Raffles &amp; Auction</h2>
+          <div class="pf-dayof-link-cards">
+            {RAFFLE_LINK && (
               <a
                 href={RAFFLE_LINK}
                 target="_blank"
                 rel="noopener"
-                class="pf-quicknav-btn"
+                class="pf-dayof-link-card"
               >
-                <i class="fa-solid fa-ticket" /> Raffles
+                <i class="fa-solid fa-ticket pf-dayof-link-icon" />
+                <div>
+                  <strong>Raffle Info &amp; Results</strong>
+                  <p>View raffle items and winner announcements</p>
+                </div>
+                <i class="fa-solid fa-arrow-right pf-dayof-link-arrow" />
               </a>
-            )
-          }
-          {
-            AUCTION_LINK && (
+            )}
+            {AUCTION_LINK && (
               <a
                 href={AUCTION_LINK}
                 target="_blank"
                 rel="noopener"
-                class="pf-quicknav-btn"
+                class="pf-dayof-link-card"
               >
-                <i class="fa-solid fa-gavel" /> Auction
+                <i class="fa-solid fa-gavel pf-dayof-link-icon" />
+                <div>
+                  <strong>Silent Auction</strong>
+                  <p>View auction items and place or check bids</p>
+                </div>
+                <i class="fa-solid fa-arrow-right pf-dayof-link-arrow" />
               </a>
-            )
-          }
-          <a
-            href={PONDFEST_DONATE_URL}
-            target="_blank"
-            rel="noopener"
-            class="pf-quicknav-btn"
-          >
-            <i class="fa-solid fa-circle-dollar-to-slot"></i> Donate
-          </a>
-          {
-            FEEDBACK_LINK && (
-              <a
-                href={FEEDBACK_LINK}
-                target="_blank"
-                rel="noopener"
-                class="pf-quicknav-btn"
-              >
-                <i class="fa-solid fa-comment-dots" /> Feedback
-              </a>
-            )
-          }
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    )
+  }
 
-    {
-      (RAFFLE_LINK || AUCTION_LINK) && (
-        <section class="pf-section pf-section--dark">
-          <div class="pf-section-inner pf-section-inner--mid">
-            <h2>Raffles &amp; Auction</h2>
-            <div class="pf-dayof-link-cards">
-              {RAFFLE_LINK && (
-                <a
-                  href={RAFFLE_LINK}
-                  target="_blank"
-                  rel="noopener"
-                  class="pf-dayof-link-card"
-                >
-                  <i class="fa-solid fa-ticket pf-dayof-link-icon" />
-                  <div>
-                    <strong>Raffle Info &amp; Results</strong>
-                    <p>View raffle items and winner announcements</p>
-                  </div>
-                  <i class="fa-solid fa-arrow-right pf-dayof-link-arrow" />
-                </a>
-              )}
-              {AUCTION_LINK && (
-                <a
-                  href={AUCTION_LINK}
-                  target="_blank"
-                  rel="noopener"
-                  class="pf-dayof-link-card"
-                >
-                  <i class="fa-solid fa-gavel pf-dayof-link-icon" />
-                  <div>
-                    <strong>Silent Auction</strong>
-                    <p>View auction items and place or check bids</p>
-                  </div>
-                  <i class="fa-solid fa-arrow-right pf-dayof-link-arrow" />
-                </a>
+  <!-- ══ THANK YOU — leads the page in the weeks after the festival ═══ -->
+  <PondFestNext
+    id="pf-thankyou"
+    phases={["afterglow"]}
+    variant="afterglow"
+    winnersLive={hasWinners}
+  />
+
+  <!-- ══ WINNERS — appears only once winners.ts says WINNERS_LIVE ══ -->
+  {
+    hasWinners && (
+      <section class="pf-section pf-section--purple" id="pf-winners">
+        <div class="pf-section-inner pf-section-inner--mid">
+          <div class="pf-winners-header">
+            <h2>Winners</h2>
+            {WINNERS_NOTE ? (
+              <p class="pf-winners-note">{WINNERS_NOTE}</p>
+            ) : (
+              WINNERS_CLAIM_NOTE && (
+                <p class="pf-winners-note">{WINNERS_CLAIM_NOTE}</p>
+              )
+            )}
+          </div>
+
+          {hasFiftyFifty && (
+            <div class="pf-fifty">
+              <span class="pf-fifty-label">50/50 winning ticket</span>
+              <span class="pf-fifty-ticket">{FIFTY_FIFTY_TICKET}</span>
+              {FIFTY_FIFTY_AMOUNT && (
+                <span class="pf-fifty-amount">
+                  takes home {FIFTY_FIFTY_AMOUNT}
+                </span>
               )}
             </div>
-          </div>
-        </section>
-      )
-    }
+          )}
 
-    {
-      FEEDBACK_LINK && (
-        <section class="pf-section pf-section--purple">
-          <div class="pf-section-inner--narrow pf-feedback-section">
-            <h2>Share Your Feedback</h2>
-            <p>
-              Thank you for spending the day with us at Pond Fest! Your feedback
-              helps us make next year even better. It only takes two minutes.
+          <div class="pf-winners-cols">
+            {raffleWinners.length > 0 && (
+              <div class="pf-winners-block">
+                <h3>
+                  <i class="fa-solid fa-ticket" aria-hidden="true" /> Raffle
+                </h3>
+                <ol class="pf-winners-list">
+                  {raffleWinners.map((w) => (
+                    <li class="pf-winners-row">
+                      {w.prize && (
+                        <span class="pf-winners-prize">{w.prize}</span>
+                      )}
+                      <span class="pf-winners-who">{w.winner}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+            {auctionWinners.length > 0 && (
+              <div class="pf-winners-block">
+                <h3>
+                  <i class="fa-solid fa-gavel" aria-hidden="true" /> Silent
+                  Auction
+                </h3>
+                <ol class="pf-winners-list">
+                  {auctionWinners.map((w) => (
+                    <li class="pf-winners-row">
+                      {w.prize && (
+                        <span class="pf-winners-prize">{w.prize}</span>
+                      )}
+                      <span class="pf-winners-who">{w.winner}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </div>
+
+          {WINNERS_WHERE && (
+            <p class="pf-winners-where">
+              <i class="fa-solid fa-location-dot" aria-hidden="true" />{" "}
+              {WINNERS_WHERE}
             </p>
+          )}
+          {WINNERS_NOTE && WINNERS_CLAIM_NOTE && (
+            <p class="pf-winners-where">
+              <i class="fa-solid fa-hourglass-end" aria-hidden="true" />{" "}
+              {WINNERS_CLAIM_NOTE}
+            </p>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ══ SCHEDULE — the whole day in one place: the three music stages,
+       the open mic, and the fixed moments you would otherwise miss ═══ -->
+  {
+    hasSchedule && (
+      <section
+        class="pf-section pf-section--dark pf-section--lazy"
+        id="pf-schedule"
+        data-phase="prep event"
+      >
+        <div class="pf-section-inner pf-section-inner--mid">
+          <div class="pf-sched-header">
+            <h2>Schedule</h2>
+            <p class="pf-sched-intro">
+              Three music stages, an open mic running all day, and the handful
+              of moments worth setting an alarm for. Tap an act for the photo,
+              the story, and where to hear more.
+            </p>
+          </div>
+
+          {/* Filled in by the browser, on event day only. */}
+          <div class="pf-now" id="pf-now" hidden data-phase="event">
+            <div class="pf-now-head">
+              <span class="pf-now-dot" aria-hidden="true" />
+              <h3 data-pf-now-title>On right now</h3>
+              <span class="pf-now-clock" data-pf-clock />
+            </div>
+            <div class="pf-now-grid" data-pf-now-grid />
+            <p class="pf-now-next" data-pf-now-next hidden />
+          </div>
+
+          {hasLineup && (
+            <div class="pf-sched-stages">
+              {stageColumns.map((col) => {
+                const stage = splitStage(col.name);
+                return (
+                  <div class="pf-sched-stage">
+                    <div class="pf-sched-stage-head">
+                      <h3>{stage.name}</h3>
+                      {stage.area && (
+                        <span class="pf-sched-stage-area">{stage.area}</span>
+                      )}
+                    </div>
+                    <ol class="pf-sched-sets">
+                      {col.acts.map((act) => (
+                        <li>
+                          <a
+                            class="pf-sched-set"
+                            href={`#${actSlug(act.name)}`}
+                            data-pf-set={actSlug(act.name)}
+                          >
+                            <span class="pf-sched-time">{act.time}</span>
+                            <span class="pf-sched-name">{act.name}</span>
+                            <i
+                              class="fa-solid fa-chevron-right pf-sched-chev"
+                              aria-hidden="true"
+                            />
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {OPEN_MIC_SLOTS.length > 0 && (
+            <div class="pf-openmic">
+              <div class="pf-openmic-head">
+                <h3>
+                  <i class="fa-solid fa-microphone-lines" aria-hidden="true" />{" "}
+                  Open Mic
+                </h3>
+                <p>
+                  Area 1, all day, hosted by the{" "}
+                  <a href="https://302omad.com/" target="_blank" rel="noopener">
+                    Original Music Association of Delaware
+                  </a>
+                  . Walk-ups get whatever slots are still open.
+                </p>
+              </div>
+              <ol class="pf-openmic-list">
+                {OPEN_MIC_SLOTS.map((slot) => (
+                  <li data-pf-openmic>
+                    <span class="pf-openmic-time">{slot.time}</span>
+                    <span class="pf-openmic-name">{slot.name}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {keyTimes.length > 0 && (
+            <div class="pf-keytimes">
+              <h3 class="pf-keytimes-title">Key times</h3>
+              <ol class="pf-keytimes-list">
+                {keyTimes.map((k) => (
+                  <li class="pf-keytime" data-pf-moment={k.start}>
+                    <span class="pf-keytime-when">{k.time}</span>
+                    <span class="pf-keytime-dot" aria-hidden="true">
+                      <i class={`fa-solid ${k.icon}`} />
+                    </span>
+                    <div class="pf-keytime-body">
+                      <strong class="pf-keytime-title">{k.title}</strong>
+                      {k.area && <span class="pf-keytime-area">{k.area}</span>}
+                      {k.detail && <p>{k.detail}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          <p class="pf-sched-foot" data-phase="event">
+            <i class="fa-regular fa-calendar" aria-hidden="true" />{" "}
+            {ANNUAL_PROMISE_SHORT} Next year that is {NEXT_EVENT_DATE_DISPLAY}.
+          </p>
+
+          <script
+            is:inline
+            type="application/json"
+            id="pf-schedule-data"
+            set:html={JSON.stringify(scheduleData).replace(/</g, "\\u003c")}
+          />
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ══ PLAN YOUR VISIT — map + logistics, always on ══════════════ -->
+  <section
+    class="pf-section pf-section--dark-alt pf-section--lazy"
+    id="pf-plan"
+  >
+    <div class="pf-section-inner pf-section-inner--mid">
+      <div class="pf-plan-header">
+        <h2>Plan Your Visit</h2>
+        <p class="pf-plan-promise" data-phase="prep">
+          <i class="fa-regular fa-calendar" aria-hidden="true"></i>{" "}
+          {ANNUAL_PROMISE}
+        </p>
+      </div>
+      {
+        hasMapViewer && (
+          <div class="pf-mapview" id="pf-mapview">
+            <div
+              class="pf-mapview-tabs"
+              role="tablist"
+              aria-label="Pond Fest maps"
+            >
+              {eventMaps.map((m, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`pf-maptab-${m.id}`}
+                  class="pf-mapview-tab"
+                  aria-selected={i === 0 ? "true" : "false"}
+                  aria-controls={`pf-mappanel-${m.id}`}
+                  tabindex={i === 0 ? 0 : -1}
+                  data-pf-maptab={m.id}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+            {eventMaps.map((m, i) => (
+              <div
+                class="pf-mapview-panel"
+                id={`pf-mappanel-${m.id}`}
+                role="tabpanel"
+                aria-labelledby={`pf-maptab-${m.id}`}
+                hidden={i !== 0}
+              >
+                <h3 class="pf-mapview-title">{m.title}</h3>
+                {/* Only the first map ships a src. The rest carry data-src
+                    and are fetched the first time their tab is opened, which
+                    is what keeps six maps off the critical path. */}
+                <div
+                  class="pf-mapview-frame"
+                  style={
+                    m.width && m.height
+                      ? `aspect-ratio: ${m.width} / ${m.height};`
+                      : undefined
+                  }
+                >
+                  <img
+                    src={i === 0 ? m.src : undefined}
+                    data-src={i === 0 ? undefined : m.src}
+                    alt={m.alt}
+                    width={m.width}
+                    height={m.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                {m.note && <p class="pf-mapview-note">{m.note}</p>}
+                <a
+                  class="pf-mapview-full"
+                  href={m.full}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-solid fa-magnifying-glass-plus" /> Open the
+                  full-size map
+                </a>
+              </div>
+            ))}
+            <p class="pf-mapview-tip">
+              <i class="fa-solid fa-circle-info" /> Cell service gets patchy
+              once the park fills up. Screenshot the map you need before you set
+              off.
+            </p>
+          </div>
+        )
+      }
+      {
+        !hasMapViewer && hasMaps && (
+          <div class="pf-maps-grid">
+            {EVENT_MAP_IMAGE_URL && (
+              <div class="pf-map-item pf-map-item--event">
+                <h3>Event Map</h3>
+                <a
+                  href={EVENT_MAP_FULL_URL || EVENT_MAP_IMAGE_URL}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <img
+                    src={EVENT_MAP_IMAGE_URL}
+                    alt="Pond Fest event map showing Areas 1, 2 and 3 at Lums Pond State Park"
+                    class="pf-map-img"
+                    width={eventMapSize.width}
+                    height={eventMapSize.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="pf-map-tap-hint">
+                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                    enlarge
+                  </span>
+                </a>
+              </div>
+            )}
+            {PARKING_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Parking Map</h3>
+                <a href={PARKING_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img
+                    src={PARKING_MAP_IMAGE_URL}
+                    alt="Pond Fest parking map"
+                    class="pf-map-img"
+                    loading="lazy"
+                  />
+                  <span class="pf-map-tap-hint">
+                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                    enlarge
+                  </span>
+                </a>
+              </div>
+            )}
+            {VENDOR_MAP_IMAGE_URL && (
+              <div class="pf-map-item">
+                <h3>Vendor Map</h3>
+                <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
+                  <img
+                    src={VENDOR_MAP_IMAGE_URL}
+                    alt="Pond Fest vendor map"
+                    class="pf-map-img"
+                    loading="lazy"
+                  />
+                  <span class="pf-map-tap-hint">
+                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
+                    enlarge
+                  </span>
+                </a>
+              </div>
+            )}
+          </div>
+        )
+      }
+      {
+        planNotes.map((note) => (
+          <div class="pf-info-note">
+            <i class={`fa-solid ${note.icon}`} />
+            <p>{note.text}</p>
+          </div>
+        ))
+      }
+      <div class="pf-plan-social">
+        {
+          FACEBOOK_EVENT_URL && (
             <a
-              href={FEEDBACK_LINK}
+              href={FACEBOOK_EVENT_URL}
+              class="pf-btn pf-btn--outline-light"
               target="_blank"
               rel="noopener"
-              class="pf-btn pf-btn--outline-light"
             >
-              <i class="fa-solid fa-comment-dots" /> Go to Survey
+              <i class="fa-brands fa-facebook" /> RSVP on the Facebook event
             </a>
-          </div>
-        </section>
-      )
-    }
-  </div>
-  <!-- ══ END DAY-OF PANEL ═══════════════════════════════════════════ -->
+          )
+        }
+        <p class="pf-plan-hashtags">Share your day: {HASHTAGS.join(" ")}</p>
+      </div>
+    </div>
+  </section>
 
   <!-- ══ FUNDRAISING GOALS — intro, then one card per goal ═════════ -->
   {
@@ -771,6 +1380,7 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
                         class="pf-amen-link"
                         target={opensNewTab(link.url) ? "_blank" : undefined}
                         rel={opensNewTab(link.url) ? "noopener" : undefined}
+                        data-phase={phaseAttr(link.phases)}
                       >
                         <i
                           class={`fa-solid ${
@@ -813,6 +1423,86 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
       </p>
     </div>
   </section>
+
+  <!-- ══ FOOD, VENDORS & FIRST RESPONDERS — the three long lists people
+       actually scan for: what to eat, who is selling, who is in Area 3 ═ -->
+  {
+    hasWhosHere && (
+      <section
+        class="pf-section pf-section--light pf-section--lazy"
+        id="pf-whos-here"
+        data-phase="prep event"
+      >
+        <div class="pf-section-inner pf-section-inner--mid">
+          <div class="pf-here-header">
+            <h2>Food, Vendors &amp; First Responders</h2>
+          </div>
+
+          {foodByArea.length > 0 && (
+            <div class="pf-here-block">
+              <h3 class="pf-here-title">
+                <i class="fa-solid fa-utensils" aria-hidden="true" /> Food
+                Trucks
+              </h3>
+              <p class="pf-here-sub">
+                {FOOD_TRUCKS.length} trucks across the three areas, so you are
+                never far from lunch. Bring cash or card.
+              </p>
+              <div class="pf-food-areas">
+                {foodByArea.map((g) => (
+                  <div class="pf-food-area">
+                    <h4>Area {g.area}</h4>
+                    <ul>
+                      {g.trucks.map((t) => (
+                        <li data-pf-truck>{t.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {CRAFT_VENDORS.length > 0 && (
+            <div class="pf-here-block">
+              <h3 class="pf-here-title">
+                <i class="fa-solid fa-store" aria-hidden="true" /> Craft Vendors
+                &amp; Nonprofits
+              </h3>
+              <p class="pf-here-sub">
+                Under the tents in Area 1: {CRAFT_VENDORS.length} makers,
+                artisans and community groups.
+              </p>
+              <ul class="pf-chiplist pf-chiplist--vendors">
+                {CRAFT_VENDORS.map((name) => (
+                  <li data-pf-vendor>{name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {FIRST_RESPONDERS.length > 0 && (
+            <div class="pf-here-block">
+              <h3 class="pf-here-title">
+                <i class="fa-solid fa-truck-medical" aria-hidden="true" /> First
+                Responders Block Party
+              </h3>
+              <p class="pf-here-sub">
+                {FIRST_RESPONDERS.length} agencies in Area 3, with their rigs on
+                the grass and the crews standing next to them. The Wilmington
+                Police K9 Unit demonstrates at 12:00.
+              </p>
+              <ul class="pf-chiplist pf-chiplist--agency">
+                {FIRST_RESPONDERS.map((name) => (
+                  <li data-pf-agency>{name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
 
   <!-- ══ MERCH — this year's gear; pre-order while the store is open ═ -->
   {
@@ -914,105 +1604,6 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     )
   }
 
-  <!-- ══ PLAN YOUR VISIT — map + logistics, always on ══════════════ -->
-  <section
-    class="pf-section pf-section--dark-alt pf-section--lazy"
-    id="pf-plan"
-  >
-    <div class="pf-section-inner pf-section-inner--mid">
-      <div class="pf-plan-header">
-        <h2>Plan Your Visit</h2>
-      </div>
-      {
-        hasMaps && (
-          <div class="pf-maps-grid">
-            {EVENT_MAP_IMAGE_URL && (
-              <div class="pf-map-item pf-map-item--event">
-                <h3>Event Map</h3>
-                <a
-                  href={EVENT_MAP_FULL_URL || EVENT_MAP_IMAGE_URL}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <img
-                    src={EVENT_MAP_IMAGE_URL}
-                    alt="Pond Fest event map showing Areas 1, 2 and 3 at Lums Pond State Park"
-                    class="pf-map-img"
-                    width={eventMapSize.width}
-                    height={eventMapSize.height}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span class="pf-map-tap-hint">
-                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
-                    enlarge
-                  </span>
-                </a>
-              </div>
-            )}
-            {PARKING_MAP_IMAGE_URL && (
-              <div class="pf-map-item">
-                <h3>Parking Map</h3>
-                <a href={PARKING_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                  <img
-                    src={PARKING_MAP_IMAGE_URL}
-                    alt="Pond Fest parking map"
-                    class="pf-map-img"
-                    loading="lazy"
-                  />
-                  <span class="pf-map-tap-hint">
-                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
-                    enlarge
-                  </span>
-                </a>
-              </div>
-            )}
-            {VENDOR_MAP_IMAGE_URL && (
-              <div class="pf-map-item">
-                <h3>Vendor Map</h3>
-                <a href={VENDOR_MAP_IMAGE_URL} target="_blank" rel="noopener">
-                  <img
-                    src={VENDOR_MAP_IMAGE_URL}
-                    alt="Pond Fest vendor map"
-                    class="pf-map-img"
-                    loading="lazy"
-                  />
-                  <span class="pf-map-tap-hint">
-                    <i class="fa-solid fa-magnifying-glass-plus" /> Tap to
-                    enlarge
-                  </span>
-                </a>
-              </div>
-            )}
-          </div>
-        )
-      }
-      {
-        planNotes.map((note) => (
-          <div class="pf-info-note">
-            <i class={`fa-solid ${note.icon}`} />
-            <p>{note.text}</p>
-          </div>
-        ))
-      }
-      <div class="pf-plan-social">
-        {
-          FACEBOOK_EVENT_URL && (
-            <a
-              href={FACEBOOK_EVENT_URL}
-              class="pf-btn pf-btn--outline-light"
-              target="_blank"
-              rel="noopener"
-            >
-              <i class="fa-brands fa-facebook" /> RSVP on the Facebook event
-            </a>
-          )
-        }
-        <p class="pf-plan-hashtags">Share your day: {HASHTAGS.join(" ")}</p>
-      </div>
-    </div>
-  </section>
-
   <!-- ══ MUSIC LINEUP ═══════════════════════════════════════════════ -->
   <section class="pf-section pf-section--dark pf-section--lazy" id="pf-lineup">
     <div class="pf-section-inner">
@@ -1020,22 +1611,35 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
         hasLineup ? (
           <>
             <div class="pf-lineup-header">
-              <h2>Music Lineup</h2>
+              <h2>{hasSchedule ? "Meet the Bands" : "Music Lineup"}</h2>
               <p class="pf-lineup-intro">
                 Eleven acts across three stages: Wingspan and Monarch in Area 1,
                 and the Nest Box pavilion stage in Area 2. Every performer is
                 donating their time, so the music you hear all day is money that
-                stays with the park. Set times go up as soon as we have them, so
-                follow us on{" "}
-                <a href={FACEBOOK_URL} target="_blank" rel="noopener">
-                  Facebook
-                </a>{" "}
-                if you don't want to miss your favorites.
+                stays with the park.{" "}
+                {hasSchedule ? (
+                  <>
+                    They are listed here in the order they play; the{" "}
+                    <a href="#pf-schedule">schedule</a> has the same sets laid
+                    out stage by stage.
+                  </>
+                ) : (
+                  <>
+                    Set times go up as soon as we have them, so follow us on{" "}
+                    <a href={FACEBOOK_URL} target="_blank" rel="noopener">
+                      Facebook
+                    </a>{" "}
+                    if you don't want to miss your favorites.
+                  </>
+                )}
               </p>
             </div>
             <div class="pf-lineup-list">
               {LINEUP.map((performer, i) => (
-                <article class:list={["pf-act", i % 2 === 1 && "pf-act--flip"]}>
+                <article
+                  id={actSlug(performer.name)}
+                  class:list={["pf-act", i % 2 === 1 && "pf-act--flip"]}
+                >
                   <div
                     class="pf-act-media"
                     style={
@@ -1232,6 +1836,7 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
   <section
     class="pf-section pf-section--dark pf-section--lazy"
     id="pf-involved"
+    data-phase="prep"
   >
     <div class="pf-section-inner pf-section-inner--mid">
       <div class="pf-involved-header">
@@ -1324,7 +1929,60 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
                   ),
               )}
             </div>
-            <p class="pf-sponsor-cta">
+            {sponsorAds.length > 0 && (
+              <div class="pf-ads" id="pf-ads">
+                <h3 class="pf-ads-title">From our sponsors</h3>
+                <p class="pf-ads-sub">
+                  Swipe through, and tap one to read it full size. These
+                  businesses paid for Pond Fest; give them a second.
+                </p>
+                <ul class="pf-ads-rail">
+                  {sponsorAds.map((ad) => (
+                    <li>
+                      <a
+                        class="pf-ad"
+                        href={ad.fullSrc}
+                        target="_blank"
+                        rel="noopener"
+                        data-pf-ad
+                        data-pf-ad-caption={ad.sponsor}
+                      >
+                        <img
+                          src={ad.thumb}
+                          alt={ad.alt}
+                          width={ad.width}
+                          height={ad.height}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <span class="pf-ad-name">{ad.sponsor}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {OUT_AND_ABOUT_URL && (
+              <a
+                class="pf-press-card"
+                href={OUT_AND_ABOUT_URL}
+                target="_blank"
+                rel="noopener"
+              >
+                <i class="fa-solid fa-newspaper" aria-hidden="true" />
+                <span>
+                  <strong>Pond Fest in Out &amp; About</strong>
+                  <span class="pf-press-sub">{OUT_AND_ABOUT_LABEL}</span>
+                </span>
+                <i
+                  class="fa-solid fa-arrow-up-right-from-square pf-press-arrow"
+                  aria-hidden="true"
+                />
+              </a>
+            )}
+
+            <p class="pf-sponsor-cta" data-phase="prep">
               {SPONSOR_URL ? (
                 <a href={SPONSOR_URL} target="_blank" rel="noopener">
                   Become a sponsor
@@ -1358,14 +2016,14 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
 
   <!-- ══ SPECIAL THANKS ════════════════════════════════════════════ -->
   {
-    hasPartners && (
+    (hasPartners || hasThanksGroups || EAGLE_SCOUT_NOTE) && (
       <section
         class="pf-section pf-section--light pf-section--lazy"
         id="pf-thanks"
       >
         <div class="pf-section-inner pf-section-inner--mid pf-thanks-inner">
           <h2>Special Thanks</h2>
-          <p class="pf-thanks-intro">{PARTNERS_INTRO}</p>
+          {hasPartners && <p class="pf-thanks-intro">{PARTNERS_INTRO}</p>}
           <div class="pf-thanks-groups">
             {partnerGroups.map((g) => (
               <div class="pf-thanks-group" data-group={g.key}>
@@ -1394,6 +2052,45 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
               </div>
             ))}
           </div>
+
+          {hasThanksGroups && (
+            <div class="pf-people">
+              <h3 class="pf-people-heading">And the people</h3>
+              <div class="pf-people-groups">
+                {THANKS_GROUPS.map((g) => (
+                  <div
+                    class:list={[
+                      "pf-people-group",
+                      g.names.length > 12 && "pf-people-group--long",
+                    ]}
+                  >
+                    <h4>
+                      <i class={`fa-solid ${g.icon}`} aria-hidden="true" />{" "}
+                      {g.title}
+                    </h4>
+                    {g.intro && <p class="pf-people-intro">{g.intro}</p>}
+                    {g.names.length > 0 && (
+                      <ul class="pf-people-list">
+                        {g.names.map((n) => (
+                          <li>{n}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {EAGLE_SCOUT_NOTE && (
+            <div class="pf-eagle">
+              <i class="fa-solid fa-award" aria-hidden="true" />
+              <div>
+                <strong>New benches at the pickleball courts</strong>
+                <p>{EAGLE_SCOUT_NOTE}</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     )
@@ -1416,7 +2113,11 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
       <div class="pf-faq">
         {
           FAQ.map((item, i) => (
-            <div class="pf-faq-item" id={`faq-${i}`}>
+            <div
+              class="pf-faq-item"
+              id={`faq-${i}`}
+              data-phase={phaseAttr(item.phases)}
+            >
               <button
                 class="pf-faq-button"
                 type="button"
@@ -1544,6 +2245,9 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     }
   </section>
 
+  <!-- ══ BEFORE YOU GO — survey, membership, next year's date ═══════ -->
+  <PondFestNext id="pf-next" phases={["event"]} variant="event" />
+
   <!-- ══ HISTORY TEASER ═════════════════════════════════════════════ -->
   <section
     class="pf-section pf-section--dark pf-section--lazy pf-history-section"
@@ -1600,9 +2304,34 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
     subject="Pond Fest Performer Interest"
   />
 
+  <!-- Full-size sponsor ad, opened from the rail in the Sponsors section -->
+  <div
+    class="pf-lightbox"
+    id="pf-lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Sponsor advertisement"
+    hidden
+  >
+    <div class="pf-lightbox-bar">
+      <span class="pf-lightbox-caption" data-pf-lightbox-caption></span>
+      <button
+        type="button"
+        class="pf-lightbox-close"
+        data-pf-lightbox-close
+        aria-label="Close"
+      >
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="pf-lightbox-body">
+      <img alt="" decoding="async" />
+    </div>
+  </div>
+
   <PondFestSectionNav
     sections={navSections}
-    dayOfLinks={dayOfNavLinks}
+    tabs={tabBar}
     donateUrl={PONDFEST_DONATE_URL}
   />
 </Layout>
@@ -3253,6 +3982,914 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
       display: none;
     }
   }
+
+  /* ══════════════════════════════════════════════════════════════
+     DAY-OF SECTIONS
+     Schedule, maps, food and vendors, sponsor ads, the people thanks and
+     the winners. Phone layout first; the wider breakpoints are the
+     special case.
+     ══════════════════════════════════════════════════════════════ */
+
+  /* ── Schedule ─────────────────────────────────────────────── */
+  .pf-sched-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+  .pf-sched-intro {
+    max-width: 52ch;
+    margin: 0.5rem auto 0;
+    font-size: clamp(0.92rem, 1.7vw, 1.02rem);
+    line-height: 1.65;
+  }
+
+  /* "On right now": hidden until the browser decides it is event day */
+  .pf-now {
+    background: rgba(42, 196, 179, 0.1);
+    border: 1px solid rgba(42, 196, 179, 0.45);
+    border-radius: 12px;
+    padding: 1rem 1.1rem 1.1rem;
+    margin-bottom: 1.75rem;
+  }
+  .pf-now-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.85rem;
+    flex-wrap: wrap;
+  }
+  .pf-now-head h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+  .pf-now-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--pf-teal);
+    flex: none;
+    animation: pf-pulse 2s ease-in-out infinite;
+  }
+  @keyframes pf-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(0.8);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pf-now-dot {
+      animation: none;
+    }
+  }
+  .pf-now-clock {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .pf-now-grid {
+    display: grid;
+    gap: 0.6rem;
+  }
+  /* The rows inside are built by the clock script, so they do not carry
+     this page's scoping attribute and have to be styled as globals. */
+  .pf-now-grid :global(.pf-now-row) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.15rem 0.75rem;
+    align-items: baseline;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    text-decoration: none;
+    color: inherit;
+  }
+  .pf-now-grid :global(a.pf-now-row:hover),
+  .pf-now-grid :global(a.pf-now-row:focus-visible) {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .pf-now-grid :global(.pf-now-stage) {
+    grid-column: 1 / -1;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pf-teal-light);
+  }
+  .pf-now-grid :global(.pf-now-act) {
+    font-weight: 700;
+    color: #fff;
+  }
+  .pf-now-grid :global(.pf-now-when) {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .pf-now-grid :global(.pf-now-row[data-pf-state="next"] .pf-now-act),
+  .pf-now-grid :global(.pf-now-row[data-pf-state="done"] .pf-now-act) {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .pf-now-next,
+  .pf-now-grid :global(.pf-now-empty) {
+    margin: 0.85rem 0 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+  .pf-now-grid :global(.pf-now-empty) {
+    margin-top: 0;
+  }
+  .pf-now-next :global(strong) {
+    color: #fff;
+  }
+
+  /* Stage columns */
+  .pf-sched-stages {
+    display: grid;
+    gap: 1rem;
+  }
+  .pf-sched-stage {
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .pf-sched-stage-head {
+    padding: 0.85rem 1rem;
+    background: rgba(61, 47, 122, 0.55);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .pf-sched-stage-head h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  .pf-sched-stage-area {
+    display: block;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--pf-teal-light);
+    margin-top: 0.15rem;
+  }
+  .pf-sched-sets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pf-sched-sets li + li {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .pf-sched-set {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.1rem 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    min-height: 44px;
+    align-items: center;
+  }
+  .pf-sched-set:hover,
+  .pf-sched-set:focus-visible {
+    background: rgba(42, 196, 179, 0.12);
+  }
+  .pf-sched-time {
+    grid-column: 1;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--pf-teal-light);
+  }
+  .pf-sched-name {
+    grid-column: 1;
+    grid-row: 2;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+  }
+  .pf-sched-chev {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+  }
+  /* the set that is on right now, flagged by the clock script */
+  .pf-sched-set[data-pf-live] {
+    background: rgba(42, 196, 179, 0.16);
+    box-shadow: inset 3px 0 0 var(--pf-teal);
+  }
+  .pf-sched-set[data-pf-live] .pf-sched-time::after {
+    content: " · now";
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* Open mic */
+  .pf-openmic {
+    margin-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    padding: 1.1rem;
+  }
+  .pf-openmic-head h3 {
+    margin: 0 0 0.3rem;
+    font-size: 1.1rem;
+  }
+  .pf-openmic-head h3 i {
+    color: var(--pf-teal);
+  }
+  .pf-openmic-head p {
+    margin: 0 0 0.9rem;
+    font-size: 0.92rem;
+  }
+  .pf-openmic-head a {
+    color: var(--pf-teal-light);
+  }
+  .pf-openmic-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+  .pf-openmic-list li {
+    display: grid;
+    grid-template-columns: 5.4rem 1fr;
+    gap: 0.6rem;
+    padding: 0.42rem 0.3rem;
+    align-items: baseline;
+  }
+  .pf-openmic-list li + li {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .pf-openmic-time {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+    color: var(--pf-teal-light);
+  }
+  .pf-openmic-name {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* Key times */
+  .pf-keytimes {
+    margin-top: 1.75rem;
+  }
+  .pf-keytimes-title {
+    font-size: 1.15rem;
+    margin: 0 0 1rem;
+  }
+  .pf-keytimes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pf-keytime {
+    display: grid;
+    grid-template-columns: 4.6rem 2rem 1fr;
+    gap: 0 0.5rem;
+    padding-bottom: 1.05rem;
+    position: relative;
+  }
+  /* the connecting line down the timeline */
+  .pf-keytime:not(:last-child) .pf-keytime-dot::after {
+    content: "";
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    width: 1px;
+    height: calc(100% + 1.05rem - 2rem);
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateX(-50%);
+  }
+  .pf-keytime-when {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+    color: var(--pf-teal-light);
+    padding-top: 0.42rem;
+    text-align: right;
+  }
+  .pf-keytime-dot {
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba(61, 47, 122, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: grid;
+    place-items: center;
+    font-size: 0.8rem;
+    color: var(--pf-teal-light);
+  }
+  .pf-keytime-body {
+    padding-top: 0.3rem;
+    min-width: 0;
+  }
+  .pf-keytime-title {
+    display: block;
+    font-size: 1rem;
+    line-height: 1.35;
+    color: #fff;
+  }
+  .pf-keytime-area {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(42, 196, 179, 0.18);
+    color: var(--pf-teal-light);
+  }
+  .pf-keytime-body p {
+    margin: 0.35rem 0 0;
+    font-size: 0.91rem;
+    line-height: 1.5;
+  }
+  /* already finished, dimmed by the clock script */
+  .pf-keytime[data-pf-past] {
+    opacity: 0.45;
+  }
+  .pf-keytime[data-pf-soon] .pf-keytime-dot {
+    background: var(--pf-teal);
+    color: #06201d;
+    border-color: var(--pf-teal);
+  }
+  .pf-sched-foot {
+    margin: 1.75rem 0 0;
+    text-align: center;
+    font-size: 0.92rem;
+  }
+  .pf-sched-foot i {
+    color: var(--pf-teal);
+  }
+
+  @media (min-width: 760px) {
+    .pf-sched-stages {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+    }
+    .pf-openmic-list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
+    }
+    .pf-openmic-list li + li {
+      border-top: none;
+    }
+    .pf-openmic-list li {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .pf-keytime {
+      grid-template-columns: 5.5rem 2.25rem 1fr;
+    }
+    .pf-now-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+  }
+
+  /* ── Tabbed map viewer ────────────────────────────────────── */
+  .pf-plan-promise {
+    margin: 0.5rem auto 0;
+    max-width: 48ch;
+    font-size: 0.95rem;
+  }
+  .pf-plan-promise i {
+    color: var(--pf-teal);
+  }
+  .pf-mapview {
+    margin-bottom: 1.5rem;
+  }
+  .pf-mapview-tabs {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.9rem;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .pf-mapview-tab {
+    flex: none;
+    min-height: 40px;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .pf-mapview-tab[aria-selected="true"] {
+    background: var(--pf-teal);
+    border-color: var(--pf-teal);
+    color: #06201d;
+    font-weight: 700;
+  }
+  .pf-mapview-title {
+    font-size: 1.05rem;
+    margin: 0 0 0.6rem;
+  }
+  .pf-mapview-frame {
+    display: block;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .pf-mapview-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pf-mapview-note {
+    margin: 0.65rem 0 0;
+    font-size: 0.9rem;
+  }
+  .pf-mapview-full {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.4rem;
+    min-height: 44px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--pf-teal-light);
+    text-decoration: none;
+  }
+  .pf-mapview-full:hover,
+  .pf-mapview-full:focus-visible {
+    text-decoration: underline;
+  }
+  .pf-mapview-tip {
+    margin: 0.75rem 0 0;
+    font-size: 0.88rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .pf-mapview-tip i {
+    color: var(--pf-teal);
+    margin-top: 0.2rem;
+  }
+
+  /* ── Food, vendors, responders ────────────────────────────── */
+  .pf-here-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
+  .pf-here-block + .pf-here-block {
+    margin-top: 2.25rem;
+    padding-top: 2.25rem;
+    border-top: 1px solid rgba(61, 47, 122, 0.14);
+  }
+  .pf-here-title {
+    font-size: 1.2rem;
+    margin: 0 0 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .pf-here-title i {
+    color: var(--pf-teal);
+  }
+  .pf-here-sub {
+    margin: 0 0 1rem;
+    font-size: 0.94rem;
+  }
+  .pf-food-areas {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .pf-food-area h4 {
+    margin: 0 0 0.45rem;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--pf-purple);
+  }
+  .pf-food-area ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pf-food-area li {
+    padding: 0.42rem 0;
+    border-bottom: 1px solid rgba(61, 47, 122, 0.1);
+    font-weight: 600;
+    color: #3a2e5a;
+  }
+  .pf-chiplist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .pf-chiplist li {
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.18);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.88rem;
+    color: #3a2e5a;
+  }
+  .pf-chiplist--agency li {
+    background: rgba(42, 196, 179, 0.12);
+    border-color: rgba(42, 196, 179, 0.4);
+  }
+  @media (min-width: 620px) {
+    .pf-food-areas {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+  }
+
+  /* ── Sponsor ads ──────────────────────────────────────────── */
+  .pf-ads {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(61, 47, 122, 0.14);
+    text-align: left;
+  }
+  .pf-ads-title {
+    font-size: 1.1rem;
+    margin: 0 0 0.3rem;
+  }
+  .pf-ads-sub {
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+  }
+  .pf-ads-rail {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0.5rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 72%;
+    gap: 0.8rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .pf-ads-rail > li {
+    scroll-snap-align: start;
+  }
+  .pf-ad {
+    display: block;
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.14);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+  .pf-ad img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pf-ad-name {
+    display: block;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--pf-purple-dark);
+    border-top: 1px solid rgba(61, 47, 122, 0.1);
+  }
+  @media (min-width: 620px) {
+    .pf-ads-rail {
+      grid-auto-columns: 300px;
+    }
+  }
+
+  .pf-press-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.16);
+    text-decoration: none;
+    color: #3a2e5a;
+    text-align: left;
+  }
+  .pf-press-card:hover,
+  .pf-press-card:focus-visible {
+    border-color: var(--pf-purple);
+  }
+  .pf-press-card > i:first-child {
+    font-size: 1.35rem;
+    color: var(--pf-purple);
+    flex: none;
+  }
+  .pf-press-card strong {
+    color: var(--pf-purple-dark);
+  }
+  .pf-press-sub {
+    display: block;
+    font-size: 0.88rem;
+    margin-top: 0.1rem;
+  }
+  .pf-press-arrow {
+    margin-left: auto;
+    color: rgba(61, 47, 122, 0.5);
+    flex: none;
+  }
+
+  /* Lightbox shared by the sponsor ads */
+  .pf-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    background: rgba(8, 6, 18, 0.93);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+  .pf-lightbox-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+  }
+  .pf-lightbox-caption {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .pf-lightbox-close {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  .pf-lightbox-body {
+    overflow: auto;
+    display: grid;
+    place-items: center;
+    padding: 0 1rem 1rem;
+    min-height: 0;
+  }
+  .pf-lightbox-body img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  /* ── The people thanks, and the Eagle Scout benches ───────── */
+  .pf-people {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(61, 47, 122, 0.14);
+    text-align: left;
+  }
+  .pf-people-heading {
+    font-size: 1.15rem;
+    margin: 0 0 1.25rem;
+  }
+  .pf-people-groups {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .pf-people-group h4 {
+    margin: 0 0 0.4rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--pf-teal);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pf-people-intro {
+    margin: 0 0 0.6rem;
+    font-size: 0.93rem;
+    line-height: 1.55;
+  }
+  .pf-people-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pf-people-list li {
+    padding: 0.2rem 0;
+    font-weight: 600;
+    color: #3a2e5a;
+    font-size: 0.92rem;
+  }
+  /* the volunteer roll: small type in columns, a list and not a wall */
+  .pf-people-group--long .pf-people-list {
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+  .pf-people-group--long .pf-people-list li {
+    break-inside: avoid;
+    font-weight: 500;
+    font-size: 0.88rem;
+    padding: 0.15rem 0;
+  }
+  @media (min-width: 720px) {
+    .pf-people-groups {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .pf-people-group--long {
+      grid-column: 1 / -1;
+    }
+    .pf-people-group--long .pf-people-list {
+      columns: 4;
+    }
+  }
+
+  .pf-eagle {
+    display: flex;
+    gap: 0.9rem;
+    margin-top: 2rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(61, 47, 122, 0.16);
+    border-left: 5px solid var(--pf-teal);
+    text-align: left;
+  }
+  .pf-eagle > i {
+    font-size: 1.4rem;
+    color: var(--pf-purple);
+    flex: none;
+    margin-top: 0.15rem;
+  }
+  .pf-eagle strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--pf-purple-dark);
+  }
+  .pf-eagle p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  /* ── Winners ──────────────────────────────────────────────── */
+  .pf-winners-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--pf-teal);
+    color: #06201d;
+    text-decoration: none;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  .pf-winners-banner strong {
+    font-weight: 800;
+  }
+  .pf-winners-banner > i:first-child {
+    font-size: 1.2rem;
+    flex: none;
+  }
+  .pf-winners-banner > i:last-child {
+    margin-left: auto;
+    flex: none;
+  }
+  .pf-winners-banner:hover,
+  .pf-winners-banner:focus-visible {
+    background: var(--pf-teal-light);
+    color: #06201d;
+  }
+  .pf-winners-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .pf-winners-note {
+    max-width: 50ch;
+    margin: 0.5rem auto 0;
+    font-size: 0.95rem;
+  }
+  .pf-fifty {
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+    padding: 1.4rem 1rem;
+    margin-bottom: 1.75rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    text-align: center;
+  }
+  .pf-fifty-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--pf-teal-light);
+  }
+  .pf-fifty-ticket {
+    font-family: var(--font-header);
+    font-size: clamp(2.6rem, 12vw, 4rem);
+    line-height: 1.05;
+    color: #fff;
+    letter-spacing: 0.03em;
+    word-break: break-word;
+  }
+  .pf-fifty-amount {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .pf-winners-cols {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .pf-winners-block h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pf-winners-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pf-winners-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+  .pf-winners-prize {
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .pf-winners-who {
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.05rem;
+    margin-left: auto;
+  }
+  .pf-winners-where {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin: 1.25rem 0 0;
+    font-size: 0.9rem;
+  }
+  .pf-winners-where i {
+    color: var(--pf-teal-light);
+    margin-top: 0.2rem;
+  }
+  @media (min-width: 720px) {
+    .pf-winners-cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  /* ── Print: the day-of furniture is screen-only ───────────── */
+  @media print {
+    .pf-now,
+    .pf-mapview-tabs,
+    .pf-mapview-tip,
+    .pf-mapview-full,
+    .pf-lightbox,
+    .pf-sched-chev,
+    .pf-winners-banner {
+      display: none !important;
+    }
+    .pf-mapview-panel[hidden] {
+      display: block !important;
+    }
+    .pf-sched-stages {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 </style>
 
 <script>
@@ -3284,38 +4921,330 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
   setupFAQ();
   document.addEventListener("astro:after-swap", setupFAQ);
 
-  // ── Day-of mode detection ──────────────────────────────────────────
-  function applyEventMode() {
-    const panel = document.getElementById("pf-day-of-panel");
-    if (!panel) return;
-    const eventDateStr = panel.dataset.eventDate;
-    if (!eventDateStr) return;
-    const eventMs = new Date(eventDateStr).getTime();
-    const now = Date.now();
-    const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
-    const oneDayMs = 24 * 60 * 60 * 1000;
-    const diff = eventMs - now;
-    const isEventWeek = diff <= sevenDaysMs && diff > -oneDayMs;
-    if (!isEventWeek) return;
-
-    panel.style.display = "";
-
-    // The section nav swaps to the day-of action list on the same schedule,
-    // and pins itself from the top of the page rather than waiting for the
-    // hero to scroll by.
+  // ── Phase ──────────────────────────────────────────────────────────
+  // The inline script in the head has already stamped data-pf-phase on
+  // <html>, and the layout's CSS shows and hides data-phase elements from
+  // it. What is left is the nav: on event day the bars are pinned from the
+  // moment the page loads, and the page owes them the space.
+  function applyPhase() {
+    const phase = document.documentElement.dataset.pfPhase || "prep";
+    const day = phase === "event";
     const nav = document.getElementById("pf-sectionnav");
-    if (!nav) return;
-    nav.dataset.mode = "day";
-    // the bar is fixed and always on in this mode, so the page owes it the space
-    document.body.classList.add("pf-dayof");
-    const preList = nav.querySelector<HTMLElement>('[data-pf-list="pre"]');
-    const dayList = nav.querySelector<HTMLElement>('[data-pf-list="day"]');
-    if (preList) preList.hidden = true;
-    if (dayList) dayList.hidden = false;
+    if (nav) nav.dataset.mode = day ? "day" : "pre";
+    document.body.classList.toggle("pf-dayof", day);
   }
 
-  applyEventMode();
-  document.addEventListener("astro:after-swap", applyEventMode);
+  applyPhase();
+  document.addEventListener("astro:after-swap", applyPhase);
+
+  // ── "On right now" ─────────────────────────────────────────────────
+  // Reads the small JSON block the build left in the schedule section and
+  // works out, in Eastern time, what is playing on each stage and which
+  // fixed moment is next. Only ever asks Date.now(), so it can be tested by
+  // overriding that. Runs on event day only; the panel stays hidden
+  // otherwise.
+  function setupClock() {
+    const panel = document.getElementById("pf-now");
+    const dataEl = document.getElementById("pf-schedule-data");
+    if (!panel || !dataEl) return;
+    type Set = {
+      name: string;
+      stage: string;
+      slug: string;
+      start: string;
+      end: string;
+    };
+    type Moment = { start: string; time: string; title: string; area: string };
+    type Data = {
+      date: string;
+      stages: { name: string; area: string }[];
+      sets: Set[];
+      moments: Moment[];
+    };
+    let data: Data;
+    try {
+      data = JSON.parse(dataEl.textContent || "");
+    } catch {
+      return;
+    }
+    const grid = panel.querySelector<HTMLElement>("[data-pf-now-grid]");
+    const title = panel.querySelector<HTMLElement>("[data-pf-now-title]");
+    const clock = panel.querySelector<HTMLElement>("[data-pf-clock]");
+    const nextEl = panel.querySelector<HTMLElement>("[data-pf-now-next]");
+    if (!grid || !title || !clock || !nextEl) return;
+
+    // Eastern time, wherever the phone thinks it is
+    const fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
+      hourCycle: "h23",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const eastern = () => {
+      const p: Record<string, string> = {};
+      fmt
+        .formatToParts(new Date(Date.now()))
+        .forEach((x) => (p[x.type] = x.value));
+      const hour = p.hour === "24" ? "00" : p.hour;
+      return {
+        date: `${p.year}-${p.month}-${p.day}`,
+        hm: `${hour}:${p.minute}`,
+      };
+    };
+    const pretty = (hm: string) => {
+      const [h, m] = hm.split(":").map(Number);
+      const ap = h >= 12 ? "PM" : "AM";
+      return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${ap}`;
+    };
+    const el = (tag: string, cls: string, text?: string) => {
+      const e = document.createElement(tag);
+      e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    };
+
+    const firstStart = data.sets.map((x) => x.start).sort()[0];
+    const lastEnd = data.sets
+      .map((x) => x.end)
+      .sort()
+      .pop();
+    const sets = (stage: string) =>
+      data.sets
+        .filter((x) => x.stage === stage)
+        .sort((a, b) => a.start.localeCompare(b.start));
+
+    function render() {
+      const now = eastern();
+      if (
+        now.date !== data.date ||
+        !data.sets.length ||
+        !firstStart ||
+        !lastEnd
+      ) {
+        panel.hidden = true;
+        return;
+      }
+      panel.hidden = false;
+      clock.textContent = pretty(now.hm);
+      grid.replaceChildren();
+      nextEl.hidden = true;
+      nextEl.replaceChildren();
+
+      // flag the live sets in the grid, and dim the moments that have passed
+      document.querySelectorAll<HTMLElement>("[data-pf-set]").forEach((row) => {
+        const set = data.sets.find((x) => x.slug === row.dataset.pfSet);
+        const live = !!set && set.start <= now.hm && now.hm < set.end;
+        if (live) row.setAttribute("data-pf-live", "");
+        else row.removeAttribute("data-pf-live");
+      });
+      let soonMarked = false;
+      document
+        .querySelectorAll<HTMLElement>("[data-pf-moment]")
+        .forEach((li) => {
+          const start = li.dataset.pfMoment || "";
+          const past = start < now.hm;
+          if (past) li.setAttribute("data-pf-past", "");
+          else li.removeAttribute("data-pf-past");
+          if (!past && !soonMarked && start >= now.hm) {
+            li.setAttribute("data-pf-soon", "");
+            soonMarked = true;
+          } else li.removeAttribute("data-pf-soon");
+        });
+
+      if (now.hm < firstStart) {
+        title.textContent = "Not started yet";
+        const openers = data.stages
+          .map((st) => {
+            const first = sets(st.name)[0];
+            return first ? `${first.name} on ${st.name}` : "";
+          })
+          .filter(Boolean);
+        grid.append(
+          el(
+            "p",
+            "pf-now-empty",
+            `Gates open at ${pretty(firstStart)}. First up: ${openers.join(
+              ", ",
+            )}.`,
+          ),
+        );
+        return;
+      }
+      if (now.hm >= lastEnd) {
+        title.textContent = "That's a wrap";
+        grid.append(
+          el(
+            "p",
+            "pf-now-empty",
+            `The music is done for ${data.date.slice(
+              0,
+              4,
+            )}. Thank you for coming.`,
+          ),
+        );
+        return;
+      }
+
+      title.textContent = "On right now";
+      data.stages.forEach((st) => {
+        const list = sets(st.name);
+        const live = list.find((x) => x.start <= now.hm && now.hm < x.end);
+        const next = list.find((x) => x.start > now.hm);
+        const stageLabel = st.area ? `${st.name} · ${st.area}` : st.name;
+        if (live) {
+          const row = el("a", "pf-now-row") as HTMLAnchorElement;
+          row.href = `#${live.slug}`;
+          row.dataset.pfState = "live";
+          row.dataset.pfAct = live.name;
+          row.dataset.pfStage = st.name;
+          row.append(
+            el("span", "pf-now-stage", stageLabel),
+            el("span", "pf-now-act", live.name),
+            el("span", "pf-now-when", `until ${pretty(live.end)}`),
+          );
+          grid.append(row);
+        } else if (next) {
+          const row = el("a", "pf-now-row") as HTMLAnchorElement;
+          row.href = `#${next.slug}`;
+          row.dataset.pfState = "next";
+          row.dataset.pfAct = next.name;
+          row.dataset.pfStage = st.name;
+          row.append(
+            el("span", "pf-now-stage", stageLabel),
+            el("span", "pf-now-act", `Next: ${next.name}`),
+            el("span", "pf-now-when", `at ${pretty(next.start)}`),
+          );
+          grid.append(row);
+        } else {
+          const row = el("div", "pf-now-row");
+          row.dataset.pfState = "done";
+          row.dataset.pfStage = st.name;
+          row.append(
+            el("span", "pf-now-stage", stageLabel),
+            el("span", "pf-now-act", "Done for the day"),
+          );
+          grid.append(row);
+        }
+      });
+
+      const moment = data.moments.find((m) => m.start >= now.hm);
+      if (moment) {
+        nextEl.hidden = false;
+        const strong = el("strong", "", `${moment.time}: ${moment.title}`);
+        nextEl.append("Up next: ", strong);
+        if (moment.area) nextEl.append(` (${moment.area})`);
+      }
+    }
+
+    render();
+    const timer = window.setInterval(render, 30 * 1000);
+    document.addEventListener("astro:before-swap", () => clearInterval(timer), {
+      once: true,
+    });
+  }
+
+  setupClock();
+  document.addEventListener("astro:after-swap", setupClock);
+
+  // ── Map tabs ───────────────────────────────────────────────────────
+  // Only the first map has a src; the others carry data-src and get it the
+  // first time their tab is opened. Arrow keys move between tabs.
+  function setupMapTabs() {
+    const view = document.getElementById("pf-mapview");
+    if (!view) return;
+    const tabs = Array.from(
+      view.querySelectorAll<HTMLButtonElement>("[data-pf-maptab]"),
+    );
+    const panels = Array.from(
+      view.querySelectorAll<HTMLElement>(".pf-mapview-panel"),
+    );
+    if (tabs.length !== panels.length) return;
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, j) => {
+        t.setAttribute("aria-selected", i === j ? "true" : "false");
+        t.tabIndex = i === j ? 0 : -1;
+      });
+      panels.forEach((p, j) => (p.hidden = i !== j));
+      const img = panels[i].querySelector<HTMLImageElement>("img[data-src]");
+      if (img && img.dataset.src) {
+        img.src = img.dataset.src;
+        delete img.dataset.src;
+      }
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const delta =
+          e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!delta) return;
+        e.preventDefault();
+        select((i + delta + tabs.length) % tabs.length, true);
+      });
+    });
+  }
+
+  setupMapTabs();
+  document.addEventListener("astro:after-swap", setupMapTabs);
+
+  // ── Sponsor ad lightbox ────────────────────────────────────────────
+  // The rail links straight to the full-size file, so without JavaScript a
+  // tap still opens the ad. With it, the ad opens in place instead.
+  function setupLightbox() {
+    const box = document.getElementById("pf-lightbox");
+    if (!box) return;
+    const img = box.querySelector("img");
+    const caption = box.querySelector<HTMLElement>(
+      "[data-pf-lightbox-caption]",
+    );
+    const closeBtn = box.querySelector<HTMLButtonElement>(
+      "[data-pf-lightbox-close]",
+    );
+    if (!img || !caption || !closeBtn) return;
+    let last: HTMLElement | null = null;
+
+    const close = () => {
+      if (box.hidden) return;
+      box.hidden = true;
+      img.removeAttribute("src");
+      document.body.style.overflow = "";
+      last?.focus();
+      last = null;
+    };
+    const open = (a: HTMLAnchorElement) => {
+      last = a;
+      img.src = a.href;
+      img.alt = a.querySelector("img")?.alt || "";
+      caption.textContent = a.dataset.pfAdCaption || "";
+      box.hidden = false;
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    };
+
+    document.querySelectorAll<HTMLAnchorElement>("a[data-pf-ad]").forEach((a) =>
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        open(a);
+      }),
+    );
+    closeBtn.addEventListener("click", close);
+    box.addEventListener("click", (e) => {
+      if (
+        e.target === box ||
+        e.target === box.querySelector(".pf-lightbox-body")
+      )
+        close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+  }
+
+  setupLightbox();
+  document.addEventListener("astro:after-swap", setupLightbox);
 
   // ── Merch pre-sale deadline ────────────────────────────────────────
   // The build already leaves the pre-order buttons out once the deadline

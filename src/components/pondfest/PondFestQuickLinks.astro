@@ -15,8 +15,13 @@ const { sections } = Astro.props;
   <ul class="pf-quicklinks-list">
     {
       sections.map((s) => (
-        <li>
-          <a href={s.href} class="pf-quicklink">
+        <li data-phase={s.phases?.join(" ") || undefined}>
+          <a
+            href={s.href}
+            class="pf-quicklink"
+            target={s.href.startsWith("#") ? undefined : "_blank"}
+            rel={s.href.startsWith("#") ? undefined : "noopener"}
+          >
             <i class={`fa-solid ${s.icon}`} aria-hidden="true" />
             <span>{s.label}</span>
           </a>

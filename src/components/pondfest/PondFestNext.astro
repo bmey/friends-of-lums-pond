@@ -1,0 +1,240 @@
+---
+// The three things we want from somebody once the day is done: tell us how
+// it went, join us, and come back next October. Rendered twice on the page,
+// as "Before you go" near the bottom during the event and as "Thank you" at
+// the top of the page in the weeks after, so the markup lives here once.
+import {
+  AFTERGLOW_RESULTS,
+  ANNUAL_PROMISE,
+  CURRENT_YEAR,
+  FEEDBACK_LINK,
+  MEMBERSHIP_INFO_URL,
+  MEMBERSHIP_NOTE,
+  MEMBERSHIP_URL,
+  NEXT_EVENT_DATE_DISPLAY,
+  NEXT_EVENT_GOOGLE_URL,
+  NEXT_EVENT_ICS_URL,
+  NEXT_EVENT_TIME,
+  NEXT_YEAR,
+  PONDFEST_EMAIL,
+} from "../../data/pondfest/config";
+import type { Phase } from "../../data/pondfest/types";
+
+interface Props {
+  id: string;
+  phases: Phase[];
+  variant: "event" | "afterglow";
+  winnersLive?: boolean; // afterglow only: point people at the posted winners
+}
+
+const { id, phases, variant, winnersLive = false } = Astro.props;
+const after = variant === "afterglow";
+---
+
+<section
+  class="pf-section pf-section--purple pf-section--lazy pf-next"
+  id={id}
+  data-phase={phases.join(" ")}
+>
+  <div class="pf-section-inner pf-section-inner--mid">
+    <div class="pf-next-header">
+      {
+        after ? (
+          <>
+            <h2>Thank you</h2>
+            <p class="pf-next-lead">
+              {AFTERGLOW_RESULTS ||
+                `Pond Fest ${CURRENT_YEAR} is a wrap. We are still counting; the attendance and the total raised go up here as soon as we have them.`}
+            </p>
+            {winnersLive && (
+              <p class="pf-next-lead">
+                Raffle, 50/50 and auction winners are{" "}
+                <a href="#pf-winners">posted below</a>.
+              </p>
+            )}
+          </>
+        ) : (
+          <h2>Before you go</h2>
+        )
+      }
+    </div>
+
+    <div class="pf-next-grid">
+      {
+        FEEDBACK_LINK && (
+          <div class="pf-next-card">
+            <i class="fa-solid fa-comment-dots" aria-hidden="true" />
+            <h3>Tell us how it went</h3>
+            <p>
+              Two minutes, and it decides what next year looks like. What
+              worked, what did not, what you want more of.
+            </p>
+            <a
+              href={FEEDBACK_LINK}
+              class="pf-btn pf-btn--primary"
+              target="_blank"
+              rel="noopener"
+            >
+              Take the survey
+            </a>
+          </div>
+        )
+      }
+      {
+        MEMBERSHIP_URL && (
+          <div class="pf-next-card">
+            <i class="fa-solid fa-id-card" aria-hidden="true" />
+            <h3>Become a member</h3>
+            <p>{MEMBERSHIP_NOTE}</p>
+            <div class="pf-next-actions">
+              <a
+                href={MEMBERSHIP_URL}
+                class="pf-btn pf-btn--outline-light"
+                target="_blank"
+                rel="noopener"
+              >
+                Join for $10 a year
+              </a>
+              {MEMBERSHIP_INFO_URL && (
+                <a class="pf-next-more" href={MEMBERSHIP_INFO_URL}>
+                  What membership involves
+                </a>
+              )}
+            </div>
+          </div>
+        )
+      }
+      <div class="pf-next-card">
+        <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+        <h3>Save the date</h3>
+        <p class="pf-next-date">Pond Fest {NEXT_YEAR}</p>
+        <p class="pf-next-when">
+          {NEXT_EVENT_DATE_DISPLAY}
+          <br />
+          {NEXT_EVENT_TIME}
+        </p>
+        <p>{ANNUAL_PROMISE}</p>
+        <div class="pf-next-actions">
+          <a
+            href={NEXT_EVENT_GOOGLE_URL}
+            class="pf-btn pf-btn--outline-light"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fa-brands fa-google" aria-hidden="true"></i> Google
+            Calendar
+          </a>
+          <a
+            href={NEXT_EVENT_ICS_URL}
+            class="pf-btn pf-btn--outline-light"
+            download
+          >
+            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i> Apple
+            &amp; Outlook
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p class="pf-next-foot">
+      Want in on Pond Fest {NEXT_YEAR}? Email{" "}
+      <a href={`mailto:${PONDFEST_EMAIL}?subject=Pond%20Fest%20${NEXT_YEAR}`}
+        >{PONDFEST_EMAIL}</a
+      > and we will find you a job in the spring.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pf-next-header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .pf-next-lead {
+    max-width: 56ch;
+    margin: 0.5rem auto 0;
+    font-size: clamp(0.98rem, 1.9vw, 1.1rem);
+    line-height: 1.6;
+  }
+  .pf-next-lead a {
+    color: #fff;
+    font-weight: 700;
+  }
+  .pf-next-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 820px) {
+    .pf-next-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .pf-next-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    padding: 1.3rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+  .pf-next-card > i {
+    font-size: 1.5rem;
+    color: var(--pf-teal-light);
+  }
+  .pf-next-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  .pf-next-card p {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.55;
+  }
+  .pf-next-card > .pf-btn,
+  .pf-next-actions {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .pf-next-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+  .pf-next-actions .pf-btn {
+    font-size: 0.88rem;
+  }
+  .pf-next-more {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .pf-next-date {
+    font-family: var(--font-header);
+    font-size: 1.7rem !important;
+    line-height: 1.1;
+    color: #fff !important;
+  }
+  .pf-next-when {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: #fff !important;
+  }
+  .pf-next-foot {
+    text-align: center;
+    margin: clamp(1.25rem, 3vw, 2rem) auto 0;
+    max-width: 52ch;
+    font-size: 0.95rem;
+  }
+  .pf-next-foot a {
+    color: #fff;
+    font-weight: 700;
+  }
+  @media print {
+    .pf-next {
+      display: none;
+    }
+  }
+</style>
