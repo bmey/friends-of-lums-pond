@@ -348,7 +348,7 @@ export const SPONSORS: Sponsor[] = [
 // ─────────────────────────────────────────────
 // SPECIAL THANKS — the groups who bring an activity, a crew, or the park
 // itself to the day. Deliberately separate from SPONSORS: these partners
-// give us their people and their time rather than a sponsorship cheque.
+// give us their people and their time rather than a sponsorship check.
 //
 // `group` sorts an entry under one of three headings, in this order:
 //   "activities" — Activities & Attractions
@@ -482,7 +482,7 @@ export const FUNDING_GOALS: FundingGoal[] = [
 
 export const MERCH_INTRO =
   "This year's design puts a great blue heron behind the drum kit. Pre-order yours now and " +
-  "collect it at the info tent in Area 1 on event day, or shop the walk-in merch tent " +
+  "pick it up at the info tent in Area 1 on event day, or shop the walk-in merch tent " +
   "during the fest.";
 
 export const MERCH_ITEMS: MerchItem[] = [
@@ -520,7 +520,7 @@ export const MERCH_ITEMS: MerchItem[] = [
   },
 ];
 
-// Small goods sold at the merch tent on the day. No photos: they are all the
+// Small goods sold at the merch tent on event day. No photos: they are all the
 // same heron artwork, and a row of names reads faster than eight pictures.
 export const MERCH_AT_THE_FEST: string[] = [
   "Stickers",
@@ -568,7 +568,7 @@ export const AMENITIES: Amenity[] = [
       "that every artist deserves a chance to be heard: they run events and " +
       "concerts across the state all year, and the proceeds go back to local " +
       "artists and the community. Sign up ahead of time to claim a slot, or " +
-      "just turn up \u2014 walk-ups get whatever spots are still open.",
+      "just show up \u2014 walk-ups get whatever spots are still open.",
     url: "https://302omad.com/",
     links: [
       {
@@ -695,7 +695,7 @@ export const AMENITIES: Amenity[] = [
     time: "12:00 to 4:30",
     badge: ["New", "$10 entry"],
     url: "https://diamondstatepickleballclub.com/",
-    desc: "Two ladder sessions run by the Diamond State Pickleball Club: beginner and intermediate players from 12 to 2, advanced (3.5+) from 2:30 to 4:30. Win your court and you move up a court, lose and you move down, so you spend the afternoon playing people at your own level. Doubles, with partners assigned on the day, so sign up on your own. $10 per player, donated to Friends of Lums Pond, and prizes for the winners. Twelve spots per session, so register early.",
+    desc: "Two ladder sessions run by the Diamond State Pickleball Club: beginner and intermediate players from 12 to 2, advanced (3.5+) from 2:30 to 4:30. Win your court and you move up a court, lose and you move down, so you spend the afternoon playing people at your own level. Doubles, with partners assigned that day, so sign up on your own. $10 per player, donated to Friends of Lums Pond, and prizes for the winners. Twelve spots per session, so register early.",
     links: [
       {
         label: "Register: Beginner & Intermediate, 12 to 2",

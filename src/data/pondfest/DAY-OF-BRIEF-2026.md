@@ -17,8 +17,8 @@ repo and paste the block below. Everything it needs is in this file; it should n
 need to re-read the original request or come back for more instructions.
 
 > I'm shipping the day-of update to the Pond Fest page. The festival opens at
-> 11 AM tomorrow and the page is the event programme — there are no printed
-> programmes this year, and the QR code on every flyer and yard sign points at
+> 11 AM tomorrow and the page is the event program — there are no printed
+> programs this year, and the QR code on every flyer and yard sign points at
 > `friendsoflumspond.org/pondfest`. A few thousand people will read it on phones,
 > on park cell data, while standing in a field.
 >
@@ -30,7 +30,7 @@ need to re-read the original request or come back for more instructions.
 > sessions, don't stop to hand off, and don't end a turn with a plan or a promise
 > about work you haven't done. Plan your approach, then execute it.
 >
-> Build each section's markup, styles and behaviour together and check it in a
+> Build each section's markup, styles and behavior together and check it in a
 > real browser before starting the next one. A section that compiles but has no
 > working JavaScript is not done.
 >
@@ -58,7 +58,7 @@ need to re-read the original request or come back for more instructions.
 Friends of Lums Pond is an all-volunteer 501(c)(3). Pond Fest is its signature
 fundraiser, this year aiming at $30,000 for youth scholarships and an adaptive
 kayak launch. 2026 is the biggest one yet: ~2,500 people expected across three
-separate park areas for the first time. Printed programmes were deliberately
+separate park areas for the first time. Printed programs were deliberately
 dropped — the welcome team hands out QR flyers instead — so if someone cannot
 find the map, the set times, or where to eat on this page, there is no fallback.
 That is the whole job.
@@ -66,7 +66,7 @@ That is the whole job.
 ## 2. Constraints that are not up for debate
 
 **One URL.** Everything day-of goes on `/pondfest`. The press kit at
-`/pondfest/press` tells media the QR "doubles as the day-of programme", and the
+`/pondfest/press` tells media the QR "doubles as the day-of program", and the
 code is already printed on signs. Do not create a separate day-of page. (There is
 an old `/resources/pf-live2025` from last year — it is a historical record, not a
 model to follow.)
@@ -113,7 +113,7 @@ Raw source art is in `to-process/` and is deliberately **not** in git (32 MB).
 **On branch `pondfest-dayof-wip` (commit `7a10393`) — a partial build that
 compiles.** Salvage from it freely; it is there to be mined, not merged as-is.
 
-| Worth taking almost verbatim | Needs judgement | Missing entirely |
+| Worth taking almost verbatim | Needs judgment | Missing entirely |
 |---|---|---|
 | `src/data/pondfest/winners.ts` — self-contained, see §5 | The schedule / map / vendor section markup and CSS | Mobile bottom tab bar |
 | The day-of type definitions in `types.ts` | Section placement and ordering | The "on right now" clock script |
@@ -248,7 +248,7 @@ Offer Bryan a shorter alternative; he may want his own words.
 - **Sound engineers** — Dave Muddiman (Starground Audio), Ernie Bouey (PawPrint
   Productions), Keith Thompson (Vice Squad)
 - **Emcees and DJs** — DJ DLyte, Tom the Spokesman
-- **Partner organisations, Delaware State Parks staff, Natural Resources Police** —
+- **Partner organizations, Delaware State Parks staff, Natural Resources Police** —
   already in `PARTNERS` in `config.ts` under the `agency` group. Do not duplicate
   them; check before adding.
 
@@ -339,7 +339,7 @@ the clock script shows the right set when you override `Date.now` via
 
 ## 10. Don't let it read as machine-made
 
-Pond Fest's audience is a few thousand neighbours in one corner of Delaware. Many
+Pond Fest's audience is a few thousand neighbors in one corner of Delaware. Many
 of them know the board personally. This is also a public repo for a volunteer
 nonprofit, so the commit history is part of the public face. People are primed to
 notice work that looks generated, and noticing it costs trust that is slow to earn
@@ -362,6 +362,23 @@ in"*, *"vibrant"*, *"seamless"*, *"nestled"*, *"curated"*, *"elevate"*, and
 exclamation marks used as enthusiasm rather than punctuation. Also: every heading
 in Title Case, bulleted lists where a sentence would do, and sentences that
 restate the heading they sit under. Write the shortest true thing and stop.
+
+**Dialect.** American English, as spoken on the East Coast — Delaware, Maryland,
+southeastern Pennsylvania. This is a Delaware nonprofit writing to its own
+neighbors, so British spellings and constructions read as imported text and are a
+giveaway. Watch for: *programme* (program), *organisation* (organization),
+*colour* (color), *behaviour* (behavior), *optimise* (optimize), *judgement*
+(judgment), *cheque* (check), *neighbour* (neighbor), *whilst* (while), *amongst*
+(among), *grey* (gray). Phrasing matters as much as spelling: *"on the day"* is
+British — write *"on event day"* or *"that day"*; *"just turn up"* should be
+*"just show up"*; *"collect your prize"* should be *"pick up your prize"*. Local
+usage to get right: it is **DelMarVa**, the park is in **Bear**, and *Route 896*
+and *Red Lion Road* are how people say them.
+
+A pass over the repo on 9 Oct 2026 fixed a dozen of these in live copy, code
+comments and `UPDATING.md`. **The `pondfest-dayof-wip` branch predates that pass**,
+so anything lifted from it needs re-checking — `cheque` in particular survives in
+its `config.ts` and `types.ts` comments.
 
 **Facts.** Never invent one to fill a gap — not a food truck, not a time, not a
 sponsor's web address, not a photo credit. The existing config comments say this
@@ -418,7 +435,7 @@ had started. A planning round would very likely have drawn it out, because "what
 you need to do *during* the event" is a planning question and never came up.
 
 **Fan-out was the wrong instinct here, and that was right.** Two background agents
-(image optimisation; finding the magazine article) were genuinely independent and
+(image optimization; finding the magazine article) were genuinely independent and
 both paid off. Everything else funnels through `config.ts` and `index.astro`, two
 single files, where parallel agents would only have fought each other. Delegate on
 file boundaries, not on task count.
@@ -429,5 +446,5 @@ decisive answers. That part worked and is worth repeating.
 
 **Markup without script is not a feature.** Every section was built and none of the
 JavaScript was, so the page compiled green while the schedule had no live state and
-the map tabs did nothing. Build one section's markup, styles *and* behaviour
+the map tabs did nothing. Build one section's markup, styles *and* behavior
 together, and verify it in a browser, before starting the next.

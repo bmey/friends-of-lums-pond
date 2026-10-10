@@ -74,7 +74,7 @@ export const LINEUP: Performer[] = [
 ];
 ```
 
-Each act gets its own panel with the photo breaking out of the top edge, and the panels flip left/right down the page. On phones the photo goes full-bleed across the top of the panel and the words sit underneath. Acts without an `imageUrl` get a coloured tile with the first letter of their name instead. Keep the list alphabetical (ignoring a leading "The") until set times are known, then reorder it by schedule.
+Each act gets its own panel with the photo breaking out of the top edge, and the panels flip left/right down the page. On phones the photo goes full-bleed across the top of the panel and the words sit underneath. Acts without an `imageUrl` get a colored tile with the first letter of their name instead. Keep the list alphabetical (ignoring a leading "The") until set times are known, then reorder it by schedule.
 
 Photos go in `public/pondfest/lineup/`, named after the act (`guilt-45-band.webp`). Use whatever shape the band sent — portrait, square, or a wide band shot all work, and the panel follows the photo. Crop only to bring anything narrower than about 9:10 back up to it, keep the longest side around 600–1400px, and save as WebP at quality 80 (roughly 25–100KB each). Set `imageWidth`/`imageHeight` to the finished file's real dimensions. **Never guess a photo credit.** Bands supply their own promo photos, so no credit line is shown; if you get a photo from anywhere else and don't know who took it, leave it off.
 
@@ -98,7 +98,7 @@ A tier with no sponsors in it simply doesn't appear on the page, so you never ne
 
 ### 3b. Special Thanks (`PARTNERS`)
 
-Separate from sponsors on purpose. `SPONSORS` is for people who wrote a cheque;
+Separate from sponsors on purpose. `SPONSORS` is for people who wrote a check;
 `PARTNERS` is for the organizations who bring an activity, a crew, or the park
 itself and never send us an invoice. They get their own **Special Thanks**
 section under the sponsor list.
@@ -148,7 +148,7 @@ export const SPONSOR_URL = "https://forms.gle/...";
 export const VENDOR_URL = "https://forms.gle/...";
 ```
 
-- `MERCH_URL`: while this is empty (`""`), the hero's "Pre-Order Merch" button and the pre-sale banner in the Merch section simply aren't on the page. Fill it in when pre-sales open and they appear. Set `MERCH_PRESALE_DEADLINE` (an ISO datetime with the Eastern offset, e.g. `"2026-09-23T12:00:00-04:00"`) and `MERCH_PRESALE_DEADLINE_DISPLAY` (the same moment in words) and the page switches itself to "pre-sales have closed, shop the merch tent" the moment the deadline passes, with no rebuild needed. The items themselves live in `MERCH_ITEMS`: name, an optional one-line `note`, the product shot (`public/pondfest/merch/<slug>.webp`, transparent background, trimmed, about 640px on the long side), and `availability` — `"both"` (the default: pre-order it or buy it at the tent), `"presale"` (pre-order only, not sold at the fest), or `"fest"` (tent only, so it never gets a pre-order link). **Do not add prices.** The pre-sale store and the fest tent charge different amounts, so any single number on the page would be wrong in one of the two places. `MERCH_AT_THE_FEST` is the plain list of small goods sold at the tent on the day (stickers, pins, and so on); they show as a row of names, not photos.
+- `MERCH_URL`: while this is empty (`""`), the hero's "Pre-Order Merch" button and the pre-sale banner in the Merch section simply aren't on the page. Fill it in when pre-sales open and they appear. Set `MERCH_PRESALE_DEADLINE` (an ISO datetime with the Eastern offset, e.g. `"2026-09-23T12:00:00-04:00"`) and `MERCH_PRESALE_DEADLINE_DISPLAY` (the same moment in words) and the page switches itself to "pre-sales have closed, shop the merch tent" the moment the deadline passes, with no rebuild needed. The items themselves live in `MERCH_ITEMS`: name, an optional one-line `note`, the product shot (`public/pondfest/merch/<slug>.webp`, transparent background, trimmed, about 640px on the long side), and `availability` — `"both"` (the default: pre-order it or buy it at the tent), `"presale"` (pre-order only, not sold at the fest), or `"fest"` (tent only, so it never gets a pre-order link). **Do not add prices.** The pre-sale store and the fest tent charge different amounts, so any single number on the page would be wrong in one of the two places. `MERCH_AT_THE_FEST` is the plain list of small goods sold at the tent on event day (stickers, pins, and so on); they show as a row of names, not photos.
 - `FACEBOOK_EVENT_URL`: the year's Facebook event. Adds an RSVP link under the hero buttons and in Plan Your Visit; leave empty to hide both.
 - `PONDFEST_DONATE_URL`: the Donorbox **campaign page**, not an embed. It's used by the hero Donate button, the fundraising section, both funding-goal buttons, and the day-of quick links, so one edit changes all of them.
 
@@ -289,7 +289,7 @@ The **day-of quick links bar** (Plan Your Visit, Raffles, Auction, Donate, Feedb
 
 The **section nav** switches over on the same schedule. The rest of the year it lists the parts of the page (What to Expect, Plan Your Visit, Music Lineup, Get Involved, Sponsors, FAQ). During that same week it becomes an action list instead — Map & Parking, Music Lineup, What to Expect, then Raffle, Silent Auction, Donate and Share Feedback — and it stays stuck to the top of the screen from the moment the page loads, so somebody standing at the gate does not have to scroll past the hero to find the map. Each of those last four appears only when its link above is filled in, so an empty `FEEDBACK_LINK` simply means no Feedback row.
 
-Everything visitors need on the day (the map, parking, the shuttle, fees, the rain date) lives in the always-on **Plan Your Visit** section, so it works whether they look it up in September or standing at the gate.
+Everything visitors need on event day (the map, parking, the shuttle, fees, the rain date) lives in the always-on **Plan Your Visit** section, so it works whether they look it up in September or standing at the gate.
 
 **Weather and status.** Set `DAY_OF_ALERT` at any time; it shows at the top of the page as soon as the site rebuilds (a few minutes after you commit).
 

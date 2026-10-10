@@ -28,7 +28,7 @@ export interface Sponsor {
 
 // ── "Special Thanks" — the groups who bring an activity, a crew, or the park
 // itself to the day. Kept apart from SPONSORS on purpose: these partners give
-// us their people and their time rather than a sponsorship cheque, so a paid
+// us their people and their time rather than a sponsorship check, so a paid
 // tier would misdescribe what they do.
 export interface Partner {
   name: string;
