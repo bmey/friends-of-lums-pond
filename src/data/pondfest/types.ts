@@ -180,6 +180,15 @@ export interface FoodTruck {
   area: 1 | 2 | 3;
 }
 
+// One line on the beer garden board. `group` is the heading the board files
+// it under, and the page groups by it the same way it groups trucks by area.
+export interface Tap {
+  brewery: string;
+  beer: string;
+  group: TapGroup;
+}
+export type TapGroup = "ale" | "ipa" | "lager" | "other";
+
 // A sponsor's own advertisement, shown as a thumbnail that opens full size.
 export interface SponsorAd {
   slug: string; // /pondfest/ads/<slug>.webp and <slug>-thumb.webp

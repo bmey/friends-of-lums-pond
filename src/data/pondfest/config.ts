@@ -14,6 +14,7 @@ import type {
   Sponsor,
   SponsorAd,
   ThanksGroup,
+  Tap,
 } from "./types";
 
 // ─────────────────────────────────────────────
@@ -711,6 +712,7 @@ export const AMENITIES: Amenity[] = [
     title: "Beer Garden",
     area: "Area 1",
     badge: "21+",
+    url: "#pf-whos-here", // what is on tap, further down the page
     desc: "Autumn Arch Beer Project, Bell's Brewery, Dogfish Head, JAKL Beer Works, Volunteer Brewing Company, and New Belgium pouring all day.",
     imageUrl: "/pondfest/beer.jpg",
     imageAlt: "A volunteer handing a cup of beer across the taps",
@@ -1231,6 +1233,60 @@ export const FOOD_TRUCKS: FoodTruck[] = [
   { name: "Donut NV", area: 3 },
   { name: "Koi on the Go", area: 3 },
   { name: "UDairy Creamery Truck", area: 3 },
+];
+
+// ── On tap ──────────────────────────────────────────────────────
+// The beer garden board, one line per tap. `group` is the heading the
+// board files it under: "ale", "ipa", "lager" or "other" (the vodka crush
+// and the seltzers). Beer names as the board writes them, brewery names in
+// full, since the board shortens them. No ABVs on purpose: people read
+// those at the tent, and a number that is right on the chalkboard and
+// stale here is worse than none. An empty list hides the block.
+export const TAP_LIST: Tap[] = [
+  {
+    brewery: "Dogfish Head",
+    beer: "Grateful Dead Juicy Pale Ale",
+    group: "ale",
+  },
+  { brewery: "Dogfish Head", beer: "SeaQuench Ale", group: "ale" },
+  { brewery: "JAKL Beer Works", beer: "JAKLantern Pumpkin Ale", group: "ale" },
+
+  { brewery: "Dogfish Head", beer: "60 Minute IPA", group: "ipa" },
+  { brewery: "Autumn Arch Beer Project", beer: "Table Hazy IPA", group: "ipa" },
+  { brewery: "Bell's Brewery", beer: "Two Hearted IPA", group: "ipa" },
+  {
+    brewery: "New Belgium Brewing Company",
+    beer: "Voodoo Ranger Juicy Haze",
+    group: "ipa",
+  },
+
+  {
+    brewery: "Autumn Arch Beer Project",
+    beer: "Czech the Math",
+    group: "lager",
+  },
+  { brewery: "JAKL Beer Works", beer: "Stairway to Helles", group: "lager" },
+  {
+    brewery: "Volunteer Brewing Company",
+    beer: "Frontier-8 Light",
+    group: "lager",
+  },
+
+  {
+    brewery: "Dogfish Head",
+    beer: "Blood Orange Mango Vodka Crush",
+    group: "other",
+  },
+  {
+    brewery: "Volunteer Brewing Company",
+    beer: "Prickly Pear Seltzer",
+    group: "other",
+  },
+  {
+    brewery: "Volunteer Brewing Company",
+    beer: "Caramel Apple Seltzer",
+    group: "other",
+  },
 ];
 
 // ── Craft vendors and nonprofits ────────────────────────────────

@@ -75,6 +75,7 @@ import {
   KEY_TIMES,
   OPEN_MIC_SLOTS,
   FOOD_TRUCKS,
+  TAP_LIST,
   CRAFT_VENDORS,
   FIRST_RESPONDERS,
   SPONSOR_ADS,
@@ -234,8 +235,25 @@ const foodByArea = ([1, 2, 3] as const)
   }))
   .filter((g) => g.trucks.length > 0);
 
+// The beer garden board, grouped under the four headings it uses.
+const tapsByGroup = (
+  [
+    ["ale", "Ales"],
+    ["ipa", "IPAs"],
+    ["lager", "Lagers"],
+    ["other", "Others"],
+  ] as const
+)
+  .map(([key, label]) => ({
+    key,
+    label,
+    taps: TAP_LIST.filter((t) => t.group === key),
+  }))
+  .filter((g) => g.taps.length > 0);
+
 const hasWhosHere =
   FOOD_TRUCKS.length > 0 ||
+  TAP_LIST.length > 0 ||
   CRAFT_VENDORS.length > 0 ||
   FIRST_RESPONDERS.length > 0;
 
@@ -367,7 +385,7 @@ const navSections: NavSection[] = (
     },
     {
       href: "#pf-whos-here",
-      label: "Food & Vendors",
+      label: "Food & Drink",
       icon: "fa-utensils",
       phases: ["prep", "event"],
       show: hasWhosHere,
@@ -1435,7 +1453,7 @@ const sponsorAds = await Promise.all(
       >
         <div class="pf-section-inner pf-section-inner--mid">
           <div class="pf-here-header">
-            <h2>Food, Vendors &amp; First Responders</h2>
+            <h2>Food, Drink, Vendors &amp; First Responders</h2>
           </div>
 
           {foodByArea.length > 0 && (
@@ -1455,6 +1473,34 @@ const sponsorAds = await Promise.all(
                     <ul>
                       {g.trucks.map((t) => (
                         <li data-pf-truck>{t.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {tapsByGroup.length > 0 && (
+            <div class="pf-here-block" id="pf-ontap">
+              <h3 class="pf-here-title">
+                <i class="fa-solid fa-beer-mug-empty" aria-hidden="true" /> On
+                Tap
+              </h3>
+              <p class="pf-here-sub">
+                {TAP_LIST.length} taps in the beer garden in Area 1, 21 and
+                over. The board at the tent has the strengths.
+              </p>
+              <div class="pf-food-areas pf-tap-groups">
+                {tapsByGroup.map((g) => (
+                  <div class="pf-food-area">
+                    <h4>{g.label}</h4>
+                    <ul>
+                      {g.taps.map((t) => (
+                        <li data-tap-group={g.key}>
+                          {t.beer}
+                          <span class="pf-tap-brewery">{t.brewery}</span>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -4510,10 +4556,24 @@ const sponsorAds = await Promise.all(
     background: rgba(42, 196, 179, 0.12);
     border-color: rgba(42, 196, 179, 0.4);
   }
+  .pf-tap-brewery {
+    display: block;
+    font-weight: 400;
+    font-size: 0.82rem;
+    color: var(--pf-purple-light);
+  }
   @media (min-width: 620px) {
     .pf-food-areas {
       grid-template-columns: repeat(3, 1fr);
       gap: 1.75rem;
+    }
+    .pf-tap-groups {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .pf-tap-groups {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
