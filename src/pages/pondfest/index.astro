@@ -239,9 +239,10 @@ const scheduleData = {
     name: shortStage(c.name),
     area: splitStage(c.name).area,
   })),
+  // a canceled act keeps its place in the lists but is never "on"
   sets: LINEUP.flatMap((act) => {
     const t = parseSetTime(act.time);
-    if (!t) return [];
+    if (!t || act.canceled) return [];
     return [
       {
         name: act.name,
@@ -292,6 +293,7 @@ const timeline = [
         icon: "fa-music",
         href: `#${actSlug(act.name)}`,
         detail: "",
+        canceled: !!act.canceled,
       },
     ];
   }),
@@ -305,6 +307,7 @@ const timeline = [
     icon: "fa-microphone-lines",
     href: "#pf-openmic",
     detail: "",
+    canceled: false,
   })),
   ...keyTimes.map((k) => ({
     kind: "keytime" as TimelineKind,
@@ -316,6 +319,7 @@ const timeline = [
     icon: k.icon,
     href: "",
     detail: k.detail || "",
+    canceled: false,
   })),
 ].sort(
   (a, b) =>
@@ -1127,9 +1131,17 @@ const sponsorAds = (
                                 class="pf-sched-set"
                                 href={`#${actSlug(act.name)}`}
                                 data-pf-set={actSlug(act.name)}
+                                data-pf-canceled={
+                                  act.canceled ? "" : undefined
+                                }
                               >
                                 <span class="pf-sched-time">{act.time}</span>
-                                <span class="pf-sched-name">{act.name}</span>
+                                <span class="pf-sched-name">
+                                  {act.canceled ? <s>{act.name}</s> : act.name}
+                                  {act.canceled && (
+                                    <span class="pf-cancel-tag">Canceled</span>
+                                  )}
+                                </span>
                                 <i
                                   class="fa-solid fa-chevron-right pf-sched-chev"
                                   aria-hidden="true"
@@ -1222,6 +1234,7 @@ const sponsorAds = (
                       data-pf-tl={row.kind}
                       data-pf-tl-start={row.start}
                       data-pf-tl-end={row.end || undefined}
+                      data-pf-canceled={row.canceled ? "" : undefined}
                       data-pf-tl-same={
                         i > 0 && timeline[i - 1].start === row.start
                           ? ""
@@ -1240,12 +1253,15 @@ const sponsorAds = (
                             class="pf-keytime-title pf-tl-link"
                             href={row.href}
                           >
-                            {row.title}
+                            {row.canceled ? <s>{row.title}</s> : row.title}
                           </a>
                         ) : (
                           <strong class="pf-keytime-title">{row.title}</strong>
                         )}
                         <span class="pf-tl-meta">
+                          {row.canceled && (
+                            <span class="pf-cancel-tag">Canceled</span>
+                          )}
                           {row.where && (
                             <span class="pf-tl-where">
                               {row.where}
@@ -2012,7 +2028,11 @@ const sponsorAds = (
               {LINEUP.map((performer, i) => (
                 <article
                   id={actSlug(performer.name)}
-                  class:list={["pf-act", i % 2 === 1 && "pf-act--flip"]}
+                  class:list={[
+                    "pf-act",
+                    i % 2 === 1 && "pf-act--flip",
+                    performer.canceled && "pf-act--canceled",
+                  ]}
                 >
                   <div
                     class="pf-act-media"
@@ -2074,9 +2094,15 @@ const sponsorAds = (
                         {performer.time && (
                           <span class="pf-act-time">{performer.time}</span>
                         )}
+                        {performer.canceled && (
+                          <span class="pf-cancel-tag">Canceled</span>
+                        )}
                       </div>
                     )}
                     <h3 class="pf-act-name">{performer.name}</h3>
+                    {performer.canceled && (
+                      <p class="pf-act-cancel">{performer.canceled}</p>
+                    )}
                     {performer.blurb && (
                       <p class="pf-act-blurb">{performer.blurb}</p>
                     )}
@@ -4856,6 +4882,41 @@ const sponsorAds = (
     color: #fff;
     font-weight: 700;
   }
+  /* A canceled act stays on the schedule, struck through and tagged. It
+     was on every poster, so people will look for it. */
+  .pf-cancel-tag {
+    display: inline-block;
+    margin-left: 0.45rem;
+    padding: 0.1em 0.55em;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--pf-purple-dark);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .pf-sched-set[data-pf-canceled] .pf-sched-time {
+    text-decoration: line-through;
+  }
+  .pf-sched-set[data-pf-canceled] .pf-sched-time,
+  .pf-sched-set[data-pf-canceled] .pf-sched-name s,
+  .pf-tl[data-pf-canceled] .pf-keytime-title s {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .pf-act--canceled .pf-act-media img {
+    filter: grayscale(1);
+    opacity: 0.7;
+  }
+  .pf-act--canceled .pf-act-time {
+    text-decoration: line-through;
+  }
+  .pf-act-cancel {
+    margin: 0 0 0.9rem;
+    font-weight: 700;
+    color: #fff;
+  }
 
   /* Open mic */
   .pf-openmic {
@@ -5981,7 +6042,10 @@ const sponsorAds = (
         .forEach((li) => {
           const start = li.dataset.pfTlStart || "";
           const end = li.dataset.pfTlEnd || plusMinutes(start, 30);
-          const live = start <= now.hm && now.hm < end;
+          const live =
+            li.dataset.pfCanceled === undefined &&
+            start <= now.hm &&
+            now.hm < end;
           if (live) li.setAttribute("data-pf-live", "");
           else li.removeAttribute("data-pf-live");
           if (end <= now.hm) li.setAttribute("data-pf-past", "");

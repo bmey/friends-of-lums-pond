@@ -8,6 +8,8 @@ export interface Performer {
   url?: string; // act's official site or page. For an emcee it links the
   // name in the "Hosted all day by" strip.
   blurb?: string; // a short paragraph, in the act's own words where possible
+  canceled?: string; // set when the act pulls out: the one line that says
+  // so. The act stays on the page, marked, because it was on every poster.
 }
 
 export type SponsorTier =

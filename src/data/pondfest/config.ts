@@ -356,6 +356,7 @@ export const LINEUP: Performer[] = [
     imageWidth: 410,
     imageHeight: 482,
     url: "https://www.billypierce.com/",
+    canceled: "The Billy Pierce Band had to cancel at the last minute.",
     blurb:
       "Billy Pierce is an electric slide disciple of the Sonny Landreth " +
       "earthy New Orleans style. Billy's crafted his songs into blues, " +
@@ -1184,7 +1185,7 @@ export const KEY_TIMES: KeyTime[] = [
     time: "5:30 PM",
     title: "Final sets end",
     icon: "fa-guitar",
-    detail: "Hippocampus on Wingspan and the Billy Pierce Band on Monarch.",
+    detail: "Hippocampus closes out Wingspan.",
   },
   {
     start: "18:00",
