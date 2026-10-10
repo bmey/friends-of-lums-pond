@@ -9,7 +9,7 @@ the festival rather than one you navigate while standing in it. On top of that,
 four facts on the live page are wrong or missing, including a brewery that is
 pouring all day and is not thanked anywhere.
 
-Ten items, in priority order. The first four are corrections and additions that
+Eleven items, in priority order. The first four are corrections and additions that
 live almost entirely in `config.ts`; they are cheap and they are the ones that
 sting if they ship wrong. Five and six decide whether the page works as a
 program. Everything after that is improvement.
@@ -45,13 +45,13 @@ Open a session in this repo, set effort to **high**, and paste this.
 > right content. This pass fixes four facts that are wrong or missing on it, and
 > then changes its shape so somebody can actually find things in it.
 >
-> Read `src/data/pondfest/PROGRAM-MODE-BRIEF-2026.md` first. It has ten items in
+> Read `src/data/pondfest/PROGRAM-MODE-BRIEF-2026.md` first. It has eleven items in
 > priority order, what is in the files and where, a recommendation for each, the
 > tap list and the thank-yous transcribed, and the planning committee roster. It
 > also points at the parts of `DAY-OF-BRIEF-2026.md` that still apply,
 > particularly §11 on voice and §10 on driving the browser.
 >
-> I have about nine hours and they are the wrong nine hours, so work the items in
+> I have about eight hours and they are the wrong eight hours, so work the items in
 > the order the brief gives them and commit after each one. Partial is fine;
 > half-finished is not. If you get to item 6 and stop, the first five are good
 > and the page is better.
@@ -70,7 +70,7 @@ Open a session in this repo, set effort to **high**, and paste this.
 > browser at 390px before moving on. The last pass shipped markup with no
 > JavaScript behind it and the page compiled green while nothing worked.
 >
-> Extend `scripts/verify-dayof.mjs` as you go. §15 of the brief lists the checks
+> Extend `scripts/verify-dayof.mjs` as you go. §16 of the brief lists the checks
 > each item needs. Run the whole suite after each commit, not only at the end. A
 > subagent reporting success is a claim; re-run the check yourself.
 >
@@ -78,26 +78,27 @@ Open a session in this repo, set effort to **high**, and paste this.
 > session. Only report work you can point to evidence for, and say so plainly
 > when something is not yet verified. If a check fails, give me the output.
 >
-> Delegate where the file boundaries make it safe. §14 of the brief says which
+> Delegate where the file boundaries make it safe. §15 of the brief says which
 > work is genuinely separable; `index.astro` and `config.ts` are single shared
 > files and stay in your hands. Keep working while subagents run, and step in if
 > one drifts.
 >
 > Pause for me only when the work genuinely needs it: something destructive, a
-> real change of scope, or a question only I can answer. §13 of the brief lists
-> the four I expect. Ask those as one batch early, keep going on the defaults
-> while you wait, and don't end a turn on a plan or a promise.
+> real change of scope, or a question only I can answer. I have already cleared
+> the blocking questions; §14 is what is left and none of it stops you. Don't end
+> a turn on a plan or a promise.
 >
-> Never invent a fact to fill a gap. Not an ABV, not a web address, not a
-> brewery's spelling. The brief marks what is uncertain; leave those gaps open
-> and tell me, because a wrong number on a tap list is worse than a missing one.
+> Never invent a fact to fill a gap. Not a web address, not a brewery's
+> spelling, not a set time. The brief marks what is uncertain; leave those gaps
+> open and tell me. A missing detail is fine and a wrong one sends somebody to
+> the far side of a park for nothing.
 >
 > This page is read by a few thousand neighbors, many of whom know the board.
 > Work that reads as machine-written costs us trust. §11 of the day-of brief is
 > the standard, and it applies to the copy, the commits and the CSS.
 >
 > Commit as you go, with no `Co-Authored-By` trailer. Do not push; I'll review and
-> push once. Two things are off limits: the committee email addresses in §10
+> push once. Two things are off limits: the committee email addresses in §11
 > never go near a built file or a commit message, and the band blurbs and
 > `SUPPORT_DISCLOSURE` are not yours to rewrite.
 >
@@ -139,10 +140,11 @@ is what comes back when `EVENT_DATE` moves to 2027.
 | 4 | What's on tap | Thirteen taps, and "what have you got?" is a question people ask all day |
 | 5 | Collapse the hero in `event` phase | The program currently starts one full screen down |
 | 6 | Clickable area tags that open the matching map | The biggest findability win available |
-| 7 | Shrink "What to Expect" with a real "Show more" | The longest section, and the one people scroll past |
-| 8 | Volunteers: "and counting", and the planning committee | A thank-you that undercounts is worse than none |
-| 9 | Follow and share | Asked for, and it is where the hashtags belong |
-| 10 | Sponsor ads sized by tier | Genuinely exploratory, and the least costly to skip |
+| 7 | One timeline: fold the key times and the open mic into the clock | Four separate time-ordered lists answer "what is on at 1:00" between them |
+| 8 | Shrink "What to Expect" with a real "Show more" | The longest section, and the one people scroll past |
+| 9 | Volunteers: "and counting", and the planning committee | A thank-you that undercounts is worse than none |
+| 10 | Follow and share | Asked for, and it is where the hashtags belong |
+| 11 | Sponsor ads sized by tier | Genuinely exploratory, and the least costly to skip |
 
 ## 3. Item 1 — the welcome team is at the fee booth
 
@@ -172,12 +174,12 @@ Suggested replacements. Bryan may want his own words on the banner:
 > FAQ, cell service: Directional signs will get you there, and the welcome team
 > at the fee booth can point you the right way.
 
-**The accessibility FAQ needs a decision, not a rewrite.** It currently promises
-that someone at the area split will point you to the closest accessible space.
-The welcome team at the fee booth is before the split and may not know the lots
-space by space. Do not invent a substitute. Drop the clause, keep "There are
-marked accessible parking spaces in the park lots", and ask Bryan who that
-question should go to. See §13.
+**The accessibility FAQ has a new answer, and Bryan supplied it.** It currently
+promises that someone at the area split will point you to the closest accessible
+space. The truth is better: **every one of the three areas has accessible parking
+spaces, and the enforcement team is who to talk to about getting a proper spot.**
+Write that. It is a more useful answer than the one it replaces, because it tells
+somebody they do not have to pick a particular area to park well.
 
 Do not expand what the officer does beyond directing traffic. "An officer at the
 area split is directing traffic" is the whole known fact.
@@ -214,12 +216,12 @@ Belgium. **Bell's Brewery is missing**, and it has a beer on the board. Add it.
 The beer garden amenity description (`config.ts:685`) lists the same five and
 needs Bell's too.
 
-Two naming questions, both flagged rather than decided:
+Two naming corrections, both settled:
 
-- The config says **"JAKL Beerworks"**; Bryan writes **"JAKL Beer Works"**. One
-  of them is wrong and they appear in several places. Ask; do not pick.
-- The config says **"New Belgium"**; Bryan writes **"New Belgium Brewing
-  Company"**. Use the full name on the partner list, where it is a credit.
+- **"JAKL Beer Works", three words.** The config says "JAKL Beerworks" and it is
+  wrong. Fix every occurrence, not just the partner entry.
+- The config says **"New Belgium"**; the full name is **New Belgium Brewing
+  Company**. Use the full name on the partner list, where it is a credit.
 
 ### Pumpkins for the Junior Jam
 
@@ -234,8 +236,11 @@ says "pumpkin painting" while Bryan says "decorate"; decorating is the wider and
 truer word, so use it on the new credit and leave the card's existing sentence
 alone.
 
-We have no web addresses for Filasky's Produce or The Local Buzz. Leave `url`
-off rather than guessing one. Bryan can add them later.
+Web addresses for all three, so every one of them gets a link:
+
+- Mr. Mulch, already in the sponsor ads: `https://www.mrmulchdelaware.com/`
+- Filasky's Produce: `https://www.filaskyspumpkinpatch.com/`
+- The Local Buzz: `https://www.thelocalbuzzde.com/`
 
 ### WSFS
 
@@ -265,54 +270,55 @@ read off the photo Bryan supplied.
 Beer names are kept as the board writes them. Brewery names are written out in
 full, since the board abbreviates ("Dogfish", "JAKL").
 
+**No ABVs.** The board prints one for every tap and Bryan's call is to leave them
+all off the page: people read the ABV when they walk up to the tent, and a number
+that is right on a chalkboard and stale on a web page is worse than no number.
+That also disposes of the one ABV the photo cropped. Do not add them back, and do
+not put them in the config "for later" either.
+
 **Ales**
 
-| Brewery | Beer | ABV |
-|---|---|---|
-| Dogfish Head | Grateful Dead Juicy Pale Ale | **cut off in the photo** |
-| Dogfish Head | SeaQuench Ale | 4.9% |
-| JAKL | JAKLantern Pumpkin Ale | 6.0% |
+| Brewery | Beer |
+|---|---|
+| Dogfish Head | Grateful Dead Juicy Pale Ale |
+| Dogfish Head | SeaQuench Ale |
+| JAKL Beer Works | JAKLantern Pumpkin Ale |
 
 **IPAs**
 
-| Brewery | Beer | ABV |
-|---|---|---|
-| Dogfish Head | 60 Minute IPA | 6.0% |
-| Autumn Arch | Table Hazy IPA | 4.5% |
-| Bell's Brewery | Two Hearted IPA | 7.0% |
-| New Belgium | Voodoo Ranger Juicy Haze | 7.0% |
+| Brewery | Beer |
+|---|---|
+| Dogfish Head | 60 Minute IPA |
+| Autumn Arch | Table Hazy IPA |
+| Bell's Brewery | Two Hearted IPA |
+| New Belgium | Voodoo Ranger Juicy Haze |
 
 **Lagers**
 
-| Brewery | Beer | ABV |
-|---|---|---|
-| Autumn Arch | Czech the Math | 5.2% |
-| JAKL | Stairway to Helles | 5.0% |
-| Volunteer Brewing | Frontier-8 Light | 4.8% |
+| Brewery | Beer |
+|---|---|
+| Autumn Arch | Czech the Math |
+| JAKL Beer Works | Stairway to Helles |
+| Volunteer Brewing | Frontier-8 Light |
 
 **Others**
 
-| Brewery | Beer | ABV |
-|---|---|---|
-| Dogfish Head | Blood Orange Mango Vodka Crush | 7.0% |
-| Volunteer Brewing | Prickly Pear Seltzer | 6.0% |
-| Volunteer Brewing | Caramel Apple Seltzer | 6.0% |
+| Brewery | Beer |
+|---|---|
+| Dogfish Head | Blood Orange Mango Vodka Crush |
+| Volunteer Brewing | Prickly Pear Seltzer |
+| Volunteer Brewing | Caramel Apple Seltzer |
 
-**The first ABV is unreadable.** The photo is cropped at the right edge and shows
-a "5" and then nothing. Do not complete it from memory or from a brewery's
-website; the board is what is being poured today. Ship that entry with no ABV and
-ask Bryan. Every other number above is legible and certain.
-
-Two smaller transcription notes to raise, not resolve: the board reads
+Two transcription notes to raise rather than resolve: the board reads
 **"Frontier-8 Light"** with a hyphen, which may or may not be the real name, and
 **"JAKLantern"** is a deliberate pun and is correct as written.
 
 ### Where it goes
 
 A new `TAP_LIST` in `config.ts` as a flat array, each entry carrying brewery,
-beer, optional ABV, and which of the four board headings it sits under. Flat and
-grouped at render, matching how `FOOD_TRUCKS` already works with its `area`
-field. A volunteer editing this next year should be adding one line, not nesting
+beer, and which of the four board headings it sits under. Flat and grouped at
+render, matching how `FOOD_TRUCKS` already works with its `area` field. A
+volunteer editing this next year should be adding one line, not nesting
 anything.
 
 Render it as a fourth block inside `#pf-whos-here`, alongside Food Trucks, Craft
@@ -352,7 +358,7 @@ the hero is `prep` material.
   `.pf-hero-ctas` as `data-phase="prep afterglow"`. The countdown already carries
   `data-phase="prep"` (`PondFestCountdown.astro:13`).
 - Retire the hero's "RSVP on the Facebook event" link in `event`. RSVPing to
-  something that started an hour ago is noise, and item 9 gives that slot a
+  something that started an hour ago is noise, and item 10 gives that slot a
   better job. The same link in Plan Your Visit (`index.astro:1173`) gets the same
   treatment.
 - One phase-scoped rule so the section stops reserving a screen:
@@ -376,7 +382,7 @@ the UX: **every card already carries an area tag. Make the tag the control, and
 move the tag above the description.**
 
 That resolves the collision he was worried about. The card title keeps linking to
-the partner's own site, the "Show more" control from item 7 sits under the
+the partner's own site, the "Show more" control from item 8 sits under the
 description, and the area chip above the description opens the map. Three
 affordances, three jobs, none of them fighting. No separate map button needed.
 
@@ -434,7 +440,71 @@ fetches a map on demand, which is correct and is the point, but the new path has
 to go through the same activation function so the accounting still holds. Make
 the deferral check exercise the chip path too.
 
-## 9. Item 7 — shrink "What to Expect"
+## 9. Item 7 — one timeline, and some pushback on the toggle
+
+Bryan's reference is the Philadelphia Folk Festival schedule, which offers
+Matrix, Grid and List-by-Time over the same data and, more importantly, merges
+workshops, dance sessions and kids' activities into the same schedule as the
+music.
+
+**The idea worth taking is the merge. The toggle is not.**
+
+### What is wrong today
+
+`#pf-schedule` holds four time-ordered lists that do not know about each other:
+the "on right now" panel, three stage columns, the open mic's thirteen slots, and
+Key times' thirteen entries. Answering "what is happening at 1:00" means reading
+four lists and doing the merge in your head, standing up, on a phone. That is the
+real problem and it is exactly the one Folk Fest solved.
+
+### Why not the view switcher
+
+Folk Fest has seven stages across three days and dozens of workshops; a matrix
+earns its keep at that volume. We have three stages, eleven sets and one day, and
+the stage view already fits on a phone screen. A view switcher is a control the
+reader has to notice, understand and operate before it answers anything, and the
+question in a field is "what is on now" and "what is next", not "let me
+reconfigure this". It is also the most expensive thing on this list, on the
+morning with the least time.
+
+### Do this much, and it is cheap
+
+**Extend the "on right now" panel to cover everything, not just the three
+stages.** The panel and its clock script already exist and already run on event
+day. Make it also name the open mic slot that is up, and the key time that is
+happening or has just passed, and say what is next across all of them. That
+answers the field question without adding a single control.
+
+One wrinkle to plan for: the panel is driven by the `pf-schedule-data` JSON block
+at the bottom of the section, which today carries only the sets. Open mic slots
+carry a display time ("11:30 AM") and key times carry a 24-hour `start`, so the
+open mic slots need the same build-time parse the sets already get. The parser
+exists and was verified on all eleven sets.
+
+**Do this part even if nothing else in this item gets done.**
+
+### Then, if the clock allows: two views, not three
+
+A "By time" and "By stage" pair above the schedule. Both render server side from
+the same `scheduleData`, the toggle flips a class, and nothing is duplicated in
+`config.ts`. The time view is one chronological spine with sets, open mic slots
+and key times interleaved, each row carrying its stage and its area chip.
+
+Three things that make this worth building rather than busywork:
+
+- **Default the view by phase.** `event` opens on "By time", because that is the
+  day-of question. `prep` opens on "By stage", because that is the planning
+  question. The phase is already an attribute on `<html>`, so this costs nothing.
+- **The merged timeline makes the separate Key times block redundant**, which
+  takes a thirteen-item list off the page. This item shortens the page instead of
+  lengthening it, which is not how adding a feature usually goes.
+- **Every row in the time view wants an area chip**, which is item 6's work. Do
+  item 6 first and most of this is assembly.
+
+With JavaScript off, show the stage view and leave the time view visible below it
+rather than hidden. A toggle that does nothing is worse than two lists.
+
+## 10. Item 8 — shrink "What to Expect"
 
 Twenty-two amenity cards with photos, and some descriptions run 500 characters.
 It is the longest section on the page and the easiest to bounce off.
@@ -464,7 +534,7 @@ in them is why they are long. The pickleball card explains a ladder format and a
 $10 entry; the Kids Market card explains who runs registration. Clamping hides it
 until asked for, which is the point. Rewriting it loses it.
 
-## 10. Item 8 — volunteers, and the planning committee
+## 11. Item 9 — volunteers, and the planning committee
 
 ### "87 and counting"
 
@@ -536,7 +606,7 @@ Two entries in the existing volunteer list are still open and the day-of brief
 already flagged them: `Thabisile` has no surname, and "Jessica Bell and daughter"
 is still a placeholder. Re-raise them, do not resolve them.
 
-## 11. Item 9 — follow and share
+## 12. Item 10 — follow and share
 
 Bryan asked for a section about following on Facebook and Instagram, plus a quick
 link in the "More" sheet. Fold the share controls into the same section rather
@@ -602,7 +672,7 @@ any of them, so a button would send people somewhere we are not.
 them with the hashtags and the URL. Do not write anything on the page, in a
 commit, or in `UPDATING.md` claiming Instagram captions can be prefilled.
 
-## 12. Item 10 — sponsor ads sized by tier
+## 13. Item 11 — sponsor ads sized by tier
 
 Bryan's ask: platinum full page, gold half, silver quarter. His own note is that
 leaving it alone is acceptable. Last item for that reason.
@@ -652,23 +722,26 @@ volunteer in September 2027 who has never read this file.
 Page weight: the seven thumbnails are 290 KB together and the section is lazy, so
 this item does not change the budget as long as nobody adds a rendition.
 
-## 13. What to ask Bryan, as one batch
+## 14. Still open, none of it blocking
 
-Ask these early, in one message, then keep working on the defaults. None blocks
-anything.
+Bryan cleared every question that was holding anything up: the ABVs come off
+entirely, it is "JAKL Beer Works", both pumpkin donors have web addresses, and
+the accessibility answer is that each area has accessible spaces and the
+enforcement team sorts out a proper spot. Nothing below stops you.
 
-1. **The ABV on the Dogfish Head Grateful Dead Juicy Pale Ale.** Cut off at the
-   edge of the photo; the board shows a "5" and then the crop. Default: ship that
-   one tap with no ABV.
-2. **"JAKL Beerworks" or "JAKL Beer Works"?** The config says one, Bryan wrote the
-   other. Default: leave the config spelling alone until he answers.
-3. **Web addresses for Filasky's Produce and The Local Buzz**, if he has them.
-   Default: credit them with no link.
-4. **Who should the accessibility FAQ send people to for the nearest accessible
-   parking space**, now that the welcome team is at the fee booth? Default: drop
-   the clause and keep the rest of the answer.
+What is left is small, and most of it is inherited from the day-of brief:
 
-## 14. Delegation
+- **"Frontier-8 Light"** is transcribed off the board with a hyphen. It may not
+  be the real product name. Ship it as the board has it and mention it.
+- **`Thabisile`** in the volunteer list has no surname, which may be correct.
+- **"Jessica Bell and daughter"** is still standing in for the daughter's name.
+- **Backyard Squeeze is listed twice**, as an Area 1 food truck and as a craft
+  vendor. The day-of brief raised it and it was never settled. Leave it in both
+  and ask again.
+
+Raise these at the end, in the final summary, not as a blocking question.
+
+## 15. Delegation
 
 `index.astro` and `config.ts` are single files that nearly every item touches. Two
 agents in them will collide and the second will clobber the first. Keep both in
@@ -690,7 +763,7 @@ What is genuinely separable:
 Everything else funnels through the two shared files. Delegate on file boundaries,
 not on task count.
 
-## 15. Verification additions
+## 16. Verification additions
 
 Extend `scripts/verify-dayof.mjs`. It has the reporting helpers (`report`,
 `note`), a static server for `dist/`, the puppeteer loader, and five tiers. Add to
@@ -705,11 +778,13 @@ the matching tier; do not start a second script.
   gate. Build the address list into the script, assert zero hits.
 - Six breweries in the beer partner group, Bell's Brewery among them, and Bell's
   also named in the beer garden card.
-- Thirteen taps render, in the four board groups, with twelve ABVs. The
-  thirteenth having no ABV is the expected state, so assert that rather than
-  treating it as a gap.
+- Thirteen taps render, in the four board groups. **No percent sign appears
+  anywhere in the tap block**, which is the cheap way to assert the ABVs stayed
+  off. "JAKL Beerworks" appears nowhere; "JAKL Beer Works" does.
 - Mr. Mulch, Filasky's Produce, The Local Buzz and WSFS all appear in the
-  thank-yous.
+  thank-yous, and the two pumpkin-donor links resolve to the addresses in §5.
+- The accessibility FAQ names the enforcement team and no longer sends anyone to
+  the area split.
 - A planning committee group renders with twenty-two names, and every one of them
   also appears in the volunteer list.
 - The volunteer list has 88 names, has "Chriss Funcheon" and not "Chris Funcheon",
@@ -728,6 +803,13 @@ the matching tier; do not start a second script.
 - Deferral still holds through the chip path: one map with a `src` on first paint,
   rising by one per distinct area opened.
 - Browser back after a chip tap returns to the card.
+- **The "on right now" panel covers more than the stages.** With `Date.now`
+  overridden to 12:00 on event day it names the K9 demonstration as well as the
+  sets, and at 11:35 it names the open mic slot that is up. At 19:00 it still
+  claims nothing is playing.
+- If the two-view toggle ships: both views are in the HTML, `event` opens on "By
+  time" and `prep` on "By stage", the toggle switches them, and with JavaScript
+  disabled both lists are visible rather than one being stranded hidden.
 - "Show more" appears only on cards whose description overflows, reveals the full
   text, and flips `aria-expanded`.
 - With JavaScript disabled, amenity descriptions are not clamped.
@@ -743,19 +825,22 @@ image in `event` should move it down; say by how much either way.
 `prep` phase. `prep` matters because these changes have to still be right when
 `EVENT_DATE` moves to 2027 and nobody is watching.
 
-## 16. The order of operations
+## 17. The order of operations
 
 1. Items 1 and 2. `config.ts`, and one line of `index.astro`. Commit.
 2. Item 3, the missing thank-yous. Config only. Commit.
-3. Delegate the verify-script extension and the `UPDATING.md` pass. Send the four
-   questions in §13 to Bryan.
+3. Delegate the verify-script extension and the `UPDATING.md` pass.
 4. Item 4, the tap list. Commit.
 5. Item 5, the hero. Look at it at 390px in `event` and in `prep`. Commit.
 6. Item 6, the area chips. Markup, the helper, the stage-to-area data, the click
    handler, the history push, all together. Browser-check before moving on.
    Commit.
-7. Item 7, the clamp. Commit.
-8. Item 8, the committee and the volunteer list. Commit.
-9. Item 9, follow and share. Commit.
-10. Item 10, the sponsor tiers, if the clock allows.
-11. Full suite, fresh-agent verification, then report.
+7. Item 7, first half only: the "on right now" panel covering the open mic and
+   the key times. Commit. Come back for the two views at step 11 if there is
+   time; do not start them here.
+8. Item 8, the clamp. Commit.
+9. Item 9, the committee and the volunteer list. Commit.
+10. Item 10, follow and share. Commit.
+11. Whatever the clock still allows, in this order: the schedule's two views,
+    then item 11's sponsor tiers.
+12. Full suite, fresh-agent verification, then report.
