@@ -584,7 +584,7 @@ const phaseAttr = (s: NavSection) => s.phases?.join(" ") || undefined;
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth";
+    const behavior: ScrollBehavior = "auto"; // jumps are instant, see the layout
 
     const navH =
       parseInt(

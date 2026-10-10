@@ -5067,12 +5067,9 @@ const sponsorAds = (
   }
   .pf-mapview-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.4rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
     margin-bottom: 0.9rem;
-    scrollbar-width: thin;
-    -webkit-overflow-scrolling: touch;
   }
   .pf-mapview-tab {
     flex: none;
@@ -6129,7 +6126,7 @@ const sponsorAds = (
       e.preventDefault();
       history.pushState(null, "", chip.getAttribute("href") || "");
       settleLazySections(() => {
-        view.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+        view.scrollIntoView({ behavior: "auto" });
         keepAimed(view);
         document
           .getElementById(`pf-mappanel-${id}`)
@@ -6353,11 +6350,11 @@ const sponsorAds = (
       if (Math.abs(window.scrollY - aimedY) > 8) return; // reader moved on
       if (Math.abs(el.getBoundingClientRect().top - NAV_OFFSET) < 4) return;
       settleLazySections(() => {
-        el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+        el.scrollIntoView({ behavior: "auto" });
         aimedY = Math.round(docTop() - NAV_OFFSET);
       });
     };
-    setTimeout(check, 1500); // once the smooth scroll has finished
+    setTimeout(check, 1500); // once the sections around it have laid out
     setTimeout(check, 3500);
     document.fonts?.ready.then(() => setTimeout(check, 50));
     if (document.readyState !== "complete")
@@ -6394,7 +6391,7 @@ const sponsorAds = (
     if (target) {
       const el = target;
       settleLazySections(() => {
-        el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+        el.scrollIntoView({ behavior: "auto" });
         keepAimed(el);
       });
       return;

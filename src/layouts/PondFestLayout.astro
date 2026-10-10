@@ -89,12 +89,8 @@ const { title, description, ogImage, phase } = Astro.props;
       /* ── Anchor jumps ──
          Every in-page link has to clear the sticky bar. That includes the
          amenity cards, which link to each other from inside "What to
-         Expect". */
-      @media (prefers-reduced-motion: no-preference) {
-        html {
-          scroll-behavior: smooth;
-        }
-      }
+         Expect". Jumps are instant: on a page this long a smooth scroll
+         is a blur past twenty sections, and it is a long way back. */
       .pf-section[id],
       .pf-amen-card[id] {
         scroll-margin-top: calc(var(--pf-nav-h) + 12px);
