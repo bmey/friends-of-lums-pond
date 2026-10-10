@@ -39,7 +39,7 @@ export const AUCTIONS: Auction[] = [
 	{
 		id: "2025-AUC006", 
 		name: "Giant Art: The Mey Family \"Colorful Art\"", 
-		description: "4'x8' colorful, geometric art with vibrant unique shapes created by the Mey Family", 
+		description: "4'x8' colorful, geometric art with unique shapes created by the Mey Family", 
 		status: "Winners will be announced after 4pm."
 	},
 	{
@@ -69,43 +69,43 @@ export const AUCTIONS: Auction[] = [
 	{
 		id: "2025-AUC011", 
 		name: "Garrisons Lake - Foursome (1 of 2)", 
-		description: "Golf Foursome Package – Enjoy a round of golf for four at Garrisons Lake, complete with scenic fairways and a day of fun on the greens.", 
+		description: "Golf Foursome Package: Enjoy a round of golf for four at Garrisons Lake, complete with scenic fairways and a day of fun on the greens.", 
 		status: "Ruby Dibecq is the winner. The last 4 of the phone number is 2453."
 	},
 	{
 		id: "2025-AUC012", 
 		name: "Garrisons Lake - Foursome (2 of 2)", 
-		description: "Golf Foursome Package – Enjoy a round of golf for four at Garrisons Lake, complete with scenic fairways and a day of fun on the greens.", 
+		description: "Golf Foursome Package: Enjoy a round of golf for four at Garrisons Lake, complete with scenic fairways and a day of fun on the greens.", 
 		status: "Winners will be announced after 4pm."
 	},
 	{
 		id: "2025-AUC013", 
 		name: "Deerfield Golf Club (1 of 4)", 
-		description: "Golf Foursome Package – Enjoy a round of golf for four at Deerfield, complete with pristine fairways and an unforgettable golf experience.", 
+		description: "Golf Foursome Package: Enjoy a round of golf for four at Deerfield, complete with pristine fairways.", 
 		status: "The winner has been announced and paid."
 	},
 	{
 		id: "2025-AUC014", 
 		name: "Deerfield Golf Club (2 of 4)", 
-		description: "Golf Foursome Package – Enjoy a round of golf for four at Deerfield, complete with pristine fairways and an unforgettable golf experience.", 
+		description: "Golf Foursome Package: Enjoy a round of golf for four at Deerfield, complete with pristine fairways.", 
 		status: "The winner has been announced and paid."
 	},
 	{
 		id: "2025-AUC015", 
 		name: "Deerfield Golf Club (3 of 4)", 
-		description: "Golf Foursome Package – Enjoy a round of golf for four at Deerfield, complete with pristine fairways and an unforgettable golf experience.", 
+		description: "Golf Foursome Package: Enjoy a round of golf for four at Deerfield, complete with pristine fairways.", 
 		status: "Josh Inkell (spelling?) is the winner. Last 4 of phone number is 6217."
 	},
 	{
 		id: "2025-AUC016", 
 		name: "Deerfield Golf Club (4 of 4)", 
-		description: "Golf Foursome Package – Enjoy a round of golf for four at Deerfield, complete with pristine fairways and an unforgettable golf experience.", 
+		description: "Golf Foursome Package: Enjoy a round of golf for four at Deerfield, complete with pristine fairways.", 
 		status: "Matt Lano (spelling?) is the winner. Last 4 of phone number is 9627."
 	},
 	{
 		id: "2025-AUC017", 
 		name: "Delaware State Parks Kids Surf Fishing Vehicle", 
-		description: "Get your little angler ready for adventure! This Delaware State Parks–branded battery-powered Jeep comes with a snackle box of treats, fun park gear, and a kid-sized fishing pole—everything for the ultimate surf-fishing play prize", 
+		description: "Get your little angler ready for adventure! This Delaware State Parks-branded battery-powered Jeep comes with a snackle box of treats, fun park gear, and a kid-sized fishing pole.", 
 		status: "Dennis Woltemate is the winner. Last 4 of phone number is 6869."
 	},
 	{
