@@ -372,6 +372,24 @@ Write the brewery name out in full even where the board shortens it ("Dogfish", 
 
 **Planning committee and volunteers.** The first two groups in `THANKS_GROUPS` are "Planning committee" and "Volunteers", in that order, both alphabetical by last name. Everyone on the committee is in the volunteer list too, and the committee's intro says so, so when someone joins the committee, add the name to both. The volunteer names live in their own array, `VOLUNTEER_NAMES`, and the Volunteers intro takes its count from `VOLUNTEER_NAMES.length`. Do not type a number into that sentence. It was wrong twice in two days when it was typed by hand, and now it cannot be.
 
+**Ad sizes by tier.** The sponsor ad rail sizes each ad by the sponsor's tier, using `SPONSOR_AD_SIZES` in `config.ts`:
+
+```ts
+export const SPONSOR_AD_SIZES = {
+  diamond: "full",
+  platinum: "full",
+  gold: "half",
+  silver: "quarter",
+  bronze: "quarter",
+  family: "quarter",
+  special: "quarter",
+};
+```
+
+Ads sort by tier first, then by the order they appear in `SPONSOR_ADS`, so a gold ad is always ahead of a silver one no matter where you type it. On a desktop the rail is a four-column grid: `"full"` spans all four columns, `"half"` spans two, and `"quarter"` takes one. On a phone the rail is the swipe strip it has always been and the size sets the width of each slide, so a gold ad is noticeably wider than a silver one; tapping any of them still opens the full-size ad. To move a tier up or down, change its word here. Nothing else needs editing.
+
+**Before a platinum or diamond sponsor's ad goes in, read this.** The `-thumb.webp` files are rendered at 600px wide, which is plenty for a half or quarter slot. A full slot is about 1,100px wide on a desktop, and a 600px thumbnail stretched across it will look terrible. If a diamond or platinum sponsor supplies an ad, re-render its `-thumb.webp` at 1,200px or wider before you add it. No sponsor at those tiers has supplied an ad yet, so nothing on the page shows this today, and the first person to hit it will be whoever adds that ad.
+
 Four things on this page are **decided from the lists above**, so you never edit them directly: the Schedule section (from `LINEUP` set times, `OPEN_MIC_SLOTS` and `KEY_TIMES`), the "On right now" box (from `LINEUP` and the phone's clock, event day only), the Food, Drink, Vendors & First Responders section, and the sponsor ad rail.
 
 ### After the festival

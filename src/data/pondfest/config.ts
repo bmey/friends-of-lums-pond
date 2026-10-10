@@ -13,6 +13,7 @@ import type {
   Phase,
   Sponsor,
   SponsorAd,
+  SponsorTier,
   ThanksGroup,
   Tap,
 } from "./types";
@@ -1356,6 +1357,25 @@ export const FIRST_RESPONDERS: string[] = [
 // public/pondfest/ads/ as <slug>-thumb.webp (about 600px) and <slug>.webp
 // (about 1400px). `alt` says what the ad shows; `url` only where the ad
 // itself prints an address, never a guess.
+// How much room each tier's ad gets, by the sponsor's tier in SPONSORS.
+// On a wide screen "full" spans the whole row, "half" two columns of four
+// and "quarter" one; on a phone the rail keeps swiping and a bigger tier
+// is a wider slide. Order is always tier first, then the order below.
+// A full slot is about 1,100px across, so a platinum or diamond ad needs
+// its -thumb.webp rendered at 1,200px or wider, not the usual 600.
+export const SPONSOR_AD_SIZES: Record<
+  SponsorTier,
+  "full" | "half" | "quarter"
+> = {
+  diamond: "full",
+  platinum: "full",
+  gold: "half",
+  silver: "quarter",
+  bronze: "quarter",
+  family: "quarter",
+  special: "quarter",
+};
+
 export const SPONSOR_ADS: SponsorAd[] = [
   {
     slug: "christiana-care",
@@ -1575,7 +1595,7 @@ export const THANKS_GROUPS: ThanksGroup[] = [
     title: "WSFS",
     icon: "fa-paintbrush",
     intro:
-      "WSFS sent a crew for their We Stand For Service day. They made signs, cleaned up, and had the horseshoe pits ready before the rest of us showed up.",
+      "WSFS sent a crew for their We Stand For Service day. They collaborated with us to made signs, cleaned up, and had the horseshoe pits ready for the big day.",
     names: [],
   },
 ];
@@ -1587,9 +1607,8 @@ export const THANKS_GROUPS: ThanksGroup[] = [
 export const EAGLE_SCOUT_NOTE =
   "The benches at the pickleball courts are new this year, and they are Thomas " +
   "Carpenter's Eagle Scout service project. He designed them, raised most of the " +
-  "money for them himself, and built and installed them, with Friends of Lums Pond " +
-  "covering part of the cost. They are here for good. We are dedicating them at " +
-  "4:00 in Area 2. Come and sit down.";
+  "money himself, and built them. We are dedicating them at " +
+  "4:00 in Area 2. Come check them out!";
 // A shorter version, if you would rather:
 //   "The new benches at the pickleball courts are Thomas Carpenter's Eagle
 //   Scout service project: his design, mostly his fundraising, and his

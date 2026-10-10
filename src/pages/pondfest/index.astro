@@ -80,6 +80,7 @@ import {
   CRAFT_VENDORS,
   FIRST_RESPONDERS,
   SPONSOR_ADS,
+  SPONSOR_AD_SIZES,
   OUT_AND_ABOUT_URL,
   OUT_AND_ABOUT_LABEL,
   THANKS_GROUPS,
@@ -98,7 +99,7 @@ import {
   parseWinners,
 } from "../../data/pondfest/winners";
 import { resolvePhase } from "../../data/pondfest/phase";
-import type { NavSection, Phase } from "../../data/pondfest/types";
+import type { NavSection, Phase, SponsorTier } from "../../data/pondfest/types";
 import { publicImageSize } from "../../data/pondfest/imageSize";
 import PondFestNext from "../../components/pondfest/PondFestNext.astro";
 
@@ -708,13 +709,35 @@ const seventyFifthLogoSize = await publicImageSize(SEVENTY_FIFTH_LOGO_WHITE);
 const eventMaps = await Promise.all(
   EVENT_MAPS.map(async (m) => ({ ...m, ...(await publicImageSize(m.src)) })),
 );
-const sponsorAds = await Promise.all(
-  SPONSOR_ADS.map(async (ad) => ({
-    ...ad,
-    thumb: `/pondfest/ads/${ad.slug}-thumb.webp`,
-    fullSrc: `/pondfest/ads/${ad.slug}.webp`,
-    ...(await publicImageSize(`/pondfest/ads/${ad.slug}-thumb.webp`)),
-  })),
+// Each ad takes its tier from the sponsor list, and the rail runs in tier
+// order, biggest first, before any size treatment: half the hierarchy is
+// which ad you see first. An ad whose sponsor is not in SPONSORS sits last.
+const tierOrder: SponsorTier[] = [
+  "diamond",
+  "platinum",
+  "gold",
+  "silver",
+  "bronze",
+  "family",
+  "special",
+];
+const adTier = (sponsor: string): SponsorTier =>
+  SPONSORS.find((sp) => sp.name === sponsor)?.tier || "special";
+const sponsorAds = (
+  await Promise.all(
+    SPONSOR_ADS.map(async (ad, i) => ({
+      ...ad,
+      order: i,
+      tier: adTier(ad.sponsor),
+      size: SPONSOR_AD_SIZES[adTier(ad.sponsor)],
+      thumb: `/pondfest/ads/${ad.slug}-thumb.webp`,
+      fullSrc: `/pondfest/ads/${ad.slug}.webp`,
+      ...(await publicImageSize(`/pondfest/ads/${ad.slug}-thumb.webp`)),
+    })),
+  )
+).sort(
+  (a, b) =>
+    tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier) || a.order - b.order,
 );
 ---
 
@@ -2309,13 +2332,12 @@ const sponsorAds = await Promise.all(
               <div class="pf-ads" id="pf-ads">
                 <h3 class="pf-ads-title">From our sponsors</h3>
                 <p class="pf-ads-sub">
-                  Swipe through, and tap one to read it full size. These
-                  businesses and organizations paid for Pond Fest; give them a
-                  second.
+                  Tap one to read it full size. These businesses and
+                  organizations paid for Pond Fest; give them a second.
                 </p>
                 <ul class="pf-ads-rail">
                   {sponsorAds.map((ad) => (
-                    <li>
+                    <li class={`pf-ad--${ad.size}`} data-tier={ad.tier}>
                       <a
                         class="pf-ad"
                         href={ad.fullSrc}
@@ -5258,13 +5280,14 @@ const sponsorAds = await Promise.all(
     margin: 0 0 1rem;
     font-size: 0.92rem;
   }
+  /* A swipe rail on a phone, where a bigger tier is a wider slide; a
+     four-column grid from 900px up, where it is a wider span. Tier order
+     either way. */
   .pf-ads-rail {
     list-style: none;
     margin: 0;
     padding: 0 0 0.5rem;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 72%;
+    display: flex;
     gap: 0.8rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -5273,6 +5296,13 @@ const sponsorAds = await Promise.all(
   }
   .pf-ads-rail > li {
     scroll-snap-align: start;
+    flex: 0 0 60%;
+  }
+  .pf-ads-rail > .pf-ad--half {
+    flex-basis: 76%;
+  }
+  .pf-ads-rail > .pf-ad--full {
+    flex-basis: 92%;
   }
   .pf-ad {
     display: block;
@@ -5298,8 +5328,38 @@ const sponsorAds = await Promise.all(
     border-top: 1px solid rgba(61, 47, 122, 0.1);
   }
   @media (min-width: 620px) {
+    .pf-ads-rail > li {
+      flex-basis: 260px;
+    }
+    .pf-ads-rail > .pf-ad--half {
+      flex-basis: 340px;
+    }
+    .pf-ads-rail > .pf-ad--full {
+      flex-basis: 560px;
+    }
+  }
+  @media (min-width: 900px) {
     .pf-ads-rail {
-      grid-auto-columns: 300px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* the ads are every shape, so cards size to their own ad */
+      align-items: start;
+      overflow: visible;
+      padding-bottom: 0;
+    }
+    .pf-ads-rail .pf-ad {
+      height: auto;
+    }
+    .pf-ads-rail > li,
+    .pf-ads-rail > .pf-ad--half,
+    .pf-ads-rail > .pf-ad--full {
+      flex-basis: auto;
+    }
+    .pf-ads-rail > .pf-ad--half {
+      grid-column: span 2;
+    }
+    .pf-ads-rail > .pf-ad--full {
+      grid-column: 1 / -1;
     }
   }
 
