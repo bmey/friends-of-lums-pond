@@ -2,8 +2,8 @@ import type { ArchiveYear } from "../types";
 
 export const PONDFEST_2025: ArchiveYear = {
   year: 2025,
-  date: "2025-10-11",
-  dateDisplay: "Saturday, October 11, 2025",
+  date: "2025-10-04",
+  dateDisplay: "Saturday, October 4, 2025",
   attendees: 1500,
   grossRevenue: 19000,
   fundraisingGoal: 10000,

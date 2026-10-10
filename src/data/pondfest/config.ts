@@ -22,6 +22,14 @@ export const EVENT_DATE = "2026-10-10T11:00:00";
 // Human-readable strings shown on the page
 export const EVENT_DATE_DISPLAY = "Saturday, October 10, 2026";
 export const EVENT_TIME = "11:00 AM – 6:00 PM";
+
+// The standing promise, new in 2026. Pond Fest 2024 was October 12 and 2025 was
+// October 4, both one-offs; this is the first year we are committing to a fixed
+// weekend so people can plan around it. Say it before, during and after the
+// event, and every year after this one.
+export const ANNUAL_PROMISE =
+  "Pond Fest is the second Saturday of October, every year. Mark it now.";
+export const ANNUAL_PROMISE_SHORT = "Second Saturday of October, every year.";
 export const EVENT_LOCATION = "Lums Pond State Park, Bear, DE";
 export const EVENT_TAGLINE =
   "A concert for a cause. Live music, food, community, and nature.";
