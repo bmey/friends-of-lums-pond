@@ -497,6 +497,82 @@ comments and `UPDATING.md`. **The `pondfest-dayof-wip` branch predates that pass
 so anything lifted from it needs re-checking — `cheque` in particular survives in
 its `config.ts` and `types.ts` comments.
 
+**No em-dashes in reader-facing copy.** Bryan's call, and it applies to the whole
+site, not just new work. Replace by the job the dash was doing: a pair acting as
+parentheses becomes commas, a single dash introducing an afterthought becomes a
+period, a dash before a list becomes a colon, and a label separator like
+`"Dave Muddiman — Starground Audio"` becomes a comma. **En-dashes stay** — they
+are correct in time ranges like "11:00 AM – 12:15 PM" and are not the tell.
+
+Be honest with yourself about the ranking, though, because it is counterintuitive
+and it decides where your time goes:
+
+### What actually gives copy away, in priority order
+
+Researched 9 Oct 2026 against corpus studies rather than received wisdom, because
+the received wisdom is now wrong in places. Three framing facts:
+
+- **Density, not instances.** One marker proves nothing. The signal is pile-up.
+- **Punctuation is the weakest tell left.** A September 2026 study of 10,000
+  human and 90,000 AI articles found GPT-6 uses em-dashes roughly 88% *below* the
+  human rate, and Wikipedia has moved em-dash overuse to its list of historical
+  indicators. We are removing them because Bryan asked and because the density on
+  some pages reads as draft work, not because a dash convicts anyone.
+- **Vocabulary and sentence shape are the strongest.** Peer-reviewed corpus work
+  puts some words at 100x human frequency, and expert human detectors cite
+  vocabulary in 53% of their judgments and sentence structure in 36%.
+
+Fix these first. They matter more than the dashes:
+
+1. **Negative parallelism.** "Not just X, it's Y", "not only ... but also".
+   Measured at 100x to 576x human rates and the highest-signal pattern there is.
+   Say the true thing once. Delete the false contrast rather than rebalancing it.
+2. **Significance and promotional vocabulary.** crucial, vital, pivotal,
+   testament, cherished, beloved, vibrant, unforgettable, nestled, boasts,
+   showcase, foster, tapestry, rich, diverse array, premier, stands as, serves as.
+   **The fix is a specific fact, not a milder adjective** — "important" fails the
+   same test as "crucial". If there is no fact to hand, cut the sentence.
+3. **Participial tails that editorialize.** Grep `, ensuring`, `, highlighting`,
+   `, fostering`, `, reflecting`, `, showcasing`, `, creating an`. Two to five
+   times human rates. Cut the tail; the sentence is usually done without it.
+4. **Copula avoidance.** Put "is" and "has" back. "Pond Fest features live music"
+   becomes "Pond Fest has live music". "The boathouse serves as the meeting point"
+   becomes "We meet at the boathouse".
+5. **Terminal summary paragraphs.** Delete the last paragraph of a section. If
+   nothing was lost, it was filler.
+6. **Bold-header-colon lists inside prose**, emoji bullets, Title Case headings.
+7. **Then** the em-dashes and the kicker labels.
+
+### Leave these alone
+
+Over-correcting produces its own flat, hiding-something register.
+
+- **Semicolons, parentheses and asides.** Parenthetical asides are *more* common
+  in human writing than machine writing. Add them rather than removing them.
+- **Exclamation marks.** Humans use them over 100x more than any current model.
+  Our house voice is dry by preference, which is a taste call, but never strip one
+  for AI-avoidance reasons: that moves toward the machine, not away from it.
+- **Curly quotes, perfect grammar, formal words, transition words in isolation.**
+  All documented as ineffective indicators. Never introduce errors to seem human.
+- **A rule of three when there are genuinely three things.** Concrete lists are
+  fine. Manufactured abstract triads are the tell.
+
+### The half that is usually skipped
+
+Deleting tells makes copy inoffensive. It does not make it sound like a person.
+What does: a name, a road, a time, a price, a number, or a dry aside only an
+organizer would know. The best single test is whether a sentence puts an image in
+the reader's head. "A stage sized for people who are three feet tall" and "Handy
+when someone has had enough of standing in lines" could not have been written by
+something that has never been to the park. **Every page should carry at least one
+line like that.** It does more than every deletion above combined.
+
+One caveat worth holding onto: a study of 25 million comments found that readers'
+accusations of AI authorship do not track the measurable features of AI text. You
+cannot win this by purging punctuation, and you cannot satisfy a determined
+accuser. The reason to do the work is that it makes the copy more specific and
+better, which is a reason that survives either way.
+
 **No kicker labels above headings.** The small uppercase line that used to sit
 above every section heading ("The Experience", "Thank You", "Questions") is a
 stock template pattern people recognize on sight, and it was removed from all
