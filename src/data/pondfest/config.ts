@@ -168,7 +168,7 @@ export const HASHTAGS = ["#DEStateParks", "#LumsPondFest"];
 
 // Shown in an orange banner at the top of the page; leave empty to hide
 export const DAY_OF_ALERT =
-  "Gates open at 11. Free parking at all three areas, the shuttle runs all day, and the welcome team at the area split will point you the right way.";
+  "Gates open at 11. Free parking at all three areas, the shuttle runs all day, and the welcome team is at the fee booth to get you started.";
 
 export const SHUTTLE_INFO =
   "A free shuttle loops between Areas 1, 2, and 3 and the Lums Pond campground all day. The " +
@@ -176,9 +176,9 @@ export const SHUTTLE_INFO =
   "camping, plan on riding the shuttle both ways.";
 export const PARKING_NOTES =
   "There is free parking at all three event areas. Follow the Pond Fest signs from the park " +
-  "entrance, and the welcome team at the area split will point you to the closest lot. The " +
-  "standard park entrance fee is collected at the gate: $5 for Delaware vehicles, $10 " +
-  "out-of-state, and annual passes are accepted.";
+  "entrance. An officer at the area split is directing traffic, and the welcome team is at the " +
+  "fee booth. The standard park entrance fee is collected at the gate: $5 for Delaware " +
+  "vehicles, $10 out-of-state, and annual passes are accepted.";
 export const FEE_NOTE =
   "Free to attend. The standard park entrance fee still applies at the gate: $5 for Delaware " +
   "vehicles, $10 out-of-state, and annual passes are accepted.";
@@ -955,12 +955,12 @@ export const FAQ: FAQItem[] = [
   {
     question: "Will I have cell service?",
     answer:
-      "Coverage at the park is workable, but it can get spotty with a big crowd. Screenshot the event map, and the schedule once it is posted, before you arrive. Directional signs and the welcome tent at the area split can always point you the right way.",
+      "Coverage at the park is workable, but it can get spotty with a big crowd. Screenshot the event map, and the schedule once it is posted, before you arrive. Directional signs will get you there, and the welcome team at the fee booth can point you the right way.",
   },
   {
     question: "Is Pond Fest stroller and wheelchair accessible?",
     answer:
-      "Yes. The event areas are mostly flat and grassy, with paved park roads, and the free shuttle runs between all three areas all day. There are marked accessible parking spaces in the park lots, and the welcome team at the area split can point you to the closest ones. Lums Pond also has accessible trails, and Delaware State Parks keeps a free all-terrain Action Trackchair at the park: motorized treads, a tilting seat, and a companion joystick so someone can help you drive it. Reserve it at no cost by calling the park office at (302) 368-6989 at least 48 hours ahead; sessions are three hours and start with a short how-to video and a waiver. Planning a visit and want to know more? Email pondfest@friendsoflumspond.org and we will help however we can.",
+      "Yes. The event areas are mostly flat and grassy, with paved park roads, and the free shuttle runs between all three areas all day. Every one of the three areas has marked accessible parking spaces, and the enforcement team there can get you into a proper spot. Lums Pond also has accessible trails, and Delaware State Parks keeps a free all-terrain Action Trackchair at the park: motorized treads, a tilting seat, and a companion joystick so someone can help you drive it. Reserve it at no cost by calling the park office at (302) 368-6989 at least 48 hours ahead; sessions are three hours and start with a short how-to video and a waiver. Planning a visit and want to know more? Email pondfest@friendsoflumspond.org and we will help however we can.",
   },
   {
     question: "What should I bring?",

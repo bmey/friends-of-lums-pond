@@ -311,7 +311,7 @@ The page switches itself to the `event` phase seven days before `EVENT_DATE` (se
 
 ```ts
 export const DAY_OF_ALERT =
-  "Gates open at 11! Free parking at all three areas, and the welcome team at the split will guide you.";
+  "Gates open at 11. Free parking at all three areas, the shuttle runs all day, and the welcome team is at the fee booth to get you started.";
 ```
 
 **If the rain date is invoked.** Do _both_ of these:
