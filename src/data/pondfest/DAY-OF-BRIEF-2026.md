@@ -113,7 +113,50 @@ use it so images reserve their space and the page does not jump under a thumb.
   `premier-paws`, `little-bear`, `rainbow-records`, `eric-morrison`.
 - `public/pondfest/pond-fest-2027.ics` — save-the-date, Sat 9 Oct 2027, 11–6 ET.
 
-Raw source art is in `to-process/` and is deliberately **not** in git (32 MB).
+Raw source art is in `to-process/`, gitignored on purpose. It is 32 MB of
+print-ready vendor art the site never serves, and anything committed to a public
+repo stays in its history for good. Every rendition the page needs is already
+committed, and every word printed on those graphics is transcribed in §7, so you
+should not need the originals. Go back to them for two things: re-rendering a map
+at a different crop or size, and checking a transcription against the source when
+something looks wrong.
+
+Three things to know before you read them.
+
+**Gitignored is not missing.** They are sitting on disk and `cat`, `sed`, `sharp`
+and `qlmanage` open them normally. A verified byte-for-byte backup lives outside
+the repo at `~/pondfest-2026-source/`.
+
+**Grep and Glob will not find them.** Both honor `.gitignore`, so a search from
+the repo root returns nothing out of `to-process/` and an agent sent to go looking
+will conclude the files do not exist. Open them by full path instead, or pass
+`rg --no-ignore`. The paths, spaces and shouty capitals and all, so quote them:
+
+```
+to-process/craft-vendors-and-nonprofits.JPG
+to-process/lineup-times.png
+to-process/open-mic.JPG
+to-process/volunteers.md
+to-process/maps/Full 2026 Map.png
+to-process/maps/2026 Area 1 Map.jpg
+to-process/maps/2026 Area 2 Map.png
+to-process/maps/2026 Area 3 Map.png
+to-process/maps/Bus Map 1.png
+to-process/maps/Bus Map 2.png
+to-process/sponsor-ads/christiana care ad.pdf
+to-process/sponsor-ads/union park ad.pdf
+to-process/sponsor-ads/mr mulch ad.jpg
+to-process/sponsor-ads/premier paws ad.png
+to-process/sponsor-ads/LITTLE BEAR AD.PNG
+to-process/sponsor-ads/rainbow records ad.png
+to-process/sponsor-ads/eric morrison ad.pdf
+```
+
+**No worktrees, and never `git clean -fdx`.** A git worktree is built from tracked
+files, so `to-process/` does not exist inside one and any subagent isolated that
+way loses the source art. `git clean -fdx` deletes the folder outright. Every
+agent works in the same checkout, `/Users/bryanmey/dev/friends-of-lums-pond`, on
+`main`.
 
 **On branch `pondfest-dayof-wip` (commit `7a10393`) — a partial build that
 compiles.** Salvage from it freely; it is there to be mined, not merged as-is.
@@ -284,7 +327,8 @@ archive page said so until tonight.
 ## 7. Source data — all transcribed and verified
 
 Everything below was read off the supplied graphics and is in the branch's
-`config.ts` already formatted. The graphics themselves are in `to-process/`.
+`config.ts` already formatted. The graphics themselves are in `to-process/`;
+read §4 first for how to open them, because a plain search will not turn them up.
 
 ### Music schedule
 
