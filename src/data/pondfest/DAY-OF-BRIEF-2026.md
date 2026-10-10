@@ -150,11 +150,11 @@ still at the fest.
 Give him the direct phone-editable link in `UPDATING.md`:
 `https://github.com/bmey/friends-of-lums-pond/edit/main/src/data/pondfest/winners.ts`
 
-**Confirm with Bryan before relying on it:** GitHub Pages rebuilds take ~3 minutes,
-so committing at 4:00 means winners are live around 4:05, leaving 55 minutes of
-the claim window. If he wants it faster than that, say so — it is a different
-architecture (a client-fetched JSON file, or a Google Sheet published to CSV) and
-worth raising rather than discovering at 4:00 PM.
+**The rebuild delay is fine — Bryan confirmed it.** A GitHub Pages rebuild takes a
+few minutes, and he will be working nearby and posting ahead of the 4:00
+announcement rather than at it. Build the simple commit-and-rebuild version. Do
+not reach for a client-fetched JSON file or a published Google Sheet to shave
+minutes off; it is more moving parts for no benefit he needs.
 
 ## 6. Source data — all transcribed and verified
 
@@ -202,8 +202,8 @@ cards, which is a cheap way to get there.
 
 Delaware Capitol Police · Delaware Department of Correction · Delaware River & Bay
 Authority Police · Delaware State Police · Division of Alcohol & Tobacco
-Enforcement · New Castle County Police · Newark Police Department · Townsend Police
-Department · U.S. Marshals · Volunteer Hose Company · Wilmington Police Department
+Enforcement · Marshalls · New Castle County Police · Newark Police Department ·
+Townsend Police Department · Volunteer Hose Company · Wilmington Police Department
 
 ### Craft vendors and nonprofits — Area 1, 38 of them
 
@@ -271,22 +271,24 @@ Offer Bryan a shorter alternative; he may want his own words.
 
 ## 7. Things to flag to Bryan — do not silently decide these
 
-1. **"Marshalls"** in his first-responder list was rendered as **U.S. Marshals**.
-   Almost certainly right given the company it keeps, but it is a law-enforcement
-   agency's name on a public page — confirm it.
-2. **"Delaware capital police"** was corrected to **Delaware Capitol Police**, the
+**Already settled, do not reopen:** the first-responder list reads **"Marshalls"**
+because that is the name Bryan was given for the agency. It is not a typo for
+U.S. Marshals. Leave it exactly as it is.
+
+
+1. **"Delaware capital police"** was corrected to **Delaware Capitol Police**, the
    agency's actual name.
-3. **"Volunteer hose co."** was rendered as **Volunteer Hose Company**. There is a
+2. **"Volunteer hose co."** was rendered as **Volunteer Hose Company**. There is a
    Volunteer Hose Company in Middletown; confirm it is that one.
-4. **Backyard Squeeze appears twice** — as an Area 1 food truck and in the craft
+3. **Backyard Squeeze appears twice** — as an Area 1 food truck and in the craft
    vendor graphic. Currently listed in both. Ask which he wants.
-5. **"Nestbox" vs "Nest Box"** — the printed map says `Stage: Nestbox`, existing
+4. **"Nestbox" vs "Nest Box"** — the printed map says `Stage: Nestbox`, existing
    site copy says "the Nest Box pavilion". The branch uses "Nest Box". Trivial, but
    people will be comparing the page against the printed map.
-6. **Vendor names are transcribed verbatim** from the graphic, including
+5. **Vendor names are transcribed verbatim** from the graphic, including
    "Sasnspice Sweets", "The Witches of the Eastt", and "Ohana Bonded Forever
    LinkSmith" — that last one may be two separate vendors on one line.
-7. **The open mic graphic has a typo**, "Original Music Association **OD**
+6. **The open mic graphic has a typo**, "Original Music Association **OD**
    Delaware". Transposing it to HTML fixes it silently, which is correct, but worth
    telling OMAD.
 
@@ -379,6 +381,15 @@ A pass over the repo on 9 Oct 2026 fixed a dozen of these in live copy, code
 comments and `UPDATING.md`. **The `pondfest-dayof-wip` branch predates that pass**,
 so anything lifted from it needs re-checking — `cheque` in particular survives in
 its `config.ts` and `types.ts` comments.
+
+**No kicker labels above headings.** The small uppercase line that used to sit
+above every section heading ("The Experience", "Thank You", "Questions") is a
+stock template pattern people recognize on sight, and it was removed from all
+four Pond Fest pages on 9 Oct 2026 — the `.pf-eyebrow` class no longer exists.
+Do not reintroduce it under a new name. A section heading should say what the
+section is and stand on its own; if it needs a kicker to make sense, rewrite the
+heading. The sponsor tier labels ("Diamond Sponsors") are a different thing and
+stay — they label the list underneath rather than decorating a heading.
 
 **Facts.** Never invent one to fill a gap — not a food truck, not a time, not a
 sponsor's web address, not a photo credit. The existing config comments say this
