@@ -231,12 +231,19 @@ claim prizes** · 5:30 final sets end · 6:00 festival ends
 
 Thomas Carpenter built and installed benches at the pickleball courts as his Eagle
 Scout service project; they are dedicated at 4:00 PM in Area 2. Bryan wasn't sure
-how to word it. The branch uses:
+how to word it.
 
-> The benches at the pickleball courts are new this year, designed, funded, built
-> and installed by Thomas Carpenter as his Eagle Scout service project. They are
-> his gift to the park, and they are here for good. We are dedicating them at 4:00
-> in Area 2 — come and sit down.
+**Get the funding right.** Thomas did his own fundraising for the majority of the
+project. Friends of Lums Pond partly sponsored and funded it, but it is his
+project and his money that built it — do not write anything that reads as though
+FOLP paid for the benches, and do not write that he funded all of it either. The
+branch uses:
+
+> The benches at the pickleball courts are new this year, and they are Thomas
+> Carpenter's Eagle Scout service project. He designed them, raised most of the
+> money for them himself, and built and installed them, with Friends of Lums Pond
+> covering part of the cost. They are here for good. We are dedicating them at
+> 4:00 in Area 2 — come and sit down.
 
 Offer Bryan a shorter alternative; he may want his own words.
 
