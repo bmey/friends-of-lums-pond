@@ -568,6 +568,14 @@ export const MERCH_ITEMS: MerchItem[] = [
       "Charcoal Pond Fest 2026 T-shirt with a heron on drums on the front and the band lineup on the back",
   },
   {
+    name: "Event Shirt",
+    note: "Heather green. This year's sponsors on the back",
+    availability: "fest",
+    imageUrl: "/pondfest/merch/event-shirt.webp",
+    imageAlt:
+      "Heather green Pond Fest 2026 T-shirt, a great blue heron in a circle crest on the front and the year's sponsor logos on the back",
+  },
+  {
     name: "Fleece Hoodie",
     note: "Limited edition, pre-order only",
     availability: "presale",
