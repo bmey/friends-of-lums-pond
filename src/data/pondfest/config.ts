@@ -965,6 +965,11 @@ export const FAQ: FAQItem[] = [
       "There is free parking at all three event areas. Follow the Pond Fest signs from the park entrance at 1068 Howell School Rd. Areas 1, 2, and 3 are all walkable, with a marked path connecting Area 1 to Area 2, and a free shuttle loops between all three areas throughout the day.",
   },
   {
+    question: "How do I find what is in each area?",
+    answer:
+      "The maps in Plan Your Visit, above, show what is where in each of the three areas, and there are printed pamphlets at the fest. The walking path between Area 1 and Area 2 is signed, and the free shuttle loops between all three areas all day.",
+  },
+  {
     question:
       "I'm camping at Lums Pond that weekend. How do I get to the festival?",
     answer:
@@ -991,6 +996,16 @@ export const FAQ: FAQItem[] = [
       "Coverage at the park is workable, but it can get spotty with a big crowd. Screenshot the event map, and the schedule once it is posted, before you arrive. Directional signs will get you there, and the welcome team at the fee booth can point you the right way.",
   },
   {
+    question: "Where is first aid, and how do I get help in another area?",
+    answer:
+      "First aid is in Area 1, at the info and check-in tent next to the bus stop. In Area 2 or Area 3, find the nearest volunteer: they carry walkie-talkies and can get a first responder to you wherever you are.",
+  },
+  {
+    question: "What if a child gets separated from their family?",
+    answer:
+      "Bring the child to the main info tent in Area 1. The volunteers there take it from that point and reconnect the child with their parents. In another area, tell the nearest volunteer, who can radio ahead.",
+  },
+  {
     question: "Is Pond Fest stroller and wheelchair accessible?",
     answer:
       "Yes. The event areas are mostly flat and grassy, with paved park roads, and the free shuttle runs between all three areas all day. Every one of the three areas has marked accessible parking spaces, and the enforcement team there can get you into a proper spot. Lums Pond also has accessible trails, and Delaware State Parks keeps a free all-terrain Action Trackchair at the park: motorized treads, a tilting seat, and a companion joystick so someone can help you drive it. Reserve it at no cost by calling the park office at (302) 368-6989 at least 48 hours ahead; sessions are three hours and start with a short how-to video and a waiver. Planning a visit and want to know more? Email pondfest@friendsoflumspond.org and we will help however we can.",
@@ -998,7 +1013,7 @@ export const FAQ: FAQItem[] = [
   {
     question: "What should I bring?",
     answer:
-      "Lawn chairs or blankets for the music areas, cash or card, comfortable walking shoes, sunscreen, and a reusable water bottle. And a phone with the event map screenshotted, as above.",
+      "Layers for an October day outdoors, lawn chairs or blankets for the music areas, cash or card, comfortable walking shoes, sunscreen, and a reusable water bottle. Your own food and drink are fine too, and dogs are welcome on a leash. And a phone with the event map screenshotted, as above.",
   },
   {
     question: "What causes does Pond Fest support?",
@@ -1009,6 +1024,18 @@ export const FAQ: FAQItem[] = [
     question: "Can I volunteer?",
     answer:
       "Yes. Pond Fest runs on volunteers, and we need hands for setup, Junior Jam, info tables, and day-of operations. Shifts are short and the company is great. Sign-ups open in the spring: use the Volunteer button above while it is there, or email pondfest@friendsoflumspond.org any time and we will find you a job.",
+  },
+  {
+    question: "I'm volunteering. Where do I park and check in?",
+    answer:
+      "Park the way everyone does: follow the Pond Fest signs and the officer at the area split, then check in at the info and check-in tent in Area 1, next to the bus stop. If Area 1 is full, park in the next area and either catch the shuttle or walk. Area 2 to Area 1 is about a quarter mile.",
+    phases: ["prep", "event"],
+  },
+  {
+    question: "Do volunteers pay the park entrance fee?",
+    answer:
+      "No. Show the parking pass we emailed you at the fee booth. If you already have a Delaware State Parks annual pass, that works too.",
+    phases: ["prep", "event"],
   },
 ];
 
