@@ -1470,7 +1470,9 @@ const sponsorAds = await Promise.all(
                     </span>
                   )}
                 </div>
-                <p class="pf-amen-desc">{a.desc}</p>
+                <p class="pf-amen-desc" id={`${a.id}-desc`}>
+                  {a.desc}
+                </p>
                 {a.links && a.links.length > 0 && (
                   <div class="pf-amen-links">
                     {a.links.map((link) => (
@@ -3054,6 +3056,12 @@ const sponsorAds = await Promise.all(
     background: var(--pf-light-alt);
     margin-bottom: 1.1rem;
   }
+  /* shorter photos on a phone, where twenty-two cards stack in one column */
+  @media (max-width: 599px) {
+    .pf-amen-media {
+      aspect-ratio: 2 / 1;
+    }
+  }
   .pf-amen-media img {
     width: 100%;
     height: 100%;
@@ -3151,6 +3159,35 @@ const sponsorAds = await Promise.all(
     color: #4a3d6b;
     margin: 0;
     max-width: 46ch;
+  }
+  /* Two lines, then "Show more". The attribute is set by script, and only
+     on cards where the text overflows, so with nothing running the full
+     text shows and a two-line card never grows a pointless button. */
+  .pf-amen-desc[data-pf-clamp=""] {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  /* the button is made by script, so it needs :global() like the clock rows */
+  .pf-amen-body :global(.pf-amen-more) {
+    align-self: flex-start;
+    margin: -0.15rem 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--pf-purple);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(61, 47, 122, 0.35);
+  }
+  .pf-amen-body :global(.pf-amen-more:hover),
+  .pf-amen-body :global(.pf-amen-more:focus-visible) {
+    text-decoration-color: currentColor;
   }
   .pf-amen-area {
     display: inline-flex;
@@ -5727,6 +5764,49 @@ const sponsorAds = await Promise.all(
 
   setupGalleryMore();
   document.addEventListener("astro:after-swap", setupGalleryMore);
+
+  // ── "Show more" on the amenity cards ──────────────────────────────
+  // Descriptions clamp to two lines, but only from here, so with nothing
+  // running the full text shows. The button is added only where the text
+  // actually overflows. The section is lazy, and a card that has not been
+  // laid out measures as nothing, so everything is rendered for the moment
+  // it takes to measure.
+  function setupAmenityMore() {
+    const descs = Array.from(
+      document.querySelectorAll<HTMLElement>(".pf-amen-desc"),
+    ).filter((d) => d.dataset.pfClamp === undefined);
+    if (!descs.length) return;
+    const root = document.documentElement;
+    root.classList.add("pf-render-all");
+    descs.forEach((d) => d.setAttribute("data-pf-clamp", ""));
+    const overflowing = descs.filter(
+      (d) => d.scrollHeight > d.clientHeight + 1,
+    );
+    root.classList.remove("pf-render-all");
+    descs
+      .filter((d) => !overflowing.includes(d))
+      .forEach((d) => d.removeAttribute("data-pf-clamp"));
+    overflowing.forEach((desc) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "pf-amen-more";
+      btn.setAttribute("aria-expanded", "false");
+      if (desc.id) btn.setAttribute("aria-controls", desc.id);
+      btn.textContent = "Show more";
+      btn.addEventListener("click", () => {
+        const open = btn.getAttribute("aria-expanded") === "true";
+        desc.setAttribute("data-pf-clamp", open ? "" : "open");
+        btn.setAttribute("aria-expanded", open ? "false" : "true");
+        btn.textContent = open ? "Show more" : "Show less";
+      });
+      desc.after(btn);
+    });
+  }
+
+  // measured once the fonts are in, since a fallback font wraps differently
+  if (document.fonts?.ready) document.fonts.ready.then(setupAmenityMore);
+  else setupAmenityMore();
+  document.addEventListener("astro:after-swap", setupAmenityMore);
 
   // ── Lazy sections vs. in-page jumps ───────────────────────────────
   // Sections below the fold skip layout and paint until they are scrolled
