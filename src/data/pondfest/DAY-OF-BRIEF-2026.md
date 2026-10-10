@@ -43,6 +43,11 @@ need to re-read the original request or come back for more instructions.
 > copy, the styling, the commits and the assets. Treat it as a requirement, not a
 > style note.
 >
+> §11 is the exit condition. Write its verification script early, run it as you
+> go, and do not tell me the work is done until it exits clean on a fresh build.
+> A subagent reporting success is a claim; re-run the check yourself before you
+> believe it.
+>
 > Before reporting progress, audit each claim against a tool result from this
 > session. Only report work you can point to evidence for; if something is not yet
 > verified, say so. Pause for me only when the work genuinely requires it: a
@@ -318,7 +323,9 @@ tomorrow carries those along with it. Worth telling him before he pushes.
 
 GitHub Actions rebuilds and deploys on push to `main`, taking roughly 3 minutes.
 
-## 9. Verifying
+## 9. Driving a browser in this repo
+
+The mechanics. **What** to check is §11, which is the exit condition for the job.
 
 Do not trust the built HTML alone — Bryan reviews rendered output closely and has
 previously caught things that only show up in a real browser (a `mailto:` opening
@@ -434,7 +441,122 @@ quietly drop it — that is a disclosure decision and it is his to make.
 process anywhere in the output, and nothing on the live site that describes how it
 was built.
 
-## 11. Lessons from the first attempt
+### Delegate this part
+
+The copy pass is the one piece of this job that fans out cleanly, because it
+touches files nothing else in this build needs: `src/pages/about/`,
+`src/pages/resources/`, `src/content/blog/`, and the older `/resources/pondfest*`
+pages. Hand a subagent the sweep of everything **outside** `src/pages/pondfest/`
+and `src/data/pondfest/`, and keep those two directories yourself, since that is
+where you are already editing and a second writer there will collide with you.
+
+Give the subagent the §10 rules and the em-dash replacement guidance, and tell it
+to leave band blurbs alone: those are the artists' own words about themselves,
+supplied by them, and are not ours to rewrite. Same for the sponsor disclosure
+text, which the board approved as written.
+
+When it reports back, **re-run the grep yourself** before believing it. That is
+checks 6 through 9 in §11.
+
+Scale, as of this writing: about 175 em-dashes across the repo, the largest
+concentrations being this brief (71), `src/pages/about/history.astro` (35),
+`src/pages/pondfest/index.astro` (20) and `src/data/pondfest/config.ts` (19).
+Thirteen en-dashes exist and all of them are time ranges; they stay.
+
+## 11. Validation: the session does not end until this passes
+
+The first attempt produced a page that built cleanly and did not work. A green
+build proves the markup parses. It proves nothing about whether a tab switches,
+whether an image loads, or whether the clock shows the right band. So the exit
+condition for this job is not "it builds" and not "the subagents reported done".
+
+**Write `scripts/verify-dayof.mjs` early, before most of the page exists.** It
+should run every check below, print one line per check, and exit non-zero if any
+fail. Run it after each section you finish, not only at the end. You may not
+report the work complete until it exits 0 on a fresh build.
+
+**Treat every subagent report as a claim and re-verify it yourself.** If an agent
+says it removed all the em-dashes, the orchestrator runs the grep. If an agent
+says the images are optimized, the orchestrator stats the files. An agent's
+summary is a starting point for a check, never a substitute for one.
+
+### Tier 1 — structure (fast, run constantly)
+
+1. `npm run build` exits 0.
+2. Every expected section id is present in `dist/pondfest/index.html`.
+3. **Counts match the data.** 11 acts, 13 open mic slots, 15 food trucks,
+   38 vendors, 11 agencies, 13 key times, 7 sponsor ads, 6 maps. A silently
+   dropped array is the easiest failure to miss by eye and the easiest to catch
+   here.
+4. **Every in-page anchor resolves.** Collect every `href="#..."` in the built
+   HTML and assert an element with that id exists. This is what catches a
+   schedule row pointing at a band anchor that was never rendered.
+5. **Every referenced asset exists.** Each `src` and `data-src` under
+   `/pondfest/` maps to a real file. A typo in a map filename is otherwise
+   invisible until someone taps the tab in the park.
+
+### Tier 2 — copy and style gates (grep, binary, no judgment)
+
+6. Zero em-dashes in reader-facing built output.
+7. Zero British spellings, from the list in §10.
+8. Zero kicker labels: `pf-eyebrow` must not exist anywhere.
+9. Zero banned vocabulary from the §10 list in reader-facing copy.
+10. En-dashes are still allowed, but only inside time strings. Assert that
+    rather than banning them.
+
+### Tier 3 — behavior in a real browser (the part that was missing)
+
+Use the puppeteer setup in §9. These are the checks that actually matter.
+
+11. **Map tabs work.** Click each tab in turn; assert its panel becomes visible,
+    its `img` gains a real `src`, and the image truly decodes
+    (`naturalWidth > 0`). A tab that switches but shows a broken image passes a
+    naive check and fails a visitor.
+12. **Deferral actually defers.** On first paint exactly one map image has a
+    `src`. After clicking the third tab, exactly three do. This is the check
+    that protects the page-weight budget from quietly regressing.
+13. **The clock logic is right.** Override `Date.now` with
+    `page.evaluateOnNewDocument` and assert: at 13:00 on event day the panel
+    names Camp, Cher's Playground and Dansino; at 09:00 it is hidden or says the
+    day has not started; at 19:00 it does not claim something is playing. Check
+    the boundaries too, 12:15 and 12:45, where one set ends before the next
+    begins.
+14. **The winners flow, end to end.** Set `WINNERS_LIVE = true` with sample rows,
+    rebuild, and assert the banner, the section and the nav entry all appear and
+    the banner links to the section. Set it back to `false`, rebuild, assert all
+    three are gone. Restore the file. Bryan will do exactly this, once, live,
+    under time pressure, so it is the single most important test here.
+15. **Bottom tab bar at 390px.** It exists, is pinned to the bottom, sits above
+    the safe-area inset, does not cover the back-to-top button, and each tab
+    scrolls to the right section.
+16. **Jump accuracy.** Click each nav destination and assert the target's
+    `getBoundingClientRect().top` lands at the 60px `scroll-margin-top`, both on
+    a click and on a `#hash` load.
+17. **No horizontal scroll** at 390px: `scrollWidth <= clientWidth`.
+18. **No console errors** on load or after interacting with the tabs.
+
+### Tier 4 — weight
+
+19. Measure transferred bytes via CDP on a cold load. First paint stays near the
+    0.95 MB the page holds today and must not pass about 1.2 MB. Report the
+    number whether it passes or not, so there is a record.
+
+### Tier 5 — something a person can actually look at
+
+20. Capture screenshots of every new and changed section at 390px and 1440px
+    into one folder and tell Bryan the path. He reviews rendered output closely
+    and has caught things no automated check would (a `mailto:` opening a dead
+    tab, an icon sitting wrong inside a link). The script's job is to make that
+    review cheap, not to replace it.
+
+### Last gate
+
+When all twenty pass, hand the suite to a **fresh subagent with no memory of
+building any of it** and have it re-run the script and independently spot-check
+five claims against the live DOM. A verifier that did not write the code catches
+what self-review does not. Only then report the work done.
+
+## 12. Lessons from the first attempt
 
 Recorded because they are the reason this document exists.
 
