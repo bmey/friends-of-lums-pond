@@ -543,6 +543,17 @@ const monogram = (name: string) =>
 // Amenity links that point elsewhere on this page open in the same tab
 const isOnPageLink = (url: string) => url.startsWith("#");
 
+// Every area tag on the page opens that area's map. "Area 2" opens the
+// Area 2 map; anything spanning more than one ("Areas 1 & 2", "All three
+// areas") opens the full map. Without a map viewer there is nothing to
+// open, and the tags stay plain text.
+const hasMapView = EVENT_MAPS.length > 0;
+const mapForArea = (area: string) => {
+  const m = area.match(/^Area (\d)$/);
+  const id = m ? `area-${m[1]}` : "full";
+  return EVENT_MAPS.some((x) => x.id === id) ? id : "full";
+};
+
 // Only a real web page gets a new tab. A "mailto:" opened in one leaves the
 // reader staring at a blank tab, or at a URL their browser cannot handle.
 const opensNewTab = (url: string) => /^https?:/i.test(url);
@@ -1008,7 +1019,18 @@ const sponsorAds = await Promise.all(
                     </span>
                     <div class="pf-keytime-body">
                       <strong class="pf-keytime-title">{k.title}</strong>
-                      {k.area && <span class="pf-keytime-area">{k.area}</span>}
+                      {k.area &&
+                        (hasMapView ? (
+                          <a
+                            class="pf-keytime-area pf-area-chip"
+                            href={`#pf-maptab-${mapForArea(k.area)}`}
+                            data-pf-map={mapForArea(k.area)}
+                          >
+                            {k.area}
+                          </a>
+                        ) : (
+                          <span class="pf-keytime-area">{k.area}</span>
+                        ))}
                       {k.detail && <p>{k.detail}</p>}
                     </div>
                   </li>
@@ -1076,6 +1098,7 @@ const sponsorAds = await Promise.all(
                 role="tabpanel"
                 aria-labelledby={`pf-maptab-${m.id}`}
                 hidden={i !== 0}
+                tabindex="-1"
               >
                 <h3 class="pf-mapview-title">{m.title}</h3>
                 {/* Only the first map ships a src. The rest carry data-src
@@ -1383,12 +1406,22 @@ const sponsorAds = await Promise.all(
                     <span class="pf-amen-badge">{b}</span>
                   ))}
                 </h3>
-                <p class="pf-amen-desc">{a.desc}</p>
                 <div class="pf-amen-meta">
-                  <span class="pf-amen-area">
-                    <i class="fa-solid fa-location-dot" aria-hidden="true" />
-                    {a.area}
-                  </span>
+                  {hasMapView ? (
+                    <a
+                      class="pf-amen-area pf-area-chip"
+                      href={`#pf-maptab-${mapForArea(a.area)}`}
+                      data-pf-map={mapForArea(a.area)}
+                    >
+                      <i class="fa-solid fa-location-dot" aria-hidden="true" />
+                      {a.area}
+                    </a>
+                  ) : (
+                    <span class="pf-amen-area">
+                      <i class="fa-solid fa-location-dot" aria-hidden="true" />
+                      {a.area}
+                    </span>
+                  )}
                   {a.time && (
                     <span class="pf-amen-area pf-amen-time">
                       <i class="fa-solid fa-clock" aria-hidden="true" />
@@ -1396,6 +1429,7 @@ const sponsorAds = await Promise.all(
                     </span>
                   )}
                 </div>
+                <p class="pf-amen-desc">{a.desc}</p>
                 {a.links && a.links.length > 0 && (
                   <div class="pf-amen-links">
                     {a.links.map((link) => (
@@ -1475,7 +1509,23 @@ const sponsorAds = await Promise.all(
               <div class="pf-food-areas">
                 {foodByArea.map((g) => (
                   <div class="pf-food-area">
-                    <h4>Area {g.area}</h4>
+                    <h4>
+                      {hasMapView ? (
+                        <a
+                          class="pf-area-chip pf-here-area"
+                          href={`#pf-maptab-area-${g.area}`}
+                          data-pf-map={`area-${g.area}`}
+                        >
+                          <i
+                            class="fa-solid fa-location-dot"
+                            aria-hidden="true"
+                          />{" "}
+                          Area {g.area}
+                        </a>
+                      ) : (
+                        <>Area {g.area}</>
+                      )}
+                    </h4>
                     <ul>
                       {g.trucks.map((t) => (
                         <li data-pf-truck>{t.name}</li>
@@ -1494,8 +1544,20 @@ const sponsorAds = await Promise.all(
                 Tap
               </h3>
               <p class="pf-here-sub">
-                {TAP_LIST.length} taps in the beer garden in Area 1, 21 and
-                over. The board at the tent has the strengths.
+                {TAP_LIST.length} taps in the beer garden in{" "}
+                {hasMapView ? (
+                  <a
+                    class="pf-area-chip pf-here-area"
+                    href="#pf-maptab-area-1"
+                    data-pf-map="area-1"
+                  >
+                    <i class="fa-solid fa-location-dot" aria-hidden="true" />{" "}
+                    Area 1
+                  </a>
+                ) : (
+                  "Area 1"
+                )}
+                , 21 and over. The board at the tent has the strengths.
               </p>
               <div class="pf-food-areas pf-tap-groups">
                 {tapsByGroup.map((g) => (
@@ -1522,8 +1584,20 @@ const sponsorAds = await Promise.all(
                 &amp; Nonprofits
               </h3>
               <p class="pf-here-sub">
-                Under the tents in Area 1: {CRAFT_VENDORS.length} makers,
-                artisans and community groups.
+                Under the tents in{" "}
+                {hasMapView ? (
+                  <a
+                    class="pf-area-chip pf-here-area"
+                    href="#pf-maptab-area-1"
+                    data-pf-map="area-1"
+                  >
+                    <i class="fa-solid fa-location-dot" aria-hidden="true" />{" "}
+                    Area 1
+                  </a>
+                ) : (
+                  "Area 1"
+                )}
+                : {CRAFT_VENDORS.length} makers, artisans and community groups.
               </p>
               <ul class="pf-chiplist pf-chiplist--vendors">
                 {CRAFT_VENDORS.map((name) => (
@@ -1540,9 +1614,21 @@ const sponsorAds = await Promise.all(
                 Responders Block Party
               </h3>
               <p class="pf-here-sub">
-                {FIRST_RESPONDERS.length} agencies in Area 3, with their rigs on
-                the grass and the crews standing next to them. The Wilmington
-                Police K9 Unit demonstrates at 12:00.
+                {FIRST_RESPONDERS.length} agencies in{" "}
+                {hasMapView ? (
+                  <a
+                    class="pf-area-chip pf-here-area"
+                    href="#pf-maptab-area-3"
+                    data-pf-map="area-3"
+                  >
+                    <i class="fa-solid fa-location-dot" aria-hidden="true" />{" "}
+                    Area 3
+                  </a>
+                ) : (
+                  "Area 3"
+                )}
+                , with their rigs on the grass and the crews standing next to
+                them. The Wilmington Police K9 Unit demonstrates at 12:00.
               </p>
               <ul class="pf-chiplist pf-chiplist--agency">
                 {FIRST_RESPONDERS.map((name) => (
@@ -1722,8 +1808,33 @@ const sponsorAds = await Promise.all(
                     {(performer.stage || performer.time) && (
                       <div class="pf-act-meta">
                         {performer.stage && (
-                          <span class="pf-act-stage">{performer.stage}</span>
+                          <span class="pf-act-stage">
+                            {splitStage(performer.stage).name}
+                          </span>
                         )}
+                        {performer.stage &&
+                          splitStage(performer.stage).area &&
+                          (hasMapView ? (
+                            <a
+                              class="pf-act-area pf-area-chip"
+                              href={`#pf-maptab-${mapForArea(
+                                splitStage(performer.stage).area,
+                              )}`}
+                              data-pf-map={mapForArea(
+                                splitStage(performer.stage).area,
+                              )}
+                            >
+                              <i
+                                class="fa-solid fa-location-dot"
+                                aria-hidden="true"
+                              />{" "}
+                              {splitStage(performer.stage).area}
+                            </a>
+                          ) : (
+                            <span class="pf-act-area">
+                              {splitStage(performer.stage).area}
+                            </span>
+                          ))}
                         {performer.time && (
                           <span class="pf-act-time">{performer.time}</span>
                         )}
@@ -3015,6 +3126,32 @@ const sponsorAds = await Promise.all(
     color: var(--pf-teal);
     font-size: 0.9em;
   }
+  /* An area tag that opens the map. Same type as the tag it replaces, with
+     a border so it reads as something you can tap. */
+  a.pf-area-chip {
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a.pf-amen-area {
+    border: 1px solid rgba(61, 47, 122, 0.3);
+    border-radius: 999px;
+    padding: 0.25em 0.7em;
+    background: #fff;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      border-color 0.15s;
+  }
+  a.pf-amen-area:hover,
+  a.pf-amen-area:focus-visible {
+    background: var(--pf-purple);
+    border-color: var(--pf-purple);
+    color: #fff;
+  }
+  a.pf-amen-area:hover i,
+  a.pf-amen-area:focus-visible i {
+    color: #fff;
+  }
 
   /* ── the logistics strip under the grid ── */
   .pf-everywhere {
@@ -3104,8 +3241,9 @@ const sponsorAds = await Promise.all(
   .pf-amen-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem 1.25rem;
-    margin-top: 0.2rem;
+    align-items: center;
+    gap: 0.35rem 1rem;
+    margin: 0.1rem 0 0.55rem;
   }
   /* times are read, not shouted, so they opt out of the chip's caps */
   .pf-amen-time {
@@ -3482,6 +3620,28 @@ const sponsorAds = await Promise.all(
     background: var(--pf-teal);
     padding: 0.15em 0.6em;
     border-radius: 4px;
+  }
+  .pf-act-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.15em 0.6em;
+    border-radius: 4px;
+  }
+  .pf-act-area i {
+    color: var(--pf-teal);
+  }
+  a.pf-act-area:hover,
+  a.pf-act-area:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
+    color: #fff;
   }
   .pf-act-time {
     font-size: 0.88rem;
@@ -4380,6 +4540,11 @@ const sponsorAds = await Promise.all(
     background: rgba(42, 196, 179, 0.18);
     color: var(--pf-teal-light);
   }
+  a.pf-keytime-area:hover,
+  a.pf-keytime-area:focus-visible {
+    background: var(--pf-teal);
+    color: #06201d;
+  }
   .pf-keytime-body p {
     margin: 0.35rem 0 0;
     font-size: 0.91rem;
@@ -4437,6 +4602,7 @@ const sponsorAds = await Promise.all(
   }
   .pf-mapview {
     margin-bottom: 1.5rem;
+    scroll-margin-top: calc(var(--pf-nav-h) + 12px);
   }
   .pf-mapview-tabs {
     display: flex;
@@ -4450,6 +4616,8 @@ const sponsorAds = await Promise.all(
   .pf-mapview-tab {
     flex: none;
     min-height: 40px;
+    /* a chip's address lands here without script; keep it under the nav */
+    scroll-margin-top: calc(var(--pf-nav-h) + 12px);
     padding: 0.45rem 0.95rem;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -4579,6 +4747,39 @@ const sponsorAds = await Promise.all(
   .pf-chiplist--agency li {
     background: rgba(42, 196, 179, 0.12);
     border-color: rgba(42, 196, 179, 0.4);
+  }
+  .pf-here-area {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+    font-size: 0.86em;
+    font-weight: 700;
+    color: var(--pf-purple);
+    border: 1px solid rgba(61, 47, 122, 0.3);
+    border-radius: 999px;
+    padding: 0.1em 0.6em;
+    background: #fff;
+    white-space: nowrap;
+    transition:
+      background 0.15s,
+      color 0.15s;
+  }
+  .pf-food-area h4 .pf-here-area {
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+  .pf-here-area i {
+    color: var(--pf-teal);
+  }
+  .pf-here-area:hover,
+  .pf-here-area:focus-visible {
+    background: var(--pf-purple);
+    border-color: var(--pf-purple);
+    color: #fff;
+  }
+  .pf-here-area:hover i,
+  .pf-here-area:focus-visible i {
+    color: #fff;
   }
   .pf-tap-brewery {
     display: block;
@@ -5236,8 +5437,12 @@ const sponsorAds = await Promise.all(
 
   // ── Map tabs ───────────────────────────────────────────────────────
   // Only the first map has a src; the others carry data-src and get it the
-  // first time their tab is opened. Arrow keys move between tabs.
+  // first time their tab is opened. Arrow keys move between tabs. The area
+  // chips below open a tab by map id through the same path, so the
+  // deferred fetch happens exactly once however the tab was reached.
+  let openMap: ((id: string) => boolean) | null = null;
   function setupMapTabs() {
+    openMap = null;
     const view = document.getElementById("pf-mapview");
     if (!view) return;
     const tabs = Array.from(
@@ -5270,10 +5475,47 @@ const sponsorAds = await Promise.all(
         select((i + delta + tabs.length) % tabs.length, true);
       });
     });
+    openMap = (id) => {
+      const i = tabs.findIndex((t) => t.dataset.pfMaptab === id);
+      if (i < 0) return false;
+      select(i);
+      return true;
+    };
+    // Opened or reloaded on a chip's address: show that map, not the first
+    const fromHash = location.hash.match(/^#pf-maptab-(.+)$/);
+    if (fromHash) openMap(fromHash[1]);
   }
 
   setupMapTabs();
   document.addEventListener("astro:after-swap", setupMapTabs);
+
+  // ── Area chips ─────────────────────────────────────────────────────
+  // Every area tag is a link to its map's tab button, which is where the
+  // reader lands without script. With script the chip opens that tab,
+  // brings the viewer up under the nav, and pushes a history entry so the
+  // phone's back gesture returns to the card they were reading.
+  function setupAreaChips() {
+    document.addEventListener("click", (e) => {
+      const chip = (e.target as Element | null)?.closest?.<HTMLAnchorElement>(
+        "a[data-pf-map]",
+      );
+      if (!chip) return;
+      const id = chip.dataset.pfMap || "";
+      const view = document.getElementById("pf-mapview");
+      if (!view || !openMap || !openMap(id)) return;
+      e.preventDefault();
+      history.pushState(null, "", chip.getAttribute("href") || "");
+      settleLazySections(() => {
+        view.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+        keepAimed(view);
+        document
+          .getElementById(`pf-mappanel-${id}`)
+          ?.focus({ preventScroll: true });
+      });
+    });
+  }
+
+  setupAreaChips();
 
   // ── Sponsor ad lightbox ────────────────────────────────────────────
   // The rail links straight to the full-size file, so without JavaScript a
@@ -5421,7 +5663,7 @@ const sponsorAds = await Promise.all(
       "click",
       (e) => {
         const a = (e.target as Element | null)?.closest?.('a[href^="#"]');
-        if (!a) return;
+        if (!a || a.hasAttribute("data-pf-map")) return;
         settleLazySections();
         let el: Element | null = null;
         try {
