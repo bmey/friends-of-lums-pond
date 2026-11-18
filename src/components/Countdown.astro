@@ -4,12 +4,16 @@ import type { HTMLAttributes } from "astro/types";
 interface Props {
   name?: string;
   startDate: string;
+  // The countdown was built to sit on top of a post's hero image, so it is
+  // pinned rather than in the flow. A post with no hero image needs it in
+  // the flow instead, or it lands on the headline.
+  overlay?: boolean;
 }
 
-const { name = "Pond Fest", startDate } = Astro.props;
+const { name = "Pond Fest", startDate, overlay = true } = Astro.props;
 ---
 
-<div class="container">
+<div class:list={["container", !overlay && "inflow"]}>
   <div class="text-container">
     <h2><span class="second-text">{name} starts in</span></h2>
   </div>
@@ -113,6 +117,15 @@ const { name = "Pond Fest", startDate } = Astro.props;
         }
       }
     }
+  }
+
+  /* In the flow: no hero image to sit on top of. */
+  .container.inflow {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 2rem 0 2.5rem;
+    background: none;
   }
 </style>
 

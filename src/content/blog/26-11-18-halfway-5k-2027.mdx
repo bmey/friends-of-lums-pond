@@ -1,0 +1,103 @@
+---
+title: "Halfway to Pond Fest 5K"
+description: "Our spring 5K is back in Middletown on Sunday, April 4, 2027. Registration is open, and so is sponsorship."
+pubDate: "Nov 18 2026"
+registrationText: "Go to Sign Up Page"
+registrationLink: "https://runsignup.com/Race/DE/Middletown/FriendsOfLumsPondHalfwayToPondFest5K"
+sponsorLink: "https://docs.google.com/document/d/1KoYlOHmcnrWWgy8cTRvWbY59Gr1s8QgyqY34qHJ50Zc/edit?usp=sharing"
+sponsorDonateLink: "https://donorbox.org/halfway-to-pond-fest-2027-5k-sponsor"
+---
+
+import Countdown from "../../components/Countdown.astro";
+import AttentionLinkButton from "../../components/blog/AttentionLinkButton.astro";
+import LinkButton from "../../components/blog/LinkButton.astro";
+import { Image as AstroImage } from "astro:assets";
+import volunteerBrewing from "../../images/5k2027/volunteer-brewing.png";
+
+<Countdown
+  name="5k"
+  startDate="April 4 2027 09:00:00"
+  overlay={false}
+></Countdown>
+
+<AttentionLinkButton target="blank" href={frontmatter.registrationLink}>
+  {frontmatter.registrationText}
+</AttentionLinkButton>
+<br />
+<br />
+
+The Halfway to Pond Fest 5K is back. Join the Friends of Lums Pond at Volunteer Brewing Company on Sunday, April 4 for a 5K through Middletown, run at the halfway point between one Pond Fest and the next. Proceeds go to enhancement projects at Lums Pond and to scholarships that send local kids to the park on field trips.
+
+### Place
+
+Volunteer Brewing Company<br/>
+116 W Main Street<br/>
+Middletown, DE US 19709
+
+### Bib Pick Up and Registration
+
+- Registration is $25 through January 10, and goes up after that.
+- Sunday April 4th from 8:00am till 8:55am at Volunteer Brewing.
+- 5K Start Time 9am.
+
+### Runners Amenities
+
+Runners will receive:
+
+- Race T-Shirt
+- Post Race Snacks
+- Volunteer Brewing Company Beer (21+)
+
+### Age Groups and Awards
+
+- Overall Male/Female
+- Overall Masters Male/Female
+- Top 3 in each age group Male/Female - medals
+- 9 & under, 10-13, 14-19, 20-29, 30-39, 40-49, 50-59, 60-69, 70+
+- _Overall and Masters - based off GUN TIME_
+- _Age Groups - based off CHIP TIME_
+
+### Where the Money Goes
+
+Friends of Lums Pond is an all-volunteer 501(c)(3). Pond Fest has generated about $70,000 for Lums Pond State Park since 2024, and this race is how we keep that going in the spring. Not a runner? You can still chip in.
+
+<LinkButton href="https://donorbox.org/friends-of-lums-pond-state-park?default_interval=o">
+  Donate to Friends of Lums Pond
+</LinkButton>
+
+<br />
+
+### Thank You to Our Host
+
+Volunteer Brewing Company hosts the start, the finish, and the beer at the end of it. We could not run this race without them.
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:center;margin:1rem 0;">
+  <AstroImage
+    src={volunteerBrewing}
+    alt="Volunteer Brewing"
+    style="max-height:120px;width:auto;object-fit:contain;"
+  />
+</div>
+
+<br />
+
+### Become a Sponsor
+
+<LinkButton href={frontmatter.sponsorLink}>🤍 View sponsor package</LinkButton>
+
+Sponsorship runs from $100 to $1,000, and every level puts your logo in front of the runners and the crowd at Volunteer Brewing:
+
+- **Title, $1,000.** The race becomes "Halfway to Pond Fest 5K Presented by [you]". Logo on the race shirt, mile marker #1, and the registration table. Thank-you at the start and at awards, a booth, two items in the runner bags, and 4 race entries.
+- **Gold, $500.** Logo on the race shirt and mile marker #2, a booth, one item in the runner bags, and 2 race entries.
+- **Silver, $250.** Logo on the race shirt and mile marker #3, plus a thank-you on social media and your name here.
+- **Bronze, $100.** A thank-you on social media and your name here.
+
+Logos and payment need to be in by **March 22, 2027** to make the shirt and the signs. Custom packages are available, and in-kind donations of products or services are very welcome.
+
+<LinkButton href={frontmatter.sponsorDonateLink}>
+  Pay for a sponsorship
+</LinkButton>
+
+Checks work too, made out to Friends of Lums Pond Inc. and mailed to 1068 Howell School Road, Bear, DE 19701.
+
+Thank you for supporting the success of "Halfway to Pond Fest 5k"! We have many ways you can help. If you are interested in sponsoring the event, in-kind donations or have other ideas, we would love to talk more! Please reach out to <a href="mailto:events@friendsoflumspond.org">events@friendsoflumspond.org</a> to join us!
