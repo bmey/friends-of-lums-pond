@@ -4,7 +4,6 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import { getUrl } from "../components/getUrl";
 import Header from "../components/Header.astro";
-import AttentionLinkButton from "../components/blog/AttentionLinkButton.astro";
 import IndexTeaser from "../components/IndexTeaser.astro";
 import { JOIN_URL, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Hero from "../images/HERO.jpeg";
@@ -32,43 +31,52 @@ import PondFestLogo from "../images/pondfest.png";
         Friends Group helps the park as it serves the public.
       </div>
       <div class="teasers">
-        <div class="pondfest-container">
-          <Image src={PondFestLogo} alt="Pond Fest logo" width="160" />
+        <IndexTeaser title="Pond Fest 2027" art="/home/card-pondfest.webp">
+          <Image slot="mark" src={PondFestLogo} alt="" width="40" height="40" />
           <p>
-            Pond Fest returns Saturday, October 9, 2027. Live music on three
-            stages, a beer garden, food trucks, and a full day of family fun
-            across three areas of Lums Pond State Park. Free to attend; standard
-            park entrance fee applies. Tell us how last October went, or put
-            your name down to help with the next one.
+            Saturday, October 9. Live music on three stages, a beer garden, food
+            trucks, and a full day of family fun across three areas of the park.
+            Free to attend.
           </p>
           <a href={getUrl("pondfest")}>See Pond Fest 2027</a>
-        </div>
-
-        <IndexTeaser icon="fa-person-running" title="Halfway to Pond Fest 5K">
-          <p>
-            Our spring fundraiser, run at the halfway point between one Pond
-            Fest and the next: a 5K through Middletown on Sunday, April 4,
-            starting and finishing at Volunteer Brewing. Race shirt, post-race
-            snacks, and a beer for the 21+ crowd. $25 through January 10.
-          </p>
-          <AttentionLinkButton href={getUrl("blog/26-11-18-halfway-5k-2027/")}>
-            5K details and sign-up
-          </AttentionLinkButton>
         </IndexTeaser>
-        <IndexTeaser icon="fa-magnifying-glass" title="About">
+
+        <IndexTeaser
+          icon="fa-person-running"
+          title="Halfway to Pond Fest 5K"
+          art="/home/card-5k.webp"
+          artFit="contain"
+        >
           <p>
-            We are the Friends of Lums Pond, a nonprofit on a mission to protect
-            and enhance Lums Pond State Park. Learn more about what we do, the
-            benefits of joining us, and the park's history.
+            Our spring fundraiser: a 5K through Middletown on Sunday, April 4,
+            starting and finishing at Volunteer Brewing. $25 through January 10.
+          </p>
+          <a href={getUrl("blog/26-11-18-halfway-5k-2027/")}>
+            5K details and sign-up
+          </a>
+        </IndexTeaser>
+
+        <IndexTeaser
+          icon="fa-magnifying-glass"
+          title="About"
+          art="/home/card-about.webp"
+        >
+          <p>
+            A nonprofit on a mission to protect and enhance Lums Pond State
+            Park. What we do, the benefits of joining us, and the park's
+            history.
           </p>
           <a href={getUrl("about")}>Learn more</a>
         </IndexTeaser>
 
-        <IndexTeaser icon="fa-user-plus" title="Volunteer">
+        <IndexTeaser
+          icon="fa-user-plus"
+          title="Volunteer"
+          art="/home/card-volunteer.webp"
+        >
           <p>
-            Help us take care of Lums Pond State Park. Members have a vote in
-            how the group is run and pitch in on trail days, boathouse
-            clean-ups, and Pond Fest.
+            Members have a vote in how the group is run and pitch in on trail
+            days, boathouse clean-ups, and Pond Fest.
           </p>
           <a href={JOIN_URL}>Become a member</a>
         </IndexTeaser>
@@ -81,27 +89,43 @@ import PondFestLogo from "../images/pondfest.png";
         padding: 2rem;
         text-align: center;
       }
+      /* Two up on a desktop rather than three and an orphan, and every card
+         stretches to the height of its row. */
       .teasers {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        max-width: 940px;
         margin: 3rem auto;
+        padding: 0 1rem;
+      }
+      @media (min-width: 720px) {
+        .teasers {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
       }
 
       .teasers p {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.55;
+        color: var(--color-gray-600);
+        margin: 0 0 1.25rem;
       }
 
+      /* margin-top:auto drops the button to the foot of the card, so a short
+         card and a long one hand you the button at the same place. */
       .teasers a {
+        margin-top: auto;
+        align-self: flex-start;
         background: var(--color-primary-800);
         border-radius: 0.5rem;
         border: none;
         color: white;
         cursor: pointer;
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        padding: 0.55rem 1.1rem;
         text-decoration: none;
-        transition: all 0.5s ease;
+        transition: background 0.3s ease;
       }
       .teasers a:hover,
       .teasers a:focus {
@@ -170,15 +194,6 @@ import PondFestLogo from "../images/pondfest.png";
         height: 100%;
         width: 100%;
         z-index: -2;
-      }
-
-      .pondfest-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 360px;
-        padding: 1rem;
-        text-align: center;
       }
     </style>
   </body>

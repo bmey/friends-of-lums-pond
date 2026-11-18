@@ -1,29 +1,126 @@
 ---
 interface Props {
-  icon: string;
+  icon?: string;
   title?: string;
+  // A photo from elsewhere on the site, faded into the bottom corner. It is
+  // decoration, so it carries no alt text. Small WebP renditions live in
+  // public/home/.
+  art?: string;
+  // "cover" fills the corner with a photo; "contain" fits a mark or a
+  // wordmark inside it without cropping.
+  artFit?: "cover" | "contain";
 }
 
-const { icon, title } = Astro.props;
+const { icon, title, art, artFit = "cover" } = Astro.props;
 ---
 
-<div class="container">
-  <i class=`fa-solid ${icon} fa-2x`></i>
-  {title && <h4>{title}</h4>}
-  <slot />
-</div>
+<article class="card">
+  {
+    art && (
+      <img
+        class:list={["card-art", `card-art--${artFit}`]}
+        src={art}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  <div class="card-body">
+    <div class="card-mark">
+      <slot name="mark">
+        {icon && <i class={`fa-solid ${icon}`} aria-hidden="true" />}
+      </slot>
+    </div>
+    {title && <h2 class="card-title">{title}</h2>}
+    <slot />
+  </div>
+</article>
 
 <style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 360px;
-    padding: 1rem;
-    text-align: center;
+  .card {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    background: var(--color-primary-50);
+    border: 1px solid rgba(var(--color-primary-rgb-800), 0.12);
+    border-radius: 12px;
   }
 
-  h4 {
-    margin: 1rem 0 0;
+  /* The photo sits in the corner and dissolves on its way out of it, so it
+     reads as texture rather than as a picture competing with the copy. The
+     mask is radial rather than linear so no straight cut shows anywhere
+     against the card. */
+  .card-art {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 58%;
+    max-width: 230px;
+    opacity: 0.2;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(
+      130% 130% at 100% 100%,
+      #000 0%,
+      #000 28%,
+      transparent 72%
+    );
+    mask-image: radial-gradient(
+      130% 130% at 100% 100%,
+      #000 0%,
+      #000 28%,
+      transparent 72%
+    );
+  }
+  .card-art--cover {
+    height: 70%;
+    object-fit: cover;
+  }
+  /* A flat mark reads heavier than a photograph at the same opacity, and it
+     needs room around it rather than a crop. */
+  .card-art--contain {
+    height: auto;
+    width: 38%;
+    max-width: 130px;
+    margin: 0 1.1rem 1.1rem 0;
+    opacity: 0.13;
+  }
+
+  .card-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* One fixed row for the icon or the logo, so every card's title starts on
+     the same line whichever one it uses. */
+  .card-mark {
+    display: flex;
+    align-items: center;
+    height: 2.5rem;
+    margin-bottom: 0.6rem;
+    color: var(--color-primary-700);
+    font-size: 1.5rem;
+  }
+  .card-mark :global(img) {
+    height: 2.5rem;
+    width: auto;
+  }
+
+  .card-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    color: var(--color-primary-950);
+  }
+
+  @media (max-width: 460px) {
+    .card-body {
+      padding: 1.25rem;
+    }
   }
 </style>
