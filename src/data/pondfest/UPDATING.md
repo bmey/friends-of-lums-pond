@@ -284,15 +284,19 @@ Two rules on wording, learned the hard way:
 
 Open `src/data/pondfest/archive/` and create a new file named for the year just completed. Copy the format from an existing archive file (e.g. `2026.ts`) and fill in the results: attendance, the gross, the goal you set, and a line per thing worth remembering.
 
-Then add two lines to `src/pages/pondfest/archive.astro`, an import at the top and the new year at the front of the `years` list:
+Then add two lines to `src/data/pondfest/archive/index.ts`, an import at the top and the new year at the front of the list:
 
 ```ts
-import { PONDFEST_2026 } from "../../data/pondfest/archive/2026";
+import { PONDFEST_2026 } from "./2026";
 
-const years: ArchiveYear[] = [PONDFEST_2026, PONDFEST_2025, PONDFEST_2024];
+export const ARCHIVE_YEARS: ArchiveYear[] = [
+  PONDFEST_2026,
+  PONDFEST_2025,
+  PONDFEST_2024,
+];
 ```
 
-The totals banner at the top of that page adds itself up from the list, so the running totals are right as soon as the new year is in it.
+That file is the only place the "since 2024" figures come from. The archive page, the Our History strip on `/pondfest`, the fundraising line above it, the FAQ answer about what Pond Fest supports and the stat strip on `/about/history` all add themselves up from this list, so a new year updates every one of them at once and none of them can drift apart. Do not type a running total anywhere else.
 
 ---
 

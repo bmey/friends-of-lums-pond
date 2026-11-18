@@ -1,16 +1,15 @@
 ---
 import Layout from "../../layouts/PondFestLayout.astro";
-import { PONDFEST_2024 } from "../../data/pondfest/archive/2024";
-import { PONDFEST_2025 } from "../../data/pondfest/archive/2025";
-import { PONDFEST_2026 } from "../../data/pondfest/archive/2026";
-import type { ArchiveYear } from "../../data/pondfest/types";
+import {
+  ARCHIVE_TOTALS,
+  ARCHIVE_YEARS,
+  formatAttendees,
+  formatCurrency,
+} from "../../data/pondfest/archive";
 
-// Add future years here, newest first
-const years: ArchiveYear[] = [PONDFEST_2026, PONDFEST_2025, PONDFEST_2024];
-
-function formatCurrency(n: number) {
-  return "$" + n.toLocaleString("en-US");
-}
+// Add a year in src/data/pondfest/archive/index.ts and it shows up here,
+// in the totals above, and in Our History on /pondfest.
+const years = ARCHIVE_YEARS;
 ---
 
 <Layout
@@ -39,28 +38,20 @@ function formatCurrency(n: number) {
   <section class="pf-section pf-section--purple">
     <div class="pf-section-inner totals-row">
       <div class="total-stat">
-        <span class="total-num">{years.length}</span>
+        <span class="total-num">{ARCHIVE_TOTALS.events}</span>
         <span class="total-label">Events</span>
       </div>
       <div class="total-divider"></div>
       <div class="total-stat">
         <span class="total-num">
-          {
-            formatCurrency(
-              years.reduce((sum, y) => sum + (y.grossRevenue ?? 0), 0),
-            )
-          }
+          {formatCurrency(ARCHIVE_TOTALS.grossRevenue)}
         </span>
         <span class="total-label">Generated for the Park</span>
       </div>
       <div class="total-divider"></div>
       <div class="total-stat">
         <span class="total-num">
-          {
-            years
-              .reduce((sum, y) => sum + (y.attendees ?? 0), 0)
-              .toLocaleString()
-          }+
+          {formatAttendees(ARCHIVE_TOTALS.attendees)}
         </span>
         <span class="total-label">Attendees</span>
       </div>

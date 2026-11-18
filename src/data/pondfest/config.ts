@@ -17,6 +17,7 @@ import type {
   ThanksGroup,
   Tap,
 } from "./types";
+import { ARCHIVE_TOTALS, formatCurrencyApprox } from "./archive";
 
 // ─────────────────────────────────────────────
 // UPDATE THIS SECTION EACH YEAR
@@ -688,7 +689,9 @@ export const FAQ: FAQItem[] = [
   {
     question: "What causes does Pond Fest support?",
     answer:
-      "Two things right now: field trip assistance so students from Title I schools can experience the park, and the adaptive kayak launch that will open Lums Pond's waters to visitors of all abilities. See the fundraising goals above. Since 2024, Pond Fest has generated about $70,000 for Lums Pond.",
+      "Two things right now: field trip assistance so students from Title I schools can experience the park, and the adaptive kayak launch that will open Lums Pond's waters to visitors of all abilities. See the fundraising goals above. Since 2024, Pond Fest has generated about " +
+      formatCurrencyApprox(ARCHIVE_TOTALS.grossRevenue) +
+      " for Lums Pond.",
   },
   {
     question: "Can I volunteer?",

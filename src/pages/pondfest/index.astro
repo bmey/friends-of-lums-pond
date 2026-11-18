@@ -101,6 +101,12 @@ import {
   WINNERS_WHERE,
   parseWinners,
 } from "../../data/pondfest/winners";
+import {
+  ARCHIVE_TOTALS,
+  formatAttendees,
+  formatCurrency,
+  formatCurrencyApprox,
+} from "../../data/pondfest/archive";
 import { resolvePhase } from "../../data/pondfest/phase";
 import type { NavSection, Phase, SponsorTier } from "../../data/pondfest/types";
 import { publicImageSize } from "../../data/pondfest/imageSize";
@@ -1596,7 +1602,9 @@ const sponsorAds = (
             enhancing Lums Pond State Park programs and facilities.
           </p>
           <p>
-            Pond Fest has generated about $70,000 for Lums Pond since 2024.
+            Pond Fest has generated about {
+              formatCurrencyApprox(ARCHIVE_TOTALS.grossRevenue)
+            } for Lums Pond since 2024.
             {FUNDRAISING_GOAL && ` This year's goal: ${FUNDRAISING_GOAL}.`}
           </p>
           <a
@@ -2864,17 +2872,21 @@ const sponsorAds = (
       <h2>Our History</h2>
       <div class="pf-history-stats">
         <div class="pf-history-stat">
-          <span class="pf-history-stat-num">2</span>
+          <span class="pf-history-stat-num">{ARCHIVE_TOTALS.events}</span>
           <span class="pf-history-stat-label">Years</span>
         </div>
         <span class="pf-history-stat-dot">&middot;</span>
         <div class="pf-history-stat">
-          <span class="pf-history-stat-num">$30K</span>
+          <span class="pf-history-stat-num">
+            {formatCurrency(ARCHIVE_TOTALS.grossRevenue)}
+          </span>
           <span class="pf-history-stat-label">Generated</span>
         </div>
         <span class="pf-history-stat-dot">&middot;</span>
         <div class="pf-history-stat">
-          <span class="pf-history-stat-num">2,100+</span>
+          <span class="pf-history-stat-num">
+            {formatAttendees(ARCHIVE_TOTALS.attendees)}
+          </span>
           <span class="pf-history-stat-label">Attendees</span>
         </div>
       </div>

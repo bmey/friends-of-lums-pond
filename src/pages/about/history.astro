@@ -2,6 +2,11 @@
 import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import {
+  ARCHIVE_TOTALS,
+  formatAttendees,
+  formatCurrency,
+} from "../../data/pondfest/archive";
 
 // Photo URLs. Swap in real images as they become available.
 const HERO_PHOTO = "/blog/pond-fest-hero.jpeg";
@@ -556,12 +561,12 @@ const STATION_PHOTO = ""; // fill in when available: photo of the bike repair st
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <span class="stat-num">5,500+</span>
+          <span class="stat-num">{formatAttendees(ARCHIVE_TOTALS.attendees)}</span>
           <span class="stat-label">Pond Fest Attendees</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <span class="stat-num">$70K</span>
+          <span class="stat-num">{formatCurrency(ARCHIVE_TOTALS.grossRevenue)}</span>
           <span class="stat-label">Generated for the Park</span>
         </div>
         <div class="stat-divider"></div>
