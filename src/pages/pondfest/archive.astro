@@ -2,10 +2,11 @@
 import Layout from "../../layouts/PondFestLayout.astro";
 import { PONDFEST_2024 } from "../../data/pondfest/archive/2024";
 import { PONDFEST_2025 } from "../../data/pondfest/archive/2025";
+import { PONDFEST_2026 } from "../../data/pondfest/archive/2026";
 import type { ArchiveYear } from "../../data/pondfest/types";
 
 // Add future years here, newest first
-const years: ArchiveYear[] = [PONDFEST_2025, PONDFEST_2024];
+const years: ArchiveYear[] = [PONDFEST_2026, PONDFEST_2025, PONDFEST_2024];
 
 function formatCurrency(n: number) {
   return "$" + n.toLocaleString("en-US");
@@ -168,8 +169,8 @@ function formatCurrency(n: number) {
     >
       <h2>Be Part of Pond Fest History</h2>
       <p>
-        From 2026 on, Pond Fest is held the second Saturday of October at Lums Pond State
-        Park. Join us as a volunteer, vendor, sponsor, or guest.
+        From 2026 on, Pond Fest is held the second Saturday of October at Lums
+        Pond State Park. Join us as a volunteer, vendor, sponsor, or guest.
       </p>
       <a href="/pondfest" class="pf-btn pf-btn--primary">
         See This Year's Event
