@@ -23,6 +23,7 @@ import {
   MERCH_ITEMS,
   MERCH_AT_THE_FEST,
   PONDFEST_DONATE_URL,
+  INTEREST_URL,
   VOLUNTEER_URL,
   SPONSOR_URL,
   VENDOR_URL,
@@ -34,6 +35,7 @@ import {
   LINEUP,
   EMCEES,
   SPONSORS,
+  SPONSORS_YEAR,
   PARTNERS,
   PARTNERS_INTRO,
   FUNDING_GOALS,
@@ -64,6 +66,7 @@ import {
   PHOTO_CREDIT_NAME,
   PHOTO_CREDIT_URL,
   HISTORY_BG_PHOTO,
+  SEVENTY_FIFTH_ACTIVE,
   SEVENTY_FIFTH_URL,
   SEVENTY_FIFTH_LOGO_WHITE,
   HEART_OF_PARKS_VIDEO_URL,
@@ -410,34 +413,46 @@ const planNotes = [
   { icon: "fa-cloud-rain", text: RAIN_DATE_NOTE },
 ].filter((n) => n.text);
 
+// While INTEREST_URL is set, all four cards lead to the same early-bird
+// form and say so: the real forms do not open until the spring, and a list
+// of names in the winter is worth more than four dead buttons. Clearing
+// INTEREST_URL in config puts each card back on its own form.
+const earlyBird = !!INTEREST_URL;
+// The sponsor ask, wherever it appears: the early-bird form while it is
+// running, otherwise this year's sponsorship package.
+const sponsorAsk = INTEREST_URL || SPONSOR_URL;
+// Whose year the sponsor list belongs to. Last year's backers keep their
+// thank-you over the winter, said plainly rather than implied.
+const sponsorsAreCurrent = SPONSORS_YEAR >= CURRENT_YEAR;
 const involvedPaths = [
   {
     icon: "fa-hand-holding-heart",
     title: "Volunteer",
     desc: "Help make Pond Fest happen. We need hands for setup, Junior Jam, info tables, and more.",
-    url: VOLUNTEER_URL,
-    cta: "Sign Up to Volunteer",
+    url: INTEREST_URL || VOLUNTEER_URL,
+    cta: earlyBird ? "Put Me on the List" : "Sign Up to Volunteer",
   },
   {
     icon: "fa-guitar",
     title: "Perform",
     desc: "Are you a local musician or performer? We want to hear from you.",
-    useEmailModal: true,
-    cta: "Apply to Perform",
+    url: INTEREST_URL,
+    useEmailModal: !earlyBird,
+    cta: earlyBird ? "Put Me on the List" : "Apply to Perform",
   },
   {
     icon: "fa-store",
     title: "Vend",
     desc: "Bring your business or craft to Pond Fest and connect with the community.",
-    url: VENDOR_URL,
-    cta: "Apply to Vend",
+    url: INTEREST_URL || VENDOR_URL,
+    cta: earlyBird ? "Put Me on the List" : "Apply to Vend",
   },
   {
     icon: "fa-star",
     title: "Sponsor",
     desc: "Support the park and get visibility with thousands of attendees.",
-    url: SPONSOR_URL,
-    cta: "Become a Sponsor",
+    url: INTEREST_URL || SPONSOR_URL,
+    cta: earlyBird ? "Put Me on the List" : "Become a Sponsor",
   },
 ];
 
@@ -461,6 +476,13 @@ const navSections: NavSection[] = (
       icon: "fa-trophy",
       phases: ["event", "afterglow"],
       show: hasWinners,
+    },
+    {
+      href: "#pf-between",
+      label: "Survey & Sign-up",
+      icon: "fa-comment-dots",
+      phases: ["prep"],
+      show: !!(FEEDBACK_LINK || INTEREST_URL),
     },
     {
       href: "#pf-schedule",
@@ -699,6 +721,20 @@ const merchItems = await Promise.all(
   })),
 );
 const hasMerch = merchItems.length > 0;
+
+// An amenity card can point at another section of this page. Early in the
+// year those sections are empty: no lineup booked, no trucks signed, no
+// merch yet. Drop the link rather than offer a jump to nothing.
+const liveAnchors = new Set(
+  [
+    hasLineup && "#pf-lineup",
+    hasWhosHere && "#pf-whos-here",
+    hasMerch && "#pf-merch",
+  ].filter(Boolean) as string[],
+);
+const amenityUrl = (url?: string) =>
+  url && (!isOnPageLink(url) || liveAnchors.has(url)) ? url : "";
+const amenities = AMENITIES.map((a) => ({ ...a, url: amenityUrl(a.url) }));
 // The event map scales to the column width, so it needs its real size too.
 const eventMapSize = EVENT_MAP_IMAGE_URL
   ? await publicImageSize(EVENT_MAP_IMAGE_URL)
@@ -910,16 +946,80 @@ const sponsorAds = (
   <PondFestQuickLinks sections={navSections} />
 
   <!-- ══ 75th STRIP — sits under the hero so the hero stays short ═══ -->
-  <a class="pf-75th-strip" href="#pf-75th">
-    <img
-      src={SEVENTY_FIFTH_LOGO_WHITE}
-      alt="Delaware State Parks 75th anniversary"
-      width={seventyFifthLogoSize.width || 120}
-      height={seventyFifthLogoSize.height}
-      decoding="async"
-    />
-    <span>Celebrating 75 Years of Delaware State Parks</span>
-  </a>
+  {
+    SEVENTY_FIFTH_ACTIVE && (
+      <a class="pf-75th-strip" href="#pf-75th">
+        <img
+          src={SEVENTY_FIFTH_LOGO_WHITE}
+          alt="Delaware State Parks 75th anniversary"
+          width={seventyFifthLogoSize.width || 120}
+          height={seventyFifthLogoSize.height}
+          decoding="async"
+        />
+        <span>Celebrating 75 Years of Delaware State Parks</span>
+      </a>
+    )
+  }
+
+  <!-- ══ BETWEEN THE FESTIVALS — the survey from the last one and the
+       early list for the next, the two asks worth making all winter ══ -->
+  {
+    (FEEDBACK_LINK || INTEREST_URL) && (
+      <section
+        class="pf-section pf-section--purple pf-section--lazy"
+        id="pf-between"
+        data-phase="prep"
+      >
+        <div class="pf-section-inner pf-section-inner--mid">
+          <div class="pf-involved-header">
+            <h2>Between Now and October</h2>
+            <p class="pf-involved-lead">
+              Two things help more than anything else right now: hearing how the
+              last one went, and knowing who wants in on the next one.
+            </p>
+          </div>
+          <div class="pf-involved-grid pf-between-grid">
+            {FEEDBACK_LINK && (
+              <div class="pf-involved-card">
+                <i class="fa-solid fa-comment-dots pf-involved-icon" />
+                <h3>How was Pond Fest {CURRENT_YEAR - 1}?</h3>
+                <p>
+                  Two minutes, and it decides what next year looks like. What
+                  worked, what did not, what you want more of.
+                </p>
+                <a
+                  href={FEEDBACK_LINK}
+                  class="pf-btn pf-btn--outline-light"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Take the survey
+                </a>
+              </div>
+            )}
+            {INTEREST_URL && (
+              <div class="pf-involved-card">
+                <i class="fa-solid fa-envelope-open-text pf-involved-icon" />
+                <h3>Be part of Pond Fest {CURRENT_YEAR}</h3>
+                <p>
+                  Volunteer, perform, vend, or sponsor. Add your name now and we
+                  will come to you first when sign-ups open in the spring.
+                </p>
+                <a
+                  href={INTEREST_URL}
+                  class="pf-btn pf-btn--primary"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Put me on the list
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- ══ RAFFLE / AUCTION LINKS — only when those links are filled in ═ -->
   {
@@ -1131,9 +1231,7 @@ const sponsorAds = (
                                 class="pf-sched-set"
                                 href={`#${actSlug(act.name)}`}
                                 data-pf-set={actSlug(act.name)}
-                                data-pf-canceled={
-                                  act.canceled ? "" : undefined
-                                }
+                                data-pf-canceled={act.canceled ? "" : undefined}
                               >
                                 <span class="pf-sched-time">{act.time}</span>
                                 <span class="pf-sched-name">
@@ -1307,10 +1405,7 @@ const sponsorAds = (
   }
 
   <!-- ══ PLAN YOUR VISIT — map + logistics, always on ══════════════ -->
-  <section
-    class="pf-section pf-section--dark pf-section--lazy"
-    id="pf-plan"
-  >
+  <section class="pf-section pf-section--dark pf-section--lazy" id="pf-plan">
     <div class="pf-section-inner pf-section-inner--mid">
       <div class="pf-plan-header">
         <h2>Plan Your Visit</h2>
@@ -1491,14 +1586,18 @@ const sponsorAds = (
         id="pf-fundraising"
       >
         <div class="pf-section-inner pf-section-inner--narrow pf-goals-intro">
-          <h2>Raising {FUNDRAISING_GOAL} for the Park</h2>
+          <h2>
+            {FUNDRAISING_GOAL
+              ? `Raising ${FUNDRAISING_GOAL} for the Park`
+              : "What We're Raising For"}
+          </h2>
           <p>
             Every dollar Pond Fest generates goes directly to funding or
             enhancing Lums Pond State Park programs and facilities.
           </p>
           <p>
-            Pond Fest has generated about $30,000 for Lums Pond since 2024. This
-            year's goal: match it in a single day.
+            Pond Fest has generated about $70,000 for Lums Pond since 2024.
+            {FUNDRAISING_GOAL && ` This year's goal: ${FUNDRAISING_GOAL}.`}
           </p>
           <a
             href={PONDFEST_DONATE_URL}
@@ -1581,7 +1680,7 @@ const sponsorAds = (
 
       <div class="pf-amen-grid">
         {
-          AMENITIES.map((a) => (
+          amenities.map((a) => (
             <article
               class={`pf-amen-card ${
                 a.imageUrl ? "" : "pf-amen-card--nophoto"
@@ -2196,66 +2295,66 @@ const sponsorAds = (
   </div>
 
   <!-- ══ 75 YEARS OF DELAWARE STATE PARKS ══════════════════════════ -->
-  <section
-    class="pf-section pf-section--flush pf-section--purple pf-section--lazy pf-75th"
-    id="pf-75th"
-  >
-    <div class="pf-split pf-split--reverse">
-      <div class="pf-split-media pf-75th-media">
-        {
-          HEART_OF_PARKS_VIDEO_URL ? (
-            <figure class="pf-75th-figure">
-              <PondFestVideo
-                src={HEART_OF_PARKS_VIDEO_URL}
-                poster={HEART_OF_PARKS_POSTER_URL}
-                captions={HEART_OF_PARKS_CAPTIONS_URL}
-                label="Heart of the Parks: Bryan Mey on 75 years of Delaware State Parks"
-              />
-              <figcaption>
-                FOLP President Bryan Mey on what 75 years means for Lums Pond,
-                from Delaware State Parks' <em>Heart of the Parks</em> series.
-              </figcaption>
-            </figure>
-          ) : (
-            <div class="pf-img-placeholder">
-              <i class="fa-solid fa-film" />
-            </div>
-          )
-        }
-      </div>
-      <div class="pf-split-text pf-75th-text">
-        <img
-          class="pf-75th-corner-logo"
-          src={SEVENTY_FIFTH_LOGO_WHITE}
-          alt="Delaware State Parks 75th anniversary"
-          width="160"
-          loading="lazy"
-        />
-        <h2>75 Years of Delaware State Parks</h2>
-        <p>
-          Delaware State Parks turns 75 in 2026, and Pond Fest is proud to be
-          part of the celebration. Since 1951, these parks have protected the
-          places Delawareans love, including our own Lums Pond, home of the
-          state's largest freshwater pond. Most people don't realize Delaware's
-          state parks are roughly 65% self-funded. Entrance fees, programs, and
-          community support keep them running, which is why a Friends group, and
-          a festival like this one, matter.
-        </p>
-        {
-          SEVENTY_FIFTH_URL && (
-            <a
-              class="pf-75th-link"
-              href={SEVENTY_FIFTH_URL}
-              target="_blank"
-              rel="noopener"
-            >
-              Explore 75 years of Delaware State Parks →
-            </a>
-          )
-        }
-      </div>
-    </div>
-  </section>
+  {
+    SEVENTY_FIFTH_ACTIVE && (
+      <section
+        class="pf-section pf-section--flush pf-section--purple pf-section--lazy pf-75th"
+        id="pf-75th"
+      >
+        <div class="pf-split pf-split--reverse">
+          <div class="pf-split-media pf-75th-media">
+            {HEART_OF_PARKS_VIDEO_URL ? (
+              <figure class="pf-75th-figure">
+                <PondFestVideo
+                  src={HEART_OF_PARKS_VIDEO_URL}
+                  poster={HEART_OF_PARKS_POSTER_URL}
+                  captions={HEART_OF_PARKS_CAPTIONS_URL}
+                  label="Heart of the Parks: Bryan Mey on 75 years of Delaware State Parks"
+                />
+                <figcaption>
+                  FOLP President Bryan Mey on what 75 years means for Lums Pond,
+                  from Delaware State Parks' <em>Heart of the Parks</em> series.
+                </figcaption>
+              </figure>
+            ) : (
+              <div class="pf-img-placeholder">
+                <i class="fa-solid fa-film" />
+              </div>
+            )}
+          </div>
+          <div class="pf-split-text pf-75th-text">
+            <img
+              class="pf-75th-corner-logo"
+              src={SEVENTY_FIFTH_LOGO_WHITE}
+              alt="Delaware State Parks 75th anniversary"
+              width="160"
+              loading="lazy"
+            />
+            <h2>75 Years of Delaware State Parks</h2>
+            <p>
+              Delaware State Parks turns 75 in 2026, and Pond Fest is proud to
+              be part of the celebration. Since 1951, these parks have protected
+              the places Delawareans love, including our own Lums Pond, home of
+              the state's largest freshwater pond. Most people don't realize
+              Delaware's state parks are roughly 65% self-funded. Entrance fees,
+              programs, and community support keep them running, which is why a
+              Friends group, and a festival like this one, matter.
+            </p>
+            {SEVENTY_FIFTH_URL && (
+              <a
+                class="pf-75th-link"
+                href={SEVENTY_FIFTH_URL}
+                target="_blank"
+                rel="noopener"
+              >
+                Explore 75 years of Delaware State Parks →
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- ══ GET INVOLVED ═══════════════════════════════════════════════ -->
   <section
@@ -2266,6 +2365,15 @@ const sponsorAds = (
     <div class="pf-section-inner pf-section-inner--mid">
       <div class="pf-involved-header">
         <h2>Get Involved</h2>
+        {
+          earlyBird && (
+            <p class="pf-involved-lead">
+              Sign-ups open in the spring. Until they do, all four go to the
+              same early list: tell us which one you are after and we will come
+              find you.
+            </p>
+          )
+        }
       </div>
       <div class="pf-involved-grid">
         {
@@ -2314,7 +2422,17 @@ const sponsorAds = (
     id="pf-sponsors"
   >
     <div class="pf-section-inner pf-section-inner--mid pf-sponsors-inner">
-      <h2>Sponsors</h2>
+      <h2>
+        {sponsorsAreCurrent ? "Sponsors" : `${SPONSORS_YEAR} Sponsors`}
+      </h2>
+      {
+        hasSponsors && !sponsorsAreCurrent && (
+          <p class="pf-sponsors-note">
+            These businesses and organizations paid for Pond Fest{" "}
+            {SPONSORS_YEAR}. Sponsorship for {CURRENT_YEAR} is open now.
+          </p>
+        )
+      }
       {
         hasSponsors ? (
           <>
@@ -2416,8 +2534,8 @@ const sponsorAds = (
             )}
 
             <p class="pf-sponsor-cta" data-phase="prep">
-              {SPONSOR_URL ? (
-                <a href={SPONSOR_URL} target="_blank" rel="noopener">
+              {sponsorAsk ? (
+                <a href={sponsorAsk} target="_blank" rel="noopener">
                   Become a sponsor
                 </a>
               ) : (
@@ -2430,8 +2548,8 @@ const sponsorAds = (
           <div class="pf-sponsor-empty">
             <p>
               Interested in sponsoring Pond Fest {CURRENT_YEAR}?{" "}
-              {SPONSOR_URL ? (
-                <a href={SPONSOR_URL} target="_blank" rel="noopener">
+              {sponsorAsk ? (
+                <a href={sponsorAsk} target="_blank" rel="noopener">
                   Fill out our sponsor interest form
                 </a>
               ) : (
@@ -2770,9 +2888,7 @@ const sponsorAds = (
     </div>
   </section>
 
-  <section
-    class="pf-section pf-section--purple pf-section--lazy pf-disclosure"
-  >
+  <section class="pf-section pf-section--purple pf-section--lazy pf-disclosure">
     <div class="pf-section-inner pf-section-inner--mid">
       <h2 class="pf-disclosure-title">{SUPPORT_DISCLOSURE_TITLE}</h2>
       {SUPPORT_DISCLOSURE.map((para) => <p>{para}</p>)}
@@ -4318,9 +4434,28 @@ const sponsorAds = (
     line-height: 1.4;
     flex: 1;
   }
+  .pf-involved-lead {
+    max-width: 54ch;
+    margin: 0.75rem auto 0;
+  }
+  /* Two cards rather than four, so they do not strand in the left half */
+  @media (min-width: 860px) {
+    .pf-between-grid {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 720px;
+      margin-inline: auto;
+    }
+  }
   .pf-involved-more {
     text-align: center;
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .pf-sponsors-note {
+    text-align: center;
+    max-width: 60ch;
+    margin: -0.5rem auto 1.5rem;
+    font-size: 0.95rem;
   }
 
   /* ── Sponsors ── */
@@ -6334,7 +6469,8 @@ const sponsorAds = (
         panel.querySelector(".pf-mapview-title")?.textContent?.trim() || "";
       note.textContent =
         panel.querySelector(".pf-mapview-note")?.textContent?.trim() || "";
-      const fullHref = panel.querySelector<HTMLAnchorElement>(".pf-mapview-full");
+      const fullHref =
+        panel.querySelector<HTMLAnchorElement>(".pf-mapview-full");
       full.hidden = !fullHref;
       if (fullHref) full.href = fullHref.href;
       last = from;

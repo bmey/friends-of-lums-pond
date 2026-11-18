@@ -15,16 +15,33 @@ import {
   HASHTAGS,
   PHOTO_CREDIT_NAME,
   PRESS_RELEASE_URL,
+  SEVENTY_FIFTH_ACTIVE,
   SEVENTY_FIFTH_URL,
 } from "../../data/pondfest/config";
+
+// 2024 was the first one, so the count follows from the year.
+const ORDINALS = [
+  "first",
+  "second",
+  "third",
+  "fourth",
+  "fifth",
+  "sixth",
+  "seventh",
+  "eighth",
+  "ninth",
+  "tenth",
+];
+const ordinal = ORDINALS[CURRENT_YEAR - 2024] || `${CURRENT_YEAR - 2023}th`;
 
 const facts = [
   {
     term: "What",
-    def: `Pond Fest ${CURRENT_YEAR}, the third annual Pond Fest`,
+    def: `Pond Fest ${CURRENT_YEAR}, the ${ordinal} annual Pond Fest`,
   },
   { term: "When", def: `${EVENT_DATE_DISPLAY}, ${EVENT_TIME}` },
-  { term: "Rain date", def: "Sunday, October 11, 2026" },
+  // The Sunday after the event date.
+  { term: "Rain date", def: "Sunday, October 10, 2027" },
   {
     term: "Where",
     def: `${EVENT_LOCATION} (1068 Howell School Rd, Bear, DE 19701)`,
@@ -39,10 +56,13 @@ const facts = [
   },
   {
     term: "Attendance",
-    def: "About 1,500 attended in 2025; 2,500+ expected in 2026",
+    def: "About 3,400 attended in 2026, across three park areas",
   },
-  { term: "Music", def: "11 volunteer musical acts across three stages" },
-  { term: "Fundraising goal", def: `${FUNDRAISING_GOAL} in a single day` },
+  { term: "Music", def: "Volunteer musical acts across three stages" },
+  {
+    term: "Fundraising goal",
+    def: FUNDRAISING_GOAL ? `${FUNDRAISING_GOAL} in a single day` : "",
+  },
   {
     term: "Beneficiaries",
     def: "Title I school field trip assistance, and the adaptive kayak launch at Lums Pond",
@@ -51,14 +71,14 @@ const facts = [
     term: "Presented by",
     def: "Friends of Lums Pond State Park, a 100% volunteer-run 501(c)(3) nonprofit",
   },
-];
+].filter((f) => f.def);
 
 const downloads = [
   {
-    name: `Official press release (Pond Fest ${CURRENT_YEAR})`,
+    name: "Official press release (Pond Fest 2026)",
     href: PRESS_RELEASE_URL,
     meta: "PDF · 93 KB",
-    desc: "The full release, with quotes, the area-by-area breakdown, and the fundraising numbers. Free to quote from.",
+    desc: "Last year's release, with quotes, the area-by-area breakdown, and the fundraising numbers. Free to quote from. This year's goes up when it goes out.",
   },
   {
     name: "Pond Fest logo",
@@ -79,16 +99,16 @@ const downloads = [
     desc: "The seal with the wordmark alongside it, on a transparent background. Best for a banner, a footer, or a sponsor board.",
   },
   {
-    name: `Pond Fest ${CURRENT_YEAR} lineup graphic`,
+    name: "Pond Fest 2026 lineup graphic",
     href: "/pondfest/press/pondfest-2026-lineup.png",
     meta: "PNG · 2.0 MB · 1620 × 1821",
-    desc: "All 13 volunteer performers, ready to post or print.",
+    desc: "Last year's 13 volunteer performers, ready to post or print.",
   },
   {
-    name: "Event map (full resolution)",
+    name: "Event map, 2026 (full resolution)",
     href: EVENT_MAP_FULL_URL,
     meta: "JPG · 539 KB · 3716 × 2477",
-    desc: "All three areas, with stages, vendors, food, and parking.",
+    desc: "All three areas, with stages, vendors, food, and parking. The layout is much the same each year; the new map replaces this one once it is drawn.",
   },
   {
     name: "Social share card",
@@ -223,15 +243,20 @@ const BOILERPLATE =
           ))
         }
       </ul>
-      <p class="press-note">
-        The Delaware State Parks 75th anniversary logo is
-        <strong>not in this kit</strong>. It is licensed to Friends of Lums Pond
-        for our own use and is not ours to pass along. For 75th anniversary
-        assets and information, see{" "}
-        <a href={SEVENTY_FIFTH_URL} target="_blank" rel="noopener">
-          destateparks.com/75-years
-        </a>.
-      </p>
+      {
+        SEVENTY_FIFTH_ACTIVE && (
+          <p class="press-note">
+            The Delaware State Parks 75th anniversary logo is
+            <strong>not in this kit</strong>. It is licensed to Friends of Lums
+            Pond for our own use and is not ours to pass along. For 75th
+            anniversary assets and information, see{" "}
+            <a href={SEVENTY_FIFTH_URL} target="_blank" rel="noopener">
+              destateparks.com/75-years
+            </a>
+            .
+          </p>
+        )
+      }
     </div>
   </section>
 

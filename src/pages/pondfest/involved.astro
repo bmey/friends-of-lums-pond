@@ -3,11 +3,18 @@ import Layout from "../../layouts/PondFestLayout.astro";
 import EmailCTAModal from "../../components/pondfest/EmailCTAModal.astro";
 import {
   CURRENT_YEAR,
+  INTEREST_URL,
   VOLUNTEER_URL,
   VENDOR_URL,
   SPONSOR_URL,
   PONDFEST_EMAIL,
 } from "../../data/pondfest/config";
+
+// Out of season all four pathways lead to the same early-bird form, the way
+// they do on the hub. Clearing INTEREST_URL in config puts each one back on
+// its own form. See the note there.
+const earlyBird = !!INTEREST_URL;
+const ctaLabel = (own: string) => (earlyBird ? "Put Me on the List" : own);
 
 const paths = [
   {
@@ -22,8 +29,8 @@ const paths = [
       "Great opportunity for students needing service hours",
       "Join a fun, welcoming group of park supporters",
     ],
-    url: VOLUNTEER_URL,
-    cta: "Sign Up to Volunteer",
+    url: INTEREST_URL || VOLUNTEER_URL,
+    cta: ctaLabel("Sign Up to Volunteer"),
     imageUrl: "", // e.g. "/pondfest/photos/volunteers.jpg"
     gradientFrom: "#1a1040",
     gradientTo: "#2ac4b3",
@@ -40,10 +47,11 @@ const paths = [
       "Live music across three areas of the park, all day",
       "Three pavilion stages: Wingspan, Monarch, and Nest Box",
       "Headlining and supporting act positions",
-      "Exposure to 2,500+ expected attendees",
+      "Exposure to a crowd of about 3,400",
     ],
-    useEmailModal: true,
-    cta: "Apply to Perform",
+    url: INTEREST_URL,
+    useEmailModal: !earlyBird,
+    cta: ctaLabel("Apply to Perform"),
     imageUrl: "", // e.g. "/pondfest/photos/performers.jpg"
     gradientFrom: "#271e52",
     gradientTo: "#6b5db5",
@@ -58,12 +66,12 @@ const paths = [
       "More than 40 artisans, crafters, and community nonprofits set up at Pond Fest, in front of a crowd that comes out to buy local. Food vendors, makers, service businesses, and nonprofits are all welcome.",
     details: [
       "Outdoor vendor spaces in a scenic park setting",
-      "Audience of 2,500+ expected attendees",
+      "Audience of about 3,400 over the day",
       "Table and tent space available",
       "Past vendors include crafters, local businesses, and nonprofits",
     ],
-    url: VENDOR_URL,
-    cta: "Apply to Vend",
+    url: INTEREST_URL || VENDOR_URL,
+    cta: ctaLabel("Apply to Vend"),
     imageUrl: "", // e.g. "/pondfest/photos/vendors.jpg"
     gradientFrom: "#0b2a28",
     gradientTo: "#2ac4b3",
@@ -80,10 +88,10 @@ const paths = [
       "Recognition at the event and on event signage",
       "Listing on this website under your sponsor tier",
       "Mention in social media and email communications",
-      "Good-will with the 2,500+ expected to attend",
+      "Good-will with the thousands who come out",
     ],
-    url: SPONSOR_URL,
-    cta: "Become a Sponsor",
+    url: INTEREST_URL || SPONSOR_URL,
+    cta: ctaLabel("Become a Sponsor"),
     imageUrl: "", // e.g. "/pondfest/photos/sponsors.jpg"
     gradientFrom: "#271e52",
     gradientTo: "#3d2f7a",
@@ -108,6 +116,15 @@ const paths = [
         Pond Fest is a community effort. There are four ways to be part of it:
         as a volunteer, performer, vendor, or sponsor. Pick the one that fits.
       </p>
+      {
+        earlyBird && (
+          <p>
+            Sign-ups open in the spring. Until they do, all four go to the same
+            early list: tell us which one you are after and we will come find
+            you.
+          </p>
+        )
+      }
       <a href="/pondfest" class="pf-btn pf-btn--outline-light">
         <i class="fa-solid fa-arrow-left"></i> Back to Pond Fest
       </a>

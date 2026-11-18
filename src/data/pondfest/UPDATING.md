@@ -23,9 +23,9 @@ Click the pencil icon to edit it in your browser.
 Find these lines near the top of the file and update them:
 
 ```ts
-export const CURRENT_YEAR = 2027;
-export const EVENT_DATE = "2027-10-09T11:00:00"; // second Saturday of October
-export const EVENT_DATE_DISPLAY = "Saturday, October 9, 2027";
+export const CURRENT_YEAR = 2028;
+export const EVENT_DATE = "2028-10-14T11:00:00"; // second Saturday of October
+export const EVENT_DATE_DISPLAY = "Saturday, October 14, 2028";
 export const EVENT_TIME = "11:00 AM – 6:00 PM";
 ```
 
@@ -282,9 +282,17 @@ Two rules on wording, learned the hard way:
 
 ### 7. Archive last year's event
 
-Open `src/data/pondfest/archive/` and create a new file named `2026.ts` (or the year just completed). Copy the format from an existing archive file (e.g., `2025.ts`) and fill in the results.
+Open `src/data/pondfest/archive/` and create a new file named for the year just completed. Copy the format from an existing archive file (e.g. `2026.ts`) and fill in the results: attendance, the gross, the goal you set, and a line per thing worth remembering.
 
-This will automatically appear on the `/pondfest/archive` page.
+Then add two lines to `src/pages/pondfest/archive.astro`, an import at the top and the new year at the front of the `years` list:
+
+```ts
+import { PONDFEST_2026 } from "../../data/pondfest/archive/2026";
+
+const years: ArchiveYear[] = [PONDFEST_2026, PONDFEST_2025, PONDFEST_2024];
+```
+
+The totals banner at the top of that page adds itself up from the list, so the running totals are right as soon as the new year is in it.
 
 ---
 
@@ -350,19 +358,19 @@ When the list is ready, change `WINNERS_LIVE = false` to `WINNERS_LIVE = true` a
 
 All of these sit at the bottom of `config.ts`. Every one of them is a plain list, and a list that is empty simply does not appear, so next year's reset is "delete the contents", not "delete the code".
 
-| List               | What it is                                                                                                                                                                                                      |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EVENT_MAPS`       | The tabbed map viewer in Plan Your Visit. Each entry names two files in `public/pondfest/maps/`: `<id>.webp` for the page (about 1800px wide) and `<id>-lg.webp` for "open full size" (about 2600px). Only the first map downloads with the page; the rest load when their tab is tapped, so keep the most useful one first. |
-| `KEY_TIMES`        | The fixed moments: a demo, a deadline, a dedication. `start` is 24-hour (`"16:00"`) and sorts the list; `time` is what people see (`"4:00 PM"`). Things that run all day belong on their amenity card, not here. |
-| `OPEN_MIC_SLOTS`   | The booked open mic list, time and name.                                                                                                                                                                        |
-| `FOOD_TRUCKS`      | Name and area number. The page groups them by area.                                                                                                                                                             |
-| `TAP_LIST`         | What is pouring at the beer tent, one line per tap: brewery, beer, and a `group` of `"ale"`, `"ipa"`, `"lager"` or `"other"`, the four headings on the handwritten board at the tent. The page groups them under those headings as an "On Tap" block in the food section. No ABVs; see below.      |
-| `CRAFT_VENDORS`    | Names, alphabetical, exactly as the vendors gave them to us.                                                                                                                                                    |
-| `FIRST_RESPONDERS` | The agencies at the Block Party.                                                                                                                                                                                |
-| `SPONSOR_ADS`      | The sponsor ad rail under the sponsor list. Each entry names `public/pondfest/ads/<slug>-thumb.webp` (about 600px) and `<slug>.webp` (about 1400px). Write `alt` as a sentence saying what the ad shows. Only add `url` when the ad itself prints a web address; never guess one. |
-| `OUT_AND_ABOUT_URL`| A press feature to link under the ads. Leave empty to hide the link.                                                                                                                                           |
-| `THANKS_GROUPS`    | The people thank-yous: planning committee, volunteers, parks staff, sound engineers, emcees. A group is a title, an optional line of context, and a list of names. The volunteer list is long on purpose and renders in columns. See the note on the committee below. |
-| `EAGLE_SCOUT_NOTE` | The bench acknowledgement. Clear it when it no longer applies.                                                                                                                                                  |
+| List                | What it is                                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EVENT_MAPS`        | The tabbed map viewer in Plan Your Visit. Each entry names two files in `public/pondfest/maps/`: `<id>.webp` for the page (about 1800px wide) and `<id>-lg.webp` for "open full size" (about 2600px). Only the first map downloads with the page; the rest load when their tab is tapped, so keep the most useful one first. |
+| `KEY_TIMES`         | The fixed moments: a demo, a deadline, a dedication. `start` is 24-hour (`"16:00"`) and sorts the list; `time` is what people see (`"4:00 PM"`). Things that run all day belong on their amenity card, not here.                                                                                                             |
+| `OPEN_MIC_SLOTS`    | The booked open mic list, time and name.                                                                                                                                                                                                                                                                                     |
+| `FOOD_TRUCKS`       | Name and area number. The page groups them by area.                                                                                                                                                                                                                                                                          |
+| `TAP_LIST`          | What is pouring at the beer tent, one line per tap: brewery, beer, and a `group` of `"ale"`, `"ipa"`, `"lager"` or `"other"`, the four headings on the handwritten board at the tent. The page groups them under those headings as an "On Tap" block in the food section. No ABVs; see below.                                |
+| `CRAFT_VENDORS`     | Names, alphabetical, exactly as the vendors gave them to us.                                                                                                                                                                                                                                                                 |
+| `FIRST_RESPONDERS`  | The agencies at the Block Party.                                                                                                                                                                                                                                                                                             |
+| `SPONSOR_ADS`       | The sponsor ad rail under the sponsor list. Each entry names `public/pondfest/ads/<slug>-thumb.webp` (about 600px) and `<slug>.webp` (about 1400px). Write `alt` as a sentence saying what the ad shows. Only add `url` when the ad itself prints a web address; never guess one.                                            |
+| `OUT_AND_ABOUT_URL` | A press feature to link under the ads. Leave empty to hide the link.                                                                                                                                                                                                                                                         |
+| `THANKS_GROUPS`     | The people thank-yous: planning committee, volunteers, parks staff, sound engineers, emcees. A group is a title, an optional line of context, and a list of names. The volunteer list is long on purpose and renders in columns. See the note on the committee below.                                                        |
+| `EAGLE_SCOUT_NOTE`  | The bench acknowledgement. Clear it when it no longer applies.                                                                                                                                                                                                                                                               |
 
 **No ABVs in `TAP_LIST`.** The board at the tent prints one for every tap and the page leaves them all off, on purpose. People read the number when they walk up, and a number that is right on a chalkboard goes stale on a web page the moment a keg changes. Adding a tap is one line:
 
@@ -402,7 +410,22 @@ The page switches itself to `afterglow` at midnight after event day. A thank-you
 - `DAY_OF_ALERT`: put a one-line thank-you with the survey link here for about a week, then clear it back to `""`.
 - `WINNERS_LIVE`: leave it `true` for a few days so people can still check, then set it `false`.
 
-The 2027 date is already in `NEXT_YEAR`, `NEXT_EVENT_DATE_DISPLAY`, `NEXT_EVENT_TIME`, the `.ics` file at `public/pondfest/pond-fest-2027.ics`, and `NEXT_EVENT_GOOGLE_URL`. Update all five together each year (the Google link has the date in it twice, in UTC).
+The following year's date is already in `NEXT_YEAR`, `NEXT_EVENT_DATE_DISPLAY`, `NEXT_EVENT_TIME`, the `.ics` file in `public/pondfest/`, and `NEXT_EVENT_GOOGLE_URL`. Update all five together each year (the Google link has the date in it twice, in UTC).
+
+### Between the festivals
+
+Once `EVENT_DATE` moves to the new year the page is back in `prep`, and these are the fields that carry it through the winter:
+
+| Field                  | What to do with it                                                                                                                                                                                                                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `INTEREST_URL`         | One early-bird form for people who want in next year. While it is set, all four Get Involved cards lead to it, on the hub and on `/pondfest/involved`, and the page says so. Clear it when the volunteer, vendor and sponsor forms are open for the new year and each card goes back to its own. |
+| `FEEDBACK_LINK`        | Last October's survey. Leave it up: it is half of the "Between Now and October" section, and what people answer is what the new year gets built from.                                                                                                                                            |
+| `SPONSORS_YEAR`        | The year the sponsor list belongs to. Leave last year's sponsors in place with this set to their year and the section reads "2026 Sponsors" with a line saying this year is open. Set it to `CURRENT_YEAR` when the first sponsor of the new year signs, and clear out the old list then.        |
+| `FUNDRAISING_GOAL`     | Leave it empty until the board sets this year's number. The Fundraising section runs without one rather than carrying last year's.                                                                                                                                                               |
+| `PONDFEST_DONATE_URL`  | Points at the general fund between festivals. Swap it for the new Donorbox campaign when there is one.                                                                                                                                                                                           |
+| `SEVENTY_FIFTH_ACTIVE` | The Delaware State Parks 75th anniversary section and the strip under the hero. 2026 only; leave it `false`.                                                                                                                                                                                     |
+
+Registration links on the amenity cards (open mic slots, the pickleball ladder, horseshoe time slots) are taken out with the rest of the year's data and go back in as `links` on their card when sign-ups open. An amenity card that points at another section of the page (the lineup, the food list, merch) drops its link on its own while that section is empty, so no dead jumps.
 
 ---
 
